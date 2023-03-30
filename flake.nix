@@ -1,5 +1,5 @@
 {
-  description = "Replit's open-source nix expressions";
+  description = "Nix expressions for defining Replit development environments";
   inputs.nixpkgs.url = "github:nixos/nixpkgs?rev=52e3e80afff4b16ccb7c52e9f0f5220552f03d04";
 
   outputs = { self, nixpkgs, ... }:
@@ -16,6 +16,5 @@
       };
       formatter.x86_64-linux = pkgs.nixpkgs-fmt;
       packages.x86_64-linux = import ./pkgs { inherit pkgs self; };
-      #checks.x86_64-linux.module-test = import ./test/module-test.nix { inherit pkgs; };
     };
 }
