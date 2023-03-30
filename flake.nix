@@ -1,8 +1,6 @@
 {
   description = "Replit's open-source nix expressions";
   inputs.nixpkgs.url = "github:nixos/nixpkgs?rev=52e3e80afff4b16ccb7c52e9f0f5220552f03d04";
-  # inputs.nixpkgs-replit.url = "github:replit/nixpkgs-replit";
-  # inputs.nixpkgs-replit.flake = false;
 
   outputs = { self, nixpkgs, ... }:
     let
