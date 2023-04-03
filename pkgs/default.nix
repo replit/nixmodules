@@ -21,12 +21,9 @@ rec {
 
   rev = pkgs.writeText "rev" revstring;
 
-  bundle-image = pkgs.callPackage "${nixpkgs}/nixos/lib/make-ext4-fs.nix" ({
-    storePaths = [ bundle ];
-    volumeLabel = "nixmodules";
-  });
+  bundle-image-closure-info = pkgs.buildPackages.closureInfo { rootPaths = [bundle]; };
 
-  bundle-image-tarball = pkgs.runCommand "nixmodules-${revstring}.tar.gz" {} ''
-    ${pkgs.gnutar}/bin/tar -czvf $out ${bundle-image}
+  bundle-image = pkgs.runCommand "nixmodules-${revstring}.tar.gz" {} ''
+    tar --sort=name --mtime='@1' --owner=0 --group=0 --numeric-owner -czvf $out -T ${bundle-image-closure-info}/store-paths
   '';
 }
