@@ -25,4 +25,8 @@ rec {
     storePaths = [ bundle ];
     volumeLabel = "nixmodules";
   });
+
+  bundle-image-tarball = pkgs.runCommand "nixmodules-${revstring}.tar.gz" {} ''
+    ${pkgs.gnutar}/bin/tar -czvf $out ${bundle-image}
+  '';
 }
