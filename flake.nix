@@ -15,6 +15,6 @@
         moduleit = self.packages.${prev.system}.moduleit;
       };
       formatter.x86_64-linux = pkgs.nixpkgs-fmt;
-      packages.x86_64-linux = import ./pkgs { inherit pkgs self; };
+      packages.x86_64-linux = import ./pkgs { inherit pkgs self nixpkgs; };
     };
 }

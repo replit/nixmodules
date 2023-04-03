@@ -1,4 +1,4 @@
-{ pkgs, self }:
+{ pkgs, nixpkgs, self }:
 let
   mkModule = path: pkgs.callPackage ./moduleit/entrypoint.nix {
     configPath = path;
@@ -17,4 +17,9 @@ rec {
     { name = rust.name; path = rust; }
     { name = swift.name; path = swift; }
   ];
+
+  bundle-image = pkgs.callPackage "${nixpkgs}/nixos/lib/make-ext4-fs.nix" ({
+    storePaths = [ bundle ];
+    volumeLabel = "nixmodules";
+  });
 }
