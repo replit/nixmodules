@@ -21,9 +21,5 @@ rec {
 
   rev = pkgs.writeText "rev" revstring;
 
-  bundle-image-closure-info = pkgs.buildPackages.closureInfo { rootPaths = [bundle]; };
-
-  bundle-image = pkgs.runCommand "nixmodules-${revstring}.tar.gz" {} ''
-    tar --sort=name --mtime='@1' --owner=0 --group=0 --numeric-owner -czvf $out -T ${bundle-image-closure-info}/store-paths
-  '';
+  bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle revstring; };
 }
