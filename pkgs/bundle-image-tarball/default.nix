@@ -1,4 +1,4 @@
-{runCommand, lib, bundle, revstring, lkl, coreutils, findutils, e2fsprogs, gnutar, gzip, closureInfo, pigz } :
+{runCommand, lib, bundle, registry, revstring, lkl, coreutils, findutils, e2fsprogs, gnutar, gzip, closureInfo, pigz } :
 
 let
   blockSize = toString (4 * 1024); # ext4fs block size (not block device sector size)
@@ -42,9 +42,13 @@ runCommand label {} ''
   mkdir $out
 
   root="$PWD/root"
-  mkdir -p $root
+  mkdir -p $root/nix/store $root/etc/nixmodules
 
-  xargs -I % cp -a --reflink=auto % -t $root/ < ${diskClosureInfo}/store-paths
+  set -x
+
+  xargs -I % cp -a --reflink=auto % $root/nix/store/ < ${diskClosureInfo}/store-paths
+
+  cp -a --reflink=auto ${registry} $root/etc/nixmodules/stable-registry.json
 
   diskImage=disk.raw
 
