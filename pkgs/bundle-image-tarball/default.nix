@@ -1,4 +1,4 @@
-{runCommand, lib, bundle, registry, revstring, lkl, coreutils, findutils, e2fsprogs, gnutar, gzip, closureInfo, pigz } :
+{runCommand, lib, bundle, bundle-stable, registry, registry-stable, revstring, lkl, coreutils, findutils, e2fsprogs, gnutar, gzip, closureInfo, pigz } :
 
 let
   blockSize = toString (4 * 1024); # ext4fs block size (not block device sector size)
@@ -15,7 +15,7 @@ let
 
   label = "nixmodules-${revstring}";
 
-  diskClosureInfo = closureInfo { rootPaths = [bundle]; };
+  diskClosureInfo = closureInfo { rootPaths = [bundle bundle-stable]; };
 
 in
 
@@ -46,7 +46,8 @@ runCommand label {} ''
 
   xargs -I % cp -a --reflink=auto % $root/nix/store/ < ${diskClosureInfo}/store-paths
 
-  cp -a --reflink=auto ${registry} $root/etc/nixmodules/stable-registry.json
+  cp -a --reflink=auto ${registry} $root/etc/nixmodules/beta-registry.json
+  cp -a --reflink=auto ${registry-stable} $root/etc/nixmodules/stable-registry.json
 
   diskImage=disk.raw
 

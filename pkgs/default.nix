@@ -1,4 +1,4 @@
-{ pkgs, nixpkgs, self }:
+{ pkgs, nixpkgs, nixmodules-stable, self }:
 
 with pkgs.lib;
 
@@ -28,9 +28,13 @@ rec {
 
   bundle = pkgs.linkFarm "nixmodules-bundle-${revstring}" modulesList;
 
-  registry = pkgs.writeTextFile { name = "stable-registry.json"; text = builtins.toJSON modules;};
+  bundle-stable = nixmodules-stable.packages.${pkgs.system}.bundle;
+
+  registry = pkgs.writeTextFile { name = "registry.json"; text = builtins.toJSON modules;};
+
+  registry-stable = nixmodules-stable.packages.${pkgs.system}.registry;
 
   rev = pkgs.writeText "rev" revstring;
 
-  bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle registry revstring; };
+  bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle registry bundle-stable registry-stable revstring; };
 }

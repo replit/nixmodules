@@ -1,6 +1,41 @@
 {
   "nodes": {
+    "nixmodules-stable": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1681237040,
+        "narHash": "sha256-fKB55nXVg5yR5WLaPwO1XVEki1DBZ5I4xap23ANqzIE=",
+        "owner": "replit",
+        "repo": "nixmodules",
+        "rev": "d77c07009d6d0e09eaf7aa011cad530a644eca01",
+        "type": "github"
+      },
+      "original": {
+        "owner": "replit",
+        "repo": "nixmodules",
+        "rev": "d77c07009d6d0e09eaf7aa011cad530a644eca01",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
+      "locked": {
+        "lastModified": 1670276674,
+        "narHash": "sha256-FqZ7b2RpoHQ/jlG6JPcCNmG/DoUPCIvyaropUDFhF3Q=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "52e3e80afff4b16ccb7c52e9f0f5220552f03d04",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "52e3e80afff4b16ccb7c52e9f0f5220552f03d04",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
       "locked": {
         "lastModified": 1670276674,
         "narHash": "sha256-FqZ7b2RpoHQ/jlG6JPcCNmG/DoUPCIvyaropUDFhF3Q=",
@@ -18,7 +53,8 @@
     },
     "root": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixmodules-stable": "nixmodules-stable",
+        "nixpkgs": "nixpkgs_2"
       }
     }
   },
