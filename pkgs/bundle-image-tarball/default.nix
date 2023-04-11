@@ -44,8 +44,6 @@ runCommand label {} ''
   root="$PWD/root"
   mkdir -p $root/nix/store $root/etc/nixmodules
 
-  set -x
-
   xargs -I % cp -a --reflink=auto % $root/nix/store/ < ${diskClosureInfo}/store-paths
 
   cp -a --reflink=auto ${registry} $root/etc/nixmodules/stable-registry.json
