@@ -6,7 +6,8 @@ let
   mkModule = path: pkgs.callPackage ./moduleit/entrypoint.nix {
     configPath = path;
   };
-  revstring = builtins.substring 0 7 self.rev or "dirty";
+  revstring_long = self.rev or "dirty";
+  revstring = builtins.substring 0 7 revstring_long;
 
   modules = rec {
     go = go_1;
@@ -35,6 +36,8 @@ rec {
   registry-stable = nixmodules-stable.packages.${pkgs.system}.registry;
 
   rev = pkgs.writeText "rev" revstring;
+
+  rev_long = pkgs.writeText "rev_long" revstring_long;
 
   bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle registry bundle-stable registry-stable revstring; };
 }
