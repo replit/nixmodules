@@ -88,14 +88,18 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1670624270,
+        "lastModified": 1683237785,
         "narHash": "sha256-l4JoUTwISecR5DyBY3ShEvPxCV1F0l7FtH/bNWweUtY=",
-        "type": "git",
-        "url": "file:///home/toby/replit/prybar"
+        "owner": "replit",
+        "repo": "prybar",
+        "rev": "65f486534054665f1b333689417c39acd370d3a5",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/toby/replit/prybar"
+        "owner": "replit",
+        "repo": "prybar",
+        "rev": "65f486534054665f1b333689417c39acd370d3a5",
+        "type": "github"
       }
     },
     "root": {
