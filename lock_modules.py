@@ -61,6 +61,7 @@ def is_semver_greater(semver1, semver2):
   for i in range(len(parts1)):
     if parts1[i] > parts2[i]:
       return True
+  return False
 
 def generate_aliases(module_registry):
   aliases = {}
