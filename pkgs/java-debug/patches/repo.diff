@@ -1,0 +1,13 @@
+diff --git a/pom.xml b/pom.xml
+index 4f7abb1..89e48e5 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -168,7 +168,7 @@
+         <repository>
+             <id>JDT.LS</id>
+             <layout>p2</layout>
+-            <url>https://download.eclipse.org/jdtls/snapshots/repository/latest/</url>
++            <url>https://download.eclipse.org/jdtls/milestones/1.1.2/repository/</url>
+         </repository>
+         <repository>
+             <id>JBOLL.TOOLS</id>
