@@ -7,8 +7,6 @@ let
     inherit pypkgs;
   };
 
-  prybar-python = pkgs.prybar.prybar-python310;
-
   pip-config = pkgs.writeTextFile {
     name = "pip.conf";
     text = ''
@@ -38,6 +36,8 @@ let
     '';
     destination = "/conf.toml";
   };
+
+  prybar-python = pkgs.prybar.prybar-python310;
 
   stderred = pkgs.callPackage ../../stderred { };
 
