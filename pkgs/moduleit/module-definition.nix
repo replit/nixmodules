@@ -465,6 +465,11 @@ in
 
 {
   options = {
+    id = mkOption {
+      type = types.str;
+      description = "ID of the module";
+    };
+
     name = mkOption {
       type = types.str;
       description = "Name of the module";
@@ -474,6 +479,11 @@ in
       type = types.str;
       description = "Description of the module";
       default = "";
+    };
+
+    community-version = mkOption {
+      type = types.str;
+      description = "The version of the language or framework provided by this module.";
     };
 
     version = mkOption {
@@ -575,8 +585,10 @@ in
       let
 
         moduleJSON = {
+          id = config.id;
           name = config.name;
           description = config.description;
+          community-version = config.community-version;
           version = config.version;
           env = {
             PATH = lib.makeBinPath config.packages;
@@ -590,6 +602,6 @@ in
         };
 
       in
-      pkgs.writeText "replit-module-${config.name}-${config.version}" (builtins.toJSON moduleJSON);
+      pkgs.writeText "replit-module-${config.id}-${config.community-version}-m${config.version}" (builtins.toJSON moduleJSON);
   };
 }
