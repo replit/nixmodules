@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 
 let
-  bun = pkgs.callPackage ./bun.nix { };
+  bun = pkgs.callPackage ../../bun { };
 
   extensions = [ ".js" ".ts" ];
 in
