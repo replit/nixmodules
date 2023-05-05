@@ -1,12 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
-  goversion =
-    let
-      parts = pkgs.lib.strings.splitString "." pkgs.go.version;
-      major = builtins.elemAt parts 0;
-      minor = builtins.elemAt parts 1;
-    in
-      "${major}.${minor}";
+  goversion = lib.versions.majorMinor pkgs.go.version;
 in
 {
   id = "go";
