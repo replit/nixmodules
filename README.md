@@ -52,6 +52,7 @@ To build a specific module, for example `bun-0.5-m1.0`, you can do:
 nix build .#modules.'"bun-0.5-m1.0"'
 ```
 
+
 ## Lock Modules
 
 `lock_modules.py` is a script that generates a module registry file `modules.json`.
