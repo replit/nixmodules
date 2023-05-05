@@ -19,7 +19,7 @@ in
 
 {
   id = "nodejs";
-  name = "Node.js Tools";
+  name = "Node.js Tools BLAH";
   inherit community-version;
   version = "1.1";
   imports = [
