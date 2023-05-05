@@ -22,8 +22,15 @@
         inherit pkgs self nixpkgs nixmodules-stable; 
       };
       devShells.x86_64-linux.default = pkgs.mkShell {
-        packages = [
-          pkgs.python310
+        packages = with pkgs; [
+          python310
+          pigz
+          coreutils
+          findutils
+          lkl
+          e2fsprogs
+          gnutar
+          gzip
         ];
       };
       modules = import ./pkgs/modules {
