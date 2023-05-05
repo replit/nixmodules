@@ -14,7 +14,7 @@ in
   id = "rust";
   name = "Rust Tools";
   inherit community-version;
-  version = "1.0";
+  version = "1.1";
 
   packages = with pkgs; [
     cargo
@@ -25,7 +25,7 @@ in
   ];
 
   replit.runners.cargo = {
-    name = "cargo run";
+    name = "cargo run (BLAH)";
     language = "rust";
 
     start = "${cargoRun}/bin/cargo_run";
