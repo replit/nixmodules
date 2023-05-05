@@ -14,7 +14,7 @@ in
   id = "rust";
   name = "Rust Tools";
   inherit community-version;
-  version = "1.1";
+  version = "1.0";
 
   packages = with pkgs; [
     cargo
