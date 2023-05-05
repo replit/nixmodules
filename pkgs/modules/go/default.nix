@@ -1,6 +1,11 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
+let
+  goversion = lib.versions.majorMinor pkgs.go.version;
+in
 {
-  name = "GoTools";
+  id = "go";
+  name = "Go Tools";
+  community-version = goversion;
   version = "1.0";
 
   packages = with pkgs; [

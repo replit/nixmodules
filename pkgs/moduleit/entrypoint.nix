@@ -1,7 +1,6 @@
 { pkgs ? import <nixpkgs> { }
 , configPath
 }:
-
 (pkgs.lib.evalModules {
   modules = [
     configPath

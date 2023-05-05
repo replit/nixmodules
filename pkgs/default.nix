@@ -3,31 +3,17 @@
 with pkgs.lib;
 
 let
-  mkModule = path: pkgs.callPackage ./moduleit/entrypoint.nix {
-    configPath = path;
-  };
+  modules = self.modules;
   revstring_long = self.rev or "dirty";
   revstring = builtins.substring 0 7 revstring_long;
-
-  modules = rec {
-    go = go_1;
-    go_1 = mkModule ./go;
-
-    rust = rust_1;
-    rust_1 = mkModule ./rust;
-
-    swift = swift_1;
-    swift_1 = mkModule ./swift;
-  };
-
-  modulesList = (mapAttrsToList (name: value: { inherit name; path = value;}) modules);
-
 in
 rec {
   default = moduleit;
   moduleit = pkgs.callPackage ./moduleit { };
 
-  bundle = pkgs.linkFarm "nixmodules-bundle-${revstring}" modulesList;
+  bundle = pkgs.linkFarm "nixmodules-bundle-${revstring}" (
+    mapAttrsToList (name: value: { inherit name; path = value;}) modules
+  );
 
   bundle-stable = nixmodules-stable.packages.${pkgs.system}.bundle;
 
