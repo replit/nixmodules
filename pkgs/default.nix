@@ -3,9 +3,7 @@
 with pkgs.lib;
 
 let
-  modules = import ./modules {
-    inherit pkgs;
-  };
+  modules = self.modules;
   revstring_long = self.rev or "dirty";
   revstring = builtins.substring 0 7 revstring_long;
 in
