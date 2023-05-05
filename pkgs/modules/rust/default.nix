@@ -1,4 +1,4 @@
-{ pkgs, pruneVersion, ... }:
+{ pkgs, lib, ... }:
 let
   cargoRun = pkgs.writeScriptBin "cargo_run" ''
     if [ ! -f "$HOME/$REPL_SLUG/Cargo.toml" ]; then
@@ -8,7 +8,7 @@ let
 
     ${pkgs.cargo}/bin/cargo run
   '';
-  community-version = pruneVersion pkgs.rustc.version;
+  community-version = lib.versions.majorMinor pkgs.rustc.version;
 in
 {
   id = "rust";

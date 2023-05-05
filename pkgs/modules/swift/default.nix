@@ -1,6 +1,6 @@
-{ pkgs, pruneVersion, ... }:
+{ pkgs, lib, ... }:
 let
-  community-version = pruneVersion pkgs.swift.version;
+  community-version = lib.versions.majorMinor pkgs.swift.version;
 
   swiftc-wrapper = pkgs.stdenv.mkDerivation {
     name = "swiftc-wrapper";
