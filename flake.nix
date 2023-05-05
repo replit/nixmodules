@@ -22,7 +22,7 @@
         inherit pkgs self nixpkgs nixmodules-stable; 
       };
       devShells.x86_64-linux.default = pkgs.mkShell {
-        buildInputs = [
+        packages = [
           pkgs.python310
         ];
       };
