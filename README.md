@@ -119,7 +119,7 @@ See more about the versioning scheme at: https://replit.com/@util/Design-docs#go
 
 ## Bundle Registry
 
-The `bundle_registry.py` bundles the all software needed by all Nix modules as specified in the
+`bundle_registry.py` bundles the all software needed by all Nix modules as specified in the
 `modules.json` registry file into a disk image tarball file. To run it:
 
 ```
