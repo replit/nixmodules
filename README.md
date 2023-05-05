@@ -59,7 +59,7 @@ It should be run each time when before publishing a PR (but after committing you
 
 ```
 $ nix develop
-$ python lock_modules.py
+$ python scripts/lock_modules.py
 ```
 
 `modules.json` is similar to a lock file in used in common packagers in that it fixes
@@ -116,3 +116,22 @@ Exception: go-1.19-m1.0 changed from /nix/store/g1vrclpr65ynpldn7a6yvjsniaj3fb3r
 To move forward, you'll have to increment the version of the associated module.
 
 See more about the versioning scheme at: https://replit.com/@util/Design-docs#goval/nixmodules_versions.md
+
+## Bundle Registry
+
+The `bundle_registry.py` bundles the all software needed by all Nix modules as specified in the
+`modules.json` registry file into a disk image tarball file. To run it:
+
+```
+$ nix develop
+$ python scripts/bundle_registry.py
+```
+
+You can use the `-d` flag (dryrun) to skip building disk image, which takes ~5 minutes. All generated
+artifacts go into `./build`, which will contain:
+
+* linkfarm - a directory containing a symlink per version per module, pointing to
+its output path
+* root - the root of the disk image generated
+* disk.raw - the raw disk image file
+* disk.raw.tar.gz - the compressed disk image file

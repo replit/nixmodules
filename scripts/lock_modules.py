@@ -108,8 +108,8 @@ def main():
     description='upserts current modules to %s' % module_registry_file,
   )
 
-  parser.add_argument('-d', '--dirty', action='store_true')
-  parser.add_argument('-v', '--verify', action='store_true')
+  parser.add_argument('-d', '--dirty', action='store_true', help='allow dirty working dir')
+  parser.add_argument('-v', '--verify', action='store_true', help='verify %s is up to date' % module_registry_file)
 
   args = parser.parse_args()
 
