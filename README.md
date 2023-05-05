@@ -132,6 +132,6 @@ artifacts go into `./build`, which will contain:
 
 * linkfarm - a directory containing a symlink per version per module, pointing to
 its output path
-* root - the root of the disk image generated
+* root - the root dir of the disk image generated
 * disk.raw - the raw disk image file
-* disk.raw.tar.gz - the compressed disk image file
+* disk.raw.tar.gz - the compressed disk image to be uploaded to GCF
