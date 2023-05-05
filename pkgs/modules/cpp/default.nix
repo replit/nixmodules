@@ -1,4 +1,4 @@
-{ pkgs, pruneVersion, ... }:
+{ pkgs, lib, ... }:
 let
   clang = pkgs.clang_14;
   clang-compile = import ../../clang-compile {
@@ -11,7 +11,7 @@ in
 {
   id = "cpp";
   name = "C++ Tools (with Clang)";
-  community-version = pruneVersion clang.version;
+  community-version = lib.versions.majorMinor clang.version;
   version = "1.0";
 
   packages = [

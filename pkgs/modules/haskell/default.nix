@@ -1,7 +1,7 @@
-{ pkgs, pruneVersion, ... }: {
+{ pkgs, lib, ... }: {
   id = "haskell";
   name = "Haskell Tools";
-  community-version = pruneVersion pkgs.ghc.version;
+  community-version = lib.versions.majorMinor pkgs.ghc.version;
   version = "1.0";
 
   packages = with pkgs; [

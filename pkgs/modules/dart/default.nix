@@ -1,7 +1,7 @@
-{ pkgs, pruneVersion, ... }: {
+{ pkgs, lib, ... }: {
   id = "dart";
   name = "Dart Tools";
-  community-version = pruneVersion pkgs.dart.version;
+  community-version = lib.versions.majorMinor pkgs.dart.version;
   version = "1.0";
 
   packages = [

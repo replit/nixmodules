@@ -1,4 +1,4 @@
-{ pkgs, pruneVersion, ... }:
+{ pkgs, lib, ... }:
 
 let
   dotnet = pkgs.dotnet-sdk_7;
@@ -9,7 +9,7 @@ in
 {
   id = "dotnet";
   name = ".NET 7 Tools";
-  community-version = pruneVersion dotnet.version;
+  community-version = lib.versions.majorMinor dotnet.version;
   version = "1.0";
 
   packages = [

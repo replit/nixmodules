@@ -1,9 +1,9 @@
 { nodejs }:
-{ pkgs, pruneVersion, ... }:
+{ pkgs, lib, ... }:
 
 let
 
-  community-version = pruneVersion nodejs.version;
+  community-version = lib.versions.majorMinor nodejs.version;
 
   nodepkgs = pkgs.nodePackages.override {
     inherit nodejs;

@@ -1,7 +1,7 @@
-{ pkgs, pruneVersion, ... }: {
+{ pkgs, lib, ... }: {
   id = "clojure";
   name = "Clojure Tools";
-  community-version = pruneVersion pkgs.clojure.version;
+  community-version = lib.versions.majorMinor pkgs.clojure.version;
   version = "1.0";
 
   replit.runners.clojure = {

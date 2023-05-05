@@ -1,7 +1,7 @@
-{ pkgs, pruneVersion, ... }: {
+{ pkgs, lib, ... }: {
   id = "lua";
   name = "Lua Tools";
-  community-version = pruneVersion pkgs.lua.version;
+  community-version = lib.versions.majorMinor pkgs.lua.version;
   version = "1.0";
 
   packages = with pkgs; [

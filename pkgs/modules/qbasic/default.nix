@@ -1,4 +1,4 @@
-{ pkgs, pruneVersion, ... }:
+{ pkgs, lib, ... }:
 
 let
   replbox = pkgs.callPackage ../../replbox { };
@@ -12,7 +12,7 @@ in
 {
   id = "qbasic";
   name = "QBASIC Tools (with Replbox)";
-  community-version = pruneVersion replbox.version;
+  community-version = lib.versions.majorMinor replbox.version;
   version = "1.1";
 
   replit.runners.replbox-qbasic = {

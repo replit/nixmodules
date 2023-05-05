@@ -1,7 +1,7 @@
 { python, pypkgs }:
-{ pkgs, pruneVersion, ... }:
+{ pkgs, lib, ... }:
 let
-  community-version = pruneVersion python.version;
+  community-version = lib.versions.majorMinor python.version;
 
   pip = pkgs.callPackage ../../pip {
     inherit pypkgs;

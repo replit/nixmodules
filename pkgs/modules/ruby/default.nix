@@ -1,4 +1,4 @@
-{ pkgs, pruneVersion, ... }:
+{ pkgs, lib, ... }:
 
 let
   ruby = pkgs.ruby_3_1;
@@ -8,7 +8,7 @@ in
 {
   id = "ruby";
   name = "Ruby Tools";
-  community-version = pruneVersion ruby.version;
+  community-version = lib.versions.majorMinor "${ruby.version}";
   version = "1.0";
 
   packages = [

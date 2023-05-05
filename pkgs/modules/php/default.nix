@@ -1,10 +1,10 @@
-{ pkgs, pruneVersion, ... }:
+{ pkgs, lib, ... }:
 let phpactor = pkgs.callPackage ../../phpactor { };
 in
 {
   id = "php";
   name = "PHP Tools";
-  community-version = pruneVersion pkgs.php.version;
+  community-version = lib.versions.majorMinor pkgs.php.version;
   version = "1.0";
 
   packages = with pkgs; [

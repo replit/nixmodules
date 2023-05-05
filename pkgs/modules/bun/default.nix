@@ -1,4 +1,4 @@
-{ pkgs, pruneVersion, ... }:
+{ pkgs, lib, ... }:
 
 let
   bun = pkgs.callPackage ./bun.nix { };
@@ -9,7 +9,7 @@ in
 {
   id = "bun";
   name = "Bun Tools";
-  community-version = pruneVersion bun.version;
+  community-version = lib.versions.majorMinor bun.version;
   version = "1.0";
 
   imports = [

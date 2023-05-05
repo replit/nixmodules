@@ -1,4 +1,4 @@
-{ pkgs, pruneVersion, ... }:
+{ pkgs, lib, ... }:
 
 let
   graalvm = pkgs.graalvm17-ce;
@@ -16,7 +16,7 @@ in
 {
   id = "java";
   name = "Java Tools (with Graal VM)";
-  community-version = pruneVersion graalvm.version;
+  community-version = lib.versions.majorMinor graalvm.version;
   version = "1.0";
 
   packages = [
