@@ -12,8 +12,6 @@ def get_current_branch():
   return str(output, 'UTF-8').strip()
 
 def get_module_registry():
-  if not os.path.isfile(module_registry_file):
-    return { 'modules': {}, 'aliases': {} }
   f = open(module_registry_file, 'r')
   registry = json.load(f)
   f.close()

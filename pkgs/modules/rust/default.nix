@@ -25,7 +25,7 @@ in
   ];
 
   replit.runners.cargo = {
-    name = "cargo run (BLAH)";
+    name = "cargo run";
     language = "rust";
 
     start = "${cargoRun}/bin/cargo_run";

@@ -19,9 +19,9 @@ in
 
 {
   id = "nodejs";
-  name = "Node.js Tools BLAH";
+  name = "Node.js Tools";
   inherit community-version;
-  version = "1.2";
+  version = "1.1";
   imports = [
     (import ../typescript-language-server {
       inherit nodepkgs;
