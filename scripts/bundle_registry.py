@@ -2,6 +2,7 @@ import subprocess
 import json
 import os
 import shutil
+import argparse
 
 module_registry_file = 'modules.json'
 output_dir = 'build/linkfarm'
@@ -42,22 +43,41 @@ def refresh_output_dir():
   os.makedirs(output_dir)
 
 def build_disk_image():
-  args = ['bash', 'build_bundle_image.sh']
+  args = ['bash', 'scripts/build_bundle_image.sh']
   print(" ".join(args))
   subprocess.run(args)
 
+def verify_links(modules):
+  for module_id, module in modules.items():
+    linkpath = "%s/%s" % (output_dir, module_id)
+    outpath = os.readlink(linkpath)
+    assert outpath == module['path'], "output path for %s does not match: %s vs %s" % (
+      module_id, module['path'], outpath
+    )
+    print('verifed %s -> %s' % (module_id, outpath))
+
 def main():
+  parser = argparse.ArgumentParser(
+    prog='bundle_registry',
+    description='bundles the registry as defined by %s into a disk image' % module_registry_file,
+  )
+
+  parser.add_argument('-d', '--dryrun', action='store_true', help='dryrun: skips building the disk; creates only linkfarm')
+  args = parser.parse_args()
+
   original_branch = get_current_branch()
   refresh_output_dir()
   registry = get_module_registry()
-  modules = registry['modules']
-  modules_by_commit = group_by_commit(modules)
+  modules_by_commit = group_by_commit(registry['modules'])
   for commit, modules in modules_by_commit.items():
     checkout(commit)
     for module_id in modules:
       build_module(module_id)
   checkout(original_branch)
-  build_disk_image()
+  verify_links(registry['modules'])
+
+  if not args.dryrun:
+    build_disk_image()
 
 if __name__ == '__main__':
   main()
