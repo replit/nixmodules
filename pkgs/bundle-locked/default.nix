@@ -1,4 +1,4 @@
-{ pkgs, self, revstring, } :
+{ pkgs, revstring, } :
 
 with pkgs.lib;
 
