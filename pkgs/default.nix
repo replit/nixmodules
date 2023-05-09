@@ -25,6 +25,8 @@ rec {
 
   rev_long = pkgs.writeText "rev_long" revstring_long;
 
+  bundle-locked = pkgs.callPackage ./bundle-locked { inherit self revstring; };
+
   bundle-image = pkgs.callPackage ./bundle-image { inherit bundle registry bundle-stable registry-stable revstring; };
 
   bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle-image revstring; };
