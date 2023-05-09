@@ -25,5 +25,7 @@ rec {
 
   rev_long = pkgs.writeText "rev_long" revstring_long;
 
-  bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle registry bundle-stable registry-stable revstring; };
+  bundle-image = pkgs.callPackage ./bundle-image { inherit bundle registry bundle-stable registry-stable revstring; };
+
+  bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle-image revstring; };
 }
