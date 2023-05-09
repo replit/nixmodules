@@ -7,5 +7,5 @@ in
 runCommand label {} ''
   echo "making tarball..."
   mkdir -p $out
-  tar --use-compress-program=${pigz}/bin/pigz -Scf $out/disk.raw.tar.gz ${bundle-image}/disk.raw
+  tar --use-compress-program=${pigz}/bin/pigz -Scf $out/disk.raw.tar.gz -C ${bundle-image} disk.raw
 ''
