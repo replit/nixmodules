@@ -28,4 +28,4 @@ rec {
   bundle-image = pkgs.callPackage ./bundle-image { inherit bundle registry bundle-stable registry-stable revstring; };
 
   bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle-image revstring; };
-}
+} // modules
