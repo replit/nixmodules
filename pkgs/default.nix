@@ -1,4 +1,4 @@
-{ pkgs, nixpkgs, nixmodules-stable, self }:
+{ pkgs, self }:
 
 with pkgs.lib;
 
@@ -15,19 +15,13 @@ rec {
     mapAttrsToList (name: value: { inherit name; path = value;}) modules
   );
 
-  bundle-stable = nixmodules-stable.packages.${pkgs.system}.bundle;
-
-  registry = pkgs.writeTextFile { name = "registry.json"; text = builtins.toJSON modules;};
-
-  registry-stable = nixmodules-stable.packages.${pkgs.system}.registry;
-
   rev = pkgs.writeText "rev" revstring;
 
   rev_long = pkgs.writeText "rev_long" revstring_long;
 
-  bundle-locked = pkgs.callPackage ./bundle-locked { inherit self revstring; };
+  bundle-locked = pkgs.callPackage ./bundle-locked { inherit revstring; };
 
-  bundle-image = pkgs.callPackage ./bundle-image { inherit bundle registry bundle-stable registry-stable revstring; };
+  bundle-image = pkgs.callPackage ./bundle-image { inherit bundle-locked revstring; };
 
   bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle-image revstring; };
 } // modules
