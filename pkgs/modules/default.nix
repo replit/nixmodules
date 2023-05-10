@@ -21,6 +21,9 @@ let
     (mkModule (import ./nodejs {
       nodejs = pkgs.nodejs-16_x;
     }))
+    (mkModule (import ./nodejs/20.nix {
+      nodejs = pkgs.nodejs-19_x;
+    }))
     (mkModule ./go)
     (mkModule ./rust)
     (mkModule ./swift)

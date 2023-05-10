@@ -63,7 +63,10 @@ def is_semver_greater(semver1, semver2):
       return True
   return False
 
-def generate_aliases(module_registry):
+def generate_aliases(module_registry, upgrade_map):
+  reverse_upgrade_map = {}
+  for key, value in upgrade_map.items():
+    reverse_upgrade_map[value] = key
   aliases = {}
   for module_id in module_registry.keys():
     modinfo = parse_module_id(module_id)
@@ -75,8 +78,16 @@ def generate_aliases(module_registry):
       aliases[short_alias] = module_id
     if medium_alias not in aliases or is_version_greater(modinfo, parse_module_id(aliases[medium_alias])):
       aliases[medium_alias] = module_id
+    if medium_alias in reverse_upgrade_map:
+      second_medium_alias = reverse_upgrade_map[medium_alias]
+      if second_medium_alias not in aliases or is_version_greater(modinfo, parse_module_id(aliases[second_medium_alias])):
+        aliases[second_medium_alias] = module_id
     if long_alias not in aliases or is_version_greater(modinfo, parse_module_id(aliases[long_alias])):
       aliases[long_alias] = module_id
+    if long_alias in reverse_upgrade_map:
+      second_long_alias = reverse_upgrade_map[long_alias]
+      if second_long_alias not in aliases or is_version_greater(modinfo, parse_module_id(aliases[second_long_alias])):
+        aliases[second_long_alias] = module_id
   return aliases
 
 def update_module_registry(module_registry):
@@ -103,6 +114,10 @@ def update_module_registry(module_registry):
   return changed
 
 def main():
+  upgrade_map = {
+    'nodejs-19': 'nodejs-20',
+    'nodejs-19-m1': 'nodejs-20-m1',
+  }
   parser = argparse.ArgumentParser(
     prog='lock_modules',
     description='upserts current modules to %s' % module_registry_file,
@@ -126,7 +141,7 @@ def main():
     exit(1)
 
   if changed:
-    aliases = generate_aliases(module_registry)
+    aliases = generate_aliases(module_registry, upgrade_map)
     save_module_registry({
       'modules': module_registry,
       'aliases': aliases
