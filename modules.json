@@ -50,26 +50,6 @@
       "created": "2023-05-09T07:10:11-07:00",
       "path": "/nix/store/3g185mb4bzn2g9w0b7shw39x6ybby0g6-replit-module-lua-5.2-m1.0"
     },
-    "nodejs-14.21-m1.1": {
-      "commit": "806dc5beea43fab9a44b8f9b9f800726733dfc5a",
-      "created": "2023-05-09T07:10:11-07:00",
-      "path": "/nix/store/w07xavsw4n83rc8viwpia0q94vawm7ca-replit-module-nodejs-14.21-m1.1"
-    },
-    "nodejs-16.18-m1.1": {
-      "commit": "806dc5beea43fab9a44b8f9b9f800726733dfc5a",
-      "created": "2023-05-09T07:10:11-07:00",
-      "path": "/nix/store/f86gwahsy4xkksxy7dx8nmnkc59pjxbs-replit-module-nodejs-16.18-m1.1"
-    },
-    "nodejs-18.12-m1.1": {
-      "commit": "806dc5beea43fab9a44b8f9b9f800726733dfc5a",
-      "created": "2023-05-09T07:10:11-07:00",
-      "path": "/nix/store/snnaxxr6c6q816y4wvwcdifcf3ccd6al-replit-module-nodejs-18.12-m1.1"
-    },
-    "nodejs-19.1-m1.1": {
-      "commit": "806dc5beea43fab9a44b8f9b9f800726733dfc5a",
-      "created": "2023-05-09T07:10:11-07:00",
-      "path": "/nix/store/4x8rdnv3vr4fifql701w0ivzakhrq41d-replit-module-nodejs-19.1-m1.1"
-    },
     "php-8.1-m1.0": {
       "commit": "806dc5beea43fab9a44b8f9b9f800726733dfc5a",
       "created": "2023-05-09T07:10:11-07:00",
@@ -142,15 +122,6 @@
     "lua": "lua-5.2-m1.0",
     "lua-5.2": "lua-5.2-m1.0",
     "lua-5.2-m1": "lua-5.2-m1.0",
-    "nodejs": "nodejs-19.1-m1.1",
-    "nodejs-14.21": "nodejs-14.21-m1.1",
-    "nodejs-14.21-m1": "nodejs-14.21-m1.1",
-    "nodejs-16.18": "nodejs-16.18-m1.1",
-    "nodejs-16.18-m1": "nodejs-16.18-m1.1",
-    "nodejs-18.12": "nodejs-18.12-m1.1",
-    "nodejs-18.12-m1": "nodejs-18.12-m1.1",
-    "nodejs-19.1": "nodejs-19.1-m1.1",
-    "nodejs-19.1-m1": "nodejs-19.1-m1.1",
     "php": "php-8.1-m1.0",
     "php-8.1": "php-8.1-m1.0",
     "php-8.1-m1": "php-8.1-m1.0",
