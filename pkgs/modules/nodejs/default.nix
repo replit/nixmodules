@@ -3,7 +3,7 @@
 
 let
 
-  community-version = lib.versions.majorMinor nodejs.version;
+  community-version = lib.versions.major nodejs.version;
 
   nodepkgs = pkgs.nodePackages.override {
     inherit nodejs;
