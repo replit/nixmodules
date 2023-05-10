@@ -16,6 +16,9 @@ let
       nodejs = pkgs.nodejs-19_x;
     }))
     (mkModule (import ./nodejs {
+      nodejs = pkgs.nodejs-17_x;
+    }))
+    (mkModule (import ./nodejs {
       nodejs = pkgs.nodejs-18_x;
     }))
     (mkModule (import ./nodejs {

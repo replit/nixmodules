@@ -89,6 +89,26 @@
       "commit": "806dc5beea43fab9a44b8f9b9f800726733dfc5a",
       "created": "2023-05-09T07:10:11-07:00",
       "path": "/nix/store/37kafc7qxhji91175lgccmn2yx1dzw9m-replit-module-web-3.0-m1.0"
+    },
+    "nodejs-14-m1.1": {
+      "commit": "f70162eecd701a6eb74788a3a7281e70ccc30517",
+      "created": "2023-05-10T10:29:41-04:00",
+      "path": "/nix/store/ka73l28kbi58dhzj88sfndmz8ck4a83a-replit-module-nodejs-14-m1.1"
+    },
+    "nodejs-16-m1.1": {
+      "commit": "f70162eecd701a6eb74788a3a7281e70ccc30517",
+      "created": "2023-05-10T10:29:41-04:00",
+      "path": "/nix/store/7i46wk2m5452m4kfprjk1dmrin995511-replit-module-nodejs-16-m1.1"
+    },
+    "nodejs-18-m1.1": {
+      "commit": "f70162eecd701a6eb74788a3a7281e70ccc30517",
+      "created": "2023-05-10T10:29:41-04:00",
+      "path": "/nix/store/4q1k1fwzv2jdcag0xzp477cwd4694519-replit-module-nodejs-18-m1.1"
+    },
+    "nodejs-19-m1.1": {
+      "commit": "f70162eecd701a6eb74788a3a7281e70ccc30517",
+      "created": "2023-05-10T10:29:41-04:00",
+      "path": "/nix/store/wm87b2x7lyfs9v9m6ndksdr9w6hrs1x9-replit-module-nodejs-19-m1.1"
     }
   },
   "aliases": {
@@ -145,6 +165,15 @@
     "swift-5.6-m1": "swift-5.6-m1.0",
     "web": "web-3.0-m1.0",
     "web-3.0": "web-3.0-m1.0",
-    "web-3.0-m1": "web-3.0-m1.0"
+    "web-3.0-m1": "web-3.0-m1.0",
+    "nodejs": "nodejs-19-m1.1",
+    "nodejs-14": "nodejs-14-m1.1",
+    "nodejs-14-m1": "nodejs-14-m1.1",
+    "nodejs-16": "nodejs-16-m1.1",
+    "nodejs-16-m1": "nodejs-16-m1.1",
+    "nodejs-18": "nodejs-18-m1.1",
+    "nodejs-18-m1": "nodejs-18-m1.1",
+    "nodejs-19": "nodejs-19-m1.1",
+    "nodejs-19-m1": "nodejs-19-m1.1"
   }
 }
