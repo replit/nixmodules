@@ -80,9 +80,8 @@ let
 
 in
 {
-  id = "python";
-  name = "Python Tools";
-  inherit community-version;
+  id = "python-${community-version}";
+  name = "Python ${community-version} Tools";
   version = "1.0";
 
   packages = [
@@ -101,7 +100,7 @@ in
   };
 
   replit.runners.python-prybar = {
-    name = "Prybar for Python 3.10";
+    name = "Prybar for Python ${community-version}";
     fileParam = true;
     language = "python3";
     start = "${run-prybar}/bin/run-prybar $file";

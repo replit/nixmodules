@@ -4,12 +4,13 @@ let
   dotnet = pkgs.dotnet-sdk_7;
 
   extensions = [ ".cs" ".csproj" ".fs" ".fsproj" ];
+
+  dotnet-version = lib.versions.majorMinor dotnet.version;
 in
 
 {
-  id = "dotnet";
+  id = "dotnet-${dotnet-version}";
   name = ".NET 7 Tools";
-  community-version = lib.versions.majorMinor dotnet.version;
   version = "1.0";
 
   packages = [

@@ -1,6 +1,6 @@
 { pkgs, lib, ... }:
 let
-  community-version = lib.versions.majorMinor pkgs.swift.version;
+  swift-version = lib.versions.majorMinor pkgs.swift.version;
 
   swiftc-wrapper = pkgs.stdenv.mkDerivation {
     name = "swiftc-wrapper";
@@ -16,9 +16,8 @@ let
   };
 in
 {
-  id = "swift";
+  id = "swift-${swift-version}";
   name = "Swift Tools";
-  inherit community-version;
   version = "1.0";
 
   packages = with pkgs; [

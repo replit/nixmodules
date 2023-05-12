@@ -1,7 +1,8 @@
-{ pkgs, lib, ... }: {
-  id = "dart";
+{ pkgs, lib, ... }:
+let dart-version = lib.versions.majorMinor pkgs.dart.version;
+in {
+  id = "dart-${dart-version}";
   name = "Dart Tools";
-  community-version = lib.versions.majorMinor pkgs.dart.version;
   version = "1.0";
 
   packages = [

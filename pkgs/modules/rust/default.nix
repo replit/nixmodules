@@ -8,12 +8,11 @@ let
 
     ${pkgs.cargo}/bin/cargo run
   '';
-  community-version = lib.versions.majorMinor pkgs.rustc.version;
+  rust-version = lib.versions.majorMinor pkgs.rustc.version;
 in
 {
-  id = "rust";
+  id = "rust-${rust-version}";
   name = "Rust Tools";
-  inherit community-version;
   version = "1.0";
 
   packages = with pkgs; [

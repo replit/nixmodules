@@ -1,7 +1,9 @@
-{ pkgs, lib, ... }: {
-  id = "lua";
+{ pkgs, lib, ... }: 
+let lua-version = lib.versions.majorMinor pkgs.lua.version;
+in
+{
+  id = "lua-${lua-version}";
   name = "Lua Tools";
-  community-version = lib.versions.majorMinor pkgs.lua.version;
   version = "1.0";
 
   packages = with pkgs; [

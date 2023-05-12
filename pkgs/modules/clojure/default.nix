@@ -1,7 +1,9 @@
-{ pkgs, lib, ... }: {
-  id = "clojure";
+{ pkgs, lib, ... }: 
+let clojure-version = lib.versions.majorMinor pkgs.clojure.version;
+in
+{
+  id = "clojure-${clojure-version}";
   name = "Clojure Tools";
-  community-version = lib.versions.majorMinor pkgs.clojure.version;
   version = "1.0";
 
   replit.runners.clojure = {

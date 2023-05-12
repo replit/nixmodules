@@ -4,12 +4,13 @@ let
   bun = pkgs.callPackage ../../bun { };
 
   extensions = [ ".js" ".ts" ];
+
+  community-version = lib.versions.majorMinor bun.version;
 in
 
 {
-  id = "bun";
+  id = "bun-${community-version}";
   name = "Bun Tools";
-  community-version = lib.versions.majorMinor bun.version;
   version = "1.0";
 
   imports = [

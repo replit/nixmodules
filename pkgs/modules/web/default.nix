@@ -1,7 +1,6 @@
 { pkgs, ... }: {
   id = "web";
   name = "Web Tools";
-  community-version = "3.0";
   version = "1.0";
 
   imports = [
