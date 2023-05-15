@@ -1,11 +1,18 @@
-{runCommand, lib, revstring, bundle-image, pigz }:
+{system, bash, lib, bundle-image, revstring, coreutils, gnutar, pigz} :
 
-let
-  label = "nixmodules-${revstring}";
-in
-
-runCommand label {} ''
-  echo "making tarball..."
-  mkdir -p $out
-  tar --use-compress-program=${pigz}/bin/pigz -Scf $out/disk.raw.tar.gz -C ${bundle-image} disk.raw
-''
+derivation {
+  name = "nixmodules-${revstring}";
+  builder = "${bash}/bin/bash";
+  args = [ ./builder.sh ];
+  inherit system;
+  __structuredAttrs = true;
+  unsafeDiscardReferences.out = true;
+  env = {
+    PATH = lib.makeBinPath [
+      coreutils
+      gnutar
+      pigz
+    ];
+    inherit bundle-image;
+  };
+}
