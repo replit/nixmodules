@@ -3,12 +3,12 @@
 let
   ruby = pkgs.ruby_3_1;
   rubyPackages = pkgs.rubyPackages_3_1;
+  ruby-version = lib.versions.majorMinor "${ruby.version}";
 in
 
 {
-  id = "ruby";
+  id = "ruby-${ruby-version}";
   name = "Ruby Tools";
-  community-version = lib.versions.majorMinor "${ruby.version}";
   version = "1.0";
 
   packages = [

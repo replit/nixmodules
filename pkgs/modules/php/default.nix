@@ -1,10 +1,10 @@
 { pkgs, lib, ... }:
 let phpactor = pkgs.callPackage ../../phpactor { };
+php-version = lib.versions.majorMinor pkgs.php.version;
 in
 {
-  id = "php";
+  id = "php-${php-version}";
   name = "PHP Tools";
-  community-version = lib.versions.majorMinor pkgs.php.version;
   version = "1.0";
 
   packages = with pkgs; [

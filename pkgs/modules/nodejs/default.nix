@@ -18,9 +18,8 @@ let
 in
 
 {
-  id = "nodejs";
-  name = "Node.js Tools";
-  inherit community-version;
+  id = "nodejs-${community-version}";
+  name = "Node.js ${community-version} Tools";
   version = "1.1";
   imports = [
     (import ../typescript-language-server {

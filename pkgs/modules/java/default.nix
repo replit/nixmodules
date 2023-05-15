@@ -3,6 +3,8 @@
 let
   graalvm = pkgs.graalvm17-ce;
 
+  graalvm-version = lib.versions.majorMinor graalvm.version;
+
   graal-compile-command = "${pkgs.graalvm17-ce}/bin/javac -classpath .:target/dependency/* -d . $(find . -type f -name '*.java')";
 
   jdt-language-server = pkgs.callPackage ../../jdt-language-server { };
@@ -11,12 +13,12 @@ let
     inherit jdt-language-server;
     jdk = pkgs.graalvm11-ce;
   };
+
 in
 
 {
-  id = "java";
+  id = "java-graalvm${graalvm-version}";
   name = "Java Tools (with Graal VM)";
-  community-version = lib.versions.majorMinor graalvm.version;
   version = "1.0";
 
   packages = [

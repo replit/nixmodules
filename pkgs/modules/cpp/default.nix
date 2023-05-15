@@ -7,11 +7,12 @@ let
   };
   dap-cpp = pkgs.callPackage ../../dap-cpp { };
   dap-cpp-messages = import ../../dap-cpp/messages.nix;
+
+  clang-version = lib.versions.major clang.version;
 in
 {
-  id = "cpp";
+  id = "cpp-clang${clang-version}";
   name = "C++ Tools (with Clang)";
-  community-version = lib.versions.majorMinor clang.version;
   version = "1.0";
 
   packages = [

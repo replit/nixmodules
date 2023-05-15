@@ -3,9 +3,8 @@ let
   goversion = lib.versions.majorMinor pkgs.go.version;
 in
 {
-  id = "go";
+  id = "go-${goversion}";
   name = "Go Tools";
-  community-version = goversion;
   version = "1.0";
 
   packages = with pkgs; [

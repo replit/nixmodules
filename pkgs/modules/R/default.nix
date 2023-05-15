@@ -1,7 +1,9 @@
-{ pkgs, lib, ... }: {
-  id = "r";
+{ pkgs, lib, ... }: 
+let r-version = lib.versions.majorMinor pkgs.R.version;
+in
+{
+  id = "r-${r-version}";
   name = "R Tools";
-  community-version = lib.versions.majorMinor pkgs.R.version;
   version = "1.0";
 
   replit.runners.r = {

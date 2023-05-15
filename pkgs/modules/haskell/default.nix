@@ -1,7 +1,10 @@
-{ pkgs, lib, ... }: {
-  id = "haskell";
+{ pkgs, lib, ... }: 
+let 
+  ghc-version = lib.versions.majorMinor pkgs.ghc.version;
+in
+{
+  id = "haskell-ghc${ghc-version}";
   name = "Haskell Tools";
-  community-version = lib.versions.majorMinor pkgs.ghc.version;
   version = "1.0";
 
   packages = with pkgs; [
