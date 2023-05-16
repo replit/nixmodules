@@ -24,4 +24,6 @@ rec {
   bundle-image = pkgs.callPackage ./bundle-image { inherit bundle-locked revstring; };
 
   bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle-image revstring; };
+
+  bundle-squashfs = pkgs.callPackage ./bundle-squashfs { inherit bundle-locked revstring; };
 } // modules
