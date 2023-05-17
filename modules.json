@@ -1,0 +1,178 @@
+{
+  "bun-0.5-v1.0": {
+    "name": "Bun Tools",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/0j7j3rzyc7z1566kwgi6pc417gvqbyq6-replit-module-bun-0.5-v1.0"
+  },
+  "c-clang14.0-v1.0": {
+    "name": "C Tools (with Clang)",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/br0my7r13rz4mq203mkshvkj03y93wl3-replit-module-c-clang14.0-v1.0"
+  },
+  "clojure-1.11-v1.0": {
+    "name": "Clojure Tools",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/qiw65l2jil2imspl50n2ywj9gbj14qsh-replit-module-clojure-1.11-v1.0"
+  },
+  "cpp-clang14-v1.0": {
+    "name": "C++ Tools (with Clang)",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/cdhrbgjn5znybl069k5glwkbqvpxjpjq-replit-module-cpp-clang14-v1.0"
+  },
+  "dart-2.18-v1.0": {
+    "name": "Dart Tools",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/hknvd1mw2g9sdj599502z4x78fvjf7h4-replit-module-dart-2.18-v1.0"
+  },
+  "dotnet-7.0-v1.0": {
+    "name": ".NET 7 Tools",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/0s748qp3941cbxw0rqrlr6nnq33dwwaz-replit-module-dotnet-7.0-v1.0"
+  },
+  "go-1.19-v1.0": {
+    "name": "Go Tools",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/mpcgi0sw8rg2kwymg7viwc6x091b7m5f-replit-module-go-1.19-v1.0"
+  },
+  "haskell-ghc9.0-v1.0": {
+    "name": "Haskell Tools",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/bfq3rd7zj6l4qmx5fsc2q7grd8dvnzhw-replit-module-haskell-ghc9.0-v1.0"
+  },
+  "java-graalvm22.3-v1.0": {
+    "name": "Java Tools (with Graal VM)",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/6kjbc05qnrl0np2apfka58jji9pz6j28-replit-module-java-graalvm22.3-v1.0"
+  },
+  "lua-5.2-v1.0": {
+    "name": "Lua Tools",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/m227nqigk3hgx3nq25b6avmfiws1b7na-replit-module-lua-5.2-v1.0"
+  },
+  "nodejs-14-v1.1": {
+    "name": "Node.js 14 Tools",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/5grx6v5ghb2a2rb2v6qbwpgyfq1cqdzf-replit-module-nodejs-14-v1.1"
+  },
+  "nodejs-16-v1.1": {
+    "name": "Node.js 16 Tools",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/pjj23wa08i35caqjlp5igxhvdiy3r5w0-replit-module-nodejs-16-v1.1"
+  },
+  "nodejs-18-v1.1": {
+    "name": "Node.js 18 Tools",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/56davla4y5jg8x9c7899jp9z05a2sxnb-replit-module-nodejs-18-v1.1"
+  },
+  "nodejs-19-v1.1": {
+    "name": "Node.js 19 Tools",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/1vkvplybxp9fgjg6pwdyh2369fgd1iqc-replit-module-nodejs-19-v1.1"
+  },
+  "php-8.1-v1.0": {
+    "name": "PHP Tools",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/2akqcmb98413x7pmvqwva4hw7aj5ljaz-replit-module-php-8.1-v1.0"
+  },
+  "python-3.10-v1.0": {
+    "name": "Python 3.10 Tools",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/vg9dqpr880mridd8wfx0va21wfkx3h46-replit-module-python-3.10-v1.0"
+  },
+  "qbasic-v1.1": {
+    "name": "QBASIC Tools (with Replbox)",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/q0dch2vrdq7cva1rg428grhx0iv48c2b-replit-module-qbasic-v1.1"
+  },
+  "r-4.2-v1.0": {
+    "name": "R Tools",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/0kn0sqkj27k5ad19jg2cxz9clnfvrlkn-replit-module-r-4.2-v1.0"
+  },
+  "ruby-3.1-v1.0": {
+    "name": "Ruby Tools",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/03dqclxkj3jilvlxiz081y49n77nwwxb-replit-module-ruby-3.1-v1.0"
+  },
+  "rust-1.64-v1.0": {
+    "name": "Rust Tools",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/j205xzj9zz8y39zy2cfj15yr7jgcvqx9-replit-module-rust-1.64-v1.0"
+  },
+  "swift-5.6-v1.0": {
+    "name": "Swift Tools",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/r92w6q0raaxxk0sfqmvzpknxs7fa5yb1-replit-module-swift-5.6-v1.0"
+  },
+  "web-v1.0": {
+    "name": "Web Tools",
+    "description": "",
+    "commit": "c6a77fd17083e57e5d75a6afe8b1d4282c021086",
+    "created": "2023-05-17T16:05:56-04:00",
+    "changelog": "Initial release",
+    "path": "/nix/store/0bl9svfvfmp2pkindqz4z8pmcichian9-replit-module-web-v1.0"
+  }
+}
