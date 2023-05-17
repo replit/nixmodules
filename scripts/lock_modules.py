@@ -38,7 +38,7 @@ def save_module_registry(registry):
   f.close()
   print('Wrote %s' % module_registry_file)
 
-def update_module_registry(module_registry):
+def update_module_registry(module_registry, changelog):
   commit = get_commit_info()
   modules = get_current_modules()
   changed = False
@@ -58,7 +58,7 @@ def update_module_registry(module_registry):
       'description': modinfo['description'],
       'commit': commit['sha'],
       'created': commit['timestamp'],
-      'changelog': commit['changelog'],
+      'changelog': changelog or commit['changelog'],
       'path': module_path,
     }
     print('%s added' % module_id)
@@ -73,6 +73,7 @@ def main():
 
   parser.add_argument('-d', '--dirty', action='store_true', help='allow dirty working dir')
   parser.add_argument('-v', '--verify', action='store_true', help='verify %s is up to date' % module_registry_file)
+  parser.add_argument('-c', '--changelog', help='the change log message to use for all newly added modules')
 
   args = parser.parse_args()
 
@@ -81,7 +82,7 @@ def main():
     exit(1)
 
   module_registry = get_module_registry()
-  changed = update_module_registry(module_registry)
+  changed = update_module_registry(module_registry, args.changelog)
 
   if args.verify and changed:
     print('%s is not up to date!!' % module_registry_file)
