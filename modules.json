@@ -174,5 +174,37 @@
     "created": "2023-05-17T16:05:56-04:00",
     "changelog": "Initial release",
     "path": "/nix/store/0bl9svfvfmp2pkindqz4z8pmcichian9-replit-module-web-v1.0"
+  },
+  "nodejs-14-v1.2": {
+    "name": "Node.js 14 Tools  (New)",
+    "description": "",
+    "commit": "37e2e9794b10af770bbf3f3d88b1ecdd8fb29253",
+    "created": "2023-05-17T16:18:51-04:00",
+    "changelog": "Improved Node.js command",
+    "path": "/nix/store/4sybs1zd2j4g7jq94si4ifkm61v65z43-replit-module-nodejs-14-v1.2"
+  },
+  "nodejs-16-v1.2": {
+    "name": "Node.js 16 Tools  (New)",
+    "description": "",
+    "commit": "37e2e9794b10af770bbf3f3d88b1ecdd8fb29253",
+    "created": "2023-05-17T16:18:51-04:00",
+    "changelog": "Improved Node.js command",
+    "path": "/nix/store/hv1kd64dra2vdc2vmjhv638sw15y5524-replit-module-nodejs-16-v1.2"
+  },
+  "nodejs-18-v1.2": {
+    "name": "Node.js 18 Tools  (New)",
+    "description": "",
+    "commit": "37e2e9794b10af770bbf3f3d88b1ecdd8fb29253",
+    "created": "2023-05-17T16:18:51-04:00",
+    "changelog": "Improved Node.js command",
+    "path": "/nix/store/8rskbqvcapjl2a1i6nr5hc90prri3yky-replit-module-nodejs-18-v1.2"
+  },
+  "nodejs-19-v1.2": {
+    "name": "Node.js 19 Tools  (New)",
+    "description": "",
+    "commit": "37e2e9794b10af770bbf3f3d88b1ecdd8fb29253",
+    "created": "2023-05-17T16:18:51-04:00",
+    "changelog": "Improved Node.js command",
+    "path": "/nix/store/5jwfch16i3mymk6lj4pxnz52bx9p11lw-replit-module-nodejs-19-v1.2"
   }
 }
