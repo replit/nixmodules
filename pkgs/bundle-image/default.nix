@@ -1,4 +1,4 @@
-{system, bash, lib, bundle-locked, revstring, lkl, coreutils, findutils, e2fsprogs, closureInfo}:
+{self, system, bash, lib, bundle-locked, revstring, lkl, coreutils, findutils, e2fsprogs, closureInfo, jq}:
 
 let
 
@@ -22,7 +22,11 @@ derivation {
       findutils
       lkl
       e2fsprogs
+      jq
     ];
+    autoUpgrade = builtins.toJSON self.upgrade-maps.auto;
+    recommendUpgrade = builtins.toJSON self.upgrade-maps.recommend;
+    modules = builtins.toJSON self.modules;
     blockSize = toString (4 * 1024); # ext4fs block size (not block device sector size)
     diskClosureInfo = closureInfo { rootPaths = [bundle-locked registry]; };
   };

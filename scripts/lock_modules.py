@@ -8,11 +8,12 @@ module_id_regex = re.compile(r'^([a-zA-Z0-9.]+)-([a-zA-Z0-9.]+)-m([0-9]+)\.([0-9
 module_registry_file = 'modules.json'
 
 def get_commit_info():
-  output = subprocess.check_output(['git', 'show', '-s', '--format=format:%aI|%H'])
-  timestamp, commit = str(output, 'UTF-8').split('|')
+  output = subprocess.check_output(['git', 'show', '-s', '--format=format:%aI|%H|%s'])
+  timestamp, commit, changelog = str(output, 'UTF-8').split('|')
   return {
     'sha': commit,
-    'timestamp': timestamp
+    'timestamp': timestamp,
+    'changelog': changelog
   }
 
 def is_working_directory_clean():
@@ -25,7 +26,7 @@ def get_current_modules():
 
 def get_module_registry():
   if not os.path.isfile(module_registry_file):
-    return { 'modules': {}, 'aliases': {} }
+    return {}
   f = open(module_registry_file, 'r')
   registry = json.load(f)
   f.close()
@@ -37,53 +38,12 @@ def save_module_registry(registry):
   f.close()
   print('Wrote %s' % module_registry_file)
 
-def parse_module_id(module_id):
-  match = module_id_regex.match(module_id)
-  id, community_version, major, minor = match.groups()
-  return {
-    'id': id,
-    'community_version': community_version,
-    'major': major,
-    'minor': minor,
-  }
-
-def is_version_greater(modinfo1, modinfo2):
-  if modinfo1['community_version'] == modinfo2['community_version']:
-    if modinfo1['major'] == modinfo2['major']:
-      return modinfo1['minor'] > modinfo2['minor']
-    return modinfo1['major'] > modinfo2['major']
-  return is_semver_greater(modinfo1['community_version'], modinfo2['community_version'])
-
-def is_semver_greater(semver1, semver2):
-  parts1 = list(map(int, semver1.split('.')))
-  parts2 = list(map(int, semver2.split('.')))
-  assert len(parts1) == len(parts2), "comparing semvars that have different number of parts: %s vs %s" % (semver1, semver2)
-  for i in range(len(parts1)):
-    if parts1[i] > parts2[i]:
-      return True
-  return False
-
-def generate_aliases(module_registry):
-  aliases = {}
-  for module_id in module_registry.keys():
-    modinfo = parse_module_id(module_id)
-    short_alias = modinfo['id']
-    medium_alias = "%s-%s" % (modinfo['id'], modinfo['community_version'])
-    long_alias = "%s-%s-m%s" % (modinfo['id'], modinfo['community_version'], modinfo['major'])
-
-    if short_alias not in aliases or is_version_greater(modinfo, parse_module_id(aliases[short_alias])):
-      aliases[short_alias] = module_id
-    if medium_alias not in aliases or is_version_greater(modinfo, parse_module_id(aliases[medium_alias])):
-      aliases[medium_alias] = module_id
-    if long_alias not in aliases or is_version_greater(modinfo, parse_module_id(aliases[long_alias])):
-      aliases[long_alias] = module_id
-  return aliases
-
 def update_module_registry(module_registry):
   commit = get_commit_info()
   modules = get_current_modules()
   changed = False
-  for module_id, module_path in modules.items():
+  for module_id, modinfo in modules.items():
+    module_path = modinfo["module"]
     if module_id in module_registry:
       # check for conflict
       prev_path = module_registry[module_id]['path']
@@ -94,9 +54,12 @@ def update_module_registry(module_registry):
         continue
 
     module_registry[module_id] = {
+      'name': modinfo['name'],
+      'description': modinfo['description'],
       'commit': commit['sha'],
       'created': commit['timestamp'],
-      'path': module_path
+      'changelog': commit['changelog'],
+      'path': module_path,
     }
     print('%s added' % module_id)
     changed = True
@@ -117,8 +80,7 @@ def main():
     print('There are uncommitted changes. Exiting.')
     exit(1)
 
-  module_registry_top_level = get_module_registry()
-  module_registry = module_registry_top_level['modules']
+  module_registry = get_module_registry()
   changed = update_module_registry(module_registry)
 
   if args.verify and changed:
@@ -126,11 +88,7 @@ def main():
     exit(1)
 
   if changed:
-    aliases = generate_aliases(module_registry)
-    save_module_registry({
-      'modules': module_registry,
-      'aliases': aliases
-    })
+    save_module_registry(module_registry)
 
 if __name__ == '__main__':
   main()

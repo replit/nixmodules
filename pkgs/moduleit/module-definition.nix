@@ -580,7 +580,7 @@ in
       let
 
         moduleJSON = {
-          id = config.id;
+          id = "${config.id}-v${config.version}";
           name = config.name;
           description = config.description;
           version = config.version;

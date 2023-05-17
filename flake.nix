@@ -35,5 +35,8 @@
       modules = import ./pkgs/modules {
         inherit pkgs;
       };
+      upgrade-maps = import ./pkgs/upgrade-maps {
+        inherit pkgs;
+      };
     };
 }

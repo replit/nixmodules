@@ -41,13 +41,19 @@ let
   ];
 
   modules = builtins.listToAttrs (
-    map (module: { name = get-module-id module; value = module; }) modulesList
+    map (module:
+      let info = get-module-info module;
+      in {
+        name = info.id;
+        value = info;
+      }) modulesList
   );
 
-  get-module-id = module:
-    let
-      match = builtins.match "^\/nix\/store\/([^-]+)-replit-module-(.+)$" module.outPath;
-    in
-      builtins.elemAt match 1;
+  get-module-info = module:
+    let inputs = (builtins.fromJSON (builtins.unsafeDiscardStringContext module.text));
+    in {
+      inherit (inputs) id name description;
+      inherit module;
+    };
 in
   modules

@@ -3,7 +3,7 @@
 with pkgs.lib;
 
 let
-  modules = self.modules;
+  moduleDerivations = builtins.mapAttrs (id: info: info.module) self.modules;
   revstring_long = self.rev or "dirty";
   revstring = builtins.substring 0 7 revstring_long;
 in
@@ -21,9 +21,10 @@ rec {
 
   bundle-locked = pkgs.callPackage ./bundle-locked { inherit revstring; };
 
-  bundle-image = pkgs.callPackage ./bundle-image { inherit bundle-locked revstring; };
+  bundle-image = pkgs.callPackage ./bundle-image { inherit bundle-locked revstring self; };
 
   bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle-image revstring; };
 
-  bundle-squashfs = pkgs.callPackage ./bundle-squashfs { inherit bundle-locked revstring; };
-} // modules
+  bundle-squashfs = pkgs.callPackage ./bundle-squashfs { inherit bundle-locked revstring self; };
+  
+} // moduleDerivations

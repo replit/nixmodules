@@ -1,4 +1,4 @@
-{system, bash, lib, bundle-locked, revstring, coreutils, findutils, closureInfo, squashfsTools}:
+{self, system, bash, lib, bundle-locked, revstring, coreutils, findutils, closureInfo, squashfsTools, jq}:
 
 let
 
@@ -22,7 +22,11 @@ derivation {
       coreutils
       findutils
       squashfsTools
+      jq
     ];
+    autoUpgrade = builtins.toJSON self.upgrade-maps.auto;
+    recommendUpgrade = builtins.toJSON self.upgrade-maps.recommend;
+    modules = builtins.toJSON self.modules;
     diskClosureInfo = closureInfo { rootPaths = [bundle-locked registry]; };
   };
 }

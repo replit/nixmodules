@@ -4,7 +4,7 @@ with pkgs.lib;
 
 let
 
-  modulesLocks = (builtins.fromJSON (builtins.readFile ../../modules.json)).modules;
+  modulesLocks = (builtins.fromJSON (builtins.readFile ../../modules.json));
 
   commits = unique (catAttrs "commit" (builtins.attrValues modulesLocks));
 
