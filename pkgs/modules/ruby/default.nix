@@ -8,8 +8,8 @@ in
 
 {
   id = "ruby-${ruby-version}";
-  name = "Ruby Tools";
-  version = "1.0";
+  name = "Ruby Tools (New)";
+  version = "1.1";
 
   packages = [
     ruby
