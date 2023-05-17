@@ -206,5 +206,13 @@
     "created": "2023-05-17T16:18:51-04:00",
     "changelog": "Improved Node.js command",
     "path": "/nix/store/5jwfch16i3mymk6lj4pxnz52bx9p11lw-replit-module-nodejs-19-v1.2"
+  },
+  "ruby-3.1-v1.1": {
+    "name": "Ruby Tools (New)",
+    "description": "",
+    "commit": "dc767b10b79bb7ce397a3497edf4037afbb63ff5",
+    "created": "2023-05-17T16:20:29-04:00",
+    "changelog": "improved Ruby",
+    "path": "/nix/store/6m5cm9znnmczpqsc8lhy37hl49q4ci52-replit-module-ruby-3.1-v1.1"
   }
 }
