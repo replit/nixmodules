@@ -19,11 +19,11 @@ let
       m = (flakes.${module.commit}).modules.${name};
     in
       # verify the outpath matches what the lockfile expects
-      assert m.outPath == module.path;
+      assert m.module.outPath == module.path;
       m) modulesLocks;
 
 in
 
 pkgs.linkFarm "nixmodules-bundle-${revstring}" (
-    mapAttrsToList (name: value: { inherit name; path = value;}) modules
+    mapAttrsToList (name: value: { inherit name; path = value.module;}) modules
 )
