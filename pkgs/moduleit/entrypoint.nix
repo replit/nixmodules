@@ -1,5 +1,6 @@
 { pkgs ? import <nixpkgs> { }
 , configPath
+, pkgs-unstable
 }:
 (pkgs.lib.evalModules {
   modules = [
@@ -8,6 +9,7 @@
   ];
   specialArgs = {
     inherit pkgs;
+    inherit pkgs-unstable;
     modulesPath = builtins.toString ./.;
   };
 }).config.replit.buildModule
