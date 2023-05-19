@@ -63,4 +63,8 @@ in
       enabledForHosting = false;
     };
   };
+
+  replit.env = {
+    CARGO_HOME = "$REPL_HOME/.cargo";
+  };
 }
