@@ -1,21 +1,22 @@
-{ pkgs, lib, ... }:
+{ pkgs, pkgs-unstable, lib, ... }:
 let
-  cargoRun = pkgs.writeScriptBin "cargo_run" ''
+  cargoRun = pkgs-unstable.writeScriptBin "cargo_run" ''
+  
     if [ ! -f "$HOME/$REPL_SLUG/Cargo.toml" ]; then
       NAME=$(echo $REPL_SLUG | sed -r 's/([a-z0-9])([A-Z])/\1_\2/g'| tr '[:upper:]' '[:lower:]')
-      ${pkgs.cargo}/bin/cargo init --name=$NAME
+      ${pkgs-unstable.cargo}/bin/cargo init --name=$NAME
     fi
 
-    ${pkgs.cargo}/bin/cargo run
+    ${pkgs-unstable.cargo}/bin/cargo run
   '';
-  rust-version = lib.versions.majorMinor pkgs.rustc.version;
+  rust-version = lib.versions.majorMinor pkgs-unstable.rustc.version;
 in
 {
   id = "rust-${rust-version}";
   name = "Rust Tools";
   version = "1.0";
 
-  packages = with pkgs; [
+  packages = with pkgs-unstable; [
     cargo
     clang
     rustc
@@ -35,14 +36,14 @@ in
     name = "rust-analyzer";
     language = "rust";
 
-    start = "${pkgs.rust-analyzer}/bin/rust-analyzer";
+    start = "${pkgs-unstable.rust-analyzer}/bin/rust-analyzer";
   };
 
   replit.formatters.cargo-fmt = {
     name = "cargo fmt";
     language = "rust";
 
-    start = "${pkgs.cargo}/bin/cargo fmt";
+    start = "${pkgs-unstable.cargo}/bin/cargo fmt";
     stdin = false;
   };
 
@@ -50,7 +51,7 @@ in
     name = "rustfmt";
     language = "rust";
 
-    start = "${pkgs.rustfmt}/bin/rustfmt $file";
+    start = "${pkgs-unstable.rustfmt}/bin/rustfmt $file";
     stdin = false;
   };
 
