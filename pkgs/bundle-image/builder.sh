@@ -1,3 +1,4 @@
+set -o xtrace
 . .attrs.sh
 
 PATH="${env[PATH]}"
@@ -27,6 +28,9 @@ mkdir -p "$root/nix/store" "$root/etc/nixmodules"
 
 xargs -I % cp -a --reflink=auto % "$root/nix/store/" < "${env[diskClosureInfo]}"/store-paths
 
+cp "${env["upgrade-maps"]}/auto-upgrade.json" $root/etc/nixmodules/auto-upgrade.json
+cp "${env["upgrade-maps"]}/recommend-upgrade.json" $root/etc/nixmodules/recommend-upgrade.json
+cp "${env["active-modules"]}" $root/etc/nixmodules/active-modules.json
 cp -a --reflink=auto "${env[registry]}" "$root/etc/nixmodules/modules.json"
 
 diskImage=disk.raw

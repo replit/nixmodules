@@ -5,7 +5,6 @@ in
 {
   id = "php-${php-version}";
   name = "PHP Tools";
-  version = "1.0";
 
   packages = with pkgs; [
     php

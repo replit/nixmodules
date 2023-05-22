@@ -34,6 +34,7 @@
       };
       modules = import ./pkgs/modules {
         inherit pkgs;
+        inherit self;
       };
     };
 }

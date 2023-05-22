@@ -12,7 +12,6 @@ in
 {
   id = "qbasic";
   name = "QBASIC Tools (with Replbox)";
-  version = "1.1";
 
   replit.runners.replbox-qbasic = {
     name = "ReplBox QBASIC";

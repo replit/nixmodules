@@ -15,7 +15,6 @@ in
 {
   id = "c-clang${clang-version}";
   name = "C Tools (with Clang)";
-  version = "1.0";
 
   packages = [
     clang
