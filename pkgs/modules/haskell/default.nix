@@ -5,7 +5,6 @@ in
 {
   id = "haskell-ghc${ghc-version}";
   name = "Haskell Tools";
-  version = "1.0";
 
   packages = with pkgs; [
     ghc

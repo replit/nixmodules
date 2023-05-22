@@ -11,7 +11,6 @@ in
 {
   id = "dotnet-${dotnet-version}";
   name = ".NET 7 Tools";
-  version = "1.0";
 
   packages = [
     dotnet

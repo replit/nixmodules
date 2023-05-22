@@ -19,7 +19,6 @@ in
 {
   id = "java-graalvm${graalvm-version}";
   name = "Java Tools (with Graal VM)";
-  version = "1.0";
 
   packages = [
     graalvm

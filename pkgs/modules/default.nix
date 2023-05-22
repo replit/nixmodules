@@ -1,7 +1,8 @@
-{ pkgs }:
+{ pkgs, self }:
 let
   mkModule = path: pkgs.callPackage ../moduleit/entrypoint.nix {
     configPath = path;
+    inherit self;
   };
   
   modulesList = [

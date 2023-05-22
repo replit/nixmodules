@@ -9,7 +9,6 @@ in
 {
   id = "ruby-${ruby-version}";
   name = "Ruby Tools";
-  version = "1.0";
 
   packages = [
     ruby

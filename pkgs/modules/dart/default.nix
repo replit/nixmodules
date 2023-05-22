@@ -3,7 +3,6 @@ let dart-version = lib.versions.majorMinor pkgs.dart.version;
 in {
   id = "dart-${dart-version}";
   name = "Dart Tools";
-  version = "1.0";
 
   packages = [
     pkgs.dart

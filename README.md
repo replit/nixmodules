@@ -13,125 +13,148 @@ nix eval .#modules --json | jq
 Output might look like:
 ```json
 {
-  "bun-0.5-m1.0": "/nix/store/nqwdhvs2n6fv82nkn77rg5wb3g1giwjs-replit-module-bun-0.5-m1.0",
-  "c-14.0-m1.0": "/nix/store/c8v74sbwivlj0mridwsdng883frwccy5-replit-module-c-14.0-m1.0",
-  "clojure-1.11-m1.0": "/nix/store/dsx4w6inr69f6c799qija5nf08q1ds39-replit-module-clojure-1.11-m1.0",
-  "cpp-14.0-m1.0": "/nix/store/065sbbghckzyirbxq239s4y3bcsr2wq2-replit-module-cpp-14.0-m1.0",
-  "dart-2.18-m1.0": "/nix/store/ampynbffmbjckc4xqzndlhbxncdljqfv-replit-module-dart-2.18-m1.0",
-  "dotnet-7.0-m1.0": "/nix/store/nkq2y69kfbbjxrr9dvc385nskqs0cd67-replit-module-dotnet-7.0-m1.0",
-  "go-1.19-m1.0": "/nix/store/g1vrclpr65ynpldn7a6yvjsniaj3fb3r-replit-module-go-1.19-m1.0",
-  "haskell-9.0-m1.0": "/nix/store/7l7mafijx1lrxs85k6vzr3q5xzxi02fb-replit-module-haskell-9.0-m1.0",
-  "java-22.3-m1.0": "/nix/store/v09kxcfkm66bks2lxv5hknxh8i4ijzq9-replit-module-java-22.3-m1.0",
-  "lua-5.2-m1.0": "/nix/store/3g185mb4bzn2g9w0b7shw39x6ybby0g6-replit-module-lua-5.2-m1.0",
-  "nodejs-14.21-m1.1": "/nix/store/1igqvvk7agkxvz0ibi7vlsdkxnx5hnrj-replit-module-nodejs-14.21-m1.1",
-  "nodejs-16.18-m1.1": "/nix/store/751zzdn9cl7g4qx04k5szxm3jynfqa03-replit-module-nodejs-16.18-m1.1",
-  "nodejs-18.12-m1.1": "/nix/store/a1i4r09lc1qrnzcwv5bkfscc8nxk8b44-replit-module-nodejs-18.12-m1.1",
-  "nodejs-19.1-m1.1": "/nix/store/azs3v09dm03v27zrvhvhs7j1h5zm0y2s-replit-module-nodejs-19.1-m1.1",
-  "php-8.1-m1.0": "/nix/store/z9x4avlw2s0cmaqglbzb3ymb7cgv7hm4-replit-module-php-8.1-m1.0",
-  "python-3.10-m1.0": "/nix/store/ihcaap76i6xp3hzfayg6a0krx1pb5w52-replit-module-python-3.10-m1.0",
-  "qbasic-0.0-m1.1": "/nix/store/rpb9dg8c8cwiszfxa1xhw7z06yh59vn3-replit-module-qbasic-0.0-m1.1",
-  "r-4.2-m1.0": "/nix/store/c7wcs687dkxvfak0dr2gnb5ll69bv6yf-replit-module-r-4.2-m1.0",
-  "ruby-3.1-m1.0": "/nix/store/rxmyz9gv677v06jz64pqs7a9g2ppw0mj-replit-module-ruby-3.1-m1.0",
-  "rust-1.64-m1.0": "/nix/store/v2wq17m6chbxgv4vk2r4p4bqjp5r80vn-replit-module-rust-1.64-m1.0",
-  "swift-5.6-m1.0": "/nix/store/qp9bvj042a855xd4i0hrqbwz0p81zp4k-replit-module-swift-5.6-m1.0",
-  "web-3.0-m1.0": "/nix/store/37kafc7qxhji91175lgccmn2yx1dzw9m-replit-module-web-3.0-m1.0"
+  "bun-0.5": "/nix/store/l08f5vl1af9rpzd7kvr0l5gx9v7y8p12-replit-module-bun-0.5",
+  "c-clang14.0": "/nix/store/n4vzd9rkpjs72xj9yvlakxh3bardvdki-replit-module-c-clang14.0",
+  "clojure-1.11": "/nix/store/giqq76fl3yphzsm6rkl1qxqh4mszknpl-replit-module-clojure-1.11",
+  "cpp-clang14": "/nix/store/8iv4czda6j5nfhxs80ci625hj91ffpbn-replit-module-cpp-clang14",
+  "dart-2.18": "/nix/store/mhl58f8y3z6jv0javkmx28y5h9aacw39-replit-module-dart-2.18",
+  "dotnet-7.0": "/nix/store/06mjna44a7w9bby6r121a7i9a5027qqn-replit-module-dotnet-7.0",
+  "go-1.19": "/nix/store/y1gb1k8bkyd9jqxi4r1g9qibcqn3c6dm-replit-module-go-1.19",
+  ...
 }
 ```
 
-To build modules, you can do:
+
+## Building
+
+For each of the following examples, the build result will found be in a file or directory named `result`.
+
+To build all active modules:
 
 ```
 nix build .#bundle
 ```
 
-which will create a `result` directory containing a symlink for each active module.
-
-To build a specific module, for example `bun-0.5-m1.0`, you can do:
+To build a specific module, for example `bun-0.5`, you can do:
 
 ```
-nix build .#modules.'"bun-0.5-m1.0"'
+nix build .#'"bun-0.5"'
+```
+
+To build all historical versions of all modules:
+
+```
+nix build .#bundle-locked
+```
+
+To build a disk containing all historical versions of all modules:
+
+```
+nix build .#bundle-image
+```
+
+To build a compressed squashfs disk containing all historical versions of all modules:
+
+```
+nix build .#bundle-squashfs
 ```
 
 ## Lock Modules
 
-`lock_modules.py` is a script that generates a module registry file `modules.json`.
-It should be run each time when before publishing a PR (but after committing your changes):
-
-```
-$ nix develop
-$ python scripts/lock_modules.py
-```
-
-`modules.json` is similar to a lock file in used in common packagers in that it fixes
-the exact version of each module. This file looks something like:
+`scripts/lock_modules.py` generates/updates the module lock file `modules.json`.
+modules.json is similar to a lock file used in common packagers in that it fixes
+the exact version of each module. It looks like:
 
 ```json
 {
-  "modules": {
-    "nodejs-18.12-m1.1": {
-      "commit": "4ec006c0eb247320e77c0abbf46b6f9e33370f81",
-      "created": "2023-05-04T16:52:42-04:00",
-      "path": "/nix/store/a1i4r09lc1qrnzcwv5bkfscc8nxk8b44-replit-module-nodejs-18.12-m1.1"
-    },
-    "nodejs-19.1-m1.1": {
-      "commit": "4ec006c0eb247320e77c0abbf46b6f9e33370f81",
-      "created": "2023-05-04T16:52:42-04:00",
-      "path": "/nix/store/azs3v09dm03v27zrvhvhs7j1h5zm0y2s-replit-module-nodejs-19.1-m1.1"
-    },
-    "go-1.19-m1.0": {
-      "commit": "4ec006c0eb247320e77c0abbf46b6f9e33370f81",
-      "created": "2023-05-04T16:52:42-04:00",
-      "path": "/nix/store/g1vrclpr65ynpldn7a6yvjsniaj3fb3r-replit-module-go-1.19-m1.0"
-    }
+  "bun-0.5:v1-20230522-ec43fbd": {
+    "commit": "ec43fbd5f1ad8556bb64da7f77ae4af8d9ae6461",
+    "path": "/nix/store/l08f5vl1af9rpzd7kvr0l5gx9v7y8p12-replit-module-bun-0.5"
   },
-  "aliases": {
-    "nodejs": "nodejs-19.1-m1.1",
-    "nodejs-18.12": "nodejs-18.12-m1.1",
-    "nodejs-18.12-m1": "nodejs-18.12-m1.1",
-    "nodejs-19.1": "nodejs-19.1-m1.1",
-    "nodejs-19.1-m1": "nodejs-19.1-m1.1",
-    "go": "go-1.19-m1.0",
-    "go-1.19": "go-1.19-m1.0",
-    "go-1.19-m1": "go-1.19-m1.0"
-  }
+  "c-clang14.0:v1-20230522-ec43fbd": {
+    "commit": "ec43fbd5f1ad8556bb64da7f77ae4af8d9ae6461",
+    "path": "/nix/store/n4vzd9rkpjs72xj9yvlakxh3bardvdki-replit-module-c-clang14.0"
+  },
+  "clojure-1.11:v1-20230522-ec43fbd": {
+    "commit": "ec43fbd5f1ad8556bb64da7f77ae4af8d9ae6461",
+    "path": "/nix/store/giqq76fl3yphzsm6rkl1qxqh4mszknpl-replit-module-clojure-1.11"
+  },
+  "cpp-clang14:v1-20230522-ec43fbd": {
+    "commit": "ec43fbd5f1ad8556bb64da7f77ae4af8d9ae6461",
+    "path": "/nix/store/8iv4czda6j5nfhxs80ci625hj91ffpbn-replit-module-cpp-clang14"
+  },
+  ...
 }
 ```
 
-The modules section is an append-only section. This means the contents of the value under a key, say `nodejs-19.1-m1.1`
-cannot be changed. Each module contains:
+This file is append-only. This means the contents of the value under a key, say `bun-0.5:v1-20230522-ec43fbd`
+cannot be changed.
 
-* commit - the git commit of the repo when `lock_modules.py` was ran. The script requires a clean working directory,
+Keys into the mapping are module registry IDs consisting of `<module ID>:<tag>`.
+
+A tag consists of `v<version>-<date>-<short commit>`, which contains:
+* version - an auto-incremented numeric ID which starts at 1
+* date - an 8-digit sequence in the form `YYYYMMDD`
+* short commit - the first 7 digits of the git commit sha
+
+The values of the mapping are:
+* `commit` - the full commit sha of the repo when `lock_modules.py` was ran. The script requires a clean working directory,
 unless the `-d` flag is supplied
-* created - the timestamp of the commit
-* path - the output path of the module as returned by the `nix eval .#modules --json` command
+* `path` - the output path of the nix derivation when the module ID is build via `nix build .#<module ID>` at the
+         corresponding commit
 
-The aliases section points to the latest version of each module for a given shortened version specifier.
+## Upgrade Maps
 
-If you made a modification in a module or a dependency of a module, re-running `lock_modules.py` will fail
-an error like:
-```
-Exception: go-1.19-m1.0 changed from /nix/store/g1vrclpr65ynpldn7a6yvjsniaj3fb3r-replit-module-go-1.19-m1.0 to /nix/store/pbrqcayg3ahawdld7j5kay97xli8zi0a-replit-module-go-1.19-m1.0
-```
-
-To move forward, you'll have to increment the version of the associated module.
-
-See more about the versioning scheme at: https://replit.com/@util/Design-docs#goval/nixmodules_versions.md
-
-## Bundle Registry
-
-`bundle_registry.py` bundles the all software needed by all Nix modules as specified in the
-`modules.json` registry file into a disk image tarball file. To run it:
+*Upgrade maps* is our system for configuring automatic or recommended upgrades to modules. These are configured in
+`pkgs/upgrade-maps`. They look like:
 
 ```
-$ nix develop
-$ python scripts/bundle_registry.py
+"bun-0.5:v1-20230522-49470df" = { to = "bun-0.5:v2-20230522-0f45db1"; auto = true; changelog = "A better lsp!"; };
+"bun-0.5:v2-20230522-0f45db1" = { to = "bun-0.5:v3-20230522-9e0a3f9"; auto = true; changelog = "bug fix"; };
+"nodejs-16:v1-20230522-49470df" = { to = "nodejs-16:v2-20230522-4c01fa0"; auto = true; changelog = "improved your experience"; };
+"nodejs-14:v3-20230522-36692ed" = { to = "nodejs-18:v3-20230522-36692ed"; changelog = "Node.js 14 is deprecated. Upgrade to 18!"; };
+"nodejs-16:v3-20230522-36692ed" = { to = "nodejs-18:v3-20230522-36692ed"; changelog = "Node.js 16 is deprecated. Upgrade to 18!"; };
 ```
 
-You can use the `-d` flag (dryrun) to skip building disk image, which takes ~5 minutes. All generated
-artifacts go into `./build`, which will contain:
+This mapping will be split into 2 files: `auto-upgrade.json` and `recommend-upgrade.json`. Both will be placed in
+`/etc/nixmodules` in each Repl. The module resolver in pid1 will use `auto-upgrade.json` to automatically upgrade modules for users.
+`recommend-upgrade.json` will be used by the repl-it-web frontend to prompt users to upgrade.
 
-* linkfarm - a directory containing a symlink per version per module, pointing to
-its output path
-* root - the root dir of the disk image generated
-* disk.raw - the raw disk image file
-* disk.raw.tar.gz - the compressed disk image to be uploaded to GCF
+You can build these 2 files by:
+
+```
+nix build .#upgrade-maps
+```
+
+Or see them without building:
+
+```
+nix eval .#upgrade-maps.auto --json
+nix eval .#upgrade-maps.recommend --json
+```
+
+## Active Modules
+
+*Active modules* is a hydrated version of the currently active modules to be used in the module registry UI.
+It will build named `active-modules.json` and will build placed in `/etc/nixmodules` in each Repl.
+It contains for each module:
+* name - human name for the module
+* description - description for the module
+* tag - the version tag consisting of `v<version>-<date>-<short commit>`
+* version - numeric version
+* commit - full git commit
+* path - Nix output path
+* tags - all historical tags
+
+To build it:
+
+```
+nix build .#active-modules
+```
+
+or see it without building:
+
+```
+nix eval .#active-modules.info --json | jq
+```
+

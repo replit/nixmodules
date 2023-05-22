@@ -13,7 +13,6 @@ in
 {
   id = "rust-${rust-version}";
   name = "Rust Tools";
-  version = "1.0";
 
   packages = with pkgs; [
     cargo

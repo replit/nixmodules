@@ -4,7 +4,7 @@ with pkgs.lib;
 
 let
 
-  modulesLocks = (builtins.fromJSON (builtins.readFile ../../modules.json)).modules;
+  modulesLocks = (builtins.fromJSON (builtins.readFile ../../modules.json));
 
   commits = unique (catAttrs "commit" (builtins.attrValues modulesLocks));
 
@@ -16,7 +16,8 @@ let
 
   modules = builtins.mapAttrs (name: module:
     let
-      m = (flakes.${module.commit}).modules.${name};
+      module-id = elemAt (strings.splitString ":" name) 0;
+      m = (flakes.${module.commit}).modules.${module-id};
     in
       # verify the outpath matches what the lockfile expects
       assert m.outPath == module.path;
