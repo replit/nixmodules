@@ -10,7 +10,7 @@ let
   dap-cpp = pkgs.callPackage ../../dap-cpp { };
   dap-cpp-messages = import ../../dap-cpp/messages.nix;
 
-  clang-version = lib.versions.majorMinor clang.version;
+  clang-version = lib.versions.major clang.version;
 in
 {
   id = "c-clang${clang-version}";
