@@ -1,0 +1,90 @@
+{
+  "bun-0.5:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/asz1nzgcgnxh9nl9b1f9k08v6zwf9j6x-replit-module-bun-0.5"
+  },
+  "c-clang14:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/cva88mb2v7rq3glh18kif8x8dkpdnf33-replit-module-c-clang14"
+  },
+  "clojure-1.11:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/w1ln5f6bgf0dfaqa07fmlix228ypy1zs-replit-module-clojure-1.11"
+  },
+  "cpp-clang14:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/n43jbl85644jc19iiyq38na135x1x0qm-replit-module-cpp-clang14"
+  },
+  "dart-2.18:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/cmq17vxaavc0wd57p8rdsclkddj9ax62-replit-module-dart-2.18"
+  },
+  "dotnet-7.0:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/79cfd8y0by9d1fvikrsb7jx8bnpw88qc-replit-module-dotnet-7.0"
+  },
+  "go-1.19:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/2dl4myyagnpycp61q7kgv854xywf6j2f-replit-module-go-1.19"
+  },
+  "haskell-ghc9.0:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/8m5sp5fym00v5q1fp0gb9ms3ysgx1pzr-replit-module-haskell-ghc9.0"
+  },
+  "java-graalvm22.3:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/2r9zdxai3c1qqz0cyyzg2vyjppw64psb-replit-module-java-graalvm22.3"
+  },
+  "lua-5.2:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/lzzhr24bsgya8kqzc8m3wba1d6w732yp-replit-module-lua-5.2"
+  },
+  "nodejs-14:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/c19iy6gnara9frq1s4vd9mhp2bwsm9n6-replit-module-nodejs-14"
+  },
+  "nodejs-16:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/c44aiv4ybphqw2f6j379ckhrgkgnwbkw-replit-module-nodejs-16"
+  },
+  "nodejs-18:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/i4hs39zq227ain5xx6ndswy0k7hhg3za-replit-module-nodejs-18"
+  },
+  "nodejs-19:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/fwv20kqy881jk40v4q1m8nd23sy9k2l8-replit-module-nodejs-19"
+  },
+  "php-8.1:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/haz7qmz4chljdvdnkzg6zvyrab461mgc-replit-module-php-8.1"
+  },
+  "python-3.10:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/3rq9jv8x1h2z7hn52cd4vndb95an2nyl-replit-module-python-3.10"
+  },
+  "qbasic:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/rzh8576fq8ylq3awpc8p71yi7z8djl29-replit-module-qbasic"
+  },
+  "r-4.2:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/xa1p9bpbddsb19nc9jyy05sb7vp9f7fm-replit-module-r-4.2"
+  },
+  "ruby-3.1:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/8vzgiw1fa1lxrf9s06y7w8rdm7xp5sw3-replit-module-ruby-3.1"
+  },
+  "rust-1.64:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/canmk2sm8nbcyhscgwwyga82cvlpfiyl-replit-module-rust-1.64"
+  },
+  "swift-5.6:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/8zwy89617rkgrmmrc792dcfa6p42m47j-replit-module-swift-5.6"
+  },
+  "web:v1-20230522-94a8f12": {
+    "commit": "94a8f12da8d04565c302689dadcdddc1f812386f",
+    "path": "/nix/store/nmhwvwqf0n6wfw9l669cms6rxcjaki52-replit-module-web"
+  }
+}
