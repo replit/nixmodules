@@ -1,6 +1,6 @@
 { pkgs ? import <nixpkgs> { }
+, pkgs-unstable ? import <nixpkgs-unstable> { }
 , configPath
-, pkgs-unstable
 }:
 (pkgs.lib.evalModules {
   modules = [
