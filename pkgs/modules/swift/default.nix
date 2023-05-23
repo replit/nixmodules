@@ -18,7 +18,6 @@ in
 {
   id = "swift-${swift-version}";
   name = "Swift Tools";
-  version = "1.0";
 
   packages = with pkgs; [
     swiftc-wrapper

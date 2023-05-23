@@ -82,7 +82,6 @@ in
 {
   id = "python-${community-version}";
   name = "Python ${community-version} Tools";
-  version = "1.0";
 
   packages = [
     python3-wrapper

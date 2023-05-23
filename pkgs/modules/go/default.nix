@@ -5,7 +5,6 @@ in
 {
   id = "go-${goversion}";
   name = "Go Tools";
-  version = "1.0";
 
   packages = with pkgs; [
     go

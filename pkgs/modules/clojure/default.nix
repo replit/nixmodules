@@ -4,7 +4,6 @@ in
 {
   id = "clojure-${clojure-version}";
   name = "Clojure Tools";
-  version = "1.0";
 
   replit.runners.clojure = {
     name = "Clojure";

@@ -11,7 +11,6 @@ in
 {
   id = "bun-${community-version}";
   name = "Bun Tools";
-  version = "1.0";
 
   imports = [
     (import ../typescript-language-server {

@@ -1,8 +1,9 @@
-{ pkgs, pkgs-unstable }:
+{ pkgs, pkgs-unstable, self }:
 let
   mkModule = path: pkgs.callPackage ../moduleit/entrypoint.nix {
     configPath = path;
     inherit pkgs-unstable;
+    inherit self;
   };
   
   modulesList = [

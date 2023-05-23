@@ -4,7 +4,6 @@ in
 {
   id = "lua-${lua-version}";
   name = "Lua Tools";
-  version = "1.0";
 
   packages = with pkgs; [
     lua

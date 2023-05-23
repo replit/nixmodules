@@ -1,9 +1,8 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, self, ... }:
 
 with lib;
 
 let
-
   initializerModule = { name, config, ... }: {
     options = {
       name = mkOption {
@@ -481,11 +480,6 @@ in
       default = "";
     };
 
-    version = mkOption {
-      type = types.str;
-      description = "Version of the module";
-    };
-
     packages = mkOption {
       type = types.listOf types.package;
       default = [ ];
@@ -493,11 +487,6 @@ in
     };
 
     replit = {
-      version = mkOption {
-        type = types.str;
-        default = "";
-        description = "version of the nix module builder";
-      };
 
       initializers = mkOption {
         type = types.attrsOf (types.submodule initializerModule);
@@ -581,9 +570,9 @@ in
 
         moduleJSON = {
           id = config.id;
+          commit = self.rev or "dirty";
           name = config.name;
           description = config.description;
-          version = config.version;
           env = {
             PATH = lib.makeBinPath config.packages;
           } // config.replit.env;
@@ -596,6 +585,6 @@ in
         };
 
       in
-      pkgs.writeText "replit-module-${config.id}-v${config.version}" (builtins.toJSON moduleJSON);
+      pkgs.writeText "replit-module-${config.id}" (builtins.toJSON moduleJSON);
   };
 }

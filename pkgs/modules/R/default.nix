@@ -4,7 +4,6 @@ in
 {
   id = "r-${r-version}";
   name = "R Tools";
-  version = "1.0";
 
   replit.runners.r = {
     name = "R";
