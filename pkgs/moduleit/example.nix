@@ -13,7 +13,8 @@ let
 in
 
 {
-  name = "nodejs";
+  id = "nodejs";
+  name = "Node.js";
   version = "1.2";
 
   packages = [
