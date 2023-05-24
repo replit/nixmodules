@@ -16,8 +16,8 @@ mapping = {
 present-entries = entries: mapAttrs (mod: entry: 
 (
   if builtins.hasAttr "changelog" entry 
-  then ({ inherit (entry) to changelog; })
-  else ({ inherit (entry) to; })
+  then { inherit (entry) to changelog; }
+  else { inherit (entry) to; }
 )) entries;
 filter-auto = filterAttrs (mod: entry: entry.auto or false);
 filter-recommend = filterAttrs (mod: entry: !(entry.auto or false));
