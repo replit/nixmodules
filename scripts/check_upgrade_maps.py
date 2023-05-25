@@ -13,12 +13,13 @@ import os
 import json
 import subprocess
 
+nix_flags = ['--extra-experimental-features', 'nix-command flakes discard-references']
 module_registry_file = 'modules.json'
 
 def get_upgrade_maps():
-  output = subprocess.check_output(['nix', 'eval', '.#upgrade-maps.auto', '--json'])
+  output = subprocess.check_output(['nix', 'eval', '.#upgrade-maps.auto', '--json'] + nix_flags)
   auto = json.loads(output)
-  output = subprocess.check_output(['nix', 'eval', '.#upgrade-maps.recommend', '--json'])
+  output = subprocess.check_output(['nix', 'eval', '.#upgrade-maps.recommend', '--json'] + nix_flags)
   recommend = json.loads(output)
   return { 'auto': auto, 'recommend': recommend }
 
