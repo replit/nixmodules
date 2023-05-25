@@ -34,7 +34,7 @@ def get_module_registry():
 def resolve_module(module_id, upgrade_map):
   path = [module_id]
   while module_id in upgrade_map:
-    module_id = upgrade_map[module_id]
+    module_id = upgrade_map[module_id]['to']
     if module_id in path:
       raise Exception("Error: found cycle: %s -> %s" % (" -> ".join(path), module_id))
     path.append(module_id)
@@ -43,20 +43,22 @@ def resolve_module(module_id, upgrade_map):
 def check(module_id, upgrade_maps, reg):
   auto_result = resolve_module(module_id, upgrade_maps['auto'])
   if auto_result not in reg:
-    raise Exception('Error: %s is not in the registry' % auto_result)
+    raise Exception('Error: failed to resolve %s' % auto_result)
   if auto_result != module_id:
     print('Auto: %s -> %s' % (module_id, auto_result))
   recommend_result = resolve_module(auto_result, upgrade_maps['recommend'])
   if recommend_result not in reg:
-    raise Exception('Error: %s is not in the registry' % auto_result)
+    raise Exception('Error: failed to resolve %s' % auto_result)
   if recommend_result != auto_result:
     print('Recommand: %s -> %s' % (auto_result, recommend_result))
 
 def main():
   reg = get_module_registry()
   upgrade_maps = get_upgrade_maps()
-  for module_id in reg.keys():
-    check(module_id, upgrade_maps, reg)
+  for key in upgrade_maps['auto'].keys():
+    check(key, upgrade_maps, reg)
+  for key in upgrade_maps['recommend'].keys():
+    check(key, upgrade_maps, reg)
 
 if __name__ == '__main__':
     main()
