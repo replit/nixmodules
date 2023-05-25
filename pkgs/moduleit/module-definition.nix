@@ -1,4 +1,4 @@
-{ config, lib, pkgs, self, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
@@ -570,7 +570,6 @@ in
 
         moduleJSON = {
           id = config.id;
-          commit = self.rev or "dirty";
           name = config.name;
           description = config.description;
           env = {
