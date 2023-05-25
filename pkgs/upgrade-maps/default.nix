@@ -8,9 +8,9 @@ mapping = {
   #"nodejs-16:v1-20230522-49470df" = { to = "nodejs-16:v2-20230522-4c01fa0"; auto = true; changelog = "improved your experience"; };
   #"nodejs-14:v3-20230522-36692ed" = { to = "nodejs-18:v3-20230522-36692ed"; changelog = "Node.js 14 is deprecated. Upgrade to 18!"; };
   #"nodejs-16:v3-20230522-36692ed" = { to = "nodejs-18:v3-20230522-36692ed"; changelog = "Node.js 16 is deprecated. Upgrade to 18!"; };
-  "go" = { to = "go-1.19:v2-20230523-b8111f7"; };
-  "rust" = { to = "rust-1.69:v1-20230523-b8111f7"; };
-  "swift" = { to = "swift-5.6:v2-20230523-b8111f7"; };
+  "go" = { to = "go-1.19:v1-20230525-868e31d"; };
+  "rust" = { to = "rust-1.69:v1-20230525-868e31d"; };
+  "swift" = { to = "swift-5.6:v1-20230525-868e31d"; };
 };
 
 present-entries = entries: mapAttrs (mod: entry: 
