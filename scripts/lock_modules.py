@@ -41,6 +41,7 @@ import argparse
 
 module_registry_id_regex = re.compile(r'^(.+):v([0-9]+)-([0-9]+)-([0-9a-z]+)$')
 module_registry_file = 'modules.json'
+nix_flags = ['--extra-experimental-features', 'nix-command flakes discard-references']
 
 def get_commit_info():
   output = subprocess.check_output(['git', 'show', '-s', '--format=format:%as|%H'])
@@ -55,7 +56,7 @@ def is_working_directory_clean():
   return len(output) == 0
 
 def get_current_modules():
-  output = subprocess.check_output(['nix', 'eval', '.#modules', '--json'])
+  output = subprocess.check_output(['nix', 'eval', '.#modules', '--json'] + nix_flags)
   return json.loads(output)
 
 def get_module_registry():
