@@ -3,7 +3,7 @@
 
 let
 
-  community-version = lib.versions.major nodejs.version;
+  node-version = lib.versions.major nodejs.version;
 
   nodepkgs = pkgs.nodePackages.override {
     inherit nodejs;
@@ -18,8 +18,8 @@ let
 in
 
 {
-  id = "nodejs-${community-version}";
-  name = "Node.js ${community-version} Tools";
+  id = "nodejs-${node-version}";
+  name = "Node.js ${node-version} Tools";
   imports = [
     (import ../typescript-language-server {
       inherit nodepkgs;
@@ -33,14 +33,14 @@ in
   replit = {
 
     runners.nodeJS = {
-      name = "Node.js";
+      name = "nodejs";
       language = "javascript";
       start = "${nodejs}/bin/node $file";
       fileParam = true;
     };
 
     runners.nodeJS-prybar = {
-      name = "Prybar for Node.js";
+      name = "prybar-nodejs";
       language = "javascript";
       start = "${run-prybar}/bin/run-prybar $file";
       interpreter = true;
