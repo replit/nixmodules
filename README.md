@@ -158,3 +158,49 @@ or see it without building:
 nix eval .#active-modules.info --json | jq
 ```
 
+## Handling Conflicts in `modules.json`
+
+The `lock_modules.py` scripts uses auto-increment counters to give numeric versions to each module. This means
+if there are 2 simultaneous PRs modifying the same module(s), the first one to merge wins and gets the next number.
+This is a race condition! For this reason, hand-merging `modules.json` is a bad idea.
+
+We have CI checks in place to ensure:
+
+1. you cannot merge a PR if it's not in sync with `main`
+2. the commits referenced in `modules.json` all exist in the linear history of your branch
+3. `modules.json` is up to date wrt the contents of your branch
+
+When you have a conflict in `modules.json` you should:
+
+1. take the version from upstream in its entirety
+2. commit
+3. re-run `python scripts/lock_modules.py`
+4. make another commit
+
+To do the above you can either rebase or merge.
+
+With the rebase approach (pros: do without a merge commit):
+```
+git fetch
+git rebase origin/main
+git checkout --ours modules.json
+git add modules.json
+# resolve other conflicts if needed
+git rebase --continue
+python scripts/lock_modules.py
+git commit -am "updated X in modules.json"
+git push --force
+```
+
+With the merge approach (pros: don't have to force push):
+```
+git fetch
+git merge origin/main
+git checkout --theirs modules.json
+git add modules.json
+# resolve other conflicts if needed
+git commit
+python scripts/lock_modules.py
+git commit -am "updated X in modules.json"
+git push
+```
