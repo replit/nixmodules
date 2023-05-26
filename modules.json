@@ -75,6 +75,10 @@
     "commit": "868e31de1aec5b235764c591ad2682e160b06e51",
     "path": "/nix/store/xac2nbz5f2vczvvq1nphfassipk2wwv2-replit-module-ruby-3.1"
   },
+  "ruby-3.1:v2-20230526-44c6e80": {
+    "commit": "44c6e80892e84ffbf8d69ca2ef45d2ae5d1e9033",
+    "path": "/nix/store/77k7n9gq402bx1byfgy54z1xvh4g1phb-replit-module-ruby-3.1"
+  },
   "rust-1.69:v1-20230525-868e31d": {
     "commit": "868e31de1aec5b235764c591ad2682e160b06e51",
     "path": "/nix/store/xkp307fdmgwn8dnbqadzlrb8fr0bvkx4-replit-module-rust-1.69"
