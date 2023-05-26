@@ -15,7 +15,7 @@ in
   ];
 
   replit.runners.bundle = {
-    name = "bundle exec ruby";
+    name = "bundle exec ruby blargh";
     language = "ruby";
 
     compile = "${ruby}/bin/bundle install";
