@@ -15,7 +15,6 @@ in
 {
   id = "nodejs";
   name = "Node.js";
-  version = "1.2";
 
   packages = [
     pkgs.nodejs-14_x
