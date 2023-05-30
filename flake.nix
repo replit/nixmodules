@@ -41,7 +41,6 @@
       modules = import ./pkgs/modules {
         inherit pkgs;
         inherit pkgs-unstable;
-        inherit self;
       };
     };
 }
