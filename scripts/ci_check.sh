@@ -14,5 +14,8 @@ cat result
 nix develop $NIX_FLAGS
 echo "Verify modules.json"
 python scripts/lock_modules.py -v
+python scripts/check_modules.py
 echo "Verify upgrade maps"
 python scripts/check_upgrade_maps.py
+echo "Build new/updated modules"
+python scripts/build_changed_modules.py origin/main
