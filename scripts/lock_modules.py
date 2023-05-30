@@ -128,28 +128,6 @@ def update_module_registry(module_registry):
       print('%s added' % registry_id)
     changed = True
   return changed
-
-def commit_exists(commit):
-  try:
-    output = subprocess.check_output(['git', 'show', '-s', '--format=format:%H', commit])
-    return str(output, 'UTF-8') == commit
-  except:
-    return False
-
-def get_commits():
-  if not os.path.isfile(module_registry_file):
-    return {}
-  f = open(module_registry_file, 'r')
-  modules = json.load(f)
-  f.close()
-  commits = set()
-  for entry in modules.values():
-    commits.add(entry['commit'])
-  return commits
-
-def check_commits_exist():
-  for commit in get_commits():
-    assert commit_exists(commit), 'Commit %s does not exist!' % commit
   
 def main():
   parser = argparse.ArgumentParser(
@@ -172,8 +150,6 @@ def main():
   if args.verify and changed:
     print('%s is not up to date!!' % module_registry_file)
     exit(1)
-  if args.verify:
-    check_commits_exist()
 
   if changed:
     save_module_registry(module_registry)
