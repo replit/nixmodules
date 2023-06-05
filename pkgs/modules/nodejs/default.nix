@@ -32,6 +32,8 @@ in
 
   replit = {
 
+    languageServers.typescript-language-server.extensions = [".js" ".jsx" ".ts" ".tsx" ".json"];
+
     runners.nodeJS = {
       name = "Node.js";
       language = "javascript";
@@ -99,6 +101,12 @@ in
         guessImports = true;
         enabledForHosting = false;
       };
+    };
+
+    env = {
+      XDG_CONFIG_HOME = "$REPL_HOME/.config";
+      npm_config_prefix = "$REPL_HOME/.config/npm/node_global";
+      PATH = "$REPL_HOME/.config/npm/node_global/bin:$REPL_HOME/node_modules/.bin";
     };
 
   };
