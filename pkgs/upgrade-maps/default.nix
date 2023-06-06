@@ -11,6 +11,7 @@ mapping = {
   "go" = { to = "go-1.19:v1-20230525-c48c43c"; auto = true; };
   "rust" = { to = "rust-1.69:v1-20230525-c48c43c"; auto = true; };
   "swift" = { to = "swift-5.6:v1-20230525-c48c43c"; auto = true; };
+  "bun" = { to = "bun-0.5:v1-20230525-c48c43c"; auto = true; };
 };
 
 present-entries = entries: mapAttrs (mod: entry: 
