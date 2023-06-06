@@ -48,7 +48,8 @@ let
   get-module-id = module:
     let
       match = builtins.match "^\/nix\/store\/([^-]+)-replit-module-(.+)$" module.outPath;
+      sanitize = builtins.replaceStrings ["."] ["_"];
     in
-      builtins.elemAt match 1;
+      sanitize (builtins.elemAt match 1);
 in
   modules
