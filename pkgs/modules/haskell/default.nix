@@ -1,5 +1,5 @@
-{ pkgs, lib, ... }: 
-let 
+{ pkgs, lib, ... }:
+let
   ghc-version = lib.versions.majorMinor pkgs.ghc.version;
 in
 {

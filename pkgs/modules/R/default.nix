@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }: 
+{ pkgs, lib, ... }:
 let r-version = lib.versions.majorMinor pkgs.R.version;
 in
 {

@@ -1,6 +1,17 @@
-{
-  system, bash, lib, bundle-locked, revstring, lkl, coreutils, findutils, e2fsprogs, closureInfo, jq, 
-  upgrade-maps, active-modules, 
+{ system
+, bash
+, lib
+, bundle-locked
+, revstring
+, lkl
+, coreutils
+, findutils
+, e2fsprogs
+, closureInfo
+, jq
+, upgrade-maps
+, active-modules
+,
 }:
 
 let
@@ -30,6 +41,6 @@ derivation {
     inherit upgrade-maps;
     inherit active-modules;
     blockSize = toString (4 * 1024); # ext4fs block size (not block device sector size)
-    diskClosureInfo = closureInfo { rootPaths = [bundle-locked registry]; };
+    diskClosureInfo = closureInfo { rootPaths = [ bundle-locked registry ]; };
   };
 }

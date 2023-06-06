@@ -1,6 +1,15 @@
-{
-  system, bash, lib, bundle-locked, revstring, coreutils, findutils, closureInfo, squashfsTools, jq,
-  upgrade-maps, active-modules
+{ system
+, bash
+, lib
+, bundle-locked
+, revstring
+, coreutils
+, findutils
+, closureInfo
+, squashfsTools
+, jq
+, upgrade-maps
+, active-modules
 }:
 
 let
@@ -29,6 +38,6 @@ derivation {
     ];
     inherit upgrade-maps;
     inherit active-modules;
-    diskClosureInfo = closureInfo { rootPaths = [bundle-locked registry]; };
+    diskClosureInfo = closureInfo { rootPaths = [ bundle-locked registry ]; };
   };
 }

@@ -1,6 +1,8 @@
 #! /usr/bin/env bash
 set -exuo pipefail
 
+nix fmt -- --check .
+
 NIX_FLAGS="--extra-experimental-features nix-command --extra-experimental-features flakes --extra-experimental-features discard-references"
 
 echo "Evaluate modules derivations"

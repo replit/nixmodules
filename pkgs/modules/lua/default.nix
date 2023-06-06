@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }: 
+{ pkgs, lib, ... }:
 let lua-version = lib.versions.majorMinor pkgs.lua.version;
 in
 {

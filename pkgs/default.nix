@@ -12,7 +12,7 @@ rec {
   moduleit = pkgs.callPackage ./moduleit { };
 
   bundle = pkgs.linkFarm "nixmodules-bundle-${revstring}" (
-    mapAttrsToList (name: value: { inherit name; path = value;}) modules
+    mapAttrsToList (name: value: { inherit name; path = value; }) modules
   );
 
   rev = pkgs.writeText "rev" revstring;
@@ -41,5 +41,5 @@ rec {
     inherit bundle-locked revstring;
     inherit active-modules upgrade-maps;
   };
-  
+
 } // modules
