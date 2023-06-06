@@ -26,6 +26,7 @@
       packages.x86_64-linux = import ./pkgs {
         inherit pkgs self;
       };
+      hydraJobs = self.packages;
       devShells.x86_64-linux.default = pkgs.mkShell {
         packages = with pkgs; [
           python310
