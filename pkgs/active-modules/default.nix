@@ -12,63 +12,66 @@
 
 # or
 # nix eval .#active-modules.meta.info --json | jq
-  
+
 { self, pkgs }:
 with pkgs.lib;
 let
   active-modules = self.modules;
   get-version = (tag:
-    let module = active-modules.${module-id};
-        tag-parts = strings.splitString "-" tag;
-        version-str = elemAt tag-parts 0;
-        version = toInt (substring 1 (stringLength version-str) version-str);
-    in version
+    let
+      module = active-modules.${module-id};
+      tag-parts = strings.splitString "-" tag;
+      version-str = elemAt tag-parts 0;
+      version = toInt (substring 1 (stringLength version-str) version-str);
+    in
+    version
   );
   all-modules = (builtins.fromJSON (builtins.readFile ../../modules.json));
   all-modules-list = (attrsets.mapAttrsToList (name: value: { registry-id = name; commit = value.commit; path = value.path; }) all-modules);
-  active-modules-registry = 
-  foldr (
-    entry: registry:
-      let
-        parts = strings.splitString ":" entry.registry-id;
-        module-id = elemAt parts 0;
-        tag = elemAt parts 1;
-        version = get-version tag;
-        module-info = (builtins.fromJSON (builtins.unsafeDiscardStringContext active-modules.${module-id}.text));
-        new-entry = {
-          inherit (entry) commit path;
-          inherit version;
-          inherit tag;
-          inherit (module-info) name description;
-        };
-      in
-      if ! builtins.hasAttr module-id active-modules then
-        registry
-      else
-        if builtins.hasAttr module-id registry then
-          let prev-entry = registry.${module-id};
-          in
-          if prev-entry.version > new-entry.version then
-            registry // {
-              ${module-id} = prev-entry // {
-                tags = prev-entry.tags ++ [tag];
-              };
-            }
-          else
-            registry // {
-              ${module-id} = new-entry // {
-                tags = prev-entry.tags ++ [tag];
-              };
-            }
-        else
-          registry // {
-            ${module-id} = new-entry // {
-              tags = [tag];
+  active-modules-registry =
+    foldr
+      (
+        entry: registry:
+          let
+            parts = strings.splitString ":" entry.registry-id;
+            module-id = elemAt parts 0;
+            tag = elemAt parts 1;
+            version = get-version tag;
+            module-info = (builtins.fromJSON (builtins.unsafeDiscardStringContext active-modules.${module-id}.text));
+            new-entry = {
+              inherit (entry) commit path;
+              inherit version;
+              inherit tag;
+              inherit (module-info) name description;
             };
-          }
-    )
-    {}
-    all-modules-list;
+          in
+          if ! builtins.hasAttr module-id active-modules then
+            registry
+          else
+            if builtins.hasAttr module-id registry then
+              let prev-entry = registry.${module-id};
+              in
+              if prev-entry.version > new-entry.version then
+                registry // {
+                  ${module-id} = prev-entry // {
+                    tags = prev-entry.tags ++ [ tag ];
+                  };
+                }
+              else
+                registry // {
+                  ${module-id} = new-entry // {
+                    tags = prev-entry.tags ++ [ tag ];
+                  };
+                }
+            else
+              registry // {
+                ${module-id} = new-entry // {
+                  tags = [ tag ];
+                };
+              }
+      )
+      { }
+      all-modules-list;
 in
 pkgs.stdenv.mkDerivation {
   pname = "active-modules";
@@ -77,7 +80,7 @@ pkgs.stdenv.mkDerivation {
   dontConfigure = true;
   dontBuild = true;
   installPhase = ''
-  echo '${builtins.toJSON active-modules-registry}' > $out
+    echo '${builtins.toJSON active-modules-registry}' > $out
   '';
   passthru = {
     # this allows you to query for this info wo building it:

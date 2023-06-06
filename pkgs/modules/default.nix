@@ -4,7 +4,7 @@ let
     configPath = path;
     inherit pkgs-unstable;
   };
-  
+
   modulesList = [
     (mkModule (import ./python {
       python = pkgs.python310Full;
@@ -49,6 +49,6 @@ let
     let
       match = builtins.match "^\/nix\/store\/([^-]+)-replit-module-(.+)$" module.outPath;
     in
-      builtins.elemAt match 1;
+    builtins.elemAt match 1;
 in
-  modules
+modules

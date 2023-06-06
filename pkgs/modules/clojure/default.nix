@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }: 
+{ pkgs, lib, ... }:
 let clojure-version = lib.versions.majorMinor pkgs.clojure.version;
 in
 {
