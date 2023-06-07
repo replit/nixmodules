@@ -3,6 +3,8 @@
 let
   community-version = lib.versions.majorMinor python.version;
 
+  pylibs-dir = ".pythonlibs";
+
   pip = pkgs.callPackage ../../pip {
     inherit pypkgs;
   };
@@ -78,6 +80,17 @@ let
     ${stderred}/bin/stderred -- ${prybar-python}/bin/prybar-python310 -q --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" -i ''$1
   '';
 
+  pylsp-wrapper = pkgs.stdenvNoCC.mkDerivation {
+    name = "pylsp-wrapper";
+    buildInputs = [ pkgs.makeWrapper ];
+
+    buildCommand = ''
+      mkdir -p $out/bin
+      makeWrapper ${python-lsp-server}/bin/pylsp $out/bin/pylsp \
+        --unset PYTHONPATH
+    '';
+  };
+
 in
 {
   id = "python-${community-version}";
@@ -88,7 +101,7 @@ in
     pip
     poetry
     run-prybar
-    python-lsp-server
+    pylsp-wrapper
   ];
 
   replit.runners.python = {
@@ -145,14 +158,15 @@ in
   replit.languageServers.python-lsp-server = {
     name = "python-lsp-server";
     language = "python3";
-    start = "${python-lsp-server}/bin/pylsp";
+    start = "${pylsp-wrapper}/bin/pylsp";
+    configuration.pylsp.plugins.jedi.extra_paths = [ "${pylibs-dir}/${python.sitePackages}" ];
   };
 
   replit.packagers.upmPython = {
     name = "Python";
     language = "python3";
     ignoredPackages = [ "unit_tests" ];
-    ignoredPaths = [ ".pythonlibs" ];
+    ignoredPaths = [ pylibs-dir ];
     features = {
       packageSearch = true;
       guessImports = true;
@@ -161,7 +175,7 @@ in
   };
 
   replit.env =
-    let userbase = "$HOME/$REPL_SLUG/.pythonlibs";
+    let userbase = "$REPL_HOME/${pylibs-dir}";
     in {
       PYTHONPATH = "${userbase}/${python.sitePackages}";
       PIP_CONFIG_FILE = pip-config.outPath;
