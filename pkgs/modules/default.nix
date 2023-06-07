@@ -13,9 +13,6 @@ let
     (mkModule (import ./nodejs {
       nodejs = pkgs.nodejs-18_x;
     }))
-    (mkModule (import ./nodejs {
-      nodejs = pkgs.nodejs-16_x;
-    }))
     (mkModule ./go)
     (mkModule ./rust)
     (mkModule ./swift)
