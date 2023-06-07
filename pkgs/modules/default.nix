@@ -11,9 +11,6 @@ let
       pypkgs = pkgs.python310Packages;
     }))
     (mkModule (import ./nodejs {
-      nodejs = pkgs.nodejs-14_x;
-    }))
-    (mkModule (import ./nodejs {
       nodejs = pkgs.nodejs-19_x;
     }))
     (mkModule (import ./nodejs {

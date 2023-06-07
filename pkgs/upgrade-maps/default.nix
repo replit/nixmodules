@@ -8,15 +8,21 @@ let
     #"nodejs-16:v1-20230522-49470df" = { to = "nodejs-16:v2-20230522-4c01fa0"; auto = true; changelog = "improved your experience"; };
     #"nodejs-14:v3-20230522-36692ed" = { to = "nodejs-18:v3-20230522-36692ed"; changelog = "Node.js 14 is deprecated. Upgrade to 18!"; };
     #"nodejs-16:v3-20230522-36692ed" = { to = "nodejs-18:v3-20230522-36692ed"; changelog = "Node.js 16 is deprecated. Upgrade to 18!"; };
-    "go" = { to = "go-1.19:v1-20230525-c48c43c"; auto = true; };
-    "rust" = { to = "rust-1.69:v1-20230525-c48c43c"; auto = true; };
-    "swift" = { to = "swift-5.6:v1-20230525-c48c43c"; auto = true; };
 
     "bun" = { to = "bun-0.5:v1-20230525-c48c43c"; auto = true; };
     "bun-0.5:v1-20230525-c48c43c" = { to = "bun-0.6:v1-20230607-15011da"; auto = true; };
     "bun-0.6:v1-20230607-15011da" = { to = "bun-0.6:v2-20230608-10cb54c"; auto = true; };
 
+    "go" = { to = "go-1.19:v1-20230525-c48c43c"; auto = true; };
+
+    "nodejs-14:v1-20230525-c48c43c".to = "nodejs-14:v2-20230605-9621162";
+    "nodejs-14:v2-20230605-9621162" = { to = "nodejs-16:v2-20230605-9621162"; changelog = "Node.js 14 is deprecated. Upgrade to 16!"; };
+
     "python-3.10:v5-20230613-622effa" = { to = "python-3.10:v6-20230614-6eb09f7"; auto = true; };
+
+    "rust" = { to = "rust-1.69:v1-20230525-c48c43c"; auto = true; };
+
+    "swift" = { to = "swift-5.6:v1-20230525-c48c43c"; auto = true; };
   };
 
   present-entries = entries: mapAttrs
