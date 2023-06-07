@@ -1,22 +1,19 @@
 {
   description = "Nix expressions for defining Replit development environments";
   inputs.nixpkgs.url = "github:nixos/nixpkgs/release-23.05";
-  inputs.nixpkgs-unstable.url = "github:nixos/nixpkgs?rev=87f9156865ab09e3bde39aadb4131ae364ae704e";
+  inputs.nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
   inputs.prybar.url = "github:replit/prybar?rev=65f486534054665f1b333689417c39acd370d3a5";
 
   outputs = { self, nixpkgs, nixpkgs-unstable, prybar, ... }:
     let
-      mkPkgs = system: import nixpkgs {
+      mkPkgs = nixpkgs-spec: system: import nixpkgs-spec {
         inherit system;
         overlays = [ self.overlays.default prybar.overlays.default ]; # ++ import ;
       };
 
-      pkgs = mkPkgs "x86_64-linux";
+      pkgs = mkPkgs nixpkgs "x86_64-linux";
 
-      pkgs-unstable = import nixpkgs-unstable {
-        system = "x86_64-linux";
-        overlays = [ self.overlays.default prybar.overlays.default ]; # ++ import ;
-      };
+      pkgs-unstable = mkPkgs nixpkgs-unstable "x86_64-linux";
     in
     {
       overlays.default = final: prev: {
