@@ -17,6 +17,7 @@ let
 
     "nodejs-14:v1-20230525-c48c43c".to = "nodejs-14:v2-20230605-9621162";
     "nodejs-14:v2-20230605-9621162" = { to = "nodejs-16:v2-20230605-9621162"; changelog = "Node.js 14 is deprecated. Upgrade to 16!"; };
+    "nodejs-19:v1-20230525-c48c43c".to = "nodejs-19:v2-20230605-9621162";
 
     "python-3.10:v5-20230613-622effa" = { to = "python-3.10:v6-20230614-6eb09f7"; auto = true; };
 
