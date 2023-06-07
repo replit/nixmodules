@@ -102,5 +102,9 @@
   "web:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/7lhwlqy8nmrmc27n68ia16q6bn27cwk5-replit-module-web"
+  },
+  "bun-0.6:v1-20230607-15011da": {
+    "commit": "15011da597d303361babfa8823d9223145498e0d",
+    "path": "/nix/store/1vrlhhzyjkizcqkjycb6x4a0g7vw0imq-replit-module-bun-0.6"
   }
 }

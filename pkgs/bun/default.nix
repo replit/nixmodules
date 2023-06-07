@@ -1,23 +1,18 @@
 { lib
 , stdenvNoCC
-, callPackage
 , fetchurl
 , autoPatchelfHook
 , unzip
 , openssl
-, writeShellScript
-, curl
-, jq
-, common-updater-scripts
 }:
 
-stdenvNoCC.mkDerivation {
-  version = "0.5.9";
+stdenvNoCC.mkDerivation rec {
+  version = "0.6.7";
   pname = "bun";
 
   src = fetchurl {
-    url = "https://github.com/oven-sh/bun/releases/download/bun-v0.5.9/bun-linux-x64.zip";
-    sha256 = "vwxkydYJdnb8MBUAfywpXdaahsuw5IvnXeoUmilzruE=";
+    url = "https://github.com/oven-sh/bun/releases/download/bun-v${version}/bun-linux-x64.zip";
+    sha256 = "bX3gV3wR2ZJabP6LXT4Tg3T+061aghktXD2YOrQfmWo=";
   };
 
   strictDeps = true;
