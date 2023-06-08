@@ -91,6 +91,17 @@ let
     '';
   };
 
+  poetry-wrapper = pkgs.stdenvNoCC.mkDerivation {
+    name = "poetry-wrapper";
+    buildInputs = [ pkgs.makeWrapper ];
+
+    buildCommand = ''
+      mkdir -p $out/bin
+      makeWrapper ${poetry}/bin/poetry $out/bin/poetry \
+        --unset PYTHONPATH
+    '';
+  };
+
 in
 {
   id = "python-${community-version}";
@@ -99,7 +110,7 @@ in
   packages = [
     python3-wrapper
     pip
-    poetry
+    poetry-wrapper
     run-prybar
     pylsp-wrapper
   ];
