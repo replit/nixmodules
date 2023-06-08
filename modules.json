@@ -47,6 +47,10 @@
     "commit": "9621162b15c82a23c5a1bae4f9f0750369a113c3",
     "path": "/nix/store/bk2pmb38w1q2kphf660y8higspnlj4ld-replit-module-nodejs-14"
   },
+  "nodejs-14:v3-20230608-f4cd419": {
+    "commit": "f4cd419a646009297c049a2f1eec434381e08f13",
+    "path": "/nix/store/cd58pjl1cs3gsrvfacbhrlznkwggymax-replit-module-nodejs-14"
+  },
   "nodejs-16:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/nyxn9zpxqbkb8vicq51zb3pkxkbj7jw9-replit-module-nodejs-16"
@@ -54,6 +58,10 @@
   "nodejs-16:v2-20230605-9621162": {
     "commit": "9621162b15c82a23c5a1bae4f9f0750369a113c3",
     "path": "/nix/store/a7m10dcjvp9p7my4ljchbkx9s0ghlq0q-replit-module-nodejs-16"
+  },
+  "nodejs-16:v3-20230608-f4cd419": {
+    "commit": "f4cd419a646009297c049a2f1eec434381e08f13",
+    "path": "/nix/store/am6417h2cny8m53fmz70n72xzkxmr4cs-replit-module-nodejs-16"
   },
   "nodejs-18:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
@@ -63,6 +71,10 @@
     "commit": "9621162b15c82a23c5a1bae4f9f0750369a113c3",
     "path": "/nix/store/v6z52pi9r1zypcrm5hdnq1h0vbm6yi0g-replit-module-nodejs-18"
   },
+  "nodejs-18:v3-20230608-f4cd419": {
+    "commit": "f4cd419a646009297c049a2f1eec434381e08f13",
+    "path": "/nix/store/54mvdzz3qfcxz1779mjm5hn5fcwvk71v-replit-module-nodejs-18"
+  },
   "nodejs-19:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/qwhwjll9vns8vqcc6zjy5s4i3rzh05w3-replit-module-nodejs-19"
@@ -70,6 +82,10 @@
   "nodejs-19:v2-20230605-9621162": {
     "commit": "9621162b15c82a23c5a1bae4f9f0750369a113c3",
     "path": "/nix/store/9j9klqjgidi37fpqfqm3mxmj95053vfi-replit-module-nodejs-19"
+  },
+  "nodejs-19:v3-20230608-f4cd419": {
+    "commit": "f4cd419a646009297c049a2f1eec434381e08f13",
+    "path": "/nix/store/bnn5xa340q9h1fy7bjp2f3qcabfb1jnq-replit-module-nodejs-19"
   },
   "php-8.1:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
