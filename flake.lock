@@ -69,17 +69,16 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1683237785,
-        "narHash": "sha256-l4JoUTwISecR5DyBY3ShEvPxCV1F0l7FtH/bNWweUtY=",
+        "lastModified": 1683297029,
+        "narHash": "sha256-CzzkHL+CtKO0e8r8TuJnRPln7SGc6R2Ke1HhwD9ptKU=",
         "owner": "replit",
         "repo": "prybar",
-        "rev": "65f486534054665f1b333689417c39acd370d3a5",
+        "rev": "22c750d920f53cb5450062e9c3a6421296941b84",
         "type": "github"
       },
       "original": {
         "owner": "replit",
         "repo": "prybar",
-        "rev": "65f486534054665f1b333689417c39acd370d3a5",
         "type": "github"
       }
     },

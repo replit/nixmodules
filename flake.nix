@@ -2,13 +2,15 @@
   description = "Nix expressions for defining Replit development environments";
   inputs.nixpkgs.url = "github:nixos/nixpkgs/release-23.05";
   inputs.nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-  inputs.prybar.url = "github:replit/prybar?rev=65f486534054665f1b333689417c39acd370d3a5";
+  inputs.prybar.url = "github:replit/prybar";
 
   outputs = { self, nixpkgs, nixpkgs-unstable, prybar, ... }:
     let
       mkPkgs = nixpkgs-spec: system: import nixpkgs-spec {
         inherit system;
         overlays = [ self.overlays.default prybar.overlays.default ]; # ++ import ;
+        # replbox has an unfree license
+        config.allowUnfree = true;
       };
 
       pkgs = mkPkgs nixpkgs "x86_64-linux";
