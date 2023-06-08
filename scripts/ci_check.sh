@@ -29,5 +29,4 @@ echo "Build new/updated modules"
 python scripts/build_changed_modules.py origin/main
 
 echo "Build moduleit example"
-cd pkgs/moduleit
-./moduleit.sh example.nix
+scripts/moduleit_test.sh
