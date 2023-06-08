@@ -567,14 +567,18 @@ in
 
     replit.buildModule =
       let
-
+        envWithMergedPath = (env: path:
+          let packagesPath = lib.makeBinPath config.packages;
+          in
+          if builtins.hasAttr "PATH" env
+          then env // { PATH = env.PATH + ":" + packagesPath; }
+          else { PATH = packagesPath; } // env
+        );
         moduleJSON = {
           id = config.id;
           name = config.name;
           description = config.description;
-          env = {
-            PATH = lib.makeBinPath config.packages;
-          } // config.replit.env;
+          env = envWithMergedPath config.replit.env (lib.makeBinPath config.packages);
           initializers = config.replit.initializers;
           runners = config.replit.runners;
           packagers = config.replit.packagers;
