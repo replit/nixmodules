@@ -106,7 +106,6 @@ in
     env = {
       XDG_CONFIG_HOME = "$REPL_HOME/.config";
       npm_config_prefix = "$REPL_HOME/.config/npm/node_global";
-      PATH = "$REPL_HOME/.config/npm/node_global/bin:$REPL_HOME/node_modules/.bin";
     };
 
   };
