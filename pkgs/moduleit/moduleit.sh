@@ -1,3 +1,5 @@
+set -e
+
 if [ $# -eq 0 ]; then
     echo "Please provide a module file argument"
     exit 1
