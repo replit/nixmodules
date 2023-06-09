@@ -3,7 +3,7 @@
 let
   bun = pkgs.callPackage ../../bun { };
 
-  extensions = [ ".js" ".ts" ];
+  extensions = [ ".json" ".js" ".jsx" ".ts" ".tsx" ];
 
   community-version = lib.versions.majorMinor bun.version;
 in
