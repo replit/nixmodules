@@ -136,7 +136,7 @@ nix eval .#upgrade-maps.recommend --json
 ## Active Modules
 
 *Active modules* is a hydrated version of the currently active modules to be used in the module registry UI.
-It will build named `active-modules.json` and will build placed in `/etc/nixmodules` in each Repl.
+It will be named `active-modules.json` and placed in `/etc/nixmodules` in each Repl.
 It contains for each module:
 * name - human name for the module
 * description - description for the module
