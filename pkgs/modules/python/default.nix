@@ -70,7 +70,8 @@ let
     buildCommand = ''
       mkdir -p $out/bin
       makeWrapper ${python}/bin/python3 $out/bin/python3 \
-        --set LD_LIBRARY_PATH "${python-ld-library-path}"
+        --set LD_LIBRARY_PATH "${python-ld-library-path}" \
+        --prefix PYTHONPATH : "${pypkgs.setuptools}/${python.sitePackages}"
     
       ln -s $out/bin/python3 $out/bin/python
       ln -s $out/bin/python3 $out/bin/python${community-version}
@@ -79,6 +80,8 @@ let
 
   run-prybar = pkgs.writeShellScriptBin "run-prybar" ''
     export LD_LIBRARY_PATH="${python-ld-library-path}"
+    export PYTHONPATH="$PYTHONPATH:${pypkgs.setuptools}/${python.sitePackages}"
+
     ${stderred}/bin/stderred -- ${prybar-python}/bin/prybar-python310 -q --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" -i ''$1
   '';
 

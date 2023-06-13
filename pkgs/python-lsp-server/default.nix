@@ -40,19 +40,20 @@ pypkgs.buildPythonPackage rec {
     python-lsp-jsonrpc
     setuptools # `pkg_resources`imported in pylsp/config/config.py
     ujson
-    autopep8
-    flake8
-    mccabe
-    pycodestyle
-    pydocstyle
-    pyflakes
-    pylint
-    rope
     toml
     whatthepatch
+
+    # extras
     yapf
     pyflakes
     rope
+    # autopep8
+    # flake8
+    # mccabe
+    # pycodestyle
+    # pydocstyle
+    # pyflakes
+    # pylint
   ];
 
   doCheck = false;
