@@ -45,7 +45,9 @@ let
 
   debugpy = pypkgs.debugpy;
 
-  dapPython = pkgs.callPackage ../../dapPython { };
+  dapPython = pkgs.callPackage ../../dapPython {
+    inherit pkgs python pypkgs;
+  };
 
   python-lsp-server = pkgs.callPackage ../../python-lsp-server {
     inherit pypkgs;
@@ -133,7 +135,9 @@ in
   replit.debuggers.dapPython = {
     name = "DAP Python";
     language = "python3";
-    start = "${dapPython}/bin/dap-python $file";
+    start = {
+      args = [ "${dapPython}/bin/dap-python" "$file" ];
+    };
     fileParam = true;
     transport = "localhost:0";
     integratedAdapter = {

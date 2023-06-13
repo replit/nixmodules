@@ -1,20 +1,20 @@
-{ stdenv, coreutils }:
+{ pkgs, python, pypkgs }:
 
-stdenv.mkDerivation rec {
+pypkgs.buildPythonPackage rec {
   pname = "replit-python-dap-wrapper";
   version = "1.0.0";
 
-  phases = "installPhase";
+  src = ./.;
 
-  # TODO: this has an implicit dependency on python and the pydebug package.
+  propagatedBuildInputs = with pypkgs; [
+    debugpy
+  ];
 
-  buildInputs = [ coreutils ];
-
-  installPhase = ''
+  postInstall = ''
     mkdir -p $out/bin
-
+    
     cat<<EOF > $out/bin/dap-python
-    #!${coreutils}/bin/env python3
+    #!${python}/bin/python3
     """A small wrapper around debugpy's cli.
 
     This wrapper is roughly equivalent to:
