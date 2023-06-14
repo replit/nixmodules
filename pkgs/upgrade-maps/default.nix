@@ -15,6 +15,8 @@ let
     "bun" = { to = "bun-0.5:v1-20230525-c48c43c"; auto = true; };
     "bun-0.5:v1-20230525-c48c43c" = { to = "bun-0.6:v1-20230607-15011da"; auto = true; };
     "bun-0.6:v1-20230607-15011da" = { to = "bun-0.6:v2-20230608-10cb54c"; auto = true; };
+
+    "python-3.10:v5-20230613-622effa" = { to = "python-3.10:v6-20230614-6eb09f7"; auto = true; };
   };
 
   present-entries = entries: mapAttrs
