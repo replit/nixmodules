@@ -5,6 +5,7 @@ final: prev: {
 
   dap-cpp = final.callPackage ./dap-cpp { };
 
+  # TODO: rename dap-python for consistency
   dapPython = final.callPackage ./dapPython {
     pypkgs = prev.pythonPackages;
   };
