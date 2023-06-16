@@ -8,7 +8,7 @@ let
   modulesList = [
     (mkModule (import ./python {
       python = pkgs.python310Full;
-      pypkgs = pkgs.python310Packages;
+      pythonPackages = pkgs.python310Packages;
     }))
     (mkModule (import ./nodejs {
       nodejs = pkgs.nodejs-14_x;

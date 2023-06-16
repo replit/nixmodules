@@ -1,10 +1,10 @@
-{ pkgs, pythonPackages }:
+{ fetchFromGitHub, lib, pythonPackages }:
 pythonPackages.buildPythonPackage rec {
   pname = "pip";
   version = "21.2.dev0";
   format = "other";
 
-  src = pkgs.fetchFromGitHub {
+  src = fetchFromGitHub {
     owner = "replit";
     repo = pname;
     rev = "main";
@@ -23,7 +23,7 @@ pythonPackages.buildPythonPackage rec {
 
   meta = {
     description = "The PyPA recommended tool for installing Python packages";
-    license = with pkgs.lib.licenses; [ mit ];
+    license = with lib.licenses; [ mit ];
     homepage = "https://github.com/replit/pip";
   };
 }

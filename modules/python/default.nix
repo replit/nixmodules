@@ -1,4 +1,4 @@
-{ python, pypkgs }:
+{ python, pythonPackages }:
 { pkgs, lib, ... }:
 let
   community-version = lib.versions.majorMinor python.version;
@@ -6,7 +6,7 @@ let
   pylibs-dir = ".pythonlibs";
 
   pip = pkgs.pip.override {
-    pythonPackages = pypkgs;
+    inherit pythonPackages;
   };
 
   pip-config = pkgs.writeTextFile {
@@ -24,7 +24,7 @@ let
   };
 
   poetry = pkgs.poetry.override {
-    pythonPackages = pypkgs;
+    inherit python pythonPackages;
   };
 
   poetry-config = pkgs.writeTextFile {
@@ -40,15 +40,14 @@ let
 
   prybar-python = pkgs.prybar.prybar-python310;
 
-  debugpy = pypkgs.debugpy;
+  debugpy = pythonPackages.debugpy;
 
   dap-python = pkgs.dap-python.override {
-    inherit python;
-    pythonPackages = pypkgs;
+    inherit python pythonPackages;
   };
 
   python-lsp-server = pkgs.python-lsp-server.override {
-    pythonPackages = pypkgs;
+    inherit pythonPackages;
   };
 
   python-ld-library-path = pkgs.lib.makeLibraryPath [
@@ -69,7 +68,7 @@ let
       mkdir -p $out/bin
       makeWrapper ${python}/bin/python3 $out/bin/python3 \
         --set LD_LIBRARY_PATH "${python-ld-library-path}" \
-        --prefix PYTHONPATH : "${pypkgs.setuptools}/${python.sitePackages}"
+        --prefix PYTHONPATH : "${pythonPackages.setuptools}/${python.sitePackages}"
     
       ln -s $out/bin/python3 $out/bin/python
       ln -s $out/bin/python3 $out/bin/python${community-version}
@@ -78,7 +77,7 @@ let
 
   run-prybar = pkgs.writeShellScriptBin "run-prybar" ''
     export LD_LIBRARY_PATH="${python-ld-library-path}"
-    export PYTHONPATH="$PYTHONPATH:${pypkgs.setuptools}/${python.sitePackages}"
+    export PYTHONPATH="$PYTHONPATH:${pythonPackages.setuptools}/${python.sitePackages}"
 
     ${pkgs.stderred}/bin/stderred -- ${prybar-python}/bin/prybar-python310 -q --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" -i ''$1
   '';
