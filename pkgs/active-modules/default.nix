@@ -13,21 +13,19 @@
 # or
 # nix eval .#active-modules.meta.info --json | jq
 
-{ self, pkgs }:
-with pkgs.lib;
+{ flake, lib, stdenv }:
+with lib;
 let
-  active-modules = self.modules;
+  active-modules = flake.modules;
   get-version = (tag:
     let
-      module = active-modules.${module-id};
       tag-parts = strings.splitString "-" tag;
       version-str = elemAt tag-parts 0;
       version = toInt (substring 1 (stringLength version-str) version-str);
     in
     version
   );
-  all-modules = (builtins.fromJSON (builtins.readFile ../../modules.json));
-  all-modules-list = (attrsets.mapAttrsToList (name: value: { registry-id = name; commit = value.commit; path = value.path; }) all-modules);
+  all-modules-list = (attrsets.mapAttrsToList (name: value: { registry-id = name; commit = value.commit; path = value.path; }) flake.all-modules);
   active-modules-registry =
     foldr
       (
@@ -73,7 +71,7 @@ let
       { }
       all-modules-list;
 in
-pkgs.stdenv.mkDerivation {
+stdenv.mkDerivation {
   pname = "active-modules";
   version = "1";
   dontUnpack = true;

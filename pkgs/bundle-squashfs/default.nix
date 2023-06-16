@@ -2,7 +2,7 @@
 , bash
 , lib
 , bundle-locked
-, revstring
+, flake
 , coreutils
 , findutils
 , closureInfo
@@ -14,7 +14,7 @@
 
 let
 
-  label = "nixmodules-${revstring}";
+  label = "nixmodules-${flake.revstring}";
 
   registry = ../../modules.json;
 

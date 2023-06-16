@@ -1,13 +1,12 @@
-{ pkgs, self }:
+{ flake, pkgs }:
 
 with pkgs.lib;
 
 let
-  modules = self.modules;
-  revstring_long = self.rev or "dirty";
-  revstring = builtins.substring 0 7 revstring_long;
+  inherit (flake) modules revstring revstring_long;
 in
-rec {
+
+modules // rec {
   default = moduleit;
   moduleit = pkgs.callPackage ./moduleit { };
 
@@ -19,27 +18,25 @@ rec {
 
   rev_long = pkgs.writeText "rev_long" revstring_long;
 
-  active-modules = import ./active-modules {
-    inherit pkgs;
-    inherit self;
+  active-modules = pkgs.callPackage ./active-modules {
+    inherit flake;
   };
 
-  upgrade-maps = import ./upgrade-maps {
-    inherit pkgs;
-  };
+  upgrade-maps = pkgs.callPackage ./upgrade-maps { };
 
-  bundle-locked = pkgs.callPackage ./bundle-locked { inherit revstring; };
+  bundle-locked = pkgs.callPackage ./bundle-locked {
+    inherit flake;
+  };
 
   bundle-image = pkgs.callPackage ./bundle-image {
-    inherit bundle-locked revstring;
-    inherit active-modules upgrade-maps;
+    inherit bundle-locked active-modules upgrade-maps flake;
   };
 
-  bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle-image revstring; };
+  bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball {
+    inherit bundle-image flake;
+  };
 
   bundle-squashfs = pkgs.callPackage ./bundle-squashfs {
-    inherit bundle-locked revstring;
-    inherit active-modules upgrade-maps;
+    inherit bundle-locked active-modules upgrade-maps flake;
   };
-
-} // modules
+}

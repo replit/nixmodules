@@ -2,7 +2,6 @@
 , bash
 , lib
 , bundle-locked
-, revstring
 , lkl
 , coreutils
 , findutils
@@ -11,15 +10,13 @@
 , jq
 , upgrade-maps
 , active-modules
-,
+, flake
 }:
 
 let
-
-  label = "nixmodules-${revstring}";
+  label = "nixmodules-${flake.revstring}";
 
   registry = ../../modules.json;
-
 in
 
 derivation {
