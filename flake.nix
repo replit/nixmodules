@@ -6,26 +6,25 @@
 
   outputs = { self, nixpkgs, nixpkgs-unstable, prybar, ... }:
     let
-      mkPkgs = system: import nixpkgs {
+      mkPkgs = pkgs: system: import pkgs {
         inherit system;
         overlays = [ self.overlays.default prybar.overlays.default ]; # ++ import ;
       };
 
-      pkgs = mkPkgs "x86_64-linux";
-
-      pkgs-unstable = import nixpkgs-unstable {
-        system = "x86_64-linux";
-        overlays = [ self.overlays.default prybar.overlays.default ]; # ++ import ;
-      };
+      pkgs = mkPkgs nixpkgs "x86_64-linux";
+      pkgs-unstable = mkPkgs nixpkgs-unstable "x86_64-linux";
     in
     {
       overlays.default = final: prev: {
         moduleit = self.packages.${prev.system}.moduleit;
       };
+
       formatter.x86_64-linux = pkgs.nixpkgs-fmt;
+
       packages.x86_64-linux = import ./pkgs {
         inherit pkgs self;
       };
+
       devShells.x86_64-linux.default = pkgs.mkShell {
         packages = with pkgs; [
           python310
@@ -38,6 +37,7 @@
           gzip
         ];
       };
+
       modules = import ./modules {
         inherit pkgs;
         inherit pkgs-unstable;

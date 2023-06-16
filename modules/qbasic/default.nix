@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 
 let
-  replbox = pkgs.callPackage ../../replbox { };
+  replbox = pkgs.callPackage ../../pkgs/replbox { };
   run-replbox = pkgs.writeShellScriptBin "run-replbox" ''
     ${replbox}/bin/replit-replbox \
       --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" \

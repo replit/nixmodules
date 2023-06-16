@@ -1,6 +1,6 @@
 { pkgs, lib, ... }:
 let
-  phpactor = pkgs.callPackage ../../phpactor { };
+  phpactor = pkgs.callPackage ../../pkgs/phpactor { };
   php-version = lib.versions.majorMinor pkgs.php.version;
 in
 {

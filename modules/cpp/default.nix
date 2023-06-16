@@ -1,12 +1,12 @@
 { pkgs, lib, ... }:
 let
   clang = pkgs.clang_14;
-  clang-compile = import ../../clang-compile {
+  clang-compile = import ../../pkgs/clang-compile {
     inherit pkgs;
     inherit clang;
   };
-  dap-cpp = pkgs.callPackage ../../dap-cpp { };
-  dap-cpp-messages = import ../../dap-cpp/messages.nix;
+  dap-cpp = pkgs.callPackage ../../pkgs/dap-cpp { };
+  dap-cpp-messages = import ../../pkgs/dap-cpp/messages.nix;
 
   clang-version = lib.versions.major clang.version;
 in

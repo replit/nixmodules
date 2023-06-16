@@ -7,9 +7,9 @@ let
 
   graal-compile-command = "${pkgs.graalvm17-ce}/bin/javac -classpath .:target/dependency/* -d . $(find . -type f -name '*.java')";
 
-  jdt-language-server = pkgs.callPackage ../../jdt-language-server { };
+  jdt-language-server = pkgs.callPackage ../../pkgs/jdt-language-server { };
 
-  java-debug = pkgs.callPackage ../../java-debug {
+  java-debug = pkgs.callPackage ../../pkgs/java-debug {
     inherit jdt-language-server;
     jdk = pkgs.graalvm11-ce;
   };

@@ -5,7 +5,7 @@ let
 
   pylibs-dir = ".pythonlibs";
 
-  pip = pkgs.callPackage ../../pip {
+  pip = pkgs.callPackage ../../pkgs/pip {
     inherit pypkgs;
   };
 
@@ -23,7 +23,7 @@ let
     '';
   };
 
-  poetry = pkgs.callPackage ../../poetry {
+  poetry = pkgs.callPackage ../../pkgs/poetry {
     inherit python;
     inherit pypkgs;
   };
@@ -41,15 +41,15 @@ let
 
   prybar-python = pkgs.prybar.prybar-python310;
 
-  stderred = pkgs.callPackage ../../stderred { };
+  stderred = pkgs.callPackage ../../pkgs/stderred { };
 
   debugpy = pypkgs.debugpy;
 
-  dapPython = pkgs.callPackage ../../dapPython {
+  dapPython = pkgs.callPackage ../../pkgs/dapPython {
     inherit pkgs python pypkgs;
   };
 
-  python-lsp-server = pkgs.callPackage ../../python-lsp-server {
+  python-lsp-server = pkgs.callPackage ../../pkgs/python-lsp-server {
     inherit pypkgs;
   };
 
