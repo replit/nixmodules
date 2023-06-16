@@ -1,5 +1,5 @@
-{ pkgs, pypkgs }:
-pypkgs.buildPythonPackage rec {
+{ pkgs, pythonPackages }:
+pythonPackages.buildPythonPackage rec {
   pname = "pip";
   version = "21.2.dev0";
   format = "other";
@@ -12,7 +12,7 @@ pypkgs.buildPythonPackage rec {
     name = "${pname}-${version}-source";
   };
 
-  nativeBuildInputs = [ pypkgs.bootstrapped-pip ];
+  nativeBuildInputs = [ pythonPackages.bootstrapped-pip ];
 
   # pip detects that we already have bootstrapped_pip "installed", so we need
   # to force it a little.

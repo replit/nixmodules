@@ -1,12 +1,10 @@
 { pkgs, lib, ... }:
 let
   clang = pkgs.clang_14;
-  clang-compile = import ../../pkgs/clang-compile {
-    inherit pkgs;
+  clang-compile = pkgs.clang-compile.override {
     inherit clang;
   };
-  dap-cpp = pkgs.callPackage ../../pkgs/dap-cpp { };
-  dap-cpp-messages = import ../../pkgs/dap-cpp/messages.nix;
+  dap-cpp-messages = import ../../overlay/dap-cpp/messages.nix;
 
   clang-version = lib.versions.major clang.version;
 in
@@ -37,7 +35,7 @@ in
   replit.debuggers.gdb-project = {
     name = "GDB C++: Project";
     language = "cpp";
-    start = "${dap-cpp}/bin/dap-cpp";
+    start = "${pkgs.dap-cpp}/bin/dap-cpp";
     fileParam = false;
     compile = "${clang-compile}/bin/clang-compile main.cpp cpp all debug";
     transport = "stdio";

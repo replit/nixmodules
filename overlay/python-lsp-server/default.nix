@@ -1,5 +1,5 @@
-{ pkgs, pypkgs }:
-pypkgs.buildPythonPackage rec {
+{ pkgs, pythonPackages }:
+pythonPackages.buildPythonPackage rec {
   pname = "python-lsp-server";
   version = "1.15.9";
   format = "pyproject";
@@ -29,11 +29,11 @@ pypkgs.buildPythonPackage rec {
   ];
 
   nativeBuildInputs = [
-    pypkgs.pythonRelaxDepsHook
-    pypkgs.setuptools-scm
+    pythonPackages.pythonRelaxDepsHook
+    pythonPackages.setuptools-scm
   ];
 
-  propagatedBuildInputs = with pypkgs; [
+  propagatedBuildInputs = with pythonPackages; [
     docstring-to-markdown
     jedi
     pluggy

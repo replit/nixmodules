@@ -5,8 +5,8 @@ let
 
   pylibs-dir = ".pythonlibs";
 
-  pip = pkgs.callPackage ../../pkgs/pip {
-    inherit pypkgs;
+  pip = pkgs.pip.override {
+    pythonPackages = pypkgs;
   };
 
   pip-config = pkgs.writeTextFile {
@@ -23,9 +23,8 @@ let
     '';
   };
 
-  poetry = pkgs.callPackage ../../pkgs/poetry {
-    inherit python;
-    inherit pypkgs;
+  poetry = pkgs.poetry.override {
+    pythonPackages = pypkgs;
   };
 
   poetry-config = pkgs.writeTextFile {
@@ -41,16 +40,15 @@ let
 
   prybar-python = pkgs.prybar.prybar-python310;
 
-  stderred = pkgs.callPackage ../../pkgs/stderred { };
-
   debugpy = pypkgs.debugpy;
 
-  dapPython = pkgs.callPackage ../../pkgs/dapPython {
-    inherit pkgs python pypkgs;
+  dap-python = pkgs.dap-python.override {
+    inherit python;
+    pythonPackages = pypkgs;
   };
 
-  python-lsp-server = pkgs.callPackage ../../pkgs/python-lsp-server {
-    inherit pypkgs;
+  python-lsp-server = pkgs.python-lsp-server.override {
+    pythonPackages = pypkgs;
   };
 
   python-ld-library-path = pkgs.lib.makeLibraryPath [
@@ -82,7 +80,7 @@ let
     export LD_LIBRARY_PATH="${python-ld-library-path}"
     export PYTHONPATH="$PYTHONPATH:${pypkgs.setuptools}/${python.sitePackages}"
 
-    ${stderred}/bin/stderred -- ${prybar-python}/bin/prybar-python310 -q --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" -i ''$1
+    ${pkgs.stderred}/bin/stderred -- ${prybar-python}/bin/prybar-python310 -q --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" -i ''$1
   '';
 
   pylsp-wrapper = pkgs.stdenvNoCC.mkDerivation {
@@ -139,7 +137,7 @@ in
     name = "DAP Python";
     language = "python3";
     start = {
-      args = [ "${dapPython}/bin/dap-python" "$file" ];
+      args = [ "${dap-python}/bin/dap-python" "$file" ];
     };
     fileParam = true;
     transport = "localhost:0";

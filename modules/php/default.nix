@@ -1,6 +1,5 @@
 { pkgs, lib, ... }:
 let
-  phpactor = pkgs.callPackage ../../pkgs/phpactor { };
   php-version = lib.versions.majorMinor pkgs.php.version;
 in
 {
@@ -23,7 +22,7 @@ in
     name = "phpactor";
     language = "php";
 
-    start = "${phpactor}/bin/phpactor language-server";
+    start = "${pkgs.phpactor}/bin/phpactor language-server";
   };
 
   replit.packagers.php = {

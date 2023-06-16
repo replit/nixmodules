@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 
 let
-  bun = pkgs.callPackage ../../pkgs/bun { };
+  inherit (pkgs) bun;
 
   extensions = [ ".json" ".js" ".jsx" ".ts" ".tsx" ];
 

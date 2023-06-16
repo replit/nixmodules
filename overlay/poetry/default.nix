@@ -1,4 +1,4 @@
-{ pkgs, python, pypkgs }:
+{ pkgs, python, pythonPackages }:
 let
 
   myPoetry = pkgs.stdenv.mkDerivation {
@@ -6,11 +6,11 @@ let
     version = "1.1.13";
 
     src = builtins.fetchTarball {
-      url = https://storage.googleapis.com/poetry-bundles/poetry-1.1.14-bundle.tgz;
+      url = "https://storage.googleapis.com/poetry-bundles/poetry-1.1.14-bundle.tgz";
       sha256 = "sha256:0qg41d4gvlmsfzqz8vsh4spzxvky9y750jp1h67v5ips1xzalq4w";
     };
 
-    buildInputs = [ pypkgs.pip ];
+    buildInputs = [ pythonPackages.pip ];
 
     installPhase = ''
       mkdir -p $out/bin

@@ -1,4 +1,4 @@
-{ rustPlatform, stderred, makeWrapper }:
+{ rustPlatform, libstderred, makeWrapper }:
 
 rustPlatform.buildRustPackage {
   pname = "stderred";
@@ -12,6 +12,6 @@ rustPlatform.buildRustPackage {
 
   postInstall = ''
     wrapProgram "$out/bin/stderred" \
-      --set STDERRED_PATH ${stderred}/lib/libstderred.so
+      --set STDERRED_PATH ${libstderred}/lib/libstderred.so
   '';
 }

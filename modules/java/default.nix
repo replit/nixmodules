@@ -7,10 +7,7 @@ let
 
   graal-compile-command = "${pkgs.graalvm17-ce}/bin/javac -classpath .:target/dependency/* -d . $(find . -type f -name '*.java')";
 
-  jdt-language-server = pkgs.callPackage ../../pkgs/jdt-language-server { };
-
-  java-debug = pkgs.callPackage ../../pkgs/java-debug {
-    inherit jdt-language-server;
+  java-debug = pkgs.java-debug.override {
     jdk = pkgs.graalvm11-ce;
   };
 
@@ -83,6 +80,6 @@ in
     name = "JDT Language Server";
     language = "java";
 
-    start = "${jdt-language-server}/bin/jdt-language-server";
+    start = "${pkgs.jdt-language-server}/bin/jdt-language-server";
   };
 }
