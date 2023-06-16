@@ -4,6 +4,10 @@ stdenv.mkDerivation rec {
   pname = "vscode-cpptools-dap";
   version = "1.3.1";
 
+  passthru = {
+    messages = import ./messages.nix;
+  };
+
   phases = "installPhase fixupPhase";
 
   src = fetchurl {

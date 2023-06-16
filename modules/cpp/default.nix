@@ -4,7 +4,6 @@ let
   clang-compile = pkgs.clang-compile.override {
     inherit clang;
   };
-  dap-cpp-messages = import ../../overlay/dap-cpp/messages.nix;
 
   clang-version = lib.versions.major clang.version;
 in
@@ -39,7 +38,7 @@ in
     fileParam = false;
     compile = "${clang-compile}/bin/clang-compile main.cpp cpp all debug";
     transport = "stdio";
-    initializeMessage = dap-cpp-messages.dapInitializeMessage;
-    launchMessage = dap-cpp-messages.dapLaunchMessage "./main.cpp.bin";
+    initializeMessage = pkgs.dap-cpp.messages.dapInitializeMessage;
+    launchMessage = pkgs.dap-cpp.messages.dapLaunchMessage "./main.cpp.bin";
   };
 }
