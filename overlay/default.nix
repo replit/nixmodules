@@ -5,7 +5,9 @@ final: prev: {
 
   dap-cpp = final.callPackage ./dap-cpp { };
 
-  dap-python = final.callPackage ./dap-python { };
+  dapPython = final.callPackage ./dapPython {
+    pypkgs = prev.pythonPackages;
+  };
 
   java-debug = final.callPackage ./java-debug { };
 
@@ -22,6 +24,6 @@ final: prev: {
   replbox = final.callPackage ./replbox { };
 
   stderred = final.callPackage ./stderred {
-    libstderred = prev.stderred;
+    inherit (prev) stderred;
   };
 }

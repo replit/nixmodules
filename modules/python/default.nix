@@ -42,8 +42,9 @@ let
 
   debugpy = pythonPackages.debugpy;
 
-  dap-python = pkgs.dap-python.override {
-    inherit python pythonPackages;
+  dap-python = pkgs.dapPython.override {
+    inherit python;
+    pypkgs = pythonPackages;
   };
 
   python-lsp-server = pkgs.python-lsp-server.override {

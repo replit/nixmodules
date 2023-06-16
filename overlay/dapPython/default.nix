@@ -1,12 +1,12 @@
-{ pkgs, python, pythonPackages }:
+{ pkgs, python, pypkgs }:
 
-pythonPackages.buildPythonPackage {
+pypkgs.buildPythonPackage rec {
   pname = "replit-python-dap-wrapper";
   version = "1.0.0";
 
   src = ./.;
 
-  propagatedBuildInputs = with pythonPackages; [
+  propagatedBuildInputs = with pypkgs; [
     debugpy
   ];
 
