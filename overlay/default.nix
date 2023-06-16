@@ -1,4 +1,6 @@
 final: prev: {
+  bun = final.callPackage ./bun { };
+
   clang-compile = final.callPackage ./clang-compile { };
 
   dap-cpp = final.callPackage ./dap-cpp { };
