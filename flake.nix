@@ -8,7 +8,7 @@
     let
       mkPkgs = pkgs: system: import pkgs {
         inherit system;
-        overlays = [ self.overlays.default prybar.overlays.default ]; # ++ import ;
+        overlays = [ self.overlays.default prybar.overlays.default ];
       };
 
       pkgs = mkPkgs nixpkgs "x86_64-linux";
