@@ -38,7 +38,7 @@
           gzip
         ];
       };
-      modules = import ./pkgs/modules {
+      modules = import ./modules {
         inherit pkgs;
         inherit pkgs-unstable;
       };
