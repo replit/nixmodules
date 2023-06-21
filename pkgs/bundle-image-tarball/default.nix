@@ -1,7 +1,9 @@
-{ system, bash, lib, bundle-image, flake, coreutils, gnutar, pigz }:
+{ pkgs, bundle-image, revstring, ... }:
+
+with pkgs;
 
 derivation {
-  name = "nixmodules-${flake.revstring}";
+  name = "nixmodules-${revstring}";
   builder = "${bash}/bin/bash";
   args = [ ./builder.sh ];
   inherit system;

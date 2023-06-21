@@ -1,23 +1,32 @@
-{ system
-, bash
-, lib
-, bundle-locked
-, lkl
-, coreutils
-, findutils
-, e2fsprogs
-, closureInfo
-, jq
-, upgrade-maps
+{ pkgs
+, revstring
+, all-modules
 , active-modules
-, flake
+, bundle-locked
+, upgrade-maps
+, ...
 }:
+# { system
+# , bash
+# , lib
+# , bundle-locked
+# , lkl
+# , coreutils
+# , findutils
+# , e2fsprogs
+# , closureInfo
+# , jq
+# , upgrade-maps
+# , active-modules
+# , flake
+# }:
 
 let
-  label = "nixmodules-${flake.revstring}";
-
-  registry = ../../modules.json;
+  label = "nixmodules-${revstring}";
+  registry = all-modules;
 in
+
+with pkgs;
 
 derivation {
   name = label;

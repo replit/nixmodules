@@ -19,9 +19,16 @@
 
       formatter.x86_64-linux = pkgs.nixpkgs-fmt;
 
-      packages.x86_64-linux = import ./pkgs {
+      packages.x86_64-linux = import ./pkgs rec {
         inherit pkgs;
-        flake = self;
+
+        all-modules = pkgs.lib.importJSON ./modules.json;
+        revstring_long = self.rev or "dirty";
+        revstring = builtins.substring 0 7 revstring_long;
+
+        current-modules = import ./modules {
+          inherit pkgs pkgs-unstable;
+        };
       };
 
       devShells.x86_64-linux.default = pkgs.mkShell {
@@ -36,14 +43,5 @@
           gzip
         ];
       };
-
-      all-modules = pkgs.lib.importJSON ./modules.json;
-      modules = import ./modules {
-        inherit pkgs;
-        inherit pkgs-unstable;
-      };
-
-      revstring_long = self.rev or "dirty";
-      revstring = builtins.substring 0 7 self.revstring_long;
     };
 }

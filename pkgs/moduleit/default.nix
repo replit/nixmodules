@@ -1,4 +1,4 @@
-{ pkgs, stdenv, coreutils, runtimeShell }:
+{ stdenv, runtimeShell }:
 stdenv.mkDerivation {
   name = "moduleit";
   version = "2.0";
