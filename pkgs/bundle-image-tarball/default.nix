@@ -1,4 +1,6 @@
-{ system, bash, lib, bundle-image, revstring, coreutils, gnutar, pigz }:
+{ pkgs, bundle-image, revstring, ... }:
+
+with pkgs;
 
 derivation {
   name = "nixmodules-${revstring}";

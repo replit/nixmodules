@@ -1,10 +1,10 @@
-{ pkgs, pypkgs }:
-pypkgs.buildPythonPackage rec {
+{ fetchFromGitHub, lib, pythonPackages }:
+pythonPackages.buildPythonPackage rec {
   pname = "python-lsp-server";
   version = "1.15.9";
   format = "pyproject";
 
-  src = pkgs.fetchFromGitHub {
+  src = fetchFromGitHub {
     owner = "replit";
     repo = "python-lsp-server";
     rev = "develop";
@@ -29,11 +29,11 @@ pypkgs.buildPythonPackage rec {
   ];
 
   nativeBuildInputs = [
-    pypkgs.pythonRelaxDepsHook
-    pypkgs.setuptools-scm
+    pythonPackages.pythonRelaxDepsHook
+    pythonPackages.setuptools-scm
   ];
 
-  propagatedBuildInputs = with pypkgs; [
+  propagatedBuildInputs = with pythonPackages; [
     docstring-to-markdown
     jedi
     pluggy
@@ -63,7 +63,7 @@ pypkgs.buildPythonPackage rec {
     "pylsp.python_lsp"
   ];
 
-  meta = with pkgs.lib; {
+  meta = with lib; {
     description = "Python implementation of the Language Server Protocol";
     homepage = "https://github.com/replit/python-lsp-server";
     license = licenses.mit;

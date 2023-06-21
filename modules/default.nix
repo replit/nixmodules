@@ -1,6 +1,6 @@
 { pkgs, pkgs-unstable }:
 let
-  mkModule = path: pkgs.callPackage ../moduleit/entrypoint.nix {
+  mkModule = path: pkgs.callPackage ../pkgs/moduleit/entrypoint.nix {
     configPath = path;
     inherit pkgs-unstable;
   };
@@ -8,7 +8,7 @@ let
   modulesList = [
     (mkModule (import ./python {
       python = pkgs.python310Full;
-      pypkgs = pkgs.python310Packages;
+      pythonPackages = pkgs.python310Packages;
     }))
     (mkModule (import ./nodejs {
       nodejs = pkgs.nodejs-14_x;

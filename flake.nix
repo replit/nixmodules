@@ -6,26 +6,32 @@
 
   outputs = { self, nixpkgs, nixpkgs-unstable, prybar, ... }:
     let
-      mkPkgs = system: import nixpkgs {
+      mkPkgs = pkgs: system: import pkgs {
         inherit system;
-        overlays = [ self.overlays.default prybar.overlays.default ]; # ++ import ;
+        overlays = [ self.overlays.default prybar.overlays.default ];
       };
 
-      pkgs = mkPkgs "x86_64-linux";
+      pkgs = mkPkgs nixpkgs "x86_64-linux";
+      pkgs-unstable = mkPkgs nixpkgs-unstable "x86_64-linux";
 
-      pkgs-unstable = import nixpkgs-unstable {
-        system = "x86_64-linux";
-        overlays = [ self.overlays.default prybar.overlays.default ]; # ++ import ;
+      current-modules = import ./modules {
+        inherit pkgs pkgs-unstable;
       };
     in
     {
-      overlays.default = final: prev: {
-        moduleit = self.packages.${prev.system}.moduleit;
-      };
+      overlays.default = import ./overlay;
+
       formatter.x86_64-linux = pkgs.nixpkgs-fmt;
-      packages.x86_64-linux = import ./pkgs {
-        inherit pkgs self;
+
+      modules = current-modules;
+      packages.x86_64-linux = import ./pkgs rec {
+        inherit pkgs current-modules;
+
+        all-modules = pkgs.lib.importJSON ./modules.json;
+        revstring_long = self.rev or "dirty";
+        revstring = builtins.substring 0 7 revstring_long;
       };
+
       devShells.x86_64-linux.default = pkgs.mkShell {
         packages = with pkgs; [
           python310
@@ -37,10 +43,6 @@
           gnutar
           gzip
         ];
-      };
-      modules = import ./pkgs/modules {
-        inherit pkgs;
-        inherit pkgs-unstable;
       };
     };
 }

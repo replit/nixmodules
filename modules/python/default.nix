@@ -1,12 +1,12 @@
-{ python, pypkgs }:
+{ python, pythonPackages }:
 { pkgs, lib, ... }:
 let
   community-version = lib.versions.majorMinor python.version;
 
   pylibs-dir = ".pythonlibs";
 
-  pip = pkgs.callPackage ../../pip {
-    inherit pypkgs;
+  pip = pkgs.pip.override {
+    inherit pythonPackages;
   };
 
   pip-config = pkgs.writeTextFile {
@@ -23,9 +23,8 @@ let
     '';
   };
 
-  poetry = pkgs.callPackage ../../poetry {
-    inherit python;
-    inherit pypkgs;
+  poetry = pkgs.poetry.override {
+    inherit python pythonPackages;
   };
 
   poetry-config = pkgs.writeTextFile {
@@ -41,16 +40,15 @@ let
 
   prybar-python = pkgs.prybar.prybar-python310;
 
-  stderred = pkgs.callPackage ../../stderred { };
+  debugpy = pythonPackages.debugpy;
 
-  debugpy = pypkgs.debugpy;
-
-  dapPython = pkgs.callPackage ../../dapPython {
-    inherit pkgs python pypkgs;
+  dap-python = pkgs.dapPython.override {
+    inherit python;
+    pypkgs = pythonPackages;
   };
 
-  python-lsp-server = pkgs.callPackage ../../python-lsp-server {
-    inherit pypkgs;
+  python-lsp-server = pkgs.python-lsp-server.override {
+    inherit pythonPackages;
   };
 
   python-ld-library-path = pkgs.lib.makeLibraryPath [
@@ -71,7 +69,7 @@ let
       mkdir -p $out/bin
       makeWrapper ${python}/bin/python3 $out/bin/python3 \
         --set LD_LIBRARY_PATH "${python-ld-library-path}" \
-        --prefix PYTHONPATH : "${pypkgs.setuptools}/${python.sitePackages}"
+        --prefix PYTHONPATH : "${pythonPackages.setuptools}/${python.sitePackages}"
     
       ln -s $out/bin/python3 $out/bin/python
       ln -s $out/bin/python3 $out/bin/python${community-version}
@@ -80,9 +78,9 @@ let
 
   run-prybar = pkgs.writeShellScriptBin "run-prybar" ''
     export LD_LIBRARY_PATH="${python-ld-library-path}"
-    export PYTHONPATH="$PYTHONPATH:${pypkgs.setuptools}/${python.sitePackages}"
+    export PYTHONPATH="$PYTHONPATH:${pythonPackages.setuptools}/${python.sitePackages}"
 
-    ${stderred}/bin/stderred -- ${prybar-python}/bin/prybar-python310 -q --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" -i ''$1
+    ${pkgs.stderred}/bin/stderred -- ${prybar-python}/bin/prybar-python310 -q --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" -i ''$1
   '';
 
   pylsp-wrapper = pkgs.stdenvNoCC.mkDerivation {
@@ -139,7 +137,7 @@ in
     name = "DAP Python";
     language = "python3";
     start = {
-      args = [ "${dapPython}/bin/dap-python" "$file" ];
+      args = [ "${dap-python}/bin/dap-python" "$file" ];
     };
     fileParam = true;
     transport = "localhost:0";

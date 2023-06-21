@@ -1,10 +1,10 @@
-{ pkgs, pypkgs }:
-pypkgs.buildPythonPackage rec {
+{ fetchFromGitHub, lib, pythonPackages }:
+pythonPackages.buildPythonPackage rec {
   pname = "pip";
   version = "21.2.dev0";
   format = "other";
 
-  src = pkgs.fetchFromGitHub {
+  src = fetchFromGitHub {
     owner = "replit";
     repo = pname;
     rev = "main";
@@ -12,7 +12,7 @@ pypkgs.buildPythonPackage rec {
     name = "${pname}-${version}-source";
   };
 
-  nativeBuildInputs = [ pypkgs.bootstrapped-pip ];
+  nativeBuildInputs = [ pythonPackages.bootstrapped-pip ];
 
   # pip detects that we already have bootstrapped_pip "installed", so we need
   # to force it a little.
@@ -23,7 +23,7 @@ pypkgs.buildPythonPackage rec {
 
   meta = {
     description = "The PyPA recommended tool for installing Python packages";
-    license = with pkgs.lib.licenses; [ mit ];
+    license = with lib.licenses; [ mit ];
     homepage = "https://github.com/replit/pip";
   };
 }

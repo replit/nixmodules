@@ -1,12 +1,9 @@
-{ pkgs, revstring, }:
+{ pkgs, all-modules, revstring, ... }:
 
 with pkgs.lib;
 
 let
-
-  modulesLocks = (builtins.fromJSON (builtins.readFile ../../modules.json));
-
-  commits = unique (catAttrs "commit" (builtins.attrValues modulesLocks));
+  commits = unique (catAttrs "commit" (builtins.attrValues all-modules));
 
   flakes = builtins.listToAttrs (
     map
@@ -25,8 +22,7 @@ let
       # verify the outpath matches what the lockfile expects
       assert m.outPath == module.path;
       m)
-    modulesLocks;
-
+    all-modules;
 in
 
 pkgs.linkFarm "nixmodules-bundle-${revstring}" (

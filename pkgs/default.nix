@@ -1,45 +1,40 @@
-{ pkgs, self }:
+args @ {
+  pkgs,
+  current-modules,
+  revstring,
+  revstring_long,
+  ...
+}:
 
 with pkgs.lib;
 
-let
-  modules = self.modules;
-  revstring_long = self.rev or "dirty";
-  revstring = builtins.substring 0 7 revstring_long;
-in
-rec {
+current-modules // rec {
   default = moduleit;
   moduleit = pkgs.callPackage ./moduleit { };
 
   bundle = pkgs.linkFarm "nixmodules-bundle-${revstring}" (
-    mapAttrsToList (name: value: { inherit name; path = value; }) modules
+    mapAttrsToList (name: value: { inherit name; path = value; }) current-modules
   );
 
   rev = pkgs.writeText "rev" revstring;
 
   rev_long = pkgs.writeText "rev_long" revstring_long;
 
-  active-modules = import ./active-modules {
-    inherit pkgs;
-    inherit self;
-  };
+  active-modules = import ./active-modules args;
 
-  upgrade-maps = import ./upgrade-maps {
-    inherit pkgs;
-  };
+  upgrade-maps = pkgs.callPackage ./upgrade-maps { };
 
-  bundle-locked = pkgs.callPackage ./bundle-locked { inherit revstring; };
+  bundle-locked = import ./bundle-locked args;
 
-  bundle-image = pkgs.callPackage ./bundle-image {
-    inherit bundle-locked revstring;
-    inherit active-modules upgrade-maps;
-  };
+  bundle-image = import ./bundle-image (args // {
+    inherit bundle-locked active-modules upgrade-maps;
+  });
 
-  bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle-image revstring; };
+  bundle-image-tarball = import ./bundle-image-tarball (args // {
+    inherit bundle-image;
+  });
 
-  bundle-squashfs = pkgs.callPackage ./bundle-squashfs {
-    inherit bundle-locked revstring;
-    inherit active-modules upgrade-maps;
-  };
-
-} // modules
+  bundle-squashfs = import ./bundle-squashfs (args // {
+    inherit bundle-locked active-modules upgrade-maps;
+  });
+}

@@ -13,31 +13,35 @@
 # or
 # nix eval .#active-modules.meta.info --json | jq
 
-{ self, pkgs }:
-with pkgs.lib;
+{ pkgs, all-modules, current-modules, ... }:
 let
-  active-modules = self.modules;
+  inherit (pkgs) stdenv;
+
+  inherit (pkgs.lib) elemAt foldr mapAttrsToList splitString stringLength substring toInt;
+
   get-version = (tag:
     let
-      module = active-modules.${module-id};
-      tag-parts = strings.splitString "-" tag;
+      tag-parts = splitString "-" tag;
       version-str = elemAt tag-parts 0;
       version = toInt (substring 1 (stringLength version-str) version-str);
     in
     version
   );
-  all-modules = (builtins.fromJSON (builtins.readFile ../../modules.json));
-  all-modules-list = (attrsets.mapAttrsToList (name: value: { registry-id = name; commit = value.commit; path = value.path; }) all-modules);
+
+  all-modules-list = mapAttrsToList
+    (name: value: { registry-id = name; commit = value.commit; path = value.path; })
+    all-modules;
+
   active-modules-registry =
     foldr
       (
         entry: registry:
           let
-            parts = strings.splitString ":" entry.registry-id;
+            parts = splitString ":" entry.registry-id;
             module-id = elemAt parts 0;
             tag = elemAt parts 1;
             version = get-version tag;
-            module-info = (builtins.fromJSON (builtins.unsafeDiscardStringContext active-modules.${module-id}.text));
+            module-info = (builtins.fromJSON (builtins.unsafeDiscardStringContext current-modules.${module-id}.text));
             new-entry = {
               inherit (entry) commit path;
               inherit version;
@@ -45,7 +49,7 @@ let
               inherit (module-info) name description;
             };
           in
-          if ! builtins.hasAttr module-id active-modules then
+          if ! builtins.hasAttr module-id current-modules then
             registry
           else
             if builtins.hasAttr module-id registry then
@@ -73,7 +77,7 @@ let
       { }
       all-modules-list;
 in
-pkgs.stdenv.mkDerivation {
+stdenv.mkDerivation {
   pname = "active-modules";
   version = "1";
   dontUnpack = true;
