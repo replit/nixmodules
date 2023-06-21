@@ -12,8 +12,6 @@ current-modules // rec {
   default = moduleit;
   moduleit = pkgs.callPackage ./moduleit { };
 
-  modules = current-modules;
-
   bundle = pkgs.linkFarm "nixmodules-bundle-${revstring}" (
     mapAttrsToList (name: value: { inherit name; path = value; }) current-modules
   );

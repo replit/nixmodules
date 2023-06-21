@@ -13,22 +13,23 @@
 
       pkgs = mkPkgs nixpkgs "x86_64-linux";
       pkgs-unstable = mkPkgs nixpkgs-unstable "x86_64-linux";
+
+      current-modules = import ./modules {
+        inherit pkgs pkgs-unstable;
+      };
     in
     {
       overlays.default = import ./overlay;
 
       formatter.x86_64-linux = pkgs.nixpkgs-fmt;
 
+      modules = current-modules;
       packages.x86_64-linux = import ./pkgs rec {
-        inherit pkgs;
+        inherit pkgs current-modules;
 
         all-modules = pkgs.lib.importJSON ./modules.json;
         revstring_long = self.rev or "dirty";
         revstring = builtins.substring 0 7 revstring_long;
-
-        current-modules = import ./modules {
-          inherit pkgs pkgs-unstable;
-        };
       };
 
       devShells.x86_64-linux.default = pkgs.mkShell {
