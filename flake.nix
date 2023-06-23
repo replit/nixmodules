@@ -1,14 +1,20 @@
 {
   description = "Nix expressions for defining Replit development environments";
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
-  inputs.nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+  inputs.fenix.url = "github:nix-community/fenix";
+  inputs.fenix.inputs.nixpkgs.follows = "nixpkgs";
   inputs.prybar.url = "github:replit/prybar";
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, prybar, ... }:
+  outputs = { self, nixpkgs, ... } @ inputs:
     let
       mkPkgs = nixpkgs-spec: system: import nixpkgs-spec {
         inherit system;
-        overlays = [ self.overlays.default prybar.overlays.default ]; # ++ import ;
+        overlays = [
+          self.overlays.default
+          inputs.fenix.overlays.default
+          inputs.prybar.overlays.default
+        ];
+
         # replbox has an unfree license
         config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
           "@replit/replbox"
@@ -16,8 +22,6 @@
       };
 
       pkgs = mkPkgs nixpkgs "x86_64-linux";
-
-      pkgs-unstable = mkPkgs nixpkgs-unstable "x86_64-linux";
     in
     {
       overlays.default = final: prev: {
@@ -41,7 +45,6 @@
       };
       modules = import ./pkgs/modules {
         inherit pkgs;
-        inherit pkgs-unstable;
       };
     };
 }
