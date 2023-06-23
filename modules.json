@@ -11,41 +11,81 @@
     "commit": "10cb54cf8097d2c22a6677875ed532230c2bfb26",
     "path": "/nix/store/kww9dw2cik8zv9adk5vhgj93nrwx9nz5-replit-module-bun-0.6"
   },
+  "bun-0.6:v3-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/7kphn968bd4hxal2pfsr1kwvz3kmqdnx-replit-module-bun-0.6"
+  },
   "c-clang14:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/7x92nggc7kng9g1bqpmphak1xhjg55ng-replit-module-c-clang14"
+  },
+  "c-clang14:v2-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/ma4ndwprxw6nxvl3kbmxbyfybzifn6qw-replit-module-c-clang14"
   },
   "clojure-1.11:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/giqq76fl3yphzsm6rkl1qxqh4mszknpl-replit-module-clojure-1.11"
   },
+  "clojure-1.11:v2-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/jvz8pm6gj0h58x1r0c19ypkcpswriq5a-replit-module-clojure-1.11"
+  },
   "cpp-clang14:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/8iv4czda6j5nfhxs80ci625hj91ffpbn-replit-module-cpp-clang14"
+  },
+  "cpp-clang14:v2-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/vml0j4w0smg7n22mwpdygbra2h6kh9nl-replit-module-cpp-clang14"
   },
   "dart-2.18:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/mhl58f8y3z6jv0javkmx28y5h9aacw39-replit-module-dart-2.18"
   },
+  "dart-3.0:v1-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/r2wv925qhf0dvakv2immvp2l2rfia3rq-replit-module-dart-3.0"
+  },
   "dotnet-7.0:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/06mjna44a7w9bby6r121a7i9a5027qqn-replit-module-dotnet-7.0"
+  },
+  "dotnet-7.0:v2-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/rim896frw7wg1qg8bwihgr3yhdn17clx-replit-module-dotnet-7.0"
   },
   "go-1.19:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/y1gb1k8bkyd9jqxi4r1g9qibcqn3c6dm-replit-module-go-1.19"
   },
+  "go-1.20:v1-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/9f5s47qg1ldibsggzxx2k1w74z5p7fkl-replit-module-go-1.20"
+  },
   "haskell-ghc9.0:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/ayihz2zdzc2vsv6l437srdynqrk8xvny-replit-module-haskell-ghc9.0"
+  },
+  "haskell-ghc9.2:v1-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/7v0xa19kzqpbf1mcm1fzc1b83z5ldvpx-replit-module-haskell-ghc9.2"
   },
   "java-graalvm22.3:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/7zjcdf4z9d0dhwg13cs3xb1rj248m8ri-replit-module-java-graalvm22.3"
   },
+  "java-graalvm22.3:v2-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/9z8w6bbhwzvcdyz8y7rqmqay7ahc3nkm-replit-module-java-graalvm22.3"
+  },
   "lua-5.2:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/d6a5wl9pyla9si60plaxzmhqggywkcxy-replit-module-lua-5.2"
+  },
+  "lua-5.2:v2-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/r9lznvivd7idrx3skvazs64lv99m00l7-replit-module-lua-5.2"
   },
   "nodejs-14:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
@@ -83,6 +123,10 @@
     "commit": "f4cd419a646009297c049a2f1eec434381e08f13",
     "path": "/nix/store/54mvdzz3qfcxz1779mjm5hn5fcwvk71v-replit-module-nodejs-18"
   },
+  "nodejs-18:v4-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/r9k0fgr2yw22yizxrhjj1fs65pm7x0hj-replit-module-nodejs-18"
+  },
   "nodejs-19:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/qwhwjll9vns8vqcc6zjy5s4i3rzh05w3-replit-module-nodejs-19"
@@ -95,9 +139,17 @@
     "commit": "f4cd419a646009297c049a2f1eec434381e08f13",
     "path": "/nix/store/bnn5xa340q9h1fy7bjp2f3qcabfb1jnq-replit-module-nodejs-19"
   },
+  "nodejs-20:v1-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/1w9kq8ydq31ab7cvwddy7xal760dpi18-replit-module-nodejs-20"
+  },
   "php-8.1:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/rb9vj0jxx7cbmk29j5ncjr3ipl1nmrxw-replit-module-php-8.1"
+  },
+  "php-8.1:v2-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/1y67njsbspbq0dd6g4jry4b3sjs9h28l-replit-module-php-8.1"
   },
   "python-3.10:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
@@ -123,28 +175,56 @@
     "commit": "6eb09f7b5b4b6d6d6d94604cd91a75e3206d42ce",
     "path": "/nix/store/5ad6miflj3bbgh3nb6i7hx9rbyxq8a6y-replit-module-python-3.10"
   },
+  "python-3.10:v7-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/5lhy377r0n9cjawvw13dfis678fx50sl-replit-module-python-3.10"
+  },
   "qbasic:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/4n4raazspqy2zgawkkyaqc9xapl1f5sz-replit-module-qbasic"
+  },
+  "qbasic:v2-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/kb4nnw1mggda2xagy3r5g83v3gkpl7rs-replit-module-qbasic"
   },
   "r-4.2:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/ymdx5g837nll9qg5nv6plxm561fif9y1-replit-module-r-4.2"
   },
+  "r-4.2:v2-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/dplxkcnp1sdw2hf8y07xs1h3izxfshry-replit-module-r-4.2"
+  },
   "ruby-3.1:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/xac2nbz5f2vczvvq1nphfassipk2wwv2-replit-module-ruby-3.1"
+  },
+  "ruby-3.1:v2-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/1qlvg6wh8wg7il1njmsspr6fhda9bdgj-replit-module-ruby-3.1"
   },
   "rust-1.69:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/xkp307fdmgwn8dnbqadzlrb8fr0bvkx4-replit-module-rust-1.69"
   },
+  "rust-1.69:v2-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/k0bzn31kqx4z9r0m8gk00bxdal4dx7vc-replit-module-rust-1.69"
+  },
   "swift-5.6:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/gxqkjmzin0ip7441rjay7kj7lkgrmmmf-replit-module-swift-5.6"
   },
+  "swift-5.8:v1-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/abdgkaiy2i39r9bd1k4c6cm1mfnkynzx-replit-module-swift-5.8"
+  },
   "web:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/7lhwlqy8nmrmc27n68ia16q6bn27cwk5-replit-module-web"
+  },
+  "web:v2-20230623-7edb518": {
+    "commit": "7edb518f2d3d32397caaafb2c4e4f8b6c0ea0693",
+    "path": "/nix/store/53vn26l79zj17g28xlfki4d3j3ra7nbi-replit-module-web"
   }
 }
