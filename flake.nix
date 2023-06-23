@@ -1,6 +1,6 @@
 {
   description = "Nix expressions for defining Replit development environments";
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/release-23.05";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
   inputs.nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
   inputs.prybar.url = "github:replit/prybar";
 
