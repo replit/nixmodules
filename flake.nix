@@ -10,7 +10,9 @@
         inherit system;
         overlays = [ self.overlays.default prybar.overlays.default ]; # ++ import ;
         # replbox has an unfree license
-        config.allowUnfree = true;
+        config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+          "replbox"
+        ];
       };
 
       pkgs = mkPkgs nixpkgs "x86_64-linux";
