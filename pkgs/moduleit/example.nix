@@ -17,7 +17,7 @@ in
   name = "Node.js";
 
   packages = [
-    pkgs.nodejs-14_x
+    pkgs.nodejs_20
     typescript-language-server
   ];
 
