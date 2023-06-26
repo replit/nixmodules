@@ -11,7 +11,7 @@
         overlays = [ self.overlays.default prybar.overlays.default ]; # ++ import ;
         # replbox has an unfree license
         config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
-          "replbox"
+          "@replit/replbox"
         ];
       };
 
