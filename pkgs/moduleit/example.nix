@@ -33,7 +33,7 @@ in
       name = "Node.js";
       language = "javascript";
       extensions = [ ".js" ".ts" ".jsx" ".tsx" ];
-      start = "${pkgs.nodejs-14_x}/bin/node $file";
+      start = "${pkgs.nodejs_20}/bin/node $file";
       compile = {
         args = [ "tsc" "$file" ];
         env = {
