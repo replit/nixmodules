@@ -4,6 +4,7 @@
   inputs.fenix.url = "github:nix-community/fenix";
   inputs.fenix.inputs.nixpkgs.follows = "nixpkgs";
   inputs.prybar.url = "github:replit/prybar";
+  inputs.replbox.url = "github:replit/replbox";
 
   outputs = { self, nixpkgs, ... } @ inputs:
     let
@@ -13,11 +14,7 @@
           self.overlays.default
           inputs.fenix.overlays.default
           inputs.prybar.overlays.default
-        ];
-
-        # replbox has an unfree license
-        config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
-          "@replit/replbox"
+          inputs.replbox.overlays.default
         ];
       };
 
