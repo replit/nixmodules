@@ -1,6 +1,5 @@
-{ pkgs-unstable, lib, ... }:
+{ pkgs, lib, ... }:
 let
-  pkgs = pkgs-unstable;
   cargoRun = pkgs.writeScriptBin "cargo_run" ''
     if [ ! -f "$HOME/$REPL_SLUG/Cargo.toml" ]; then
       NAME=$(echo $REPL_SLUG | sed -r 's/([a-z0-9])([A-Z])/\1_\2/g'| tr '[:upper:]' '[:lower:]')
