@@ -26,6 +26,8 @@ let
     "nodejs-19:v1-20230525-c48c43c" = { to = "nodejs-19:v2-20230605-9621162"; auto = true; };
 
     "python-3.10:v5-20230613-622effa" = { to = "python-3.10:v6-20230614-6eb09f7"; auto = true; };
+    "python-3.10:v6-20230614-6eb09f7" = { to = "python-3.10:v7-20230623-0b7a606"; auto = true; };
+    "python-3.10:v7-20230623-0b7a606" = { to = "python-3.10:v8-20230629-218abef"; auto = true; };
 
     "rust" = { to = "rust-1.69:v1-20230525-c48c43c"; auto = true; };
 

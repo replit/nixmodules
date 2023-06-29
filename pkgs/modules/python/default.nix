@@ -103,7 +103,7 @@ let
     buildCommand = ''
       mkdir -p $out/bin
       makeWrapper ${poetry}/bin/poetry $out/bin/poetry \
-        --unset PYTHONPATH
+        --set PYTHONPATH "${pypkgs.setuptools}/${python.sitePackages}"
     '';
   };
 
