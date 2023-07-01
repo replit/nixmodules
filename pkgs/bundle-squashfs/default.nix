@@ -10,13 +10,12 @@
 , jq
 , upgrade-maps
 , active-modules
+, registry
 }:
 
 let
 
   label = "nixmodules-${revstring}";
-
-  registry = ../../modules.json;
 
 in
 
