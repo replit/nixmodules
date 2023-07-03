@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-nixpkgs_rev=$(sed -n 's/.*inputs.nixpkgs.url = "github:nixos\/nixpkgs?rev=\(.*\)";/\1/p' flake.nix)
+nixpkgs_rev=$(nix run --inputs-from . nixpkgs#jq -- -r '.nodes.nixpkgs.locked.rev' flake.lock)
 cd /tmp
 wget "https://github.com/nixos/nixpkgs/archive/${nixpkgs_rev}.tar.gz" -q
 tar xzf "${nixpkgs_rev}.tar.gz"

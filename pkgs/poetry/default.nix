@@ -6,8 +6,8 @@ let
     version = "1.1.13";
 
     src = builtins.fetchTarball {
-      url = https://storage.googleapis.com/poetry-bundles/poetry-1.1.13-bundle.tgz;
-      sha256 = "sha256:0f9vwqjl4lk8mx12b20q563mr9zn00pgbnnhmrwmjgz787x26m75";
+      url = https://storage.googleapis.com/poetry-bundles/poetry-1.1.14-bundle.tgz;
+      sha256 = "sha256:0qg41d4gvlmsfzqz8vsh4spzxvky9y750jp1h67v5ips1xzalq4w";
     };
 
     buildInputs = [ pypkgs.pip ];
