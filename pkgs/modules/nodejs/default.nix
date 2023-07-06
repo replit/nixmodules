@@ -46,7 +46,7 @@ in
       language = "javascript";
       start = "${run-prybar}/bin/run-prybar $file";
       interpreter = true;
-      fileParam = true;
+      optionalFileParam = true;
     };
 
     debuggers.nodeDAP = {

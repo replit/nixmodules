@@ -79,7 +79,7 @@ let
     };
   };
 
-  runnerModule = { name, config, ... }:
+  runnerOptions =
     let
       runnerProductionOverrides = { name, config, ... }:
         {
@@ -110,71 +110,79 @@ let
         };
     in
     {
-      options = {
-        name = mkOption {
-          type = types.str;
-          description = lib.mdDoc ''
-            The name of the runner.
-          '';
-        };
+      name = mkOption {
+        type = types.str;
+        description = lib.mdDoc ''
+          The name of the runner.
+        '';
+      };
 
-        language = mkOption {
-          type = types.str;
-          description = lib.mdDoc ''
-            The language this runner supports.
-          '';
-        };
+      language = mkOption {
+        type = types.str;
+        description = lib.mdDoc ''
+          The language this runner supports.
+        '';
+      };
 
-        start = mkOption {
-          type = commandType;
-          description = lib.mdDoc ''
-            The command to run a file. Use $file to substitute in the file path.
-          '';
-        };
+      start = mkOption {
+        type = commandType;
+        description = lib.mdDoc ''
+          The command to run a file. Use $file to substitute in the file path.
+        '';
+      };
 
-        fileParam = mkOption {
-          type = types.bool;
-          default = false;
-          description = lib.mdDoc ''
-            Whether this runner accepts a $file paramater.
-          '';
-        };
+      fileParam = mkOption {
+        type = types.bool;
+        default = false;
+        description = lib.mdDoc ''
+          Whether this runner accepts a $file paramater.
+        '';
+      };
 
-        interpreter = mkOption {
-          type = types.bool;
-          default = false;
-          description = lib.mdDoc ''
-            Whether this runner starts an interpreter. Default: false.
-          '';
-        };
+      optionalFileParam = mkOption {
+        type = types.bool;
+        default = false;
+        description = lib.mdDoc ''
+          Whether this runner optionally accepts a $file paramater. Only set this if fileParam is not set.
+        '';
+      };
 
-        prompt = mkOption {
-          type = types.str;
-          default = "";
-          description = lib.mdDoc ''
-            If interpreter is true, this prompt is displayed.
-          '';
-        };
+      interpreter = mkOption {
+        type = types.bool;
+        default = false;
+        description = lib.mdDoc ''
+          Whether this runner starts an interpreter. Default: false.
+        '';
+      };
 
-        compile = mkOption {
-          type = types.nullOr commandType;
-          default = null;
-          description = lib.mdDoc ''
-            The command to compile a source file. Use $file to substitute in the file path.
-          '';
-        };
+      prompt = mkOption {
+        type = types.str;
+        default = "";
+        description = lib.mdDoc ''
+          If interpreter is true, this prompt is displayed.
+        '';
+      };
 
-        productionOverride = mkOption {
-          type = types.nullOr (types.submodule runnerProductionOverrides);
-          default = null;
-          description = lib.mdDoc ''
-            The command configurations to use in production overriding the normal commands
-            that are used in development.
-          '';
-        };
+      compile = mkOption {
+        type = types.nullOr commandType;
+        default = null;
+        description = lib.mdDoc ''
+          The command to compile a source file. Use $file to substitute in the file path.
+        '';
+      };
 
-      } // fileTypeAttrs;
-    };
+      productionOverride = mkOption {
+        type = types.nullOr (types.submodule runnerProductionOverrides);
+        default = null;
+        description = lib.mdDoc ''
+          The command configurations to use in production overriding the normal commands
+          that are used in development.
+        '';
+      };
+
+    } // fileTypeAttrs;
+
+  runnerModule = { name, config, ... }: { options = runnerOptions; };
 
   languageServerModule = { name, config, ... }: {
     options = {
@@ -460,6 +468,32 @@ let
     };
   };
 
+  envWithMergedPath = (env: path:
+    let packagesPath = lib.makeBinPath config.packages;
+    in
+    if builtins.hasAttr "PATH" env
+    then env // { PATH = env.PATH + ":" + packagesPath; }
+    else { PATH = packagesPath; } // env
+  );
+
+  stripAttrsWithDefaultValues = (attrset: options: attrsToStrip:
+    let attrs = lib.attrsets.mapAttrsToList (attr: value: attr) attrset;
+    in
+    foldr
+      (attr: acc:
+        let defaultValue = options.${attr}.default;
+        in
+        if builtins.elem attr attrsToStrip then
+          (if defaultValue == attrset.${attr} then
+            builtins.removeAttrs attrset [ attr ]
+          else
+            acc)
+        else acc
+      )
+      attrset
+      attrs
+  );
+
 in
 
 {
@@ -567,20 +601,19 @@ in
 
     replit.buildModule =
       let
-        envWithMergedPath = (env: path:
-          let packagesPath = lib.makeBinPath config.packages;
-          in
-          if builtins.hasAttr "PATH" env
-          then env // { PATH = env.PATH + ":" + packagesPath; }
-          else { PATH = packagesPath; } // env
-        );
+        runners = mapAttrs
+          (id: runner:
+            assert !(runner.fileParam && runner.optionalFileParam);
+            stripAttrsWithDefaultValues runner runnerOptions [ "optionalFileParam" ]
+          )
+          config.replit.runners;
         moduleJSON = {
           id = config.id;
           name = config.name;
           description = config.description;
           env = envWithMergedPath config.replit.env (lib.makeBinPath config.packages);
           initializers = config.replit.initializers;
-          runners = config.replit.runners;
+          inherit runners;
           packagers = config.replit.packagers;
           debuggers = config.replit.debuggers;
           formatters = config.replit.formatters;
