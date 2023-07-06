@@ -129,7 +129,7 @@ in
 
   replit.runners.python-prybar = {
     name = "Prybar for Python ${community-version}";
-    fileParam = true;
+    optionalFileParam = true;
     language = "python3";
     start = "${run-prybar}/bin/run-prybar $file";
     interpreter = true;
