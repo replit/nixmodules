@@ -3,12 +3,14 @@
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
   inputs.nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
   inputs.prybar.url = "github:replit/prybar";
+  inputs.java-language-server.url = "github:replit/java-language-server";
+  inputs.java-language-server.inputs.nixpkgs.follows = "nixpkgs";
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, prybar, ... }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, prybar, java-language-server, ... }:
     let
       mkPkgs = nixpkgs-spec: system: import nixpkgs-spec {
         inherit system;
-        overlays = [ self.overlays.default prybar.overlays.default ]; # ++ import ;
+        overlays = [ self.overlays.default prybar.overlays.default java-language-server.overlays.default ]; # ++ import ;
         # replbox has an unfree license
         config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
           "@replit/replbox"

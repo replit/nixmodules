@@ -1,18 +1,29 @@
 { pkgs, lib, ... }:
 
 let
-  graalvm = pkgs.graalvm17-ce;
+  graalvm = pkgs.graalvm19-ce;
 
   graalvm-version = lib.versions.majorMinor graalvm.version;
 
-  graal-compile-command = "${pkgs.graalvm17-ce}/bin/javac -classpath .:target/dependency/* -d . $(find . -type f -name '*.java')";
+  graal-compile-command = "${graalvm}/bin/javac -classpath .:target/dependency/* -d . $(find . -type f -name '*.java')";
 
   jdt-language-server = pkgs.callPackage ../../jdt-language-server { };
+
+  java-language-server = pkgs.java-language-server;
 
   java-debug = pkgs.callPackage ../../java-debug {
     inherit jdt-language-server;
     jdk = pkgs.graalvm11-ce;
   };
+
+  run-lsp = pkgs.writeShellScriptBin "run-lsp" ''
+    # Allow setting this env var to diagnose the lsp
+    if [[ $JAVA_LANGUAGE_SERVER_LOG ]]; then
+      ${java-language-server}/bin/java-language-server --logFile $JAVA_LANGUAGE_SERVER_LOG
+    else
+      ${java-language-server}/bin/java-language-server
+    fi
+  '';
 
 in
 
@@ -26,7 +37,7 @@ in
   ];
 
   replit.runners.graal = {
-    name = "GraalVM 17";
+    name = "GraalVM ${graalvm-version}";
     language = "java";
 
     compile = graal-compile-command;
@@ -79,10 +90,12 @@ in
     };
   };
 
-  replit.languageServers.jdt = {
-    name = "JDT Language Server";
+  replit.languageServers.java-language-server = {
+    name = "Java Language Server";
     language = "java";
 
-    start = "${jdt-language-server}/bin/jdt-language-server";
+    start = "${run-lsp}/bin/run-lsp";
+    configuration.java.home = graalvm.outPath;
+    configuration.java.setSystemPath = true;
   };
 }
