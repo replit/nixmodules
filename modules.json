@@ -246,5 +246,9 @@
   "web:v2-20230623-0b7a606": {
     "commit": "0b7a60667d2c29f2686211e952924a9693916a20",
     "path": "/nix/store/53vn26l79zj17g28xlfki4d3j3ra7nbi-replit-module-web"
+  },
+  "pyright-extended:v1-20230707-0c33b22": {
+    "commit": "0c33b229d159ded681992f2220e273540b6708b7",
+    "path": "/nix/store/naqna9imw62bi543fnlpg8r7rd79bf2b-replit-module-pyright-extended"
   }
 }
