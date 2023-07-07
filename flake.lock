@@ -15,6 +15,26 @@
         "type": "github"
       }
     },
+    "java-language-server": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1688568849,
+        "narHash": "sha256-3oOgfV0T9tD3RyXUc/miXcXoNt9JkYkL1Jdg+rl+2lg=",
+        "owner": "replit",
+        "repo": "java-language-server",
+        "rev": "a8429dbed50f2de324e44a1b81dc2b94a248adc6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "replit",
+        "repo": "java-language-server",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1687466461,
@@ -84,6 +104,7 @@
     },
     "root": {
       "inputs": {
+        "java-language-server": "java-language-server",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "prybar": "prybar"
