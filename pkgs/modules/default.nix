@@ -10,6 +10,7 @@ let
       python = pkgs.python310Full;
       pypkgs = pkgs.python310Packages;
     }))
+    (mkModule ./pyright-extended)
     (mkModule (import ./nodejs {
       nodejs = pkgs.nodejs-18_x;
     }))
