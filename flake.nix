@@ -3,6 +3,7 @@
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
   inputs.nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
   inputs.prybar.url = "github:replit/prybar";
+  inputs.prybar.inputs.nixpkgs.follows = "nixpkgs";
   inputs.java-language-server.url = "github:replit/java-language-server";
   inputs.java-language-server.inputs.nixpkgs.follows = "nixpkgs";
 
