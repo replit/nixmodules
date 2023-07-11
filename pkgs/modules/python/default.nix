@@ -49,10 +49,6 @@ let
     inherit pkgs python pypkgs;
   };
 
-  python-lsp-server = pkgs.callPackage ../../python-lsp-server {
-    inherit pypkgs;
-  };
-
   python-ld-library-path = pkgs.lib.makeLibraryPath [
     # Needed for pandas / numpy
     pkgs.stdenv.cc.cc.lib
@@ -85,17 +81,6 @@ let
     ${stderred}/bin/stderred -- ${prybar-python}/bin/prybar-python310 -q --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" -i ''$1
   '';
 
-  pylsp-wrapper = pkgs.stdenvNoCC.mkDerivation {
-    name = "pylsp-wrapper";
-    buildInputs = [ pkgs.makeWrapper ];
-
-    buildCommand = ''
-      mkdir -p $out/bin
-      makeWrapper ${python-lsp-server}/bin/pylsp $out/bin/pylsp \
-        --unset PYTHONPATH
-    '';
-  };
-
   poetry-wrapper = pkgs.stdenvNoCC.mkDerivation {
     name = "poetry-wrapper";
     buildInputs = [ pkgs.makeWrapper ];
@@ -107,6 +92,8 @@ let
     '';
   };
 
+  pyright-extended = pkgs.callPackage ../../pyright-extended { };
+
 in
 {
   id = "python-${community-version}";
@@ -117,7 +104,6 @@ in
     pip
     poetry-wrapper
     run-prybar
-    pylsp-wrapper
   ];
 
   replit.runners.python = {
@@ -173,11 +159,10 @@ in
     };
   };
 
-  replit.languageServers.python-lsp-server = {
-    name = "python-lsp-server";
+  replit.languageServers.pyright-extended = {
+    name = "pyright-extended";
     language = "python3";
-    start = "${pylsp-wrapper}/bin/pylsp";
-    configuration.pylsp.plugins.jedi.extra_paths = [ "${pylibs-dir}/${python.sitePackages}" ];
+    start = "${pyright-extended}/bin/langserver.index.js --stdio";
   };
 
   replit.packagers.upmPython = {
