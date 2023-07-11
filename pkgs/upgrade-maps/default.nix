@@ -28,6 +28,11 @@ let
     "python-3.10:v5-20230613-622effa" = { to = "python-3.10:v6-20230614-6eb09f7"; auto = true; };
     "python-3.10:v6-20230614-6eb09f7" = { to = "python-3.10:v7-20230623-0b7a606"; auto = true; };
     "python-3.10:v7-20230623-0b7a606" = { to = "python-3.10:v8-20230629-218abef"; auto = true; };
+    "python-3.10:v8-20230629-218abef" = { to = "python-3.10:v9-20230706-ccb32c4"; auto = true; };
+    "python-3.10:v9-20230706-ccb32c4" = { to = "python-3.10:v10-20230711-6807d41"; auto = true; };
+    "python-3.10:v10-20230711-6807d41" = { to = "python-3.10:v11-20230711-eb29cca"; auto = true; };
+
+    "pyright-extended:v1-20230707-0c33b22" = { to = "pyright-extended:v2-20230711-eb29cca"; auto = true; };
 
     "rust" = { to = "rust-1.69:v1-20230525-c48c43c"; auto = true; };
 
