@@ -22,8 +22,15 @@ let
     "nodejs-16:v2-20230605-9621162" = { to = "nodejs-18:v2-20230605-9621162"; changelog = "Node.js 16 is deprecated. Upgrade to 18!"; };
 
     "nodejs-18:v1-20230525-c48c43c" = { to = "nodejs-18:v2-20230605-9621162"; auto = true; };
+    "nodejs-18:v2-20230605-9621162" = { to = "nodejs-18:v3-20230608-f4cd419"; auto = true; };
+    "nodejs-18:v3-20230608-f4cd419" = { to = "nodejs-18:v4-20230623-0b7a606"; auto = true; };
+    "nodejs-18:v4-20230623-0b7a606" = { to = "nodejs-18:v5-20230706-ccb32c4"; auto = true; };
+    "nodejs-18:v5-20230706-ccb32c4" = { to = "nodejs-18:v6-20230711-6807d41"; auto = true; };
 
     "nodejs-19:v1-20230525-c48c43c" = { to = "nodejs-19:v2-20230605-9621162"; auto = true; };
+
+    "nodejs-20:v1-20230623-0b7a606" = { to = "nodejs-20:v2-20230706-ccb32c4"; auto = true; };
+    "nodejs-20:v2-20230706-ccb32c4" = { to = "nodejs-20:v3-20230711-6807d41"; auto = true; };
 
     "python-3.10:v5-20230613-622effa" = { to = "python-3.10:v6-20230614-6eb09f7"; auto = true; };
     "python-3.10:v6-20230614-6eb09f7" = { to = "python-3.10:v7-20230623-0b7a606"; auto = true; };
