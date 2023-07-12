@@ -49,15 +49,15 @@ let
     inherit pkgs python pypkgs;
   };
 
-  python-ld-library-path = pkgs.lib.makeLibraryPath [
+  python-ld-library-path = pkgs.lib.makeLibraryPath ([
     # Needed for pandas / numpy
     pkgs.stdenv.cc.cc.lib
     pkgs.zlib
-    # Needed for pygame
     pkgs.glib
     # Needed for matplotlib
     pkgs.xorg.libX11
-  ];
+    # Needed for pygame
+  ] ++ (with pkgs.xorg; [ libXext libXinerama libXcursor libXrandr libXi libXxf86vm ]));
 
   python3-wrapper = pkgs.stdenvNoCC.mkDerivation {
     name = "python3-wrapper";
@@ -185,5 +185,6 @@ in
       POETRY_CONFIG_DIR = poetry-config.outPath;
       POETRY_VIRTUALENVS_CREATE = "0";
       PYTHONUSERBASE = userbase;
+      PATH = "${userbase}/bin";
     };
 }
