@@ -38,6 +38,7 @@ let
     "python-3.10:v8-20230629-218abef" = { to = "python-3.10:v9-20230706-ccb32c4"; auto = true; };
     "python-3.10:v9-20230706-ccb32c4" = { to = "python-3.10:v10-20230711-6807d41"; auto = true; };
     "python-3.10:v10-20230711-6807d41" = { to = "python-3.10:v11-20230711-eb29cca"; auto = true; };
+    "python-3.10:v11-20230711-eb29cca" = { to = "python-3.10:v12-20230712-7266cd2"; auto = true; };
 
     "pyright-extended:v1-20230707-0c33b22" = { to = "pyright-extended:v2-20230711-eb29cca"; auto = true; };
 
