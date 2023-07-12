@@ -41,6 +41,7 @@ let
     "python-3.10:v11-20230711-eb29cca" = { to = "python-3.10:v12-20230712-7266cd2"; auto = true; };
 
     "pyright-extended:v1-20230707-0c33b22" = { to = "pyright-extended:v2-20230711-eb29cca"; auto = true; };
+    "pyright-extended:v2-20230711-eb29cca" = { to = "pyright-extended:v3-20230712-4ba5dba"; auto = true; };
 
     "rust" = { to = "rust-1.69:v1-20230525-c48c43c"; auto = true; };
 
