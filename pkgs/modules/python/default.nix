@@ -39,6 +39,20 @@ let
     destination = "/conf.toml";
   };
 
+  cppLibs = pkgs.stdenvNoCC.mkDerivation {
+    name = "cpplibs";
+    dontUnpack = true;
+    dontBuild = true;
+    installPhase = ''
+      runHook preInstall
+
+      mkdir -p $out/lib
+      cp ${pkgs.stdenv.cc.cc.lib}/lib/libstdc++* $out/lib
+
+      runHook postInstall
+    '';
+  };
+
   prybar-python = pkgs.prybar.prybar-python310;
 
   stderred = pkgs.callPackage ../../stderred { };
@@ -51,7 +65,7 @@ let
 
   python-ld-library-path = pkgs.lib.makeLibraryPath ([
     # Needed for pandas / numpy
-    pkgs.stdenv.cc.cc.lib
+    cppLibs
     pkgs.zlib
     pkgs.glib
     # Needed for matplotlib
