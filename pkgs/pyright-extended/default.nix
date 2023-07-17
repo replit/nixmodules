@@ -1,6 +1,6 @@
 { pkgs, lib, ... }:
 let
-  version = "1.1.319";
+  version = "2.0.1";
 in
 pkgs.stdenvNoCC.mkDerivation rec {
   pname = "pyright-extended";
@@ -8,7 +8,7 @@ pkgs.stdenvNoCC.mkDerivation rec {
 
   src = pkgs.fetchurl {
     url = "https://registry.npmjs.org/@replit/pyright-extended/-/pyright-extended-${version}.tgz";
-    hash = "sha256-2uWF+/nvvJZ3zZI3yEjvD68Aup/74qrj+5meVl6VDqw=";
+    hash = "sha256-Z6KrDIXAJHsZgBmV09czN/Pc9usnNReQxSz3w9S2vGs=";
   };
 
   binPath = lib.makeBinPath [
