@@ -15,6 +15,10 @@
     "commit": "0b7a60667d2c29f2686211e952924a9693916a20",
     "path": "/nix/store/7kphn968bd4hxal2pfsr1kwvz3kmqdnx-replit-module-bun-0.6"
   },
+  "bun-0.6:v4-20230721-719ce58": {
+    "commit": "719ce588110378538018aa64c77f604840af7296",
+    "path": "/nix/store/d8yrnalpkvqclyl66fx7vsg4yxaw2c8a-replit-module-bun-0.6"
+  },
   "c-clang14:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/7x92nggc7kng9g1bqpmphak1xhjg55ng-replit-module-c-clang14"
