@@ -267,6 +267,10 @@
     "commit": "0b7a60667d2c29f2686211e952924a9693916a20",
     "path": "/nix/store/k0bzn31kqx4z9r0m8gk00bxdal4dx7vc-replit-module-rust-1.69"
   },
+  "rust-1.70:v1-20230724-17660e5": {
+    "commit": "17660e54868baaacb9765ae06c5527678f2e3a0b",
+    "path": "/nix/store/6qngvxv1pbz590xiqzmasaqidcwa56k4-replit-module-rust-1.70"
+  },
   "swift-5.6:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/gxqkjmzin0ip7441rjay7kj7lkgrmmmf-replit-module-swift-5.6"
