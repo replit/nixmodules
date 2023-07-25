@@ -56,11 +56,11 @@ rec {
   };
 
   basic-bundle-locked = bundle-locked-fn {
-    moduleIds = ["python-3.10" "nodejs-18"];
+    moduleIds = [ "python-3.10:v1-20230525-c48c43c" ];
   };
 
   basic-bundle-squashfs = bundle-squashfs-fn {
-    moduleIds = ["python-3.10" "nodejs-18"];
+    moduleIds = [ "python-3.10" "nodejs-18" ];
   };
 
 } // modules
