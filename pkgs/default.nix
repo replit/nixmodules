@@ -28,8 +28,6 @@ rec {
     inherit pkgs;
   };
 
-  bundle-locked = pkgs.callPackage ./bundle-locked { inherit revstring; };
-
   bundle-image = pkgs.callPackage ./bundle-image {
     inherit bundle-locked revstring;
     inherit active-modules upgrade-maps;
@@ -37,9 +35,32 @@ rec {
 
   bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle-image revstring; };
 
-  bundle-squashfs = pkgs.callPackage ./bundle-squashfs {
-    inherit bundle-locked revstring;
-    inherit active-modules upgrade-maps;
+  bundle-locked-fn = { moduleIds }: pkgs.callPackage ./bundle-locked {
+    inherit moduleIds;
+    inherit revstring;
+  };
+
+  bundle-locked = bundle-locked-fn {
+    moduleIds = null;
+  };
+
+  bundle-squashfs-fn = { moduleIds }: pkgs.callPackage ./bundle-squashfs {
+    bundle-locked = bundle-locked-fn {
+      inherit moduleIds;
+    };
+    inherit active-modules upgrade-maps revstring;
+  };
+
+  bundle-squashfs = bundle-squashfs-fn {
+    moduleIds = null;
+  };
+
+  basic-bundle-locked = bundle-locked-fn {
+    moduleIds = ["python-3.10" "nodejs-18"];
+  };
+
+  basic-bundle-squashfs = bundle-squashfs-fn {
+    moduleIds = ["python-3.10" "nodejs-18"];
   };
 
 } // modules
