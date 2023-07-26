@@ -71,6 +71,7 @@ rec {
   };
 
   bundle-squashfs = bundle-squashfs-fn {
+    moduleIds = [ "python-3.10" "nodejs-18" ];
     inherit upgrade-maps;
   };
 
