@@ -6,7 +6,7 @@ let
   modules = self.modules;
   revstring_long = self.rev or "dirty";
   revstring = builtins.substring 0 7 revstring_long;
-  all-modules = builtins.fromJSON (builtins.readFile ./modules.json);
+  all-modules = builtins.fromJSON (builtins.readFile ../modules.json);
 in
 rec {
   default = moduleit;
