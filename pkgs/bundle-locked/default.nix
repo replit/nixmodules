@@ -19,8 +19,8 @@ let
   modules = builtins.mapAttrs
     (name: module:
       let
-        moduleId = elemAt (strings.splitString ":" name) 0;
-        m = (flakes.${module.commit}).modules.${moduleId};
+        module-id = elemAt (strings.splitString ":" name) 0;
+        m = (flakes.${module.commit}).modules.${module-id};
       in
       # verify the outpath matches what the lockfile expects
       assert m.outPath == module.path;
