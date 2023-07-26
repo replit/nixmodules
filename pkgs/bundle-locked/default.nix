@@ -1,11 +1,11 @@
-{ pkgs, revstring, }:
+{ pkgs
+, revstring
+, modulesLocks
+}:
 
 with pkgs.lib;
 
 let
-
-  modulesLocks = (builtins.fromJSON (builtins.readFile ../../modules.json));
-
   commits = unique (catAttrs "commit" (builtins.attrValues modulesLocks));
 
   flakes = builtins.listToAttrs (

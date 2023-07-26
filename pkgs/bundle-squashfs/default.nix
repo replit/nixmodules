@@ -10,13 +10,12 @@
 , jq
 , upgrade-maps
 , active-modules
+, registry
 }:
 
 let
 
   label = "nixmodules-${revstring}";
-
-  registry = ../../modules.json;
 
 in
 
@@ -29,15 +28,16 @@ derivation {
   unsafeDiscardReferences.out = true;
   outputs = [ "out" ];
   env = {
-    inherit label registry;
+    inherit label;
     PATH = lib.makeBinPath [
       coreutils
       findutils
       squashfsTools
       jq
     ];
+    registry = builtins.toJSON registry;
     inherit upgrade-maps;
     inherit active-modules;
-    diskClosureInfo = closureInfo { rootPaths = [ bundle-locked registry ]; };
+    diskClosureInfo = closureInfo { rootPaths = [ bundle-locked ]; };
   };
 }

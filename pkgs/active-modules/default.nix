@@ -13,7 +13,7 @@
 # or
 # nix eval .#active-modules.meta.info --json | jq
 
-{ self, pkgs }:
+{ self, pkgs, all-modules }:
 with pkgs.lib;
 let
   active-modules = self.modules;
@@ -26,7 +26,6 @@ let
     in
     version
   );
-  all-modules = (builtins.fromJSON (builtins.readFile ../../modules.json));
   all-modules-list = (attrsets.mapAttrsToList (name: value: { registry-id = name; commit = value.commit; path = value.path; }) all-modules);
   active-modules-registry =
     foldr
