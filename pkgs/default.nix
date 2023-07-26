@@ -71,6 +71,8 @@ rec {
   };
 
   custom-bundle-squashfs = bundle-squashfs-fn {
+    # customize these IDs for dev. They can be like "python-3.10:v10-20230711-6807d41" or "python-3.10"
+    # in goval dir (next to nixmodules), run `make custom-nixmodules-disk` to use this disk in conman
     moduleIds = [ "python-3.10" "nodejs-18" ];
   };
 
