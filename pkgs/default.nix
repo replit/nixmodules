@@ -43,7 +43,7 @@ rec {
   };
 
   bundle-locked = bundle-locked-fn {
-    moduleIds = null;
+    modulesLocks = all-modules;
   };
 
   bundle-squashfs-fn = { moduleIds }:
