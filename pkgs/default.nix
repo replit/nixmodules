@@ -70,7 +70,7 @@ rec {
     moduleIds = null;
   };
 
-  basic-bundle-squashfs = bundle-squashfs-fn {
+  custom-bundle-squashfs = bundle-squashfs-fn {
     moduleIds = [ "python-3.10" "nodejs-18" ];
   };
 
