@@ -46,11 +46,12 @@ rec {
     moduleIds = null;
   };
 
-  bundle-squashfs-fn = { moduleIds }: 
-    let modulesLocks = import ./filter-modules-locks {
-      inherit pkgs;
-      inherit moduleIds;
-    };
+  bundle-squashfs-fn = { moduleIds }:
+    let
+      modulesLocks = import ./filter-modules-locks {
+        inherit pkgs;
+        inherit moduleIds;
+      };
     in
     pkgs.callPackage ./bundle-squashfs {
       bundle-locked = bundle-locked-fn {

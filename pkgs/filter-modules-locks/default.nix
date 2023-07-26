@@ -1,5 +1,5 @@
-{ pkgs,
-  moduleIds ? null
+{ pkgs
+, moduleIds ? null
   # moduleIds is a list of fully or partially resolved module IDs, 
   #   or null which means include all module IDs.
   # fully resolved module ID ex: ["php-8.1:v1-20230525-c48c43c" "python-3.10:v10-20230711-6807d41"]
@@ -60,4 +60,5 @@ let
         )
         { }
         moduleIds;
-  in filteredModulesLocks
+in
+filteredModulesLocks
