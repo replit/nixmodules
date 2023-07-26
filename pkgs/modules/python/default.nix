@@ -23,6 +23,18 @@ let
     '';
   };
 
+  pip-wrapper = pkgs.stdenvNoCC.mkDerivation {
+    name = "pip-wrapper";
+    buildInputs = [ pkgs.makeWrapper ];
+
+    buildCommand = ''
+      mkdir -p $out/bin
+      makeWrapper ${pip}/bin/pip $out/bin/pip \
+        --set LD_LIBRARY_PATH "${python-ld-library-path}" \
+        --prefix PYTHONPATH : "${pypkgs.setuptools}/${python.sitePackages}"
+    '';
+  };
+
   poetry = pkgs.callPackage ../../poetry {
     inherit python;
     inherit pypkgs;
@@ -115,7 +127,7 @@ in
 
   packages = [
     python3-wrapper
-    pip
+    pip-wrapper
     poetry-wrapper
     run-prybar
   ];
@@ -194,7 +206,7 @@ in
   replit.env =
     let userbase = "$REPL_HOME/${pylibs-dir}";
     in {
-      PYTHONPATH = "${userbase}/${python.sitePackages}";
+      PYTHONPATH = "${python}/lib/python${community-version}:${userbase}/${python.sitePackages}";
       PIP_CONFIG_FILE = pip-config.outPath;
       POETRY_CONFIG_DIR = poetry-config.outPath;
       POETRY_VIRTUALENVS_CREATE = "0";
