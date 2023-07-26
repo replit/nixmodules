@@ -65,9 +65,9 @@ rec {
   bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle-image revstring; };
 
   bundle-locked = bundle-locked-fn {
-      modulesLocks = import ./filter-modules-locks {
-        inherit pkgs;
-      };
+    modulesLocks = import ./filter-modules-locks {
+      inherit pkgs;
+    };
   };
 
   bundle-squashfs = bundle-squashfs-fn {
