@@ -6,6 +6,7 @@ let
   modules = self.modules;
   revstring_long = self.rev or "dirty";
   revstring = builtins.substring 0 7 revstring_long;
+  all-modules = builtins.fromJSON (builtins.readFile ./modules.json);
 in
 rec {
   default = moduleit;
@@ -22,6 +23,7 @@ rec {
   active-modules = import ./active-modules {
     inherit pkgs;
     inherit self;
+    inherit all-modules;
   };
 
   upgrade-maps = import ./upgrade-maps {
@@ -35,8 +37,8 @@ rec {
 
   bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle-image revstring; };
 
-  bundle-locked-fn = { moduleIds }: pkgs.callPackage ./bundle-locked {
-    inherit moduleIds;
+  bundle-locked-fn = { modulesLocks }: pkgs.callPackage ./bundle-locked {
+    inherit modulesLocks;
     inherit revstring;
   };
 
@@ -44,12 +46,24 @@ rec {
     moduleIds = null;
   };
 
-  bundle-squashfs-fn = { moduleIds }: pkgs.callPackage ./bundle-squashfs {
-    bundle-locked = bundle-locked-fn {
+  bundle-squashfs-fn = { moduleIds }: 
+    let modulesLocks = import ./filter-modules-locks {
+      inherit pkgs;
       inherit moduleIds;
     };
-    inherit active-modules upgrade-maps revstring;
-  };
+    in
+    pkgs.callPackage ./bundle-squashfs {
+      bundle-locked = bundle-locked-fn {
+        inherit modulesLocks;
+      };
+      active-modules = import ./active-modules {
+        inherit pkgs;
+        inherit self;
+        all-modules = modulesLocks;
+      };
+      registry = modulesLocks;
+      inherit upgrade-maps revstring;
+    };
 
   bundle-squashfs = bundle-squashfs-fn {
     moduleIds = null;

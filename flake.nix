@@ -46,5 +46,31 @@
         inherit pkgs;
         inherit pkgs-unstable;
       };
+      debug = 
+        let
+        revstring = "dirty";
+        modulesLocks = import ./pkgs/filter-modules-locks {
+          inherit pkgs;
+          moduleIds = ["python-3.10"];
+        };
+        active-modules = import ./pkgs/active-modules {
+          inherit pkgs;
+          inherit self;
+          all-modules = modulesLocks;
+        };
+        bundle-locked = pkgs.callPackage ./pkgs/bundle-locked {
+          inherit modulesLocks;
+          inherit revstring;
+        };
+        upgrade-maps = import ./pkgs/upgrade-maps {
+          inherit pkgs;
+        };
+        in 
+        pkgs.callPackage ./pkgs/bundle-squashfs {
+          inherit bundle-locked;
+          inherit active-modules;
+          registry = modulesLocks;
+          inherit upgrade-maps revstring;
+        };
     };
 }
