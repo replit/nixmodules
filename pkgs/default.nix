@@ -7,6 +7,32 @@ let
   revstring_long = self.rev or "dirty";
   revstring = builtins.substring 0 7 revstring_long;
   all-modules = builtins.fromJSON (builtins.readFile ../modules.json);
+
+  bundle-locked-fn = { modulesLocks }: pkgs.callPackage ./bundle-locked {
+    inherit modulesLocks;
+    inherit revstring;
+  };
+
+  bundle-squashfs-fn = { moduleIds ? null, upgrade-maps }:
+    let
+      modulesLocks = import ./filter-modules-locks {
+        inherit pkgs;
+        inherit moduleIds;
+      };
+    in
+    pkgs.callPackage ./bundle-squashfs {
+      bundle-locked = bundle-locked-fn {
+        inherit modulesLocks;
+      };
+      active-modules = import ./active-modules {
+        inherit pkgs;
+        inherit self;
+        all-modules = modulesLocks;
+      };
+      registry = modulesLocks;
+      inherit upgrade-maps revstring;
+    };
+
 in
 rec {
   default = moduleit;
@@ -30,6 +56,7 @@ rec {
     inherit pkgs;
   };
 
+
   bundle-image = pkgs.callPackage ./bundle-image {
     inherit bundle-locked revstring;
     inherit active-modules upgrade-maps;
@@ -37,37 +64,14 @@ rec {
 
   bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle-image revstring; };
 
-  bundle-locked-fn = { modulesLocks }: pkgs.callPackage ./bundle-locked {
-    inherit modulesLocks;
-    inherit revstring;
-  };
-
   bundle-locked = bundle-locked-fn {
-    modulesLocks = all-modules;
-  };
-
-  bundle-squashfs-fn = { moduleIds }:
-    let
       modulesLocks = import ./filter-modules-locks {
         inherit pkgs;
-        inherit moduleIds;
       };
-    in
-    pkgs.callPackage ./bundle-squashfs {
-      bundle-locked = bundle-locked-fn {
-        inherit modulesLocks;
-      };
-      active-modules = import ./active-modules {
-        inherit pkgs;
-        inherit self;
-        all-modules = modulesLocks;
-      };
-      registry = modulesLocks;
-      inherit upgrade-maps revstring;
-    };
+  };
 
   bundle-squashfs = bundle-squashfs-fn {
-    moduleIds = null;
+    inherit upgrade-maps;
   };
 
   custom-bundle-squashfs = bundle-squashfs-fn {
@@ -75,6 +79,7 @@ rec {
     # publish your feature branch first and make sure modules.json is current, then
     # in goval dir (next to nixmodules), run `make custom-nixmodules-disk` to use this disk in conman
     moduleIds = [ "python-3.10" "nodejs-18" ];
+    inherit upgrade-maps;
   };
 
 } // modules
