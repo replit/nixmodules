@@ -310,5 +310,9 @@
   "pyright-extended:v4-20230717-2dadc92": {
     "commit": "2dadc923fd0e86eedf75b8693c32864a91800093",
     "path": "/nix/store/1d3768kwnppkphcriffq8w4aa8c2cric-replit-module-pyright-extended"
+  },
+  "svelte-kit-node-20:v1-20230724-46059dd": {
+    "commit": "46059dda60c00cc603c38265f100f5236476ebc5",
+    "path": "/nix/store/v1lrwh5r88hc56a6kkjyahahlg0wvqyb-replit-module-svelte-kit-node-20"
   }
 }
