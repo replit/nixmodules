@@ -11,12 +11,14 @@ let
       pypkgs = pkgs.python310Packages;
     }))
     (mkModule ./pyright-extended)
+
     (mkModule (import ./nodejs {
       nodejs = pkgs.nodejs-18_x;
     }))
     (mkModule (import ./nodejs {
       nodejs = pkgs.nodejs_20;
     }))
+
     (mkModule ./go)
     (mkModule ./rust)
     (mkModule ./swift)
@@ -33,6 +35,7 @@ let
     (mkModule ./qbasic)
     (mkModule ./R)
     (mkModule ./ruby)
+    (mkModule ./svelte-kit)
     (mkModule ./web)
   ];
 
