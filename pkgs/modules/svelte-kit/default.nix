@@ -3,11 +3,6 @@
 {
   id = "svelte-kit-node-20";
   name = "SvelteKit with Node.js 20 Tools";
-  imports = [
-    (import ../typescript-language-server {
-      nodepkgs = pkgs-unstable.nodePackages;
-    })
-  ];
 
   packages = with pkgs-unstable; [
     nodejs
@@ -25,11 +20,6 @@
 
       start = "${pkgs-unstable.nodejs}/bin/npm run dev";
     };
-
-    languageServers.typescript-language-server.extensions = [
-      ".ts"
-      ".js"
-    ];
 
     languageServers.svelte-language-server = {
       name = "Svelte Language Server";
