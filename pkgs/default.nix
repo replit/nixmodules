@@ -13,6 +13,17 @@ let
     inherit revstring;
   };
 
+  mkPhonyOCI = pkgs.callPackage ./mk-phony-oci { ztoc-rs = self.inputs.ztoc-rs.packages.x86_64-linux.default; };
+
+  mkPhonyOCIs = { moduleIds ? null }: pkgs.callPackage ./mk-phony-ocis {
+    inherit mkPhonyOCI;
+    modulesLocks = import ./filter-modules-locks {
+      inherit pkgs;
+      inherit moduleIds;
+    };
+    inherit revstring;
+  };
+
   bundle-squashfs-fn = { moduleIds ? null, upgrade-maps }:
     let
       modulesLocks = import ./filter-modules-locks {
@@ -82,5 +93,9 @@ rec {
     moduleIds = [ "python-3.10" "nodejs-18" ];
     inherit upgrade-maps;
   };
+
+  custom-bundle-phony-ocis = mkPhonyOCIs { moduleIds = [ "nodejs-18" ]; };
+
+  bundle-phony-ocis = mkPhonyOCIs { };
 
 } // modules
