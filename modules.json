@@ -243,6 +243,10 @@
     "commit": "64244b3b2897e11a62f63107af95367aee244ef2",
     "path": "/nix/store/i1saik2bhi0wyaq78cgl044qhy1jy7gr-replit-module-python-3.10"
   },
+  "python-3.10:v17-20230803-f57c5cc": {
+    "commit": "f57c5cc1d8a9393b18f28bdb5e49214e6804bd9e",
+    "path": "/nix/store/fv2xdkgsvcxyb3zkmk0vn5cqrcry1vhc-replit-module-python-3.10"
+  },
   "qbasic:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/4n4raazspqy2zgawkkyaqc9xapl1f5sz-replit-module-qbasic"
