@@ -5,6 +5,10 @@ let
 
   pylibs-dir = ".pythonlibs";
 
+  userbase = "$REPL_HOME/${pylibs-dir}";
+
+  ld-linux-so = "${pkgs.glibc}/lib/ld-linux-x86-64.so.2";
+
   pip = pkgs.callPackage ../../pip {
     inherit pypkgs;
   };
@@ -29,9 +33,15 @@ let
 
     buildCommand = ''
       mkdir -p $out/bin
-      makeWrapper ${pip}/bin/pip $out/bin/pip \
-        --set LD_LIBRARY_PATH "${python-ld-library-path}" \
-        --prefix PYTHONPATH : "${pypkgs.setuptools}/${python.sitePackages}"
+
+      cat <<EOF > $out/bin/pip
+      #!/bin/sh
+      export PYTHONPATH="${pypkgs.setuptools}/${python.sitePackages}:$REPL_HOME/${pylibs-dir}:$PYTHONPATH"
+      exec ${ld-linux-so} --library-path "${python-ld-library-path}" \
+        ${python}/bin/python3 ${pip}/bin/.pip-wrapped "\$@"
+      EOF
+
+      chmod +x $out/bin/pip
     '';
   };
 
@@ -91,9 +101,15 @@ let
 
     buildCommand = ''
       mkdir -p $out/bin
-      makeWrapper ${python}/bin/python3 $out/bin/python3 \
-        --set LD_LIBRARY_PATH "${python-ld-library-path}" \
-        --prefix PYTHONPATH : "${pypkgs.setuptools}/${python.sitePackages}"
+
+      cat <<EOF > $out/bin/python3
+      #!/bin/sh
+      export PYTHONPATH="${pypkgs.setuptools}/${python.sitePackages}"
+      exec ${ld-linux-so} --library-path "${python-ld-library-path}" \
+        ${python}/bin/python3 "\$@"
+      EOF
+
+      chmod +x $out/bin/python3
     
       ln -s $out/bin/python3 $out/bin/python
       ln -s $out/bin/python3 $out/bin/python${community-version}
@@ -101,10 +117,11 @@ let
   };
 
   run-prybar = pkgs.writeShellScriptBin "run-prybar" ''
-    export LD_LIBRARY_PATH="${python-ld-library-path}"
     export PYTHONPATH="$PYTHONPATH:${pypkgs.setuptools}/${python.sitePackages}"
-
-    ${stderred}/bin/stderred -- ${prybar-python}/bin/prybar-python310 -q --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" -i ''$1
+    export STDERRED_PATH="${pkgs.stderred}/lib/libstderred.so"
+    
+    exec ${ld-linux-so} --library-path "${python-ld-library-path}" \
+      ${stderred}/bin/.stderred-wrapped -- ${prybar-python}/bin/prybar-python310 -q --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" -i ''$1
   '';
 
   poetry-wrapper = pkgs.stdenvNoCC.mkDerivation {
@@ -204,8 +221,7 @@ in
   };
 
   replit.env =
-    let userbase = "$REPL_HOME/${pylibs-dir}";
-    in {
+    {
       PYTHONPATH = "${python}/lib/python${community-version}:${userbase}/${python.sitePackages}";
       PIP_CONFIG_FILE = pip-config.outPath;
       POETRY_CONFIG_DIR = poetry-config.outPath;
