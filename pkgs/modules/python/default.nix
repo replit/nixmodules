@@ -209,7 +209,14 @@ in
       PYTHONPATH = "${python}/lib/python${community-version}:${userbase}/${python.sitePackages}";
       PIP_CONFIG_FILE = pip-config.outPath;
       POETRY_CONFIG_DIR = poetry-config.outPath;
+      POETRY_CACHE_DIR = "$REPL_HOME/.cache/pypoetry";
       POETRY_VIRTUALENVS_CREATE = "0";
+      POETRY_INSTALLER_MODERN_INSTALLATION = "0";
+      POETRY_PIP_USE_PIP_CACHE = "1";
+      POETRY_PIP_NO_ISOLATE = "1";
+      POETRY_PIP_NO_PREFIX = "1";
+      POETRY_PIP_FROM_PATH = "1";
+      POETRY_USE_USER_SITE = "1";
       PYTHONUSERBASE = userbase;
       PATH = "${userbase}/bin";
     };
