@@ -3,11 +3,11 @@ let
 
   myPoetry = pkgs.stdenv.mkDerivation {
     name = "poetry-in-venv";
-    version = "1.1.13";
+    version = "1.5.1";
 
     src = builtins.fetchTarball {
-      url = https://storage.googleapis.com/poetry-bundles/poetry-1.1.14-bundle.tgz;
-      sha256 = "sha256:0qg41d4gvlmsfzqz8vsh4spzxvky9y750jp1h67v5ips1xzalq4w";
+      url = https://storage.googleapis.com/poetry-bundles/poetry-1.5.1-bundle.tgz;
+      sha256 = "sha256:1qh1w1dr2wvqla4cdxcgvl9xipcyk31mapivcp66v92mkvpayygk";
     };
 
     buildInputs = [ pypkgs.pip ];
