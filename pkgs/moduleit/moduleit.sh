@@ -25,6 +25,11 @@ fi
 echo "nix-build ${args[@]}"
 nix-build "${args[@]}"
 
+if [ $? -ne 0 ]
+then
+  exit 1
+fi
+
 if [ -L "${OUTPUT_FILE}" ]; then
   # If output link was provided,
   # materialize the output as an actual file containing the JSON config
