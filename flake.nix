@@ -6,6 +6,8 @@
   inputs.prybar.inputs.nixpkgs.follows = "nixpkgs";
   inputs.java-language-server.url = "github:replit/java-language-server";
   inputs.java-language-server.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.ztoc-rs.url = "github:replit/ztoc-rs";
+  inputs.ztoc-rs.inputs.nixpkgs.follows = "nixpkgs";
 
   outputs = { self, nixpkgs, nixpkgs-unstable, prybar, java-language-server, ... }:
     let
