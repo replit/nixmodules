@@ -26,6 +26,7 @@ let
     (mkModule ./c)
     (mkModule ./cpp)
     (mkModule ./dart)
+    (mkModule ./gcloud)
     (mkModule ./clojure)
     (mkModule ./dotnet)
     (mkModule ./haskell)
