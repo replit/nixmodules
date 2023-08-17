@@ -334,5 +334,9 @@
   "svelte-kit-node-20:v1-20230724-46059dd": {
     "commit": "46059dda60c00cc603c38265f100f5236476ebc5",
     "path": "/nix/store/v1lrwh5r88hc56a6kkjyahahlg0wvqyb-replit-module-svelte-kit-node-20"
+  },
+  "gcloud:v1-20230815-e6e4431": {
+    "commit": "e6e4431a8f1d71ec0664ce97828bede1608dcfd1",
+    "path": "/nix/store/q67zzk6y4zzw7k6nc2plql97z1yv7xwx-replit-module-gcloud"
   }
 }
