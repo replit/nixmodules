@@ -1,4 +1,4 @@
-# Repl.it Custom Poetry Nix package
+# Replit Custom Poetry Nix package
 
 ## Why do we need this?
 
