@@ -1,6 +1,6 @@
-# Repl.it Nix Modules
+# Replit Nix Modules
 
-This repository holds Repl.it's Nix modules.
+This repository holds Replit's Nix modules.
 
 * Each module is located as a folder under `pkgs/modules`
 * `pkgs/modules/default.nix` specifies a list of the active modules, some of which are parameterized with the version of the runtime or compiler
