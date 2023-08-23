@@ -91,6 +91,10 @@
     "commit": "3ef18cfc1488fa6c54a16301919fc6d54813a1c4",
     "path": "/nix/store/3hrs68jb7hb25jw14yzgp2m6w4hilvbq-replit-module-java-graalvm22.3"
   },
+  "java-graalvm22.3:v4-20230823-ef0f43c": {
+    "commit": "ef0f43cce2d36e3796122bccbf336059790fb319",
+    "path": "/nix/store/wp3cmjavqdfwkz5q1irmkmd0apffnk0r-replit-module-java-graalvm22.3"
+  },
   "lua-5.2:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/d6a5wl9pyla9si60plaxzmhqggywkcxy-replit-module-lua-5.2"
