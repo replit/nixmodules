@@ -59,6 +59,8 @@ let
 
     "rust" = { to = "rust-1.69:v1-20230525-c48c43c"; auto = true; };
 
+    "svelte-kit-node-20:v1-20230724-46059dd" = { to = "svelte-kit-node-20:v2-20230728-64881db"; auto = true; };
+
     "swift" = { to = "swift-5.6:v1-20230525-c48c43c"; auto = true; };
   };
 
