@@ -15,6 +15,10 @@ let
 
     "go" = { to = "go-1.19:v1-20230525-c48c43c"; auto = true; };
 
+    "java-graalvm22.3:v1-20230525-c48c43c" = { to = "java-graalvm22.3:v2-20230623-0b7a606"; auto = true; };
+    "java-graalvm22.3:v2-20230623-0b7a606" = { to = "java-graalvm22.3:v3-20230707-3ef18cf"; auto = true; };
+    "java-graalvm22.3:v3-20230707-3ef18cf" = { to = "java-graalvm22.3:v4-20230823-ef0f43c"; auto = true; };
+
     "nodejs-14:v1-20230525-c48c43c" = { to = "nodejs-14:v2-20230605-9621162"; auto = true; };
     "nodejs-14:v2-20230605-9621162" = { to = "nodejs-18:v2-20230605-9621162"; changelog = "Node.js 14 is deprecated. Upgrade to 18!"; };
 
