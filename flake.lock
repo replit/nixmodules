@@ -220,11 +220,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1678987480,
-        "narHash": "sha256-DIr9S+4UTDjg2LKjEgBhByv0SSrdol0PsUroJFND1wI=",
+        "lastModified": 1692732389,
+        "narHash": "sha256-32ODTGZ5Mgj9zoTerSbzVUFRnvDTvCeIGwxmDsf2DTU=",
         "owner": "replit",
         "repo": "ztoc-rs",
-        "rev": "389266216adec144a9ae21c7f4c765990d2e2cf5",
+        "rev": "a170dec3756c013c365340273052286aa7b6a38a",
         "type": "github"
       },
       "original": {
