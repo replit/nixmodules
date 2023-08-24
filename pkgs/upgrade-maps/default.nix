@@ -50,6 +50,7 @@ let
     "python-3.10:v16-20230726-64244b3" = { to = "python-3.10:v17-20230803-f57c5cc"; auto = true; };
     "python-3.10:v17-20230803-f57c5cc" = { to = "python-3.10:v18-20230807-322e88b"; auto = true; };
     "python-3.10:v18-20230807-322e88b" = { to = "python-3.10:v19-20230816-9932e6a"; auto = true; };
+    "python-3.10:v19-20230816-9932e6a" = { to = "python-3.10:v20-20230824-f46249a"; auto = true; };
 
     "pyright-extended:v1-20230707-0c33b22" = { to = "pyright-extended:v2-20230711-eb29cca"; auto = true; };
     "pyright-extended:v2-20230711-eb29cca" = { to = "pyright-extended:v3-20230712-4ba5dba"; auto = true; };
