@@ -16,24 +16,34 @@ let
       user = yes
       disable-pip-version-check = yes
       index-url = https://package-proxy.replit.com/pypi/simple/
-      
+
       [install]
       use-feature = content-addressable-pool
       content-addressable-pool-symlink = yes
     '';
   };
 
-  pip-wrapper = pkgs.stdenvNoCC.mkDerivation {
-    name = "pip-wrapper";
-    buildInputs = [ pkgs.makeWrapper ];
+  pythonWrapper = { bin, name, aliases ? [ ] }:
+    let
+      ldLibraryPathConvertWrapper = pkgs.writeShellScriptBin name ''
+        export LD_LIBRARY_PATH=''${PYTHON_LD_LIBRARY_PATH}
+        exec "${bin}" "$@"
+      '';
+    in
+    pkgs.stdenvNoCC.mkDerivation {
+      name = "${name}-wrapper";
+      buildInputs = [ pkgs.makeWrapper ];
 
-    buildCommand = ''
-      mkdir -p $out/bin
-      makeWrapper ${pip}/bin/pip $out/bin/pip \
-        --set LD_LIBRARY_PATH "${python-ld-library-path}" \
-        --prefix PYTHONPATH : "${pypkgs.setuptools}/${python.sitePackages}"
-    '';
-  };
+      buildCommand = ''
+        mkdir -p $out/bin
+        makeWrapper ${ldLibraryPathConvertWrapper}/bin/${name} $out/bin/${name} \
+          --set-default PYTHON_LD_LIBRARY_PATH "${python-ld-library-path}" \
+          --prefix PYTHONPATH : "${pypkgs.setuptools}/${python.sitePackages}"
+      '' + lib.concatMapStringsSep "\n" (s: "ln -s $out/bin/${name} $out/bin/${s}") aliases;
+
+    };
+
+  pip-wrapper = pythonWrapper { bin = "${pip}/bin/pip"; name = "pip"; };
 
   poetry = pkgs.callPackage ../../poetry {
     inherit python;
@@ -85,38 +95,15 @@ let
     # Needed for pygame
   ] ++ (with pkgs.xorg; [ libXext libXinerama libXcursor libXrandr libXi libXxf86vm ]));
 
-  python3-wrapper = pkgs.stdenvNoCC.mkDerivation {
-    name = "python3-wrapper";
-    buildInputs = [ pkgs.makeWrapper ];
+  python3-wrapper = pythonWrapper { bin = "${python}/bin/python3"; name = "python3"; aliases = [ "python" "python${community-version}" ]; };
 
-    buildCommand = ''
-      mkdir -p $out/bin
-      makeWrapper ${python}/bin/python3 $out/bin/python3 \
-        --set LD_LIBRARY_PATH "${python-ld-library-path}" \
-        --prefix PYTHONPATH : "${pypkgs.setuptools}/${python.sitePackages}"
-    
-      ln -s $out/bin/python3 $out/bin/python
-      ln -s $out/bin/python3 $out/bin/python${community-version}
-    '';
-  };
-
-  run-prybar = pkgs.writeShellScriptBin "run-prybar" ''
-    export LD_LIBRARY_PATH="${python-ld-library-path}"
-    export PYTHONPATH="$PYTHONPATH:${pypkgs.setuptools}/${python.sitePackages}"
-
+  run-prybar-bin = pkgs.writeShellScriptBin "run-prybar" ''
     ${stderred}/bin/stderred -- ${prybar-python}/bin/prybar-python310 -q --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" -i ''$1
   '';
 
-  poetry-wrapper = pkgs.stdenvNoCC.mkDerivation {
-    name = "poetry-wrapper";
-    buildInputs = [ pkgs.makeWrapper ];
+  run-prybar = pythonWrapper { bin = "${run-prybar-bin}/bin/run-prybar"; name = "run-prybar"; };
 
-    buildCommand = ''
-      mkdir -p $out/bin
-      makeWrapper ${poetry}/bin/poetry $out/bin/poetry \
-        --set PYTHONPATH "${pypkgs.setuptools}/${python.sitePackages}"
-    '';
-  };
+  poetry-wrapper = pythonWrapper { bin = "${poetry}/bin/poetry"; name = "poetry"; };
 
   pyright-extended = pkgs.callPackage ../../pyright-extended { };
 
@@ -218,6 +205,10 @@ in
       POETRY_PIP_FROM_PATH = "1";
       POETRY_USE_USER_SITE = "1";
       PYTHONUSERBASE = userbase;
+      # Even though it is set-default in the wrapper, add it to the
+      # environment too, so that when someone wants to override it,
+      # they can keep the defaults if they want to.
+      PYTHON_LD_LIBRARY_PATH = python-ld-library-path;
       PATH = "${userbase}/bin";
     };
 }
