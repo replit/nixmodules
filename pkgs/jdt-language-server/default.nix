@@ -76,7 +76,7 @@ stdenv.mkDerivation rec {
       makeWrapper ${jdk}/bin/java $out/bin/jdt-language-server \
         --run "mkdir -p ${runtimePath}" \
         --run "install -Dm 1777 -t ${runtimePath}/config $out/share/config/*" \
-        --run 'MEMORY_LIMIT_BYTES=$(jq ".memorySoftLimitBytes" /repl/stats/resources.json)' \
+        --run 'MEMORY_LIMIT_BYTES=$(${pkgs.jq}/bin/jq ".memorySoftLimitBytes" /repl/stats/resources.json)' \
         --run 'MEMORY_LIMIT_MB=$(expr $MEMORY_LIMIT_BYTES / 1048576)' \
         --run 'LSP_MAX_HEAP=$(expr $MEMORY_LIMIT_MB / 4)' \
         --run 'LSP_MAX_HEAP=$(( $LSP_MAX_HEAP > 512 ? $LSP_MAX_HEAP : 512 ))' \
