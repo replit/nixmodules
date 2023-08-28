@@ -10,6 +10,10 @@ let
       python = pkgs.python310Full;
       pypkgs = pkgs.python310Packages;
     }))
+    (mkModule (import ./python {
+      python = pkgs.python311Full;
+      pypkgs = pkgs.python311Packages;
+    }))
     (mkModule ./pyright-extended)
 
     (mkModule (import ./nodejs {
