@@ -350,5 +350,9 @@
   "gcloud:v1-20230815-e6e4431": {
     "commit": "e6e4431a8f1d71ec0664ce97828bede1608dcfd1",
     "path": "/nix/store/q67zzk6y4zzw7k6nc2plql97z1yv7xwx-replit-module-gcloud"
+  },
+  "python-3.11:v1-20230828-e4baa21": {
+    "commit": "e4baa21ed52b51e2a4963fc8136f211a2b277455",
+    "path": "/nix/store/brg4qlipxxxnaqn8r69633a5vqa7lwdd-replit-module-python-3.11"
   }
 }

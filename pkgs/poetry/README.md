@@ -12,6 +12,14 @@ Previously/currently we had an inelegent way of pre-installing these packages in
 of the Repl in replspace. See https://replit.com/@util/Pythonify for details. Instead of this, we want to have one install path via Nix that gets these two custom programs into a Repl without
 having to install them into replspace. The python Nix module will bring it all together.
 
+## Add A new Python Version
+
+If you want to add a new version of Python to Nix modules, you'll need to create a Poetry bundle specifically
+for it. To do so, follow the instructions at https://github.com/replit/poetry#bundle and then
+Added a new file named `poetry-py<python version>.nix` to this directory using the existing ones as
+examples. Tip: empty the `sha256` field before attempting to build it, and then update it with
+the sha value reported by Nix.
+
 ## Problems
 
 Things that make this difficult are:
