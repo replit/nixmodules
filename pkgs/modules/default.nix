@@ -28,16 +28,15 @@ let
       nodejs = pkgs.nodejs_20;
     }))
 
-    (mkModule ./go)
-    (mkModule ./rust)
-    (mkModule ./swift)
+    (mkModule ./apl)
     (mkModule ./bun)
     (mkModule ./c)
+    (mkModule ./clojure)
     (mkModule ./cpp)
     (mkModule ./dart)
-    (mkModule ./gcloud)
-    (mkModule ./clojure)
     (mkModule ./dotnet)
+    (mkModule ./gcloud)
+    (mkModule ./go)
     (mkModule ./haskell)
     (mkModule ./java)
     (mkModule ./lua)
@@ -45,7 +44,9 @@ let
     (mkModule ./qbasic)
     (mkModule ./R)
     (mkModule ./ruby)
+    (mkModule ./rust)
     (mkModule ./svelte-kit)
+    (mkModule ./swift)
     (mkModule ./web)
   ] ++ builtins.map mkModule (import ./migrate2nix all-pkgs);
 
