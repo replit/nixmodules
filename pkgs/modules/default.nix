@@ -28,12 +28,18 @@ let
       nodejs = pkgs.nodejs_20;
     }))
 
+    (mkModule (import ./c {
+      clang = pkgs.clang_12;
+    }))
+    (mkModule (import ./c {
+      clang = pkgs.clang_14;
+    }))
+
     (mkModule ./apl)
     (mkModule ./bash)
     (mkModule ./basic)
     (mkModule ./brainfuck)
     (mkModule ./bun)
-    (mkModule ./c)
     (mkModule ./clojure)
     (mkModule ./cpp)
     (mkModule ./dart)
