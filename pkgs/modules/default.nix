@@ -6,6 +6,7 @@ let
   };
 
   modulesList = [
+    (mkModule ./python/python2.nix)
     (mkModule (import ./python {
       python = pkgs.python38Full;
       pypkgs = pkgs.python38Packages;

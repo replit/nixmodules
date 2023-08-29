@@ -1,6 +1,10 @@
 { python, pypkgs }:
 { pkgs, lib, ... }:
 let
+  inherit (import ./wrap.nix { inherit pkgs pypkgs python; })
+    python-ld-library-path
+    wrapPython;
+
   pythonVersion = lib.versions.majorMinor python.version;
 
   pylibs-dir = ".pythonlibs";
@@ -23,27 +27,7 @@ let
     '';
   };
 
-  pythonWrapper = { bin, name, aliases ? [ ] }:
-    let
-      ldLibraryPathConvertWrapper = pkgs.writeShellScriptBin name ''
-        export LD_LIBRARY_PATH=''${PYTHON_LD_LIBRARY_PATH}
-        exec "${bin}" "$@"
-      '';
-    in
-    pkgs.stdenvNoCC.mkDerivation {
-      name = "${name}-wrapper";
-      buildInputs = [ pkgs.makeWrapper ];
-
-      buildCommand = ''
-        mkdir -p $out/bin
-        makeWrapper ${ldLibraryPathConvertWrapper}/bin/${name} $out/bin/${name} \
-          --set-default PYTHON_LD_LIBRARY_PATH "${python-ld-library-path}" \
-          --prefix PYTHONPATH : "${pypkgs.setuptools}/${python.sitePackages}"
-      '' + lib.concatMapStringsSep "\n" (s: "ln -s $out/bin/${name} $out/bin/${s}") aliases;
-
-    };
-
-  pip-wrapper = pythonWrapper { bin = "${pip}/bin/pip"; name = "pip"; };
+  pip-wrapper = wrapPython { bin = "${pip}/bin/pip"; name = "pip"; };
 
   poetry = pkgs.callPackage (../../poetry/poetry-py + "${pythonVersion}.nix") {
     inherit python;
@@ -59,20 +43,6 @@ let
       default = true
     '';
     destination = "/conf.toml";
-  };
-
-  cppLibs = pkgs.stdenvNoCC.mkDerivation {
-    name = "cpplibs";
-    dontUnpack = true;
-    dontBuild = true;
-    installPhase = ''
-      runHook preInstall
-
-      mkdir -p $out/lib
-      cp ${pkgs.stdenv.cc.cc.lib}/lib/libstdc++* $out/lib
-
-      runHook postInstall
-    '';
   };
 
   prybar-python = pkgs.prybar.prybar-python310;
@@ -124,28 +94,17 @@ let
     };
   });
 
-  python-ld-library-path = pkgs.lib.makeLibraryPath ([
-    # Needed for pandas / numpy
-    cppLibs
-    pkgs.zlib
-    pkgs.glib
-    # Needed for matplotlib
-    pkgs.xorg.libX11
-    # Needed for pygame
-  ] ++ (with pkgs.xorg; [ libXext libXinerama libXcursor libXrandr libXi libXxf86vm ]));
-
-  python3-wrapper = pythonWrapper { bin = "${python}/bin/python3"; name = "python3"; aliases = [ "python" "python${pythonVersion}" ]; };
+  python3-wrapper = wrapPython { bin = "${python}/bin/python3"; name = "python3"; aliases = [ "python" "python${pythonVersion}" ]; };
 
   run-prybar-bin = pkgs.writeShellScriptBin "run-prybar" ''
     ${stderred}/bin/stderred -- ${prybar-python}/bin/prybar-python310 -q --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" -i ''$1
   '';
 
-  run-prybar = pythonWrapper { bin = "${run-prybar-bin}/bin/run-prybar"; name = "run-prybar"; };
+  run-prybar = wrapPython { bin = "${run-prybar-bin}/bin/run-prybar"; name = "run-prybar"; };
 
-  poetry-wrapper = pythonWrapper { bin = "${poetry}/bin/poetry"; name = "poetry"; };
+  poetry-wrapper = wrapPython { bin = "${poetry}/bin/poetry"; name = "poetry"; };
 
   pyright-extended = pkgs.callPackage ../../pyright-extended { };
-
 in
 {
   id = "python-${pythonVersion}";
