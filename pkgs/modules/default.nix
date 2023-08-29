@@ -7,6 +7,10 @@ let
 
   modulesList = [
     (mkModule (import ./python {
+      python = pkgs.python38Full;
+      pypkgs = pkgs.python38Packages;
+    }))
+    (mkModule (import ./python {
       python = pkgs.python310Full;
       pypkgs = pkgs.python310Packages;
     }))
