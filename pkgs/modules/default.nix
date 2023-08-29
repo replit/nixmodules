@@ -30,6 +30,7 @@ let
 
     (mkModule ./apl)
     (mkModule ./bash)
+    (mkModule ./basic)
     (mkModule ./bun)
     (mkModule ./c)
     (mkModule ./clojure)
