@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable }:
+{ pkgs, pkgs-unstable } @ all-pkgs:
 let
   mkModule = path: pkgs.callPackage ../moduleit/entrypoint.nix {
     configPath = path;
@@ -6,6 +6,10 @@ let
   };
 
   modulesList = [
+    (mkModule (import ./python {
+      python = pkgs.python38Full;
+      pypkgs = pkgs.python38Packages;
+    }))
     (mkModule (import ./python {
       python = pkgs.python310Full;
       pypkgs = pkgs.python310Packages;
@@ -42,7 +46,7 @@ let
     (mkModule ./ruby)
     (mkModule ./svelte-kit)
     (mkModule ./web)
-  ];
+  ] ++ builtins.map mkModule (import ./migrate2nix all-pkgs);
 
   modules = builtins.listToAttrs (
     map (module: { name = get-module-id module; value = module; }) modulesList
