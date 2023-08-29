@@ -2,6 +2,7 @@
   description = "Nix expressions for defining Replit development environments";
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
   inputs.nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+  inputs.nixpkgs-legacy.url = "github:nixos/nixpkgs/nixos-21.11";
   inputs.prybar.url = "github:replit/prybar";
   inputs.prybar.inputs.nixpkgs.follows = "nixpkgs";
   inputs.java-language-server.url = "github:replit/java-language-server";
@@ -9,7 +10,7 @@
   inputs.ztoc-rs.url = "github:replit/ztoc-rs";
   inputs.ztoc-rs.inputs.nixpkgs.follows = "nixpkgs";
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, prybar, java-language-server, ... }:
+  outputs = { self, nixpkgs, nixpkgs-legacy, nixpkgs-unstable, prybar, java-language-server, ... }:
     let
       mkPkgs = nixpkgs-spec: system: import nixpkgs-spec {
         inherit system;
@@ -21,6 +22,8 @@
       };
 
       pkgs = mkPkgs nixpkgs "x86_64-linux";
+
+      pkgs-legacy = mkPkgs nixpkgs-legacy "x86_64-linux";
 
       pkgs-unstable = mkPkgs nixpkgs-unstable "x86_64-linux";
     in
@@ -47,6 +50,7 @@
       modules = import ./pkgs/modules {
         inherit pkgs;
         inherit pkgs-unstable;
+        inherit pkgs-legacy;
       };
     };
 }

@@ -1,6 +1,11 @@
-{ pkgs, pkgs-unstable } @ all-pkgs:
+{ pkgs, pkgs-unstable, pkgs-legacy } @ all-pkgs:
 let
   mkModule = path: pkgs.callPackage ../moduleit/entrypoint.nix {
+    configPath = path;
+    inherit pkgs-unstable;
+  };
+
+  mkLegacyModule = path: pkgs-legacy.callPackage ../moduleit/entrypoint.nix {
     configPath = path;
     inherit pkgs-unstable;
   };
@@ -41,6 +46,7 @@ let
     (mkModule ./brainfuck)
     (mkModule ./bun)
     (mkModule ./clojure)
+    (mkLegacyModule ./clojure)
     (mkModule ./cpp)
     (mkModule ./dart)
     (mkModule ./dotnet)
