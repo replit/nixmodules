@@ -31,6 +31,7 @@ let
     (mkModule ./apl)
     (mkModule ./bash)
     (mkModule ./basic)
+    (mkModule ./brainfuck)
     (mkModule ./bun)
     (mkModule ./c)
     (mkModule ./clojure)
