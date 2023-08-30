@@ -78,6 +78,7 @@ let
     (mkLegacyModule ./deno)
     (mkModule ./elisp)
     (mkLegacyModule ./elixir)
+    (mkLegacyModule ./emoticon)
     (mkModule ./gcloud)
     (mkModule ./go)
     (mkModule ./haskell)
