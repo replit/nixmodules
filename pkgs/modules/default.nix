@@ -54,6 +54,7 @@ let
     (mkModule ./bun)
     (mkModule ./clojure)
     (mkLegacyModule ./clojure)
+    (mkLegacyModule ./crystal)
     (mkModule ./dart)
     (mkModule ./dotnet)
     (mkModule ./gcloud)
