@@ -1,6 +1,6 @@
+{ clang }:
 { pkgs, lib, ... }:
 let
-  clang = pkgs.clang_14;
   clang-compile = import ../../clang-compile {
     inherit pkgs;
     inherit clang;

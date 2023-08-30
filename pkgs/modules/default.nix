@@ -40,6 +40,13 @@ let
       clang = pkgs.clang_14;
     }))
 
+    (mkModule (import ./cpp {
+      clang = pkgs.clang_12;
+    }))
+    (mkModule (import ./cpp {
+      clang = pkgs.clang_14;
+    }))
+
     (mkModule ./apl)
     (mkModule ./bash)
     (mkModule ./basic)
@@ -47,7 +54,6 @@ let
     (mkModule ./bun)
     (mkModule ./clojure)
     (mkLegacyModule ./clojure)
-    (mkModule ./cpp)
     (mkModule ./dart)
     (mkModule ./dotnet)
     (mkModule ./gcloud)
