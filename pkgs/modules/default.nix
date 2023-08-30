@@ -77,6 +77,7 @@ let
     (mkLegacyModule ./crystal)
     (mkLegacyModule ./deno)
     (mkModule ./elisp)
+    (mkLegacyModule ./elixir)
     (mkModule ./gcloud)
     (mkModule ./go)
     (mkModule ./haskell)
