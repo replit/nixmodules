@@ -75,6 +75,7 @@ let
     (mkModule ./clojure)
     (mkLegacyModule ./clojure)
     (mkLegacyModule ./crystal)
+    (mkLegacyModule ./deno)
     (mkModule ./gcloud)
     (mkModule ./go)
     (mkModule ./haskell)
