@@ -1,8 +1,7 @@
+{ dotnet }:
 { pkgs, lib, ... }:
 
 let
-  dotnet = pkgs.dotnet-sdk_7;
-
   extensions = [ ".cs" ".csproj" ".fs" ".fsproj" ];
 
   dotnet-version = lib.versions.majorMinor dotnet.version;

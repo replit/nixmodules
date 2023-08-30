@@ -47,6 +47,13 @@ let
       clang = pkgs.clang_14;
     }))
 
+    (mkModule (import ./dotnet {
+      dotnet = pkgs.dotnet_7;
+    }))
+    (mkLegacyModule (import ./dotnet {
+      dotnet = pkgs.dotnet_6;
+    }))
+
     (mkModule ./apl)
     (mkModule ./bash)
     (mkModule ./basic)
@@ -56,7 +63,6 @@ let
     (mkLegacyModule ./clojure)
     (mkLegacyModule ./crystal)
     (mkModule ./dart)
-    (mkModule ./dotnet)
     (mkModule ./gcloud)
     (mkModule ./go)
     (mkModule ./haskell)
