@@ -54,6 +54,19 @@ let
       dotnet = pkgs.dotnet_6;
     }))
 
+    (mkModule (import ./dart {
+      inherit (pkgs) dart;
+    }))
+    (mkModule (import ./dart {
+      dart = pkgs.dart.overrideAttrs (attrs: rec {
+        version = "2.10.5";
+        src = pkgs.fetchurl {
+          url = "https://storage.googleapis.com/dart-archive/channels/stable/release/${version}/sdk/dartsdk-linux-x64-release.zip";
+          sha256 = "sha256-UDeiwP1jGvwed+jvhv4atgQg2BDKtnrIb0F52feoZtU=";
+        };
+      });
+    }))
+
     (mkModule ./apl)
     (mkModule ./bash)
     (mkModule ./basic)
@@ -62,7 +75,6 @@ let
     (mkModule ./clojure)
     (mkLegacyModule ./clojure)
     (mkLegacyModule ./crystal)
-    (mkModule ./dart)
     (mkModule ./gcloud)
     (mkModule ./go)
     (mkModule ./haskell)
