@@ -97,6 +97,7 @@ let
     (mkLegacyModule ./love2d)
     (mkModule ./lua)
     (mkLegacyModule ./nim)
+    (mkLegacyModule ./ocaml)
     (mkModule ./php)
     (mkModule ./qbasic)
     (mkModule ./R)
