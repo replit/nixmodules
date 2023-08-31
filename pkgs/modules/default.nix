@@ -92,6 +92,7 @@ let
     (mkModule ./haskell)
     (mkModule ./java)
     (mkLegacyModule ./julia)
+    (mkLegacyModule ./kotlin)
     (mkModule ./lua)
     (mkModule ./php)
     (mkModule ./qbasic)

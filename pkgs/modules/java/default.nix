@@ -31,6 +31,10 @@ in
   id = "java-graalvm${graalvm-version}";
   name = "Java Tools (with Graal VM)";
 
+  imports = [
+    ./upm-maven.nix
+  ];
+
   packages = [
     graalvm
     pkgs.maven
@@ -42,16 +46,6 @@ in
 
     compile = graal-compile-command;
     start = "${graalvm}/bin/java -classpath .:target/dependency/* Main";
-  };
-
-  replit.packagers.maven = {
-    name = "Maven";
-    language = "java-maven";
-    features = {
-      enabledForHosting = false;
-      packageSearch = true;
-      guessImports = false;
-    };
   };
 
   replit.debuggers.java-debug = {
