@@ -118,6 +118,7 @@ let
     (mkModule ./roy)
     (mkModule ./ruby)
     (mkModule ./rust)
+    (mkModule ./scala)
     (mkModule ./svelte-kit)
     (mkModule ./swift)
     (mkModule ./web)
