@@ -93,6 +93,7 @@ let
     (mkModule ./java)
     (mkLegacyModule ./julia)
     (mkLegacyModule ./kotlin)
+    (mkLegacyModule ./lolcode)
     (mkModule ./lua)
     (mkModule ./php)
     (mkModule ./qbasic)
