@@ -26,6 +26,6 @@ in
     language = "emoticon";
     interpreter = true;
     fileParam = true;
-    start = "${run-replbox-name} $file";
+    start = "${run-replbox}/bin/${run-replbox-name} $file";
   };
 }

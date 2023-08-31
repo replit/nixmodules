@@ -22,8 +22,8 @@ in
     language = "erlang";
     inherit extensions;
     fileParam = true;
-    compile = "erlc -o $REPL_HOME/.build $file";
-    start = "erl -noshell";
+    compile = "${erlang}/bin/erlc -o $REPL_HOME/.build $file";
+    start = "${erlang}/bin/erl -noshell";
   };
 
   # TODO: LSP via pkgs.erlang-ls

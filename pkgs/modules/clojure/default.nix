@@ -16,7 +16,7 @@ in
     name = "Clojure";
     language = "clojure";
 
-    start = "clojure -M $file";
+    start = "${clojure}/bin/clojure -M $file";
     fileParam = true;
   };
 

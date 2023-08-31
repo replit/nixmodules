@@ -1,6 +1,8 @@
 { pkgs, ... }:
 
 let
+  bash = pkgs.bashInteractive;
+
   extensions = [ ".bash" ".sh" ];
 in
 
@@ -9,7 +11,7 @@ in
   name = "Bash";
 
   packages = [
-    pkgs.bashInteractive
+    bash
   ];
 
   replit.runners.bash = {
@@ -17,7 +19,7 @@ in
     language = "bash";
     inherit extensions;
     fileParam = true;
-    start = "bash $file";
+    start = "${bash}/bin/bash $file";
   };
 
   replit.languageServers.bash-language-server = {

@@ -2,7 +2,8 @@
 with pkgs;
 
 let
-  electron-runner = writeShellScriptBin "basic-runner-electron" ''
+  electron-runner-name = "basic-runner-electron";
+  electron-runner = writeShellScriptBin electron-runner-name ''
     ELECTRON_BASIC_TEMPLATE=''${BASIC_TEMPLATE:-${./template}}
     exec ${electron}/bin/electron --no-sandbox $ELECTRON_BASIC_TEMPLATE $@ 2>/dev/null
   '';
@@ -32,7 +33,7 @@ in
     name = "Basic on Electron";
     language = "basic";
     fileParam = true;
-    start = "basic-runner-electron --ps1 '${replit-prompt}' $file";
+    start = "${electron-runner}/bin/basic-runner-electron --ps1 '${replit-prompt}' $file";
   };
 
   replit.packagers.upmNodejs = {

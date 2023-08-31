@@ -27,7 +27,7 @@ in
     language = "elixir";
     inherit extensions;
     fileParam = true;
-    start = "elixir $file";
+    start = "${elixir}/bin/elixir $file";
   };
 
   # TODO: LSP *and* DAP via pkgs.elixir-ls

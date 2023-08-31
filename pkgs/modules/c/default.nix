@@ -23,7 +23,7 @@ in
 
   replit.runners.clang-project = {
     name = "Clang: Project";
-    compile = "clang-compile main.c c all";
+    compile = "${clang-compile}/bin/clang-compile main.c c all";
     fileParam = false;
     language = "c";
     start = "./main.c.bin";

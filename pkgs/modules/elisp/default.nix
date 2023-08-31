@@ -33,7 +33,7 @@ in
     language = "elisp";
     optionalFileParam = true;
     interpreter = true;
-    start = "${run-prybar-name} $file";
+    start = "${run-prybar}/bin/${run-prybar-name} $file";
   };
 
   replit.runners.elisp-script = {

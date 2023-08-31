@@ -13,7 +13,7 @@ in {
     name = "dart";
     language = "dart";
 
-    start = "dart main.dart";
+    start = "${dart}/bin/dart main.dart";
   };
 
   replit.languageServers.dart-pub = {

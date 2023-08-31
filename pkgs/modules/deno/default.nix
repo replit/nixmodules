@@ -32,13 +32,13 @@ in
     language = "javascript";
     inherit extensions;
     optionalFileParam = true;
-    start = "${deno-runner-name} $file";
+    start = "${deno-runner}/bin/${deno-runner-name} $file";
   };
 
   replit.languageServers.deno = {
     name = "deno";
     language = "javascript";
     inherit extensions;
-    start = "${pkgs.deno}/bin/deno lsp --quiet";
+    start = "${deno}/bin/deno lsp --quiet";
   };
 }

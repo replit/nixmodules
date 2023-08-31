@@ -21,7 +21,7 @@ in
 
   replit.runners.clang-project = {
     name = "Clang++: Project";
-    compile = "clang-compile main.cpp cpp all";
+    compile = "${clang-compile}/bin/clang-compile main.cpp cpp all";
     fileParam = false;
     language = "cpp";
     start = "./main.cpp.bin";

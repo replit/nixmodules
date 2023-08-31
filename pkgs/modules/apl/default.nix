@@ -19,7 +19,7 @@ in
     language = "APL";
     extensions = [ ".apl" ];
 
-    start = "apl -q --OFF --noCIN -f $file";
+    start = "${apl}/bin/apl -q --OFF --noCIN -f $file";
     fileParam = true;
   };
 }

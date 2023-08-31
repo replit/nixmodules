@@ -20,7 +20,7 @@ in
     language = "crystal";
     extensions = [ ".cr" ];
     fileParam = true;
-    start = "crystal run $file";
+    start = "${crystal}/bin/crystal run $file";
   };
 
   # TODO: nixpkgs crystalline
