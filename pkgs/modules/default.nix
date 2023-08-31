@@ -96,6 +96,7 @@ let
     (mkLegacyModule ./lolcode)
     (mkLegacyModule ./love2d)
     (mkModule ./lua)
+    (mkLegacyModule ./nim)
     (mkModule ./php)
     (mkModule ./qbasic)
     (mkModule ./R)
