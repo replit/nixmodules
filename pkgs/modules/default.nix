@@ -126,6 +126,7 @@ let
     (mkLegacyModule ./swift)
     (mkModule ./tcl)
     (mkModule ./unlambda)
+    (mkLegacyModule ./wasmer)
     (mkModule ./web)
   ] ++ builtins.map mkModule (import ./migrate2nix all-pkgs);
 
