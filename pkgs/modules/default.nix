@@ -115,6 +115,7 @@ let
     (mkLegacyModule ./qbasic)
     (mkModule ./R)
     (mkLegacyModule ./raku)
+    (mkModule ./roy)
     (mkModule ./ruby)
     (mkModule ./rust)
     (mkModule ./svelte-kit)
