@@ -112,6 +112,7 @@ let
     (mkLegacyModule ./nim)
     (mkLegacyModule ./ocaml)
     (mkModule ./qbasic)
+    (mkLegacyModule ./qbasic)
     (mkModule ./R)
     (mkLegacyModule ./raku)
     (mkModule ./ruby)
