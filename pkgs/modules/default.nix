@@ -123,6 +123,7 @@ let
     (mkLegacyModule ./sqlite)
     (mkModule ./svelte-kit)
     (mkModule ./swift)
+    (mkLegacyModule ./swift)
     (mkModule ./web)
   ] ++ builtins.map mkModule (import ./migrate2nix all-pkgs);
 
