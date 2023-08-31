@@ -263,6 +263,10 @@
     "commit": "f46249a0c04d1c2aad26c837d68d736de2b6bcf8",
     "path": "/nix/store/g9ip8421pf99fy2nbw26bc2bv45rw2gk-replit-module-python-3.10"
   },
+  "python-3.10:v21-20230831-f4ed402": {
+    "commit": "f4ed402c0bca45f9637f8e33de98407ed4c5428f",
+    "path": "/nix/store/qbfd2x9rqzxdk9dkyw40nfa2gqg75yi5-replit-module-python-3.10"
+  },
   "qbasic:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/4n4raazspqy2zgawkkyaqc9xapl1f5sz-replit-module-qbasic"
@@ -339,6 +343,10 @@
     "commit": "9932e6ad065e5c5c418204b33509f9ac0eb05bd9",
     "path": "/nix/store/lx7746d70a56ycj83h3gvmqxchqblz2y-replit-module-pyright-extended"
   },
+  "pyright-extended:v7-20230831-f4ed402": {
+    "commit": "f4ed402c0bca45f9637f8e33de98407ed4c5428f",
+    "path": "/nix/store/jwkwrn2c461nqjyzrzg1grl1lz9fg5cg-replit-module-pyright-extended"
+  },
   "svelte-kit-node-20:v1-20230724-46059dd": {
     "commit": "46059dda60c00cc603c38265f100f5236476ebc5",
     "path": "/nix/store/v1lrwh5r88hc56a6kkjyahahlg0wvqyb-replit-module-svelte-kit-node-20"
@@ -354,5 +362,9 @@
   "python-3.11:v1-20230828-e4baa21": {
     "commit": "e4baa21ed52b51e2a4963fc8136f211a2b277455",
     "path": "/nix/store/brg4qlipxxxnaqn8r69633a5vqa7lwdd-replit-module-python-3.11"
+  },
+  "python-3.11:v2-20230831-f4ed402": {
+    "commit": "f4ed402c0bca45f9637f8e33de98407ed4c5428f",
+    "path": "/nix/store/9ws9w2np6wvc5mgfnkqng2yynszb9mby-replit-module-python-3.11"
   }
 }
