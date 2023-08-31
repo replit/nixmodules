@@ -125,6 +125,7 @@ let
     (mkModule ./swift)
     (mkLegacyModule ./swift)
     (mkModule ./tcl)
+    (mkModule ./unlambda)
     (mkModule ./web)
   ] ++ builtins.map mkModule (import ./migrate2nix all-pkgs);
 
