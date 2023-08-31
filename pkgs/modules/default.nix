@@ -101,6 +101,7 @@ let
     (mkModule ./php)
     (mkModule ./qbasic)
     (mkModule ./R)
+    (mkLegacyModule ./raku)
     (mkModule ./ruby)
     (mkModule ./rust)
     (mkModule ./svelte-kit)
