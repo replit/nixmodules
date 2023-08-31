@@ -91,6 +91,7 @@ let
     (mkModule ./gcloud)
     (mkModule ./haskell)
     (mkModule ./java)
+    (mkLegacyModule ./julia)
     (mkModule ./lua)
     (mkModule ./php)
     (mkModule ./qbasic)
