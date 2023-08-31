@@ -124,6 +124,7 @@ let
     (mkModule ./svelte-kit)
     (mkModule ./swift)
     (mkLegacyModule ./swift)
+    (mkModule ./tcl)
     (mkModule ./web)
   ] ++ builtins.map mkModule (import ./migrate2nix all-pkgs);
 
