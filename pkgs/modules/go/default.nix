@@ -1,21 +1,21 @@
+{ go }:
 { pkgs, lib, ... }:
 let
-  goversion = lib.versions.majorMinor pkgs.go.version;
+  goversion = lib.versions.majorMinor go.version;
 in
 {
   id = "go-${goversion}";
   name = "Go Tools";
 
-  packages = with pkgs; [
+  packages = [
     go
-    gopls
   ];
 
   replit.runners.go-run = {
     name = "go run";
     language = "go";
 
-    start = "${pkgs.go}/bin/go run $file";
+    start = "${go}/bin/go run $file";
     fileParam = true;
   };
 
@@ -23,7 +23,7 @@ in
     name = "go fmt";
     language = "go";
 
-    start = "${pkgs.go}/bin/go fmt";
+    start = "${go}/bin/go fmt";
     stdin = false;
   };
 

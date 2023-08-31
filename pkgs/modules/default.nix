@@ -67,6 +67,13 @@ let
       });
     }))
 
+    (mkModule (import ./go {
+      inherit (pkgs) go;
+    }))
+    (mkModule (import ./go {
+      go = pkgs.go_1_17;
+    }))
+
     (mkModule ./apl)
     (mkModule ./bash)
     (mkModule ./basic)
@@ -82,7 +89,6 @@ let
     (mkLegacyModule ./erlang)
     (mkLegacyModule ./forth)
     (mkModule ./gcloud)
-    (mkModule ./go)
     (mkModule ./haskell)
     (mkModule ./java)
     (mkModule ./lua)
