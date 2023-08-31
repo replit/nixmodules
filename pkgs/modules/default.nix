@@ -94,6 +94,7 @@ let
     (mkLegacyModule ./julia)
     (mkLegacyModule ./kotlin)
     (mkLegacyModule ./lolcode)
+    (mkLegacyModule ./love2d)
     (mkModule ./lua)
     (mkModule ./php)
     (mkModule ./qbasic)
