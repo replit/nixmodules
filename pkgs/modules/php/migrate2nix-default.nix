@@ -1,11 +1,14 @@
-{ php }:
 { pkgs, lib, ... }:
+
 let
-  php-version = lib.versions.majorMinor php.version;
+  php = pkgs.php74;
+
+  version = lib.versions.majorMinor php.version;
 in
+
 {
-  id = "php-${php-version}";
-  name = "PHP Tools";
+  id = "php-cli-${version}";
+  name = "PHP ${version} CLI";
 
   imports = [
     (import ./base.nix {
@@ -15,9 +18,9 @@ in
   ];
 
   replit.runners.php = {
-    name = "php run";
+    name = "PHP";
     language = "php";
-    start = "${php}/bin/php $file";
     fileParam = true;
+    start = "${php}/bin/php -r \"$(cat $file)\"";
   };
 }

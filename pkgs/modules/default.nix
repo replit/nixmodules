@@ -74,6 +74,19 @@ let
       go = pkgs.go_1_17;
     }))
 
+    (mkModule (import ./php {
+      inherit (pkgs) php;
+    }))
+    (mkModule (import ./php {
+      php = pkgs.php74;
+    }))
+    (mkModule (import ./php/migrate2nix-default.nix {
+      php = pkgs.php74;
+    }))
+    (mkModule (import ./php/migrate2nix-server.nix {
+      php = pkgs.php74;
+    }))
+
     (mkModule ./apl)
     (mkModule ./bash)
     (mkModule ./basic)
@@ -98,7 +111,6 @@ let
     (mkModule ./lua)
     (mkLegacyModule ./nim)
     (mkLegacyModule ./ocaml)
-    (mkModule ./php)
     (mkModule ./qbasic)
     (mkModule ./R)
     (mkLegacyModule ./raku)
