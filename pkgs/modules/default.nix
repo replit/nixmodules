@@ -120,6 +120,7 @@ let
     (mkModule ./rust)
     (mkModule ./scala)
     (mkModule ./scheme)
+    (mkLegacyModule ./sqlite)
     (mkModule ./svelte-kit)
     (mkModule ./swift)
     (mkModule ./web)
