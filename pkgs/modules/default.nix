@@ -80,6 +80,7 @@ let
     (mkLegacyModule ./elixir)
     (mkLegacyModule ./emoticon)
     (mkLegacyModule ./erlang)
+    (mkLegacyModule ./forth)
     (mkModule ./gcloud)
     (mkModule ./go)
     (mkModule ./haskell)
