@@ -6,8 +6,9 @@ let
 
   extensions = [ ".json" ".jsonc" ".js" ".jsx" ".ts" ".tsx" ];
 
+  deno-runner-name = "deno-with-env-perms";
   deno-runner = pkgs.writeShellApplication {
-    name = "deno-with-env-perms";
+    name = deno-runner-name;
     runtimeInputs = [
       deno
       pkgs.jq
@@ -22,6 +23,7 @@ in
 
   packages = [
     deno
+    deno-runner
   ];
 
   # TODO: make script that reads env vars to pass perms args to deno cli
@@ -30,7 +32,7 @@ in
     language = "javascript";
     inherit extensions;
     optionalFileParam = true;
-    start = "${deno-runner} $file";
+    start = "${deno-runner-name} $file";
   };
 
   replit.languageServers.deno = {

@@ -3,7 +3,8 @@
 let
   replbox = pkgs.callPackage ../../replbox { };
   
-  run-replbox = pkgs.writeShellScriptBin "replbox-emoticon" ''
+  run-replbox-name = "replbox-emoticon";
+  run-replbox = pkgs.writeShellScriptBin run-replbox-name ''
     ${replbox}/bin/replit-replbox \
       --ps1 "${replit-prompt}" \
       -i emoticon \
@@ -15,11 +16,16 @@ in
   id = "emoticon";
   name = "Emoticon Tools";
 
+  packages = [
+    replbox
+    run-replbox
+  ];
+
   replit.runners.replbox-emoticon = {
     name = "ReplBox Emoticon";
     language = "emoticon";
     interpreter = true;
     fileParam = true;
-    start = "${run-replbox}/bin/replbox-emoticon $file";
+    start = "${run-replbox-name} $file";
   };
 }

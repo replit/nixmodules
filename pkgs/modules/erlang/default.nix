@@ -12,6 +12,11 @@ in
   id = "erlang-${version}";
   name = "Erlang/OTP ${version} Tools";
 
+  packages = [
+    erlang
+    rebar3
+  ];
+
   replit.runners.erlang = {
     name = "Erlang";
     language = "erlang";

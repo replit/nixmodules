@@ -3,7 +3,7 @@
 let
   apl = pkgs.gnuapl;
 
-  community-version = lib.versions.majorMinor;
+  community-version = lib.versions.majorMinor apl.version;
 in
 
 {
@@ -19,7 +19,7 @@ in
     language = "APL";
     extensions = [ ".apl" ];
 
-    start = "${apl}/bin/apl -q --OFF --noCIN -f $file";
+    start = "apl -q --OFF --noCIN -f $file";
     fileParam = true;
   };
 }

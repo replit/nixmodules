@@ -20,6 +20,7 @@ in
 
   packages = [
     nodejs
+    electron-runner
   ];
 
   replit.env = {
@@ -31,7 +32,7 @@ in
     name = "Basic on Electron";
     language = "basic";
     fileParam = true;
-    start = "${electron-runner}/bin/basic-runner-electron --ps1 '${replit-prompt}' $file";
+    start = "basic-runner-electron --ps1 '${replit-prompt}' $file";
   };
 
   replit.packagers.upmNodejs = {

@@ -1,7 +1,9 @@
 { pkgs, lib, ... }:
 
 let
-  version = lib.versions.majorMinor pkgs.crystal.version;
+  inherit (pkgs) crystal;
+
+  version = lib.versions.majorMinor crystal.version;
 in
 
 {
@@ -9,7 +11,7 @@ in
   name = "Crystal Tools";
 
   packages = [
-    pkgs.crystal
+    crystal
     pkgs.shards
   ];
 
@@ -18,7 +20,7 @@ in
     language = "crystal";
     extensions = [ ".cr" ];
     fileParam = true;
-    start = "${pkgs.crystal}/bin/crystal run $file";
+    start = "crystal run $file";
   };
 
   # TODO: nixpkgs crystalline

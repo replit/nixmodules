@@ -20,7 +20,7 @@ in
     name = ".NET";
     language = "dotnet";
 
-    start = "${dotnet}/bin/dotnet run";
+    start = "dotnet run";
   };
 
   replit.languageServers.omni-sharp = {

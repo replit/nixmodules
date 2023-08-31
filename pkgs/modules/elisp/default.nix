@@ -4,7 +4,8 @@ let
   inherit (pkgs) emacs cask sqlite;
   prybar = pkgs.prybar.prybar-elisp;
 
-  run-prybar = pkgs.writeShellScriptBin "run-prybar" ''
+  run-prybar-name = "run-prybar-elisp";
+  run-prybar = pkgs.writeShellScriptBin run-prybar-name ''
     ${prybar}/bin/prybar-elisp -i \
       --ps1 "${replit-prompt}" \
       -c ";; Hint: To type M-x, use ESC x instead." \
@@ -23,6 +24,7 @@ in
     cask
     sqlite
     prybar
+    run-prybar
   ];
 
   replit.runners.prybar-elisp = {
@@ -31,7 +33,7 @@ in
     language = "elisp";
     optionalFileParam = true;
     interpreter = true;
-    start = "${run-prybar}/bin/run-prybar $file";
+    start = "${run-prybar-name} $file";
   };
 
   replit.runners.elisp-script = {
@@ -39,7 +41,7 @@ in
     inherit extensions;
     language = "elisp";
     optionalFileParam = true;
-    start = "${emacs}/bin/emacs -nw -Q --script $file";
+    start = "emacs -nw -Q --script $file";
   };
 
   replit.packagers.upmElisp = {

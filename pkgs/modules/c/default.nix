@@ -18,11 +18,12 @@ in
 
   packages = [
     clang
+    clang-compile
   ];
 
   replit.runners.clang-project = {
     name = "Clang: Project";
-    compile = "${clang-compile}/bin/clang-compile main.c c all";
+    compile = "clang-compile main.c c all";
     fileParam = false;
     language = "c";
     start = "./main.c.bin";
@@ -52,7 +53,7 @@ in
     language = "c";
     start = "${dap-cpp}/bin/dap-cpp";
     fileParam = false;
-    compile = "${clang-compile}/bin/clang-compile main.c c all debug";
+    compile = "clang-compile main.c c all debug";
     transport = "stdio";
     initializeMessage = dap-cpp-messages.dapInitializeMessage;
     launchMessage = dap-cpp-messages.dapLaunchMessage "./main.c.bin";

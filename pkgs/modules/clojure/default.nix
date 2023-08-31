@@ -1,15 +1,22 @@
 { pkgs, lib, ... }:
-let clojure-version = lib.versions.majorMinor pkgs.clojure.version;
+let
+  inherit (pkgs) clojure;
+
+  clojure-version = lib.versions.majorMinor clojure.version;
 in
 {
   id = "clojure-${clojure-version}";
   name = "Clojure Tools";
 
+  packages = [
+    clojure
+  ];
+
   replit.runners.clojure = {
     name = "Clojure";
     language = "clojure";
 
-    start = "${pkgs.clojure}/bin/clojure -M $file";
+    start = "clojure -M $file";
     fileParam = true;
   };
 

@@ -16,6 +16,6 @@ in
     name = "brainfuck";
     language = "brainfuck";
     optionalFileParam = true;
-    start = "${brainfuck}/bin/yabi \${file:-main.bf} && echo";
+    start = "yabi \${file:-main.bf} && echo";
   };
 }
