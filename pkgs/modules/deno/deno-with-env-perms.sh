@@ -187,4 +187,4 @@ case "$file" in
 		;;
 esac
 
-eval deno run ${perms[@]} $@ $file
+eval deno run "${perms[@]}" "$@" "$file"
