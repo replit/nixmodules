@@ -67,7 +67,7 @@ if [[ "$1" == "--help" ]]; then
 	# TODO: support --deny flags
 
 	exit 0
-done
+fi
 
 perms=()
 
