@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, pkgs-legacy } @ all-pkgs:
+{ pkgs, pkgs-unstable, pkgs-legacy }:
 let
   mkModule = path: pkgs.callPackage ../moduleit/entrypoint.nix {
     configPath = path;
