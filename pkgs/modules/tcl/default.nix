@@ -6,7 +6,7 @@ let
 
   run-prybar-name = "prybar-tcl";
   run-prybar = pkgs.writeScriptBin run-prybar-name ''
-    ${pkgs.prybar}/bin/prybar-tcl -q --ps1 "${replit-prompt}" -i $@
+    ${pkgs.prybar.prybar-tcl}/bin/prybar-tcl -q --ps1 "${replit-prompt}" -i $@
   '';
 in
 

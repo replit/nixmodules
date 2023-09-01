@@ -3,7 +3,11 @@
 let
   inherit (pkgs) love;
 
-  version = lib.versions.major love;
+  version = lib.versions.major (
+    if builtins.hasAttr "version" love
+    then love.version
+    else (builtins.parseDrvName love.name).version
+  );
 in
 
 {

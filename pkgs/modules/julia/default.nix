@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 
 let
-  inherit (pkgs) julia;
+  julia = pkgs.julia-bin;
 
   version = lib.versions.major julia.version;
 

@@ -1,6 +1,12 @@
 { pkgs, lib, ... }:
 let
-  swift-version = lib.versions.majorMinor pkgs.swift.version;
+  inherit (pkgs) swift;
+
+  swift-version = lib.versions.majorMinor (
+    if builtins.hasAttr "version" swift
+    then swift.version
+    else (builtins.parseDrvName swift.name).version
+  );
 
   swiftc-wrapper = pkgs.stdenv.mkDerivation {
     name = "swiftc-wrapper";
@@ -10,7 +16,7 @@ let
 
     installPhase = ''
       mkdir -p $out/bin
-      makeWrapper ${pkgs.swift}/bin/swiftc $out/bin/swiftc \
+      makeWrapper ${swift}/bin/swiftc $out/bin/swiftc \
         --set PATH ""
     '';
   };
@@ -19,7 +25,7 @@ in
   id = "swift-${swift-version}";
   name = "Swift Tools";
 
-  packages = with pkgs; [
+  packages = [
     swiftc-wrapper
     swift
   ];
@@ -27,7 +33,7 @@ in
   replit.runners.swift = {
     name = "Swift";
     language = "swift";
-    start = "${pkgs.swift}/bin/swift $file";
+    start = "${swift}/bin/swift $file";
     fileParam = true;
 
     productionOverride = {
@@ -41,7 +47,7 @@ in
     name = "SourceKit";
     language = "swift";
 
-    start = "${pkgs.swift}/bin/sourcekit-lsp";
+    start = "${swift}/bin/sourcekit-lsp";
   };
 
 }

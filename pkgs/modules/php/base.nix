@@ -13,6 +13,10 @@
   replit.packagers.php = {
     name = "PHP";
     language = "php";
-    features.packageSearch = true;
+    features = {
+      enabledForHosting = false;
+      guessImports = false;
+      packageSearch = true;
+    };
   };
 }

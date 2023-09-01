@@ -19,7 +19,7 @@ in
     utop
   ];
 
-  env = rec {
+  replit.env = rec {
     OPAMROOT = "$REPL_HOME/.opam";
     OPAM_SWITCH_PREFIX = "${OPAMROOT}/default";
     CAML_LD_LIBRARY_PATH = lib.makeLibraryPath [

@@ -23,6 +23,6 @@ in
     language = "raku";
     inherit extensions;
     fileParam = true;
-    command = "${raku}/bin/raku $file";
+    start = "${raku}/bin/raku $file";
   };
 }

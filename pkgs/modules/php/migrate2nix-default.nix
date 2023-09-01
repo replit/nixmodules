@@ -1,8 +1,7 @@
+{ php }:
 { pkgs, lib, ... }:
 
 let
-  php = pkgs.php74;
-
   version = lib.versions.majorMinor php.version;
 in
 
@@ -13,7 +12,7 @@ in
   imports = [
     (import ./base.nix {
       inherit php;
-      inherit (pkgs.phpPackages) phpactor;
+      inherit (pkgs) phpactor;
     })
   ];
 

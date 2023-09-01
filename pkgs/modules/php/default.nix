@@ -10,7 +10,7 @@ in
   imports = [
     (import ./base.nix {
       inherit php;
-      inherit (pkgs.phpPackages) phpactor;
+      inherit (pkgs) phpactor;
     })
   ];
 

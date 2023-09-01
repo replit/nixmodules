@@ -11,7 +11,7 @@ let
   };
 
   modulesList = [
-    (mkModule ./python/python2.nix)
+    (mkLegacyModule ./python/python2.nix)
     (mkModule (import ./python {
       python = pkgs.python38Full;
       pypkgs = pkgs.python38Packages;
@@ -48,10 +48,10 @@ let
     }))
 
     (mkModule (import ./dotnet {
-      dotnet = pkgs.dotnet_7;
+      dotnet = pkgs.dotnet-sdk_7;
     }))
     (mkLegacyModule (import ./dotnet {
-      dotnet = pkgs.dotnet_6;
+      dotnet = pkgs.dotnet-sdk_6;
     }))
 
     (mkModule (import ./dart {
@@ -71,20 +71,20 @@ let
       inherit (pkgs) go;
     }))
     (mkModule (import ./go {
-      go = pkgs.go_1_17;
+      go = pkgs-legacy.go_1_17;
     }))
 
     (mkModule (import ./php {
       inherit (pkgs) php;
     }))
     (mkModule (import ./php {
-      php = pkgs.php74;
+      php = pkgs-legacy.php74;
     }))
     (mkModule (import ./php/migrate2nix-default.nix {
-      php = pkgs.php74;
+      php = pkgs-legacy.php74;
     }))
     (mkModule (import ./php/migrate2nix-server.nix {
-      php = pkgs.php74;
+      php = pkgs-legacy.php74;
     }))
 
     (mkModule ./apl)
@@ -105,7 +105,7 @@ let
     (mkModule ./haskell)
     (mkModule ./java)
     (mkLegacyModule ./julia)
-    (mkLegacyModule ./kotlin)
+    (mkModule ./kotlin)
     (mkLegacyModule ./lolcode)
     (mkLegacyModule ./love2d)
     (mkModule ./lua)
@@ -128,7 +128,7 @@ let
     (mkModule ./unlambda)
     (mkLegacyModule ./wasmer)
     (mkModule ./web)
-  ] ++ builtins.map mkModule (import ./migrate2nix all-pkgs);
+  ];
 
   modules = builtins.listToAttrs (
     map (module: { name = get-module-id module; value = module; }) modulesList

@@ -46,11 +46,11 @@ in
 
   replit.packagers.upmElisp = {
     name = "UPM for Emacs Lisp";
-    inherit extensions;
     language = "elisp";
     features = {
-      packageSearch = true;
+      enabledForHosting = false;
       guessImports = true;
+      packageSearch = true;
     };
   };
 }
