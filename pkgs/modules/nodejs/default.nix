@@ -15,6 +15,8 @@ let
     ${prybar}/bin/prybar-nodejs -q --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" -i ''$1
   '';
 
+  prettier = nodepkgs.prettier;
+
 in
 
 {
@@ -28,6 +30,7 @@ in
 
   packages = [
     nodejs
+    prettier
   ];
 
   replit = {
@@ -91,6 +94,14 @@ in
           type = "pwa-node";
         };
       };
+    };
+
+    formatters.prettier = {
+      name = "Prettier";
+      language = "javascript";
+      extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ];
+      start = "${prettier}/bin/prettier --stdin-filepath $file";
+      stdin = true;
     };
 
     packagers.upmNodejs = {
