@@ -378,5 +378,9 @@
   "python-3.11:v2-20230831-f4ed402": {
     "commit": "f4ed402c0bca45f9637f8e33de98407ed4c5428f",
     "path": "/nix/store/9ws9w2np6wvc5mgfnkqng2yynszb9mby-replit-module-python-3.11"
+  },
+  "python-3.8:v1-20230829-e1c0916": {
+    "commit": "e1c0916e9629e64e596aa4730df2da68363ddeeb",
+    "path": "/nix/store/rsycf8rjpznldnf51h83yl0mx3v3ddij-replit-module-python-3.8"
   }
 }
