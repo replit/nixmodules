@@ -75,7 +75,10 @@ let
     '';
   };
 
-  prybar-python = pkgs.prybar.prybar-python310;
+  prybar-python =
+    if pythonVersion == "3.8"
+    then pkgs.prybar.prybar-python3
+    else pkgs.prybar.prybar-python310;
 
   stderred = pkgs.callPackage ../../stderred { };
 
@@ -83,7 +86,7 @@ let
     inherit pkgs python pypkgs;
   };
 
-  debuggerConfig = if (pythonVersion == "3.11") then ({ }) else
+  debuggerConfig = if (pythonVersion == "3.11" || pythonVersion == "3.8") then ({ }) else
   ({
     dapPython = {
       name = "DAP Python";
