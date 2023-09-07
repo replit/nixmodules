@@ -100,7 +100,9 @@ in
       name = "Prettier";
       language = "javascript";
       extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ];
-      start = "${prettier}/bin/prettier --stdin-filepath $file";
+      start = {
+        args = [ "${prettier}/bin/prettier" "--stdin-filepath" "$file" ];
+      };
       stdin = true;
     };
 

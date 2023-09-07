@@ -159,6 +159,10 @@
     "commit": "8d7bacfd650a9419c5a22372e81b05c8334716ad",
     "path": "/nix/store/avi0wg5i5q356fxqgnyc32w52agzw70f-replit-module-nodejs-18"
   },
+  "nodejs-18:v8-20230907-87be05d": {
+    "commit": "87be05dfc7d57cceff2c71898a23f16da33d1dfd",
+    "path": "/nix/store/s33j5i04xh289d7hz98hgbfhnixxbi58-replit-module-nodejs-18"
+  },
   "nodejs-19:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/qwhwjll9vns8vqcc6zjy5s4i3rzh05w3-replit-module-nodejs-19"
@@ -186,6 +190,10 @@
   "nodejs-20:v4-20230905-8d7bacf": {
     "commit": "8d7bacfd650a9419c5a22372e81b05c8334716ad",
     "path": "/nix/store/xjv5b5c2qsvw4zlvlw3m5kcwl0p56b5v-replit-module-nodejs-20"
+  },
+  "nodejs-20:v5-20230907-87be05d": {
+    "commit": "87be05dfc7d57cceff2c71898a23f16da33d1dfd",
+    "path": "/nix/store/f9f4zzgr2clzsq84fgbps153yp4h1phk-replit-module-nodejs-20"
   },
   "php-8.1:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
