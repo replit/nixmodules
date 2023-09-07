@@ -36,6 +36,8 @@ let
     "nodejs-20:v1-20230623-0b7a606" = { to = "nodejs-20:v2-20230706-ccb32c4"; auto = true; };
     "nodejs-20:v2-20230706-ccb32c4" = { to = "nodejs-20:v3-20230711-6807d41"; auto = true; };
 
+    "python-3.8:v1-20230829-e1c0916" = { to = "python-3.8:v2-20230907-3d66d15"; auto = true; };
+
     "python-3.10:v5-20230613-622effa" = { to = "python-3.10:v6-20230614-6eb09f7"; auto = true; };
     "python-3.10:v6-20230614-6eb09f7" = { to = "python-3.10:v7-20230623-0b7a606"; auto = true; };
     "python-3.10:v7-20230623-0b7a606" = { to = "python-3.10:v8-20230629-218abef"; auto = true; };
