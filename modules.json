@@ -390,5 +390,9 @@
   "python-3.8:v1-20230829-e1c0916": {
     "commit": "e1c0916e9629e64e596aa4730df2da68363ddeeb",
     "path": "/nix/store/rsycf8rjpznldnf51h83yl0mx3v3ddij-replit-module-python-3.8"
+  },
+  "python-3.8:v2-20230907-3d66d15": {
+    "commit": "3d66d15671a634f2b4f03f45e90d6fcda6424214",
+    "path": "/nix/store/2xn16m801sl1fmqf691ba7alv19l2r67-replit-module-python-3.8"
   }
 }
