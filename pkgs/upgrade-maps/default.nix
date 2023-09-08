@@ -30,11 +30,16 @@ let
     "nodejs-18:v3-20230608-f4cd419" = { to = "nodejs-18:v4-20230623-0b7a606"; auto = true; };
     "nodejs-18:v4-20230623-0b7a606" = { to = "nodejs-18:v5-20230706-ccb32c4"; auto = true; };
     "nodejs-18:v5-20230706-ccb32c4" = { to = "nodejs-18:v6-20230711-6807d41"; auto = true; };
+    "nodejs-18:v6-20230711-6807d41" = { to = "nodejs-18:v7-20230905-8d7bacf"; auto = true; };
+    "nodejs-18:v7-20230905-8d7bacf" = { to = "nodejs-18:v8-20230907-87be05d"; auto = true; };
+    "nodejs-18:v8-20230907-87be05d" = { to = "nodejs-18:v9-20230908-bb1b9fd"; auto = true; };
 
     "nodejs-19:v1-20230525-c48c43c" = { to = "nodejs-19:v2-20230605-9621162"; auto = true; };
 
     "nodejs-20:v1-20230623-0b7a606" = { to = "nodejs-20:v2-20230706-ccb32c4"; auto = true; };
     "nodejs-20:v2-20230706-ccb32c4" = { to = "nodejs-20:v3-20230711-6807d41"; auto = true; };
+    "nodejs-20:v3-20230711-6807d41" = { to = "nodejs-20:v4-20230905-8d7bacf"; auto = true; };
+    "nodejs-20:v4-20230905-8d7bacf" = { to = "nodejs-20:v5-20230907-87be05d"; auto = true; };
 
     "python-3.8:v1-20230829-e1c0916" = { to = "python-3.8:v2-20230907-3d66d15"; auto = true; };
 
