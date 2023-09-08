@@ -35,7 +35,7 @@ in
 
   replit = {
 
-    languageServers.typescript-language-server.extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ];
+    languageServers.typescript-language-server.extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ".mjs" ".cjs" ".es6" ];
 
     runners.nodeJS = {
       name = "Node.js";
