@@ -81,7 +81,7 @@ let
     inherit pkgs python pypkgs;
   };
 
-  debuggerConfig = if (pythonVersion == "3.11" || pythonVersion == "3.8") then ({ }) else
+  debuggerConfig = if (pythonVersion == "3.11") then ({ }) else
   ({
     dapPython = {
       name = "DAP Python";
