@@ -71,6 +71,10 @@
     "commit": "0b7a60667d2c29f2686211e952924a9693916a20",
     "path": "/nix/store/9f5s47qg1ldibsggzxx2k1w74z5p7fkl-replit-module-go-1.20"
   },
+  "go-1.20:v2-20230911-b5aa5df": {
+    "commit": "b5aa5df636c4cd8cd1aea251e8dea4fc0aa51781",
+    "path": "/nix/store/rl2f3cf78kbr06bavn5ny0mh19dzrry8-replit-module-go-1.20"
+  },
   "haskell-ghc9.0:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/ayihz2zdzc2vsv6l437srdynqrk8xvny-replit-module-haskell-ghc9.0"
