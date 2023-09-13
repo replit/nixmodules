@@ -1,7 +1,7 @@
 { pkgs, pkgs-unstable, lib, ... }:
 
 let
-  inherit (pkgs-unstable) bun;
+  bun = pkgs-unstable.callPackage ./bun.nix { };
 
   extensions = [ ".json" ".js" ".jsx" ".ts" ".tsx" ];
 
