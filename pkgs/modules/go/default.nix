@@ -15,8 +15,7 @@ in
     name = "go run";
     language = "go";
 
-    start = "${pkgs.go}/bin/go run $file";
-    fileParam = true;
+    start = "${pkgs.go}/bin/go run $REPL_HOME";
   };
 
   replit.formatters.go-fmt = {

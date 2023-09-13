@@ -18,6 +18,8 @@ let
     "bun-0.7:v1-20230724-4274858" = { to = "bun-1.0:v1-20230911-f253fb1"; auto = true; };
 
     "go" = { to = "go-1.19:v1-20230525-c48c43c"; auto = true; };
+    "go-1.19:v1-20230525-c48c43c" = { to = "go-1.20:v1-20230623-0b7a606"; auto = true; };
+    "go-1.20:v1-20230623-0b7a606" = { to = "go-1.20:v2-20230911-b5aa5df"; auto = true; };
 
     "java-graalvm22.3:v1-20230525-c48c43c" = { to = "java-graalvm22.3:v2-20230623-0b7a606"; auto = true; };
     "java-graalvm22.3:v2-20230623-0b7a606" = { to = "java-graalvm22.3:v3-20230707-3ef18cf"; auto = true; };
