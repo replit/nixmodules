@@ -171,6 +171,10 @@
     "commit": "bb1b9fd05c6d6a17eb7295183b0a1b963db52a8c",
     "path": "/nix/store/y9qb1j5pk28cv1vgw3jdayydlrxs8zis-replit-module-nodejs-18"
   },
+  "nodejs-18:v10-20230914-1095880": {
+    "commit": "1095880875b051ac1690ea27bc76803db516f800",
+    "path": "/nix/store/l81ki254glh5vm9mi43xcr8fn8x1993f-replit-module-nodejs-18"
+  },
   "nodejs-19:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/qwhwjll9vns8vqcc6zjy5s4i3rzh05w3-replit-module-nodejs-19"
@@ -206,6 +210,10 @@
   "nodejs-20:v6-20230908-bb1b9fd": {
     "commit": "bb1b9fd05c6d6a17eb7295183b0a1b963db52a8c",
     "path": "/nix/store/kjrampiq5fkzjxrazj8pq93ngdxvcj5p-replit-module-nodejs-20"
+  },
+  "nodejs-20:v7-20230914-1095880": {
+    "commit": "1095880875b051ac1690ea27bc76803db516f800",
+    "path": "/nix/store/dkf8rlcnvhax5387y6hp65ncqak6irfw-replit-module-nodejs-20"
   },
   "php-8.1:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
@@ -298,6 +306,10 @@
   "python-3.10:v21-20230831-f4ed402": {
     "commit": "f4ed402c0bca45f9637f8e33de98407ed4c5428f",
     "path": "/nix/store/qbfd2x9rqzxdk9dkyw40nfa2gqg75yi5-replit-module-python-3.10"
+  },
+  "python-3.10:v22-20230914-1095880": {
+    "commit": "1095880875b051ac1690ea27bc76803db516f800",
+    "path": "/nix/store/i6jq2iw1k0r477gd9n9gfib43cqsy6vm-replit-module-python-3.10"
   },
   "qbasic:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
@@ -403,6 +415,10 @@
     "commit": "f4ed402c0bca45f9637f8e33de98407ed4c5428f",
     "path": "/nix/store/9ws9w2np6wvc5mgfnkqng2yynszb9mby-replit-module-python-3.11"
   },
+  "python-3.11:v3-20230914-1095880": {
+    "commit": "1095880875b051ac1690ea27bc76803db516f800",
+    "path": "/nix/store/apzrrifvfmrv6rjdszyghbncg0c0gvmg-replit-module-python-3.11"
+  },
   "python-3.8:v1-20230829-e1c0916": {
     "commit": "e1c0916e9629e64e596aa4730df2da68363ddeeb",
     "path": "/nix/store/rsycf8rjpznldnf51h83yl0mx3v3ddij-replit-module-python-3.8"
@@ -410,6 +426,10 @@
   "python-3.8:v2-20230907-3d66d15": {
     "commit": "3d66d15671a634f2b4f03f45e90d6fcda6424214",
     "path": "/nix/store/2xn16m801sl1fmqf691ba7alv19l2r67-replit-module-python-3.8"
+  },
+  "python-3.8:v3-20230914-1095880": {
+    "commit": "1095880875b051ac1690ea27bc76803db516f800",
+    "path": "/nix/store/yq9na7hmkrjhr2410prm1a7410nwbhnw-replit-module-python-3.8"
   },
   "bun-1.0:v1-20230911-f253fb1": {
     "commit": "f253fb1a97d9a1c950d90081ee1ccb290776cf8b",
