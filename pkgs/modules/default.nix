@@ -45,6 +45,7 @@ let
     (mkModule ./R)
     (mkModule ./ruby)
     (mkModule ./svelte-kit)
+    (mkModule ./svelte-kit/bun.nix)
     (mkModule ./web)
   ];
 
