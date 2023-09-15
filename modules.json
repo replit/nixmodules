@@ -446,5 +446,9 @@
   "rust-1.72:v1-20230911-f253fb1": {
     "commit": "f253fb1a97d9a1c950d90081ee1ccb290776cf8b",
     "path": "/nix/store/3siflmi2j4ikwnd35rlnc6g44nbsdpgs-replit-module-rust-1.72"
+  },
+  "svelte-kit-bun-1.0:v1-20230915-da56af5": {
+    "commit": "da56af504c418200dcaf9a87214de91b3821c783",
+    "path": "/nix/store/fdzics0xks1kbbr37i3m4k9f8sqxnj0h-replit-module-svelte-kit-bun-1.0"
   }
 }
