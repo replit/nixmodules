@@ -51,6 +51,8 @@ let
     "nodejs-20:v5-20230907-87be05d" = { to = "nodejs-20:v6-20230908-bb1b9fd"; auto = true; };
     "nodejs-20:v6-20230908-bb1b9fd" = { to = "nodejs-20:v7-20230914-1095880"; auto = true; };
 
+    "php-8.1:v1-20230525-c48c43c" = { to = "php-8.1:v2-20230623-0b7a606"; auto = true; };
+
     "python-3.8:v1-20230829-e1c0916" = { to = "python-3.8:v2-20230907-3d66d15"; auto = true; };
     "python-3.8:v2-20230907-3d66d15" = { to = "python-3.8:v3-20230914-1095880"; auto = true; };
 
