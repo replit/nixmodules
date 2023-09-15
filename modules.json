@@ -215,10 +215,6 @@
     "commit": "1095880875b051ac1690ea27bc76803db516f800",
     "path": "/nix/store/dkf8rlcnvhax5387y6hp65ncqak6irfw-replit-module-nodejs-20"
   },
-  "php-8.1:v1-20230525-c48c43c": {
-    "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
-    "path": "/nix/store/rb9vj0jxx7cbmk29j5ncjr3ipl1nmrxw-replit-module-php-8.1"
-  },
   "php-8.1:v2-20230623-0b7a606": {
     "commit": "0b7a60667d2c29f2686211e952924a9693916a20",
     "path": "/nix/store/1y67njsbspbq0dd6g4jry4b3sjs9h28l-replit-module-php-8.1"
