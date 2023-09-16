@@ -161,11 +161,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1689082687,
-        "narHash": "sha256-R1/l3hNsDxE3/2UVl7/5Llb9POlYG81DRpjprGq4+gw=",
+        "lastModified": 1694708807,
+        "narHash": "sha256-Fb8L0Sl5kP9mDJMaAjt5igruA/fpa34KHuHUhy8wraI=",
         "owner": "replit",
         "repo": "prybar",
-        "rev": "fe84b6d426ecf88a845e6cde0f0dfaf3787e18b7",
+        "rev": "59b47997a2e2d121679315efcc35f33b157182e7",
         "type": "github"
       },
       "original": {

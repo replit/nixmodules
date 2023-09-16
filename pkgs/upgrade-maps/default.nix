@@ -15,8 +15,22 @@ let
     "bun-0.6:v2-20230608-10cb54c" = { to = "bun-0.6:v3-20230623-0b7a606"; auto = true; };
     "bun-0.6:v3-20230623-0b7a606" = { to = "bun-0.6:v4-20230721-719ce58"; auto = true; };
     "bun-0.6:v4-20230721-719ce58" = { to = "bun-0.7:v1-20230724-4274858"; auto = true; };
-    "bun-0.7:v1-20230724-4274858" = { to = "bun-1.0:v1-20230911-f253fb1"; auto = true; };
-    "bun-1.0:v1-20230911-f253fb1" = { to = "bun-1.0:v2-20230913-4d3c541"; auto = true; };
+    "bun-0.7:v1-20230724-4274858" = { to = "bun-1.0:v1-20230911-f253fb1"; auto = true; changelog = "bun 1.0.0 release"; };
+    "bun-1.0:v1-20230911-f253fb1" = { to = "bun-1.0:v2-20230913-4d3c541"; auto = true; changelog = "bun 1.0.1 release"; };
+    "bun-1.0:v2-20230913-4d3c541" = { to = "bun-1.0:v3-20230915-80b0f23"; auto = true; changelog = "bun 1.0.2 release"; };
+    "bun-1.0:v3-20230915-80b0f23" = {
+      to = "bun-1.0:v4-20230915-82a14e9";
+      auto = true;
+      changelog = ''# `package.json` runner
+        The runner for bun module has changed for increased flexibility and conformance to standards.
+
+        The new precedence is:
+        - the `replit-dev` script defined in `package.json`
+        - the `dev` script defined in `package.json`
+        - the `main` file defined in `package.json`
+        - the `entrypoint` defined in `.replit`
+      '';
+    };
 
     "go" = { to = "go-1.19:v1-20230525-c48c43c"; auto = true; };
     "go-1.19:v1-20230525-c48c43c" = { to = "go-1.20:v1-20230623-0b7a606"; auto = true; };
@@ -40,6 +54,7 @@ let
     "nodejs-18:v6-20230711-6807d41" = { to = "nodejs-18:v7-20230905-8d7bacf"; auto = true; };
     "nodejs-18:v7-20230905-8d7bacf" = { to = "nodejs-18:v8-20230907-87be05d"; auto = true; };
     "nodejs-18:v8-20230907-87be05d" = { to = "nodejs-18:v9-20230908-bb1b9fd"; auto = true; };
+    "nodejs-18:v9-20230908-bb1b9fd" = { to = "nodejs-18:v10-20230914-1095880"; auto = true; };
 
     "nodejs-19:v1-20230525-c48c43c" = { to = "nodejs-19:v2-20230605-9621162"; auto = true; };
 
@@ -47,8 +62,13 @@ let
     "nodejs-20:v2-20230706-ccb32c4" = { to = "nodejs-20:v3-20230711-6807d41"; auto = true; };
     "nodejs-20:v3-20230711-6807d41" = { to = "nodejs-20:v4-20230905-8d7bacf"; auto = true; };
     "nodejs-20:v4-20230905-8d7bacf" = { to = "nodejs-20:v5-20230907-87be05d"; auto = true; };
+    "nodejs-20:v5-20230907-87be05d" = { to = "nodejs-20:v6-20230908-bb1b9fd"; auto = true; };
+    "nodejs-20:v6-20230908-bb1b9fd" = { to = "nodejs-20:v7-20230914-1095880"; auto = true; };
+
+    "php-8.1:v1-20230525-c48c43c" = { to = "php-8.1:v2-20230623-0b7a606"; auto = true; };
 
     "python-3.8:v1-20230829-e1c0916" = { to = "python-3.8:v2-20230907-3d66d15"; auto = true; };
+    "python-3.8:v2-20230907-3d66d15" = { to = "python-3.8:v3-20230914-1095880"; auto = true; };
 
     "python-3.10:v5-20230613-622effa" = { to = "python-3.10:v6-20230614-6eb09f7"; auto = true; };
     "python-3.10:v6-20230614-6eb09f7" = { to = "python-3.10:v7-20230623-0b7a606"; auto = true; };
@@ -66,8 +86,10 @@ let
     "python-3.10:v18-20230807-322e88b" = { to = "python-3.10:v19-20230816-9932e6a"; auto = true; };
     "python-3.10:v19-20230816-9932e6a" = { to = "python-3.10:v20-20230824-f46249a"; auto = true; };
     "python-3.10:v20-20230824-f46249a" = { to = "python-3.10:v21-20230831-f4ed402"; auto = true; };
+    "python-3.10:v21-20230831-f4ed402" = { to = "python-3.10:v22-20230914-1095880"; auto = true; };
 
     "python-3.11:v1-20230828-e4baa21" = { to = "python-3.11:v2-20230831-f4ed402"; auto = true; };
+    "python-3.11:v2-20230831-f4ed402" = { to = "python-3.11:v3-20230914-1095880"; auto = true; };
 
     "pyright-extended:v1-20230707-0c33b22" = { to = "pyright-extended:v2-20230711-eb29cca"; auto = true; };
     "pyright-extended:v2-20230711-eb29cca" = { to = "pyright-extended:v3-20230712-4ba5dba"; auto = true; };

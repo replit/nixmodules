@@ -134,7 +134,7 @@ let
 
   python3-wrapper = pythonWrapper { bin = "${python}/bin/python3"; name = "python3"; aliases = [ "python" "python${pythonVersion}" ]; };
 
-  prybar-python-version = if pythonVersion == "3.8" then "3" else "310";
+  prybar-python-version = lib.strings.concatStrings (lib.strings.splitString "." pythonVersion);
 
   run-prybar-bin = pkgs.writeShellScriptBin "run-prybar" ''
     ${stderred}/bin/stderred -- ${pkgs.prybar."prybar-python${prybar-python-version}"}/bin/prybar-python${prybar-python-version} -q --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" -i ''$1
