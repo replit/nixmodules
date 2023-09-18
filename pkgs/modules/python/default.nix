@@ -77,11 +77,18 @@ let
 
   stderred = pkgs.callPackage ../../stderred { };
 
+  debugpy =
+    if (pythonVersion == "3.11") then
+      (pkgs.callPackage ../../debugpy {
+        buildPythonPackage = pypkgs.buildPythonPackage;
+        pythonOlder = pypkgs.pythonOlder;
+      }) else pypkgs.debugpy;
+
   dapPython = pkgs.callPackage ../../dapPython {
-    inherit pkgs python pypkgs;
+    inherit pkgs python pypkgs debugpy;
   };
 
-  debuggerConfig = if (pythonVersion == "3.11" || pythonVersion == "3.8") then ({ }) else
+  debuggerConfig = if pythonVersion == "3.8" then ({ }) else
   ({
     dapPython = {
       name = "DAP Python";
