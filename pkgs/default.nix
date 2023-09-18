@@ -96,6 +96,20 @@ rec {
 
   custom-bundle-phony-ocis = mkPhonyOCIs { moduleIds = [ "nodejs-18" ]; };
 
+  all-phony-oci-bundles = mapAttrs
+    (moduleId: module:
+      let
+        flake = builtins.getFlake "github:replit/nixmodules/${module.commit}";
+        shortModuleId = elemAt (strings.splitString ":" moduleId) 0;
+      in
+      mkPhonyOCI {
+        inherit moduleId;
+        module = flake.modules.${shortModuleId};
+      })
+    all-modules;
+
   bundle-phony-ocis = mkPhonyOCIs { };
+
+  inherit all-modules;
 
 } // modules
