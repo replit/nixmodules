@@ -76,20 +76,22 @@ let
   };
 
   stderred = pkgs.callPackage ../../stderred { };
-  
+
   debugpy =
     if (pythonVersion == "3.11")
-    then pypkgs.debugpy.overridePythonAttrs (old: rec {
-      disabled = false;
-      version = "1.8.0";
-      src = pkgs.fetchFromGitHub {
-        owner = "microsoft";
-        repo = "debugpy";
-        rev = "refs/tags/v${version}";
-        hash = "sha256-FW1RDmj4sDBS0q08C82ErUd16ofxJxgVaxfykn/wVBA=";
-      };
-      doCheck = false;
-    })
+    then
+      pypkgs.debugpy.overridePythonAttrs
+        (old: rec {
+          disabled = false;
+          version = "1.8.0";
+          src = pkgs.fetchFromGitHub {
+            owner = "microsoft";
+            repo = "debugpy";
+            rev = "refs/tags/v${version}";
+            hash = "sha256-FW1RDmj4sDBS0q08C82ErUd16ofxJxgVaxfykn/wVBA=";
+          };
+          doCheck = false;
+        })
     else pypkgs.debugpy;
 
   dapPython = pkgs.callPackage ../../dapPython {
