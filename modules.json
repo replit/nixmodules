@@ -454,5 +454,9 @@
   "rust-1.72:v1-20230911-f253fb1": {
     "commit": "f253fb1a97d9a1c950d90081ee1ccb290776cf8b",
     "path": "/nix/store/3siflmi2j4ikwnd35rlnc6g44nbsdpgs-replit-module-rust-1.72"
+  },
+  "nix:v1-20230906-ff49114": {
+    "commit": "ff491143e779453de50b979dc7dd35ac0f2ef40a",
+    "path": "/nix/store/4lhzsk1lq4hirb9fp6hv43w56cq88lpi-replit-module-nix"
   }
 }
