@@ -131,18 +131,26 @@ let
   filter-recommend = filterAttrs (mod: entry: !(entry.auto or false));
   auto = present-entries (filter-auto mapping);
   recommend = present-entries (filter-recommend mapping);
+
+  auto-upgrades-file = pkgs.writeTextFile {
+    name = "auto-upgrades";
+    text = builtins.toJSON auto;
+    destination = "/auto-upgrade.json";
+  };
+  recommended-upgrades-file = pkgs.writeTextFile {
+    name = "recommend-upgrades";
+    text = builtins.toJSON recommend;
+    destination = "/recommend-upgrade.json";
+  };
 in
-pkgs.stdenv.mkDerivation {
-  pname = "upgrade-maps";
-  version = "1.0.0";
-  dontUnpack = true;
-  dontConfigure = true;
-  dontBuild = true;
-  installPhase = ''
-    mkdir $out
-    echo '${builtins.toJSON auto}' > $out/auto-upgrade.json
-    echo '${builtins.toJSON recommend}' > $out/recommend-upgrade.json
-  '';
+pkgs.symlinkJoin {
+  name = "upgrade-maps";
+
+  paths = [
+    auto-upgrades-file
+    recommended-upgrades-file
+  ];
+
   passthru = {
     # this allows you to query for this info wo building it:
     # nix eval .#upgrade-maps.meta.auto --json
