@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { spawn, exec } = require("child_process");
+const { exec } = require("child_process");
 
 const args = process.argv.slice(1);
 
