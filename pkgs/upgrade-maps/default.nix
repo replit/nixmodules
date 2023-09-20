@@ -107,6 +107,7 @@ let
     "pyright-extended:v4-20230717-2dadc92" = { to = "pyright-extended:v5-20230807-322e88b"; auto = true; };
     "pyright-extended:v5-20230807-322e88b" = { to = "pyright-extended:v6-20230816-9932e6a"; auto = true; };
     "pyright-extended:v6-20230816-9932e6a" = { to = "pyright-extended:v7-20230831-f4ed402"; auto = true; };
+    "pyright-extended:v7-20230831-f4ed402" = { to = "pyright-extended:v8-20230920-d4ad2e4"; auto = true; };
 
     "rust" = { to = "rust-1.69:v1-20230525-c48c43c"; auto = true; };
 
