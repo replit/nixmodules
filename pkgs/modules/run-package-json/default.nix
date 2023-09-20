@@ -1,12 +1,10 @@
 { runPackageJsonScript, runFileScript }:
 
-{ config, lib, pkgs-unstable, ... }:
+{ config, lib, pkgs, ... }:
 
 let
-  bun = pkgs-unstable.callPackage ../../bun { };
-
-  script = pkgs-unstable.writeScriptBin "package-json-runner" ''
-    #!${bun}/bin/bun
+  script = pkgs.writeScriptBin "package-json-runner" ''
+    #! ${pkgs.nodejs}/bin/node
 
     ${builtins.readFile ./script.js}
   '';
