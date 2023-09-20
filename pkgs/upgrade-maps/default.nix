@@ -72,6 +72,7 @@ let
     "python-3.8:v1-20230829-e1c0916" = { to = "python-3.8:v2-20230907-3d66d15"; auto = true; };
     "python-3.8:v2-20230907-3d66d15" = { to = "python-3.8:v3-20230914-1095880"; auto = true; };
     "python-3.8:v3-20230914-1095880" = { to = "python-3.8:v4-20230920-bd784b9"; auto = true; };
+    "python-3.8:v4-20230920-bd784b9" = { to = "python-3.8:v5-20230920-d4ad2e4"; auto = true; };
 
     "python-3.10:v5-20230613-622effa" = { to = "python-3.10:v6-20230614-6eb09f7"; auto = true; };
     "python-3.10:v6-20230614-6eb09f7" = { to = "python-3.10:v7-20230623-0b7a606"; auto = true; };
@@ -92,11 +93,13 @@ let
     "python-3.10:v21-20230831-f4ed402" = { to = "python-3.10:v22-20230914-1095880"; auto = true; };
     "python-3.10:v22-20230914-1095880" = { to = "python-3.10:v23-20230918-15fb6e7"; auto = true; };
     "python-3.10:v23-20230918-15fb6e7" = { to = "python-3.10:v24-20230920-bd784b9"; auto = true; };
+    "python-3.10:v24-20230920-bd784b9" = { to = "python-3.10:v25-20230920-d4ad2e4"; auto = true; };
 
     "python-3.11:v1-20230828-e4baa21" = { to = "python-3.11:v2-20230831-f4ed402"; auto = true; };
     "python-3.11:v2-20230831-f4ed402" = { to = "python-3.11:v3-20230914-1095880"; auto = true; };
     "python-3.11:v3-20230914-1095880" = { to = "python-3.11:v4-20230918-15fb6e7"; auto = true; };
     "python-3.11:v4-20230918-15fb6e7" = { to = "python-3.11:v5-20230920-bd784b9"; auto = true; };
+    "python-3.11:v5-20230920-bd784b9" = { to = "python-3.11:v6-20230920-d4ad2e4"; auto = true; };
 
     "pyright-extended:v1-20230707-0c33b22" = { to = "pyright-extended:v2-20230711-eb29cca"; auto = true; };
     "pyright-extended:v2-20230711-eb29cca" = { to = "pyright-extended:v3-20230712-4ba5dba"; auto = true; };
@@ -104,6 +107,7 @@ let
     "pyright-extended:v4-20230717-2dadc92" = { to = "pyright-extended:v5-20230807-322e88b"; auto = true; };
     "pyright-extended:v5-20230807-322e88b" = { to = "pyright-extended:v6-20230816-9932e6a"; auto = true; };
     "pyright-extended:v6-20230816-9932e6a" = { to = "pyright-extended:v7-20230831-f4ed402"; auto = true; };
+    "pyright-extended:v7-20230831-f4ed402" = { to = "pyright-extended:v8-20230920-d4ad2e4"; auto = true; };
 
     "rust" = { to = "rust-1.69:v1-20230525-c48c43c"; auto = true; };
 
