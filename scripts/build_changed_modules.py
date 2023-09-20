@@ -16,9 +16,10 @@ def get_modules():
   return modules
 
 def build_module(module_id):
-  args = ['nix', 'build', '.#modules."%s"' % module_id]
+  args = ['nix', 'build', '.#modules."%s"' % module_id, '--print-out-paths']
   print(" ".join(args))
-  subprocess.run(args)
+  output = subprocess.check_output(args)
+  return str(output, 'UTF-8').strip()
 
 def get_upstream_modules(branch):
   args = ['git', 'show', '%s:modules.json' % branch]
@@ -43,9 +44,8 @@ def main():
   new_modules = current_ids - upstream_ids
   for module_registry_id in new_modules:
     module_id, _ = module_registry_id.split(':')
-    build_module(module_id)
+    actual_path = build_module(module_id)
     # verify output is same as entry
-    actual_path = os.readlink('result')
     referenced_path = current_modules[module_registry_id]['path']
     assert actual_path == referenced_path, 'output path for %s does not match: %s vs %s' % (module_registry_id, actual_path, referenced_path)
     print('%s ok' % module_registry_id)
