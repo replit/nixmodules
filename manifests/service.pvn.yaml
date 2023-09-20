@@ -1,0 +1,51 @@
+service:
+  application: nixmodules
+  name: nixmodules
+  autoRollback:
+    disabled: true
+
+  parameters:
+    - name: image_govalctl
+      description: the govalctl image to use
+      dockerImage:
+        defaultTag: latest
+        imageRegistryInfo:
+          containerRegistry: marine-cycle
+          imageRepository: marine-cycle-160323/govalctl
+    - name: commit_sha
+      description: the commit sha that was tagged in the template to deploy
+      string:
+        defaultValue: ""
+    - name: nixmodules_version
+      description: the name of the nixmodules disk image to deploy
+      string:
+        defaultValue: ""
+    - name: jitter
+      description: duration to wait between pulls of new configs
+      string:
+        defaultValue: "3600s"
+  runtimeConnection: config-raw
+  runtimeExtension:
+    parameterValues:
+      - name: image
+        string: "{{.Params.image_govalctl}}"
+      - name: service
+        string: "nixmodules"
+      - name: name
+        string: "{{.Constants.name}}"
+      - name: json
+        string: >-
+          {
+            "version":"{{.Params.nixmodules_version}}",
+            "configPullJitter":"{{.Params.jitter}}"
+          }
+  perReleaseChannel:
+    - releaseChannel: canary
+      runtimeExtension:
+        parameterValues:
+          - name: json
+            string: >-
+              {
+                "version":"{{.Params.nixmodules_version}}",
+                "configPullJitter":"1s"
+              }

@@ -1,0 +1,29 @@
+version: v1.0
+name: test
+agent:
+  machine:
+    type: e1-standard-2
+fail_fast:
+  stop:
+    when: "true"
+auto_cancel:
+  running:
+    when: branch != 'main'
+global_job_config:
+  env_vars:
+    - name: SEMAPHORE_CACHE_BACKEND
+      value: "gcs"
+    - name: SEMAPHORE_CACHE_GCS_BUCKET
+      value: "goval-semaphore-cache"
+blocks:
+  - name: test
+    dependencies: []
+    task:
+      jobs:
+        - name: test
+          commands:
+            - echo test
+promotions:
+- name: build nixmodules
+  pipeline_file: build-nixmodules.yml
+
