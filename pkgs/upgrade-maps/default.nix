@@ -18,10 +18,13 @@ let
     "bun-0.7:v1-20230724-4274858" = { to = "bun-1.0:v1-20230911-f253fb1"; auto = true; changelog = "bun 1.0.0 release"; };
     "bun-1.0:v1-20230911-f253fb1" = { to = "bun-1.0:v2-20230913-4d3c541"; auto = true; changelog = "bun 1.0.1 release"; };
     "bun-1.0:v2-20230913-4d3c541" = { to = "bun-1.0:v3-20230915-80b0f23"; auto = true; changelog = "bun 1.0.2 release"; };
-    "bun-1.0:v3-20230915-80b0f23" = {
-      to = "bun-1.0:v4-20230915-82a14e9";
+    "bun-1.0:v4-20230915-82a14e9" = {
+      to = "bun-1.0:v3-20230915-80b0f23";
       auto = true;
-      changelog = ''# `package.json` runner
+      changelog = ''**REVERTED.** The script tries to open `/nix/store`, which, being ~18tb, takes
+      a *long* time to complete. As such, the new `package.json` runner script shouldn't be used.
+
+      # `package.json` runner
         The runner for bun module has changed for increased flexibility and conformance to standards.
 
         The new precedence is:
@@ -128,18 +131,26 @@ let
   filter-recommend = filterAttrs (mod: entry: !(entry.auto or false));
   auto = present-entries (filter-auto mapping);
   recommend = present-entries (filter-recommend mapping);
+
+  auto-upgrades-file = pkgs.writeTextFile {
+    name = "auto-upgrades";
+    text = builtins.toJSON auto;
+    destination = "/auto-upgrade.json";
+  };
+  recommended-upgrades-file = pkgs.writeTextFile {
+    name = "recommend-upgrades";
+    text = builtins.toJSON recommend;
+    destination = "/recommend-upgrade.json";
+  };
 in
-pkgs.stdenv.mkDerivation {
-  pname = "upgrade-maps";
-  version = "1.0.0";
-  dontUnpack = true;
-  dontConfigure = true;
-  dontBuild = true;
-  installPhase = ''
-    mkdir $out
-    echo '${builtins.toJSON auto}' > $out/auto-upgrade.json
-    echo '${builtins.toJSON recommend}' > $out/recommend-upgrade.json
-  '';
+pkgs.symlinkJoin {
+  name = "upgrade-maps";
+
+  paths = [
+    auto-upgrades-file
+    recommended-upgrades-file
+  ];
+
   passthru = {
     # this allows you to query for this info wo building it:
     # nix eval .#upgrade-maps.meta.auto --json
