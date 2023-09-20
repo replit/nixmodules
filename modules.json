@@ -307,6 +307,10 @@
     "commit": "1095880875b051ac1690ea27bc76803db516f800",
     "path": "/nix/store/i6jq2iw1k0r477gd9n9gfib43cqsy6vm-replit-module-python-3.10"
   },
+  "python-3.10:v23-20230918-15fb6e7": {
+    "commit": "15fb6e764a21fa7b2511247f5dad99d52f3988a5",
+    "path": "/nix/store/9bsr3fjn2ba15ijqkszwqlq5phicg7ch-replit-module-python-3.10"
+  },
   "qbasic:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/4n4raazspqy2zgawkkyaqc9xapl1f5sz-replit-module-qbasic"
@@ -415,6 +419,10 @@
     "commit": "1095880875b051ac1690ea27bc76803db516f800",
     "path": "/nix/store/apzrrifvfmrv6rjdszyghbncg0c0gvmg-replit-module-python-3.11"
   },
+  "python-3.11:v4-20230918-15fb6e7": {
+    "commit": "15fb6e764a21fa7b2511247f5dad99d52f3988a5",
+    "path": "/nix/store/wkl4c8npnk33wlwll97bdz9ik9wb8mn6-replit-module-python-3.11"
+  },
   "python-3.8:v1-20230829-e1c0916": {
     "commit": "e1c0916e9629e64e596aa4730df2da68363ddeeb",
     "path": "/nix/store/rsycf8rjpznldnf51h83yl0mx3v3ddij-replit-module-python-3.8"
@@ -450,5 +458,9 @@
   "rust-1.72:v1-20230911-f253fb1": {
     "commit": "f253fb1a97d9a1c950d90081ee1ccb290776cf8b",
     "path": "/nix/store/3siflmi2j4ikwnd35rlnc6g44nbsdpgs-replit-module-rust-1.72"
+  },
+  "nix:v1-20230906-ff49114": {
+    "commit": "ff491143e779453de50b979dc7dd35ac0f2ef40a",
+    "path": "/nix/store/4lhzsk1lq4hirb9fp6hv43w56cq88lpi-replit-module-nix"
   }
 }

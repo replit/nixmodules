@@ -40,6 +40,7 @@ let
     (mkModule ./haskell)
     (mkModule ./java)
     (mkModule ./lua)
+    (mkModule ./nix)
     (mkModule ./php)
     (mkModule ./qbasic)
     (mkModule ./R)

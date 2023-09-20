@@ -87,9 +87,11 @@ let
     "python-3.10:v19-20230816-9932e6a" = { to = "python-3.10:v20-20230824-f46249a"; auto = true; };
     "python-3.10:v20-20230824-f46249a" = { to = "python-3.10:v21-20230831-f4ed402"; auto = true; };
     "python-3.10:v21-20230831-f4ed402" = { to = "python-3.10:v22-20230914-1095880"; auto = true; };
+    "python-3.10:v22-20230914-1095880" = { to = "python-3.10:v23-20230918-15fb6e7"; auto = true; };
 
     "python-3.11:v1-20230828-e4baa21" = { to = "python-3.11:v2-20230831-f4ed402"; auto = true; };
     "python-3.11:v2-20230831-f4ed402" = { to = "python-3.11:v3-20230914-1095880"; auto = true; };
+    "python-3.11:v3-20230914-1095880" = { to = "python-3.11:v4-20230918-15fb6e7"; auto = true; };
 
     "pyright-extended:v1-20230707-0c33b22" = { to = "pyright-extended:v2-20230711-eb29cca"; auto = true; };
     "pyright-extended:v2-20230711-eb29cca" = { to = "pyright-extended:v3-20230712-4ba5dba"; auto = true; };
