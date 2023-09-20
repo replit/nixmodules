@@ -55,6 +55,7 @@ let
     "nodejs-18:v7-20230905-8d7bacf" = { to = "nodejs-18:v8-20230907-87be05d"; auto = true; };
     "nodejs-18:v8-20230907-87be05d" = { to = "nodejs-18:v9-20230908-bb1b9fd"; auto = true; };
     "nodejs-18:v9-20230908-bb1b9fd" = { to = "nodejs-18:v10-20230914-1095880"; auto = true; };
+    "nodejs-18:v10-20230914-1095880" = { to = "nodejs-18:v11-20230920-bd784b9"; auto = true; };
 
     "nodejs-19:v1-20230525-c48c43c" = { to = "nodejs-19:v2-20230605-9621162"; auto = true; };
 
@@ -64,11 +65,13 @@ let
     "nodejs-20:v4-20230905-8d7bacf" = { to = "nodejs-20:v5-20230907-87be05d"; auto = true; };
     "nodejs-20:v5-20230907-87be05d" = { to = "nodejs-20:v6-20230908-bb1b9fd"; auto = true; };
     "nodejs-20:v6-20230908-bb1b9fd" = { to = "nodejs-20:v7-20230914-1095880"; auto = true; };
+    "nodejs-20:v7-20230914-1095880" = { to = "nodejs-20:v8-20230920-bd784b9"; auto = true; };
 
     "php-8.1:v1-20230525-c48c43c" = { to = "php-8.1:v2-20230623-0b7a606"; auto = true; };
 
     "python-3.8:v1-20230829-e1c0916" = { to = "python-3.8:v2-20230907-3d66d15"; auto = true; };
     "python-3.8:v2-20230907-3d66d15" = { to = "python-3.8:v3-20230914-1095880"; auto = true; };
+    "python-3.8:v3-20230914-1095880" = { to = "python-3.8:v4-20230920-bd784b9"; auto = true; };
 
     "python-3.10:v5-20230613-622effa" = { to = "python-3.10:v6-20230614-6eb09f7"; auto = true; };
     "python-3.10:v6-20230614-6eb09f7" = { to = "python-3.10:v7-20230623-0b7a606"; auto = true; };
@@ -88,10 +91,12 @@ let
     "python-3.10:v20-20230824-f46249a" = { to = "python-3.10:v21-20230831-f4ed402"; auto = true; };
     "python-3.10:v21-20230831-f4ed402" = { to = "python-3.10:v22-20230914-1095880"; auto = true; };
     "python-3.10:v22-20230914-1095880" = { to = "python-3.10:v23-20230918-15fb6e7"; auto = true; };
+    "python-3.10:v23-20230918-15fb6e7" = { to = "python-3.10:v24-20230920-bd784b9"; auto = true; };
 
     "python-3.11:v1-20230828-e4baa21" = { to = "python-3.11:v2-20230831-f4ed402"; auto = true; };
     "python-3.11:v2-20230831-f4ed402" = { to = "python-3.11:v3-20230914-1095880"; auto = true; };
     "python-3.11:v3-20230914-1095880" = { to = "python-3.11:v4-20230918-15fb6e7"; auto = true; };
+    "python-3.11:v4-20230918-15fb6e7" = { to = "python-3.11:v5-20230920-bd784b9"; auto = true; };
 
     "pyright-extended:v1-20230707-0c33b22" = { to = "pyright-extended:v2-20230711-eb29cca"; auto = true; };
     "pyright-extended:v2-20230711-eb29cca" = { to = "pyright-extended:v3-20230712-4ba5dba"; auto = true; };
