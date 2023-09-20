@@ -7,7 +7,7 @@ pypkgs.buildPythonPackage rec {
   src = pkgs.fetchFromGitHub {
     owner = "replit";
     repo = pname;
-    rev = "main";
+    rev = "21.2.dev0";
     sha256 = "sha256-k4RnK9TnvfJlxpihdHFg3JmYtNDC4KY+f41VwJ+e+1A=";
     name = "${pname}-${version}-source";
   };
