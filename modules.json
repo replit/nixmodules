@@ -323,6 +323,10 @@
     "commit": "bd784b9a75c0781fd3efcdd4d51d255b6e991c86",
     "path": "/nix/store/hvsr69hqik7dl3hlmb7ad92ybr8d6nvl-replit-module-python-3.10"
   },
+  "python-3.10:v25-20230920-d4ad2e4": {
+    "commit": "d4ad2e4453adf8dc310fe700f38d125361906606",
+    "path": "/nix/store/9jlnr1rk88gh6sj98dxp62j6qlvx04xd-replit-module-python-3.10"
+  },
   "qbasic:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/4n4raazspqy2zgawkkyaqc9xapl1f5sz-replit-module-qbasic"
@@ -403,6 +407,10 @@
     "commit": "f4ed402c0bca45f9637f8e33de98407ed4c5428f",
     "path": "/nix/store/jwkwrn2c461nqjyzrzg1grl1lz9fg5cg-replit-module-pyright-extended"
   },
+  "pyright-extended:v8-20230920-d4ad2e4": {
+    "commit": "d4ad2e4453adf8dc310fe700f38d125361906606",
+    "path": "/nix/store/5w2h6ynxsq16i4qxqa8cb5d5k362zd9l-replit-module-pyright-extended"
+  },
   "svelte-kit-node-20:v1-20230724-46059dd": {
     "commit": "46059dda60c00cc603c38265f100f5236476ebc5",
     "path": "/nix/store/v1lrwh5r88hc56a6kkjyahahlg0wvqyb-replit-module-svelte-kit-node-20"
@@ -439,6 +447,10 @@
     "commit": "bd784b9a75c0781fd3efcdd4d51d255b6e991c86",
     "path": "/nix/store/fydnhjby0k2ymi1b3a1g461vr4s3mngi-replit-module-python-3.11"
   },
+  "python-3.11:v6-20230920-d4ad2e4": {
+    "commit": "d4ad2e4453adf8dc310fe700f38d125361906606",
+    "path": "/nix/store/wbxj48mmhp238zrdikdb86yz702s9llf-replit-module-python-3.11"
+  },
   "python-3.8:v1-20230829-e1c0916": {
     "commit": "e1c0916e9629e64e596aa4730df2da68363ddeeb",
     "path": "/nix/store/rsycf8rjpznldnf51h83yl0mx3v3ddij-replit-module-python-3.8"
@@ -454,6 +466,10 @@
   "python-3.8:v4-20230920-bd784b9": {
     "commit": "bd784b9a75c0781fd3efcdd4d51d255b6e991c86",
     "path": "/nix/store/43y0pq6b65zxz0jiakjc2znp6r8dmi3g-replit-module-python-3.8"
+  },
+  "python-3.8:v5-20230920-d4ad2e4": {
+    "commit": "d4ad2e4453adf8dc310fe700f38d125361906606",
+    "path": "/nix/store/n636yf7j9p8vkxp80qzl81gnlp0qwgqp-replit-module-python-3.8"
   },
   "bun-1.0:v1-20230911-f253fb1": {
     "commit": "f253fb1a97d9a1c950d90081ee1ccb290776cf8b",
