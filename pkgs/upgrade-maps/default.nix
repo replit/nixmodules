@@ -18,10 +18,13 @@ let
     "bun-0.7:v1-20230724-4274858" = { to = "bun-1.0:v1-20230911-f253fb1"; auto = true; changelog = "bun 1.0.0 release"; };
     "bun-1.0:v1-20230911-f253fb1" = { to = "bun-1.0:v2-20230913-4d3c541"; auto = true; changelog = "bun 1.0.1 release"; };
     "bun-1.0:v2-20230913-4d3c541" = { to = "bun-1.0:v3-20230915-80b0f23"; auto = true; changelog = "bun 1.0.2 release"; };
-    "bun-1.0:v3-20230915-80b0f23" = {
-      to = "bun-1.0:v4-20230915-82a14e9";
+    "bun-1.0:v4-20230915-82a14e9" = {
+      to = "bun-1.0:v3-20230915-80b0f23";
       auto = true;
-      changelog = ''# `package.json` runner
+      changelog = ''**REVERTED.** The script tries to open `/nix/store`, which, being ~18tb, takes
+      a *long* time to complete. As such, the new `package.json` runner script shouldn't be used.
+
+      # `package.json` runner
         The runner for bun module has changed for increased flexibility and conformance to standards.
 
         The new precedence is:
