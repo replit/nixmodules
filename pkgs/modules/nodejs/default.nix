@@ -9,12 +9,6 @@ let
     inherit nodejs;
   };
 
-  prybar = pkgs.prybar.prybar-nodejs;
-
-  run-prybar = pkgs.writeShellScriptBin "run-prybar" ''
-    ${prybar}/bin/prybar-nodejs -q --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" -i ''$1
-  '';
-
   prettier = nodepkgs.prettier;
 
 in
@@ -42,14 +36,6 @@ in
       language = "javascript";
       start = "${nodejs}/bin/node $file";
       fileParam = true;
-    };
-
-    runners.nodeJS-prybar = {
-      name = "Prybar for Node.js";
-      language = "javascript";
-      start = "${run-prybar}/bin/run-prybar $file";
-      interpreter = true;
-      optionalFileParam = true;
     };
 
     debuggers.nodeDAP = {
