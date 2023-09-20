@@ -435,6 +435,10 @@
     "commit": "1095880875b051ac1690ea27bc76803db516f800",
     "path": "/nix/store/yq9na7hmkrjhr2410prm1a7410nwbhnw-replit-module-python-3.8"
   },
+  "python-3.8:v4-20230920-8e98cf2": {
+    "commit": "8e98cf2cd862f686c872ad83d5f51a5f04d0de76",
+    "path": "/nix/store/3ssbfv5kig6rw6q8rsrabkjf2aqqdvz2-replit-module-python-3.8"
+  },
   "bun-1.0:v1-20230911-f253fb1": {
     "commit": "f253fb1a97d9a1c950d90081ee1ccb290776cf8b",
     "path": "/nix/store/qf9aiylryg8lq5q4z7fcj11824k9rf17-replit-module-bun-1.0"
