@@ -32,4 +32,4 @@ curl -X POST \
     -H "Authorization: $SHIP_IT_BOT_AUTH" \
     -H "content-type: application/json" \
     -d @payload.json \
-    https://ship-it-bot.replit.com/deploy/$APPLICATION_NAME/$SERVICE_NAME
+    $DEPLOY_URL/deploy/$APPLICATION_NAME/$SERVICE_NAME
