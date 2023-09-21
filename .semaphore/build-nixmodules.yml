@@ -15,6 +15,8 @@ global_job_config:
   secrets:
     - name: gcp-goval
   env_vars:
+    - name: NIX_FLAGS
+      value: "--extra-experimental-features nix-command --extra-experimental-features flakes --extra-experimental-features discard-references"
     - name: SEMAPHORE_CACHE_BACKEND
       value: "gcs"
     - name: SEMAPHORE_CACHE_GCS_BUCKET
