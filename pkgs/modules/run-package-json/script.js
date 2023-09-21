@@ -1,6 +1,6 @@
-const fs = require("fs");
-const path = require("path");
-const { exec } = require("child_process");
+const fs = require("node:fs");
+const path = require("node:path");
+const { spawn } = require("node:child_process");
 
 const args = process.argv.slice(1);
 
@@ -67,8 +67,9 @@ if (hasScripts && packageJson.scripts["replit-dev"]) {
 
 console.info(`+ ${cmd}`);
 
-exec(cmd, {
-  cwd: process.cwd(),
-  stdio: 'inherit',
-  shell: false,
-})
+spawn('sh', ['-c', cmd], {
+	stdio: 'inherit',
+	cwd: process.cwd(),
+	detached: true,
+	shell: false,
+}).unref();
