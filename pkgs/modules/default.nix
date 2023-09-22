@@ -18,6 +18,7 @@ let
       python = pkgs.python311Full;
       pypkgs = pkgs.python311Packages;
     }))
+    (mkModule ./python-with-prybar)
     (mkModule ./pyright-extended)
 
     (mkModule (import ./nodejs {

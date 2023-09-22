@@ -23,25 +23,11 @@ let
     '';
   };
 
-  pythonWrapper = { bin, name, aliases ? [ ] }:
-    let
-      ldLibraryPathConvertWrapper = pkgs.writeShellScriptBin name ''
-        export LD_LIBRARY_PATH=''${PYTHON_LD_LIBRARY_PATH}
-        exec "${bin}" "$@"
-      '';
-    in
-    pkgs.stdenvNoCC.mkDerivation {
-      name = "${name}-wrapper";
-      buildInputs = [ pkgs.makeWrapper ];
-
-      buildCommand = ''
-        mkdir -p $out/bin
-        makeWrapper ${ldLibraryPathConvertWrapper}/bin/${name} $out/bin/${name} \
-          --set-default PYTHON_LD_LIBRARY_PATH "${python-ld-library-path}" \
-          --prefix PYTHONPATH : "${pypkgs.setuptools}/${python.sitePackages}"
-      '' + lib.concatMapStringsSep "\n" (s: "ln -s $out/bin/${name} $out/bin/${s}") aliases;
-
-    };
+  pythonUtils = import ../../python-utils {
+    inherit pkgs python pypkgs;
+  };
+  pythonWrapper = pythonUtils.pythonWrapper;
+  python-ld-library-path = pythonUtils.python-ld-library-path;
 
   pip-wrapper = pythonWrapper { bin = "${pip}/bin/pip"; name = "pip"; };
 
@@ -60,22 +46,6 @@ let
     '';
     destination = "/conf.toml";
   };
-
-  cppLibs = pkgs.stdenvNoCC.mkDerivation {
-    name = "cpplibs";
-    dontUnpack = true;
-    dontBuild = true;
-    installPhase = ''
-      runHook preInstall
-
-      mkdir -p $out/lib
-      cp ${pkgs.stdenv.cc.cc.lib}/lib/libstdc++* $out/lib
-
-      runHook postInstall
-    '';
-  };
-
-  stderred = pkgs.callPackage ../../stderred { };
 
   debugpy =
     if (pythonVersion == "3.11")
@@ -138,16 +108,6 @@ let
       };
     };
   });
-
-  python-ld-library-path = pkgs.lib.makeLibraryPath ([
-    # Needed for pandas / numpy
-    cppLibs
-    pkgs.zlib
-    pkgs.glib
-    # Needed for matplotlib
-    pkgs.xorg.libX11
-    # Needed for pygame
-  ] ++ (with pkgs.xorg; [ libXext libXinerama libXcursor libXrandr libXi libXxf86vm ]));
 
   python3-wrapper = pythonWrapper { bin = "${python}/bin/python3"; name = "python3"; aliases = [ "python" "python${pythonVersion}" ]; };
 
