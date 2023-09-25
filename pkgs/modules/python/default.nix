@@ -98,8 +98,7 @@ let
     inherit pkgs python pypkgs debugpy;
   };
 
-  debuggerConfig = if pythonVersion == "3.13" then ({ }) else
-  ({
+  debuggerConfig = {
     dapPython = {
       name = "DAP Python";
       language = "python3";
@@ -137,7 +136,7 @@ let
         };
       };
     };
-  });
+  };
 
   python-ld-library-path = pkgs.lib.makeLibraryPath ([
     # Needed for pandas / numpy
