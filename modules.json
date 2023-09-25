@@ -495,8 +495,8 @@
     "commit": "ff491143e779453de50b979dc7dd35ac0f2ef40a",
     "path": "/nix/store/4lhzsk1lq4hirb9fp6hv43w56cq88lpi-replit-module-nix"
   },
-  "python-with-prybar-3.10:v1-20230922-2188036": {
-    "commit": "218803652b5f832ae83ad1cd5767721f9f8314ca",
-    "path": "/nix/store/hlfmbqwq02rsn2012xh0j7iaxjwk2wqs-replit-module-python-with-prybar-3.10"
+  "python-with-prybar-3.10:v2-20230925-77b13e4": {
+    "commit": "77b13e434deb254c3792ddd97191586c193a83a6",
+    "path": "/nix/store/15zbbslxj7l7qmxra0fxw043w04mll50-replit-module-python-with-prybar-3.10"
   }
 }
