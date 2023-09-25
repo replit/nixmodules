@@ -38,11 +38,12 @@ in
     run-prybar
   ];
 
-  replit.runners.python-prybar = {
-    name = "Prybar for Python ${pythonVersion}";
-    optionalFileParam = true;
-    language = "python3";
-    start = "${run-prybar}/bin/run-prybar $file";
+  replit.runners = lib.mkForce {
+    python-prybar = {
+      name = "Prybar for Python ${pythonVersion}";
+      optionalFileParam = true;
+      language = "python3";
+      start = "${run-prybar}/bin/run-prybar $file";
+    };
   };
-
 }
