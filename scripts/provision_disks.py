@@ -70,18 +70,25 @@ async def async_exec(cmdparts):
   cmd = ' '.join(cmdparts)
   print('Start: %s' % cmd)
   proc = await asyncio.create_subprocess_shell(
-      cmd,
-      stdout=asyncio.subprocess.PIPE,
-      stderr=asyncio.subprocess.PIPE)
+    cmd,
+    stdout=asyncio.subprocess.PIPE,
+    stderr=asyncio.subprocess.PIPE)
 
   stdout, stderr = await proc.communicate()
 
   print('Complete: %s exit code: %d' % (cmd, proc.returncode))
   print('-->', end=None)
-  if stdout:
-      print('%s' % stdout.decode())
-  if stderr:
-      print('%s' % stderr.decode())
+  stdoutStr = stdout and stdout.decode()
+  stderrStr = stderr and stderr.decode()
+  if stdoutStr:
+    print('%s' % stdoutStr)
+  if stderrStr:
+    print('%s' % stderrStr)
+  if proc.returncode == 0:
+    return
+  if stderrStr and 'already exists' in stderrStr:
+    return
+  raise Exception('Error running %s' % cmd)
 
 def eval_rev():
   output = subprocess.check_output([
