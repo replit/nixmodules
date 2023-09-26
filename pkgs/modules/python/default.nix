@@ -47,29 +47,24 @@ let
     destination = "/conf.toml";
   };
 
-  debugpy =
-    if (pythonVersion == "3.11")
-    then
-      pypkgs.debugpy.overridePythonAttrs
-        (old: rec {
-          disabled = false;
-          version = "1.8.0";
-          src = pkgs.fetchFromGitHub {
-            owner = "microsoft";
-            repo = "debugpy";
-            rev = "refs/tags/v${version}";
-            hash = "sha256-FW1RDmj4sDBS0q08C82ErUd16ofxJxgVaxfykn/wVBA=";
-          };
-          doCheck = false;
-        })
-    else pypkgs.debugpy;
+  debugpy = pypkgs.debugpy.overridePythonAttrs
+    (old: rec {
+      disabled = false;
+      version = "1.8.0";
+      src = pkgs.fetchFromGitHub {
+        owner = "microsoft";
+        repo = "debugpy";
+        rev = "refs/tags/v${version}";
+        hash = "sha256-FW1RDmj4sDBS0q08C82ErUd16ofxJxgVaxfykn/wVBA=";
+      };
+      doCheck = false;
+    });
 
   dapPython = pkgs.callPackage ../../dapPython {
     inherit pkgs python pypkgs debugpy;
   };
 
-  debuggerConfig = if pythonVersion == "3.8" then ({ }) else
-  ({
+  debuggerConfig = {
     dapPython = {
       name = "DAP Python";
       language = "python3";
@@ -107,7 +102,7 @@ let
         };
       };
     };
-  });
+  };
 
   python3-wrapper = pythonWrapper { bin = "${python}/bin/python3"; name = "python3"; aliases = [ "python" "python${pythonVersion}" ]; };
 
