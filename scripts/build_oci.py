@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 #
-# scripts/nixmodules_oci.py <nixmodules version>
+# scripts/nixmodules_oci.py
 #
 # This script:
 # 1. for each historical version of each module from github:replit/nixmodules
