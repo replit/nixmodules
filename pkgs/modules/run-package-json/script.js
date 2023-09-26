@@ -50,26 +50,25 @@ const hasScripts = Boolean(packageJson.scripts);
 let cmd = null;
 if (hasScripts && packageJson.scripts["replit-dev"]) {
   checkPackageJsonScript();
-  cmd = `${runPackageJsonScript} replit-dev`;
+  cmd = [runPackageJsonScript, 'replit-dev'];
 } else if (hasScripts && packageJson.scripts["dev"]) {
   checkPackageJsonScript();
-  cmd = `${runPackageJsonScript} dev`;
+  cmd = [runPackageJsonScript, 'dev'];
 } else if (packageJson["main"]) {
   checkRunScript();
-  cmd = `${runScript} ${packageJson["main"]}`;
+  cmd = [runScript, packageJson["main"]];
 } else if (process.env.file) {
   checkRunScript();
-  cmd = `${runScript} ${process.env.file}`;
+  cmd = [runScript, process.env.file];
 } else {
   console.error("Nothing to run.");
   process.exit(1);
 }
 
-console.info(`+ ${cmd}`);
+console.info(`+ ${cmd.join(' ')}`);
 
-spawn('sh', ['-c', cmd], {
+spawn(cmd[0], cmd.slice(1).join(' '), {
 	stdio: 'inherit',
 	cwd: process.cwd(),
-	detached: true,
 	shell: false,
-}).unref();
+})
