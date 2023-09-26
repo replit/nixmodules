@@ -45,7 +45,7 @@ blocks:
       jobs:
         - name: provision nixmodules disks
           commands:
-            - ./scripts/provision_disks.sh
+            - nix-shell -p google-cloud-sdk --command "./scripts/provision_disks.py"
     dependencies:
       - build nixmodules disk image
   - name: build oci images
