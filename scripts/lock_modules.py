@@ -112,7 +112,12 @@ def update_module_registry(module_registry):
     if module_id not in module_registry:
       module_registry[module_id] = []
     
-    numeric_version = 1 + len(module_registry[module_id])
+    largest_version = 0
+    for m in module_registry[module_id]:
+      version = m['version']
+      if version > largest_version:
+        largest_version = version
+    numeric_version = 1 + largest_version
     module = {
       'id': module_id,
       'version': numeric_version,
