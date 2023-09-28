@@ -73,6 +73,7 @@ let
   // (fns.linearUpgrade "python-with-prybar-3.10")
   // (fns.linearUpgrade "pyright-extended")
   // (fns.linearUpgrade "svelte-kit-node-20")
+  // (fns.linearUpgrade "nodejs-with-prybar-18")
   ;
 
   present-entries = entries: mapAttrs
