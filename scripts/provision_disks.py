@@ -10,7 +10,9 @@ rev = None
 img_name = None
 gcs_path = None
 labels = None
-project = "marine-cycle-160323"
+project_marine_cycle = "marine-cycle-160323"
+project_replit_platform_prod = "replit-platform-prod"
+project_replit_platform_staging = "replit-platform-staging"
 nix_flags = ['--extra-experimental-features', 'nix-command flakes discard-references']
 
 async def main():
@@ -21,27 +23,43 @@ async def main():
   labels="sha=%s,service=nixmodules,component=nixmodules,cost-center=platform_packager,environment=production" % rev
 
   await asyncio.gather(
-    create_image("us"),
-    create_image("asia")
+    create_image(project_marine_cycle, "us"),
+    create_image(project_marine_cycle, "asia"),
+
+    create_image(project_replit_platform_prod, "us"),
+
+    create_image(project_replit_platform_staging, "us"),
   )
   await asyncio.gather(
-    create_disk("asia", "asia-south1-a"),
-    create_disk("asia", "asia-south1-b"),
+    create_disk(project_marine_cycle, "asia", "asia-south1-a"),
+    create_disk(project_marine_cycle, "asia", "asia-south1-b"),
 
-    create_disk("us", "us-west1-a"),
-    create_disk("us", "us-west1-b"),
-    create_disk("us", "us-west1-c"),
+    create_disk(project_marine_cycle, "us", "us-west1-a"),
+    create_disk(project_marine_cycle, "us", "us-west1-b"),
+    create_disk(project_marine_cycle, "us", "us-west1-c"),
 
-    create_disk("us", "us-central1-a"),
-    create_disk("us", "us-central1-c"),
-    create_disk("us", "us-central1-f"),
+    create_disk(project_marine_cycle, "us", "us-central1-a"),
+    create_disk(project_marine_cycle, "us", "us-central1-c"),
+    create_disk(project_marine_cycle, "us", "us-central1-f"),
 
-    create_disk("us", "us-east1-b"),
-    create_disk("us", "us-east1-c"),
-    create_disk("us", "us-east1-d"),
+    create_disk(project_marine_cycle, "us", "us-east1-b"),
+    create_disk(project_marine_cycle, "us", "us-east1-c"),
+    create_disk(project_marine_cycle, "us", "us-east1-d"),
+
+    create_disk(project_replit_platform_prod, "us", "us-west1-a"),
+    create_disk(project_replit_platform_prod, "us", "us-west1-b"),
+    create_disk(project_replit_platform_prod, "us", "us-west1-c"),
+
+    create_disk(project_replit_platform_prod, "us", "us-central1-a"),
+    create_disk(project_replit_platform_prod, "us", "us-central1-c"),
+    create_disk(project_replit_platform_prod, "us", "us-central1-f"),
+
+    create_disk(project_replit_platform_staging, "us", "us-central1-a"),
+    create_disk(project_replit_platform_staging, "us", "us-central1-c"),
+    create_disk(project_replit_platform_staging, "us", "us-central1-f"),
   )
 
-async def create_image(region):
+async def create_image(project, region):
   image_storage_location = region
   
   await async_exec([
@@ -54,7 +72,7 @@ async def create_image(region):
     '%s-%s' % (img_name, image_storage_location)
   ])
 
-async def create_disk(region, zone):
+async def create_disk(project, region, zone):
   image_storage_location = region
   await async_exec([
     'gcloud', 'compute', 'disks', 'create',
