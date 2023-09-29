@@ -27,6 +27,7 @@ async def main():
     create_image(project_marine_cycle, "asia"),
 
     create_image(project_replit_platform_prod, "us"),
+    create_image(project_replit_platform_prod, "asia"),
 
     create_image(project_replit_platform_staging, "us"),
   )
@@ -53,6 +54,13 @@ async def main():
     create_disk(project_replit_platform_prod, "us", "us-central1-a"),
     create_disk(project_replit_platform_prod, "us", "us-central1-c"),
     create_disk(project_replit_platform_prod, "us", "us-central1-f"),
+
+    create_disk(project_replit_platform_prod, "us", "us-east1-b"),
+    create_disk(project_replit_platform_prod, "us", "us-east1-c"),
+    create_disk(project_replit_platform_prod, "us", "us-east1-d"),
+
+    create_disk(project_replit_platform_prod, "asia", "asia-south1-a"),
+    create_disk(project_replit_platform_prod, "asia", "asia-south1-b"),
 
     create_disk(project_replit_platform_staging, "us", "us-central1-a"),
     create_disk(project_replit_platform_staging, "us", "us-central1-c"),
