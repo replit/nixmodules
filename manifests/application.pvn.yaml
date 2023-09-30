@@ -28,7 +28,7 @@ application:
                 string: "prodvana-monitor:nixmodules"
           lifecycle:
             - postDeployment:
-                checkDuration: 300s
+                checkDuration: 600s
     - name: tarpit
       constants:
         - name: name
