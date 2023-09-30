@@ -10,6 +10,25 @@ application:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw
           type: EXTENSION
+      protections:
+        - ref:
+            name: check-no-datadog-alerts
+            parameters:
+              - name: apiKey
+                secret:
+                  secretRef:
+                    key: datadogApiKey
+                    version: datadogApiKey-0
+              - name: appKey
+                secret:
+                  secretRef:
+                    key: datadogAppKey
+                    version: datadogAppKey-0
+              - name: tagList
+                string: "prodvana-monitor:nixmodules"
+          lifecycle:
+            - postDeployment:
+                checkDuration: 300s
     - name: tarpit
       constants:
         - name: name
