@@ -41,19 +41,20 @@ let
         - the `entrypoint` defined in `.replit`
       '';
     };
-    "bun-1.0:v3-20230915-80b0f23" = {
-      to = "bun-1.0:v5-20230921-cc7a2dd";
-      auto = true;
-      changelog = ''# `package.json` runner
-        The runner for bun module has changed for increased flexibility and conformance to standards.
+    # "bun-1.0:v3-20230915-80b0f23" = {
+    #   to = "bun-1.0:v5-20230921-cc7a2dd";
+    #   auto = true;
+    #   changelog = ''# `package.json` runner
+    #     The runner for bun module has changed for increased flexibility and conformance to standards.
 
-        The new precedence is:
-        - the `replit-dev` script defined in `package.json`
-        - the `dev` script defined in `package.json`
-        - the `main` file defined in `package.json`
-        - the `entrypoint` defined in `.replit`
-      '';
-    };
+    #     The new precedence is:
+    #     - the `replit-dev` script defined in `package.json`
+    #     - the `dev` script defined in `package.json`
+    #     - the `main` file defined in `package.json`
+    #     - the `entrypoint` defined in `.replit`
+    #   '';
+    # };
+    "bun-1.0:v5-20230921-cc7a2dd" = { to = "bun-1.0:v3-20230915-80b0f23"; auto = true; };
 
     "go" = { to = "go-1.19:v1-20230525-c48c43c"; auto = true; };
     "rust" = { to = "rust-1.69:v1-20230525-c48c43c"; auto = true; };
@@ -73,6 +74,7 @@ let
   // (fns.linearUpgrade "python-with-prybar-3.10")
   // (fns.linearUpgrade "pyright-extended")
   // (fns.linearUpgrade "svelte-kit-node-20")
+  // (fns.linearUpgrade "nodejs-with-prybar-18")
   ;
 
   present-entries = entries: mapAttrs

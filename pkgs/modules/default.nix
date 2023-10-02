@@ -27,6 +27,7 @@ let
     (mkModule (import ./nodejs {
       nodejs = pkgs.nodejs_20;
     }))
+    (mkModule ./nodejs-with-prybar)
 
     (mkModule ./go)
     (mkModule ./rust)
