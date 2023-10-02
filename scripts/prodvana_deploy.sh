@@ -10,12 +10,20 @@ APPLICATION_NAME=nixmodules
 
 # check existence of disk
 img_name="nixmodules-${rev}"
-disks=$(gcloud compute disks list --project=marine-cycle-160323 --filter="name~${img_name}'.*'" --format="value(name)")
 
-if [[ ! $disks ]]; then
-  echo "Disks for ${img_name} do not exist. Exiting."
-  exit 1
-fi
+function check_disks() {
+  local PROJECT=$1
+  disks=$(gcloud compute disks list --project=$PROJECT --filter="name~${img_name}'.*'" --format="value(name)")
+
+  if [[ ! $disks ]]; then
+    echo "Disks for ${img_name} do not exist. Exiting."
+    exit 1
+  fi
+}
+
+check_disks marine-cycle-160323
+check_disks replit-platform-staging
+check_disks replit-platform-prod
 
 echo "Triggering ship-it-bot webhook"
 

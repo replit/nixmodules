@@ -102,3 +102,124 @@ application:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw
           type: EXTENSION
+# regional goval
+    - name: staging
+      constants:
+        - name: name
+          string:
+            value: staging
+      preconditions:
+        - releaseChannelStable:
+            releaseChannel: global
+      runtimes:
+        - name: config-raw
+          runtime: marine-cycle-160323--govalctl-config-raw
+          type: EXTENSION
+    - name: picard
+      constants:
+        - name: name
+          string:
+            value: picard
+      preconditions:
+        - releaseChannelStable:
+            releaseChannel: staging
+      runtimes:
+        - name: config-raw
+          runtime: marine-cycle-160323--govalctl-config-raw
+          type: EXTENSION
+    - name: riker
+      constants:
+        - name: name
+          string:
+            value: riker
+      preconditions:
+        - releaseChannelStable:
+            releaseChannel: picard
+      runtimes:
+        - name: config-raw
+          runtime: marine-cycle-160323--govalctl-config-raw
+          type: EXTENSION
+    - name: kirk
+      constants:
+        - name: name
+          string:
+            value: kirk
+      preconditions:
+        - releaseChannelStable:
+            releaseChannel: picard
+      runtimes:
+        - name: config-raw
+          runtime: marine-cycle-160323--govalctl-config-raw
+          type: EXTENSION
+    - name: spock
+      constants:
+        - name: name
+          string:
+            value: spock
+      preconditions:
+        - releaseChannelStable:
+            releaseChannel: picard
+      runtimes:
+        - name: config-raw
+          runtime: marine-cycle-160323--govalctl-config-raw
+          type: EXTENSION
+    - name: worf
+      constants:
+        - name: name
+          string:
+            value: worf
+      preconditions:
+        - releaseChannelStable:
+            releaseChannel: picard
+      runtimes:
+        - name: config-raw
+          runtime: marine-cycle-160323--govalctl-config-raw
+          type: EXTENSION
+    - name: janeway
+      constants:
+        - name: name
+          string:
+            value: janeway
+      preconditions:
+        - releaseChannelStable:
+            releaseChannel: picard
+      runtimes:
+        - name: config-raw
+          runtime: marine-cycle-160323--govalctl-config-raw
+          type: EXTENSION
+    - name: sisko
+      constants:
+        - name: name
+          string:
+            value: sisko
+      preconditions:
+        - releaseChannelStable:
+            releaseChannel: picard
+      runtimes:
+        - name: config-raw
+          runtime: marine-cycle-160323--govalctl-config-raw
+          type: EXTENSION
+    - name: pike
+      constants:
+        - name: name
+          string:
+            value: pike
+      preconditions:
+        - releaseChannelStable:
+            releaseChannel: picard
+      runtimes:
+        - name: config-raw
+          runtime: marine-cycle-160323--govalctl-config-raw
+          type: EXTENSION 
+    - name: wesley
+      constants:
+        - name: name
+          string:
+            value: wesley
+      preconditions:
+        - releaseChannelStable:
+            releaseChannel: picard
+      runtimes:
+        - name: config-raw
+          runtime: marine-cycle-160323--govalctl-config-raw
+          type: EXTENSION        
