@@ -101,14 +101,10 @@ rec {
       let
         flake = builtins.getFlake "github:replit/nixmodules/${module.commit}";
         shortModuleId = elemAt (strings.splitString ":" moduleId) 0;
-        moduleToBuild =
-          if builtins.hasAttr "deploymentModules" flake then
-            flake.deploymentModules.${shortModuleId} else
-            flake.modules.${shortModuleId};
       in
       mkPhonyOCI {
         inherit moduleId;
-        module = moduleToBuild;
+        module = flake.deploymentModules.${shortModuleId};
       })
     all-modules;
 
