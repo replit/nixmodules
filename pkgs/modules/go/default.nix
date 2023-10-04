@@ -6,11 +6,15 @@ in
   id = "go-${goversion}";
   name = "Go Tools";
 
-  packages = with pkgs; [
+  replit.packages = with pkgs; [
     go
-    gopls
   ];
 
+  replit.dev.packages = [
+    pkgs.gopls
+  ];
+
+  # TODO: should compile a binary to use in deployment and not include the runtime
   replit.runners.go-run = {
     name = "go run";
     language = "go";
@@ -18,7 +22,7 @@ in
     start = "${pkgs.go}/bin/go run $REPL_HOME";
   };
 
-  replit.formatters.go-fmt = {
+  replit.dev.formatters.go-fmt = {
     name = "go fmt";
     language = "go";
 
@@ -26,7 +30,7 @@ in
     stdin = false;
   };
 
-  replit.languageServers.gopls = {
+  replit.dev.languageServers.gopls = {
     name = "gopls";
     language = "go";
 

@@ -2,7 +2,7 @@
 {
   id = "gcloud";
   name = "Google Cloud Tools";
-  packages = [
+  replit.packages = [
     pkgs.google-cloud-sdk
   ];
 }

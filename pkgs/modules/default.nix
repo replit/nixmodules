@@ -4,55 +4,85 @@ let
     configPath = path;
     inherit pkgs-unstable;
   };
+  mkDeploymentModule = path: pkgs.callPackage ../moduleit/entrypoint.nix {
+    configPath = path;
+    inherit pkgs-unstable;
+    deployment = true;
+  };
 
   modulesList = [
-    (mkModule (import ./python {
+    (import ./python {
       python = pkgs.python38Full;
       pypkgs = pkgs.python38Packages;
-    }))
-    (mkModule (import ./python {
+    })
+    (import ./python {
       python = pkgs.python310Full;
       pypkgs = pkgs.python310Packages;
-    }))
-    (mkModule (import ./python {
+    })
+    (import ./python {
       python = pkgs.python311Full;
       pypkgs = pkgs.python311Packages;
-    }))
-    (mkModule ./python-with-prybar)
-    (mkModule ./pyright-extended)
+    })
+    (import ./python-with-prybar)
 
-    (mkModule (import ./nodejs {
+    (import ./pyright-extended)
+
+    (import ./nodejs {
       nodejs = pkgs.nodejs-18_x;
-    }))
-    (mkModule (import ./nodejs {
+    })
+    (import ./nodejs {
       nodejs = pkgs.nodejs_20;
-    }))
-    (mkModule ./nodejs-with-prybar)
+    })
+    (import ./nodejs-with-prybar)
 
-    (mkModule ./go)
-    (mkModule ./rust)
-    (mkModule ./swift)
-    (mkModule ./bun)
-    (mkModule ./c)
-    (mkModule ./cpp)
-    (mkModule ./dart)
-    (mkModule ./gcloud)
-    (mkModule ./clojure)
-    (mkModule ./dotnet)
-    (mkModule ./haskell)
-    (mkModule ./java)
-    (mkModule ./lua)
-    (mkModule ./nix)
-    (mkModule ./php)
-    (mkModule ./qbasic)
-    (mkModule ./R)
-    (mkModule ./ruby)
-    (mkModule ./svelte-kit)
-    (mkModule ./web)
+    (import ./go)
+    (import ./rust)
+    (import ./swift)
+    (import ./bun)
+    (import ./c)
+    (import ./cpp)
+    (import ./dart)
+    (import ./gcloud)
+    (import ./clojure)
+    (import ./dotnet)
+    (import ./haskell)
+    (import ./java)
+    (import ./lua)
+    (import ./nix)
+    (import ./php)
+    (import ./qbasic)
+    (import ./R)
+    (import ./ruby)
+    (import ./svelte-kit)
+    (import ./web)
   ];
 
   modules = builtins.listToAttrs (
-    map (module: { name = get-module-id module; value = module; }) modulesList
+    map
+      (moduleInput:
+        let
+          module = mkModule moduleInput;
+        in
+        {
+          name = get-module-id module;
+          value = module;
+        }
+      )
+      modulesList
+  );
+
+  deploymentModules = builtins.listToAttrs (
+    map
+      (moduleInput:
+        let
+          module = mkDeploymentModule moduleInput;
+        in
+        {
+          name = get-deployment-module-id module;
+          value = module;
+        }
+      )
+      modulesList
   );
 
   get-module-id = module:
@@ -60,5 +90,11 @@ let
       match = builtins.match "^\/nix\/store\/([^-]+)-replit-module-(.+)$" module.outPath;
     in
     builtins.elemAt match 1;
+
+  get-deployment-module-id = module:
+    let
+      match = builtins.match "^\/nix\/store\/([^-]+)-replit-deployment-module-(.+)$" module.outPath;
+    in
+    builtins.elemAt match 1;
 in
-modules
+{ inherit modules deploymentModules; }

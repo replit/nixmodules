@@ -8,11 +8,11 @@
     })
   ];
 
-  packages = [ ];
+  replit.packages = [ ];
 
-  replit.languageServers.typescript-language-server.extensions = [ ".js" ".jsx" ".ts" ".tsx" ".mjs" ".mts" ".cjs" ".cts" ".es6" ];
+  replit.dev.languageServers.typescript-language-server.extensions = [ ".js" ".jsx" ".ts" ".tsx" ".mjs" ".mts" ".cjs" ".cts" ".es6" ];
 
-  replit.languageServers.html = {
+  replit.dev.languageServers.html = {
     name = "HTML Language Server";
     language = "html";
     extensions = [ ".html" ];
@@ -63,7 +63,7 @@
     };
   };
 
-  replit.languageServers.css = {
+  replit.dev.languageServers.css = {
     name = "CSS Language Server";
     language = "css";
     extensions = [ ".css" ".less" ".scss" ];

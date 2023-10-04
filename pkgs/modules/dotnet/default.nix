@@ -12,7 +12,7 @@ in
   id = "dotnet-${dotnet-version}";
   name = ".NET 7 Tools";
 
-  packages = [
+  replit.packages = [
     dotnet
   ];
 
@@ -24,7 +24,7 @@ in
     start = "${dotnet}/bin/dotnet run";
   };
 
-  replit.languageServers.omni-sharp = {
+  replit.dev.languageServers.omni-sharp = {
     inherit extensions;
     name = "OmniSharp";
     language = "dotnet";
@@ -32,7 +32,7 @@ in
     start = "${pkgs.omnisharp-roslyn}/bin/OmniSharp --languageserver";
   };
 
-  replit.packagers.dotnet = {
+  replit.dev.packagers.dotnet = {
     name = ".NET";
     language = "dotnet";
     features = {
