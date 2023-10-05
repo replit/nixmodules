@@ -18,6 +18,12 @@ let
       python = pkgs.python311Full;
       pypkgs = pkgs.python311Packages;
     }))
+    (pkgs-unstable.callPackage ../moduleit/entrypoint.nix {
+      configPath = (import ./python {
+        python = pkgs-unstable.python312;
+        pypkgs = pkgs-unstable.python312Packages;
+      });
+    })
     (mkModule ./python-with-prybar)
     (mkModule ./pyright-extended)
 
