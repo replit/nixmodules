@@ -8,7 +8,7 @@ pypkgs.buildPythonPackage rec {
     owner = "replit";
     repo = pname;
     rev = "21.2.dev0";
-    sha256 = "sha256-k4RnK9TnvfJlxpihdHFg3JmYtNDC4KY+f41VwJ+e+1A=";
+    sha256 = "sha256-kSjKeLqXUG91QncrQlqqCWZvnnNnDuhk1jLBRtu7xdw=";
     name = "${pname}-${version}-source";
   };
 
