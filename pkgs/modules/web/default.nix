@@ -8,7 +8,6 @@
     })
   ];
 
-  replit.packages = [ ];
 
   replit.dev.languageServers.typescript-language-server.extensions = [ ".js" ".jsx" ".ts" ".tsx" ".mjs" ".mts" ".cjs" ".cts" ".es6" ];
 
