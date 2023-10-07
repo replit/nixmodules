@@ -1,4 +1,9 @@
 { pkgs, python, pypkgs, version, url, sha256 }:
+let pip = pypkgs.pip.overridePythonAttrs
+  (old: rec {
+    doCheck = false;
+  });
+in
 pkgs.stdenv.mkDerivation {
   name = "poetry-in-venv";
   inherit version;
@@ -6,8 +11,11 @@ pkgs.stdenv.mkDerivation {
   src = builtins.fetchTarball {
     inherit url sha256;
   };
+  
 
-  buildInputs = [ pypkgs.pip ];
+  buildInputs = [
+    pip
+  ];
 
   installPhase = ''
     mkdir -p $out/bin
