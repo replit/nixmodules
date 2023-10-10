@@ -71,8 +71,9 @@ def print_test_results(test_runs):
   print("Results:")
   passed = True
   for run in test_runs:
-    print("%s %s: %s" % (run["templateUri"], run["testCase"], run["result"]))
-    if run["result"] != "P":
+    result = run["result"]
+    print("%s %s: %s" % (run["templateUri"], run["testCase"], result))
+    if result != "P" and result != "S":
       passed = False
   return passed
 
