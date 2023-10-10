@@ -13,7 +13,7 @@ in
     fileParam = true;
   };
 
-  replit.packagers.r = {
+  replit.dev.packagers.r = {
     name = "R";
     language = "r";
     features = {

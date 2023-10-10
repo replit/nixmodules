@@ -22,14 +22,17 @@ in
     })
   ];
 
-  packages = [
-    nodejs
-    prettier
-  ];
-
   replit = {
 
-    languageServers.typescript-language-server.extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ".mjs" ".cjs" ".es6" ];
+    packages = [
+      nodejs
+    ];
+
+    dev.packages = [
+      prettier
+    ];
+
+    dev.languageServers.typescript-language-server.extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ".mjs" ".cjs" ".es6" ];
 
     runners.nodeJS = {
       name = "Node.js";
@@ -38,7 +41,7 @@ in
       fileParam = true;
     };
 
-    debuggers.nodeDAP = {
+    dev.debuggers.nodeDAP = {
       name = "Node DAP";
       language = "javascript";
       transport = "localhost:0";
@@ -82,7 +85,7 @@ in
       };
     };
 
-    formatters.prettier = {
+    dev.formatters.prettier = {
       name = "Prettier";
       language = "javascript";
       extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ];
@@ -92,7 +95,7 @@ in
       stdin = true;
     };
 
-    packagers.upmNodejs = {
+    dev.packagers.upmNodejs = {
       name = "UPM for Node.js";
       language = "nodejs";
       features = {

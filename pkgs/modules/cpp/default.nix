@@ -14,10 +14,11 @@ in
   id = "cpp-clang${clang-version}";
   name = "C++ Tools (with Clang)";
 
-  packages = [
+  replit.packages = [
     clang
   ];
 
+  # TODO: should compile a binary to use in deployment and not include the runtime
   replit.runners.clang-project = {
     name = "Clang++: Project";
     compile = "${clang-compile}/bin/clang-compile main.cpp cpp all";
@@ -28,13 +29,13 @@ in
 
   # TODO: add single runners/debuggers when we have priority for runners
 
-  replit.languageServers.ccls = {
+  replit.dev.languageServers.ccls = {
     name = "ccls";
     language = "cpp";
     start = "${pkgs.ccls}/bin/ccls";
   };
 
-  replit.debuggers.gdb-project = {
+  replit.dev.debuggers.gdb-project = {
     name = "GDB C++: Project";
     language = "cpp";
     start = "${dap-cpp}/bin/dap-cpp";

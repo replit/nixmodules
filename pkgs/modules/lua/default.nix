@@ -5,7 +5,7 @@ in
   id = "lua-${lua-version}";
   name = "Lua Tools";
 
-  packages = with pkgs; [
+  replit.packages = with pkgs; [
     lua
   ];
 
@@ -17,7 +17,7 @@ in
     fileParam = true;
   };
 
-  replit.languageServers.sumneko = {
+  replit.dev.languageServers.sumneko = {
     name = "lua-language-server";
     language = "lua";
 
