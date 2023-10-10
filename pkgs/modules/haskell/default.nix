@@ -6,7 +6,7 @@ in
   id = "haskell-ghc${ghc-version}";
   name = "Haskell Tools";
 
-  packages = with pkgs; [
+  replit.packages = with pkgs; [
     ghc
   ];
 
@@ -28,7 +28,7 @@ in
   #   interpreter = true;
   # };
 
-  replit.languageServers.haskell-language-server = {
+  replit.dev.languageServers.haskell-language-server = {
     name = "Haskell Language Server";
     language = "haskell";
 

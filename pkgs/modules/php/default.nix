@@ -6,9 +6,12 @@ in
   id = "php-${php-version}";
   name = "PHP Tools";
 
-  packages = with pkgs; [
+  replit.packages = with pkgs; [
     php
-    phpPackages.composer
+  ];
+
+  replit.dev.packages = [
+    pkgs.phpPackages.composer
   ];
 
   replit.runners.php = {
@@ -18,14 +21,14 @@ in
     fileParam = true;
   };
 
-  replit.languageServers.phpactor = {
+  replit.dev.languageServers.phpactor = {
     name = "phpactor";
     language = "php";
 
     start = "${pkgs.phpactor}/bin/phpactor language-server";
   };
 
-  replit.packagers.php = {
+  replit.dev.packagers.php = {
     name = "PHP";
     language = "php";
     features = {

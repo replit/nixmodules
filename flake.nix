@@ -46,9 +46,10 @@
           gzip
         ];
       };
-      modules = import ./pkgs/modules {
+    } // (
+      import ./pkgs/modules {
         inherit pkgs;
         inherit pkgs-unstable;
-      };
-    };
+      }
+    );
 }

@@ -16,12 +16,12 @@ in
   id = "nodejs";
   name = "Node.js";
 
-  packages = [
-    pkgs.nodejs_20
-    typescript-language-server
-  ];
-
   replit = {
+
+    packages = [
+      pkgs.nodejs_20
+      typescript-language-server
+    ];
 
     initializers.npmInit = {
       name = "npm init";

@@ -17,4 +17,4 @@ cp "${env["active-modules"]}" $root/etc/nixmodules/active-modules.json
 echo "${env[registry]}" > "$root/etc/nixmodules/modules.json"
 
 echo "making squashfs..."
-mksquashfs "$root" "$out/disk.sqsh"
+mksquashfs "$root" "$out/disk.sqsh" -force-uid 11000 -force-gid 11000

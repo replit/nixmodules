@@ -468,9 +468,7 @@ let
     };
   };
 
-  envWithMergedPath = (env: path:
-    let packagesPath = lib.makeBinPath config.packages;
-    in
+  envWithMergedPath = (env: packagesPath:
     if builtins.hasAttr "PATH" env
     then env // { PATH = env.PATH + ":" + packagesPath; }
     else { PATH = packagesPath; } // env
@@ -494,6 +492,70 @@ let
       attrs
   );
 
+  replitOptions = {
+    packages = mkOption {
+      type = types.listOf types.package;
+      default = [ ];
+      description = "The set of packages to appear in the repl.";
+    };
+
+    initializers = mkOption {
+      type = types.attrsOf (types.submodule initializerModule);
+      default = { };
+      description = lib.mdDoc ''
+        A set of initializers provided by the module.
+      '';
+    };
+
+    runners = mkOption {
+      type = types.attrsOf (types.submodule runnerModule);
+      default = { };
+      description = lib.mdDoc ''
+        A set of runners provided by the module.
+      '';
+    };
+
+    packagers = mkOption {
+      type = types.attrsOf (types.submodule packagerModule);
+      default = { };
+      description = lib.mdDoc ''
+        A set of packager configuration settings for UPM.
+      '';
+    };
+
+    debuggers = mkOption {
+      type = types.attrsOf (types.submodule debuggerModule);
+      default = { };
+      description = lib.mdDoc ''
+        A set of debuggers provided by the module.
+      '';
+    };
+
+    formatters = mkOption {
+      type = types.attrsOf (types.submodule formatterModule);
+      default = { };
+      description = lib.mdDoc ''
+        A set of formatters provided by the module.
+      '';
+    };
+
+    languageServers = mkOption {
+      type = types.attrsOf (types.submodule languageServerModule);
+      default = { };
+      description = lib.mdDoc ''
+        A set language servers provided by the module.
+      '';
+    };
+
+    env = mkOption {
+      type = types.attrsOf types.str;
+      default = { };
+      description = lib.mdDoc ''
+        A set of environment variables to export.
+      '';
+    };
+  };
+
 in
 
 {
@@ -514,81 +576,25 @@ in
       default = "";
     };
 
-    packages = mkOption {
-      type = types.listOf types.package;
-      default = [ ];
-      description = "The set of packages to appear in the repl.";
-    };
-
-    replit = {
-
-      initializers = mkOption {
-        type = types.attrsOf (types.submodule initializerModule);
-        default = { };
-        description = lib.mdDoc ''
-          A set of initializers provided by the module.
-        '';
+    replit = replitOptions // {
+      dev = replitOptions;
+    } // {
+      builtPackages = mkOption {
+        internal = true;
       };
 
-      runners = mkOption {
-        type = types.attrsOf (types.submodule runnerModule);
-        default = { };
-        description = lib.mdDoc ''
-          A set of runners provided by the module.
-        '';
+      buildModule = mkOption {
+        internal = true;
       };
 
-      packagers = mkOption {
-        type = types.attrsOf (types.submodule packagerModule);
-        default = { };
-        description = lib.mdDoc ''
-          A set of packager configuration settings for UPM.
-        '';
+      buildDeploymentModule = mkOption {
+        internal = true;
       };
 
-      debuggers = mkOption {
-        type = types.attrsOf (types.submodule debuggerModule);
-        default = { };
-        description = lib.mdDoc ''
-          A set of debuggers provided by the module.
-        '';
+      configJSON = mkOption {
+        internal = true;
       };
 
-      formatters = mkOption {
-        type = types.attrsOf (types.submodule formatterModule);
-        default = { };
-        description = lib.mdDoc ''
-          A set of formatters provided by the module.
-        '';
-      };
-
-      languageServers = mkOption {
-        type = types.attrsOf (types.submodule languageServerModule);
-        default = { };
-        description = lib.mdDoc ''
-          A set language servers provided by the module.
-        '';
-      };
-
-      env = mkOption {
-        type = types.attrsOf types.str;
-        default = { };
-        description = lib.mdDoc ''
-          A set of environment variables to export.
-        '';
-      };
-    };
-
-    replit.builtPackages = mkOption {
-      internal = true;
-    };
-
-    replit.buildModule = mkOption {
-      internal = true;
-    };
-
-    replit.configJSON = mkOption {
-      internal = true;
     };
   };
 
@@ -601,8 +607,42 @@ in
 
     replit.buildModule =
       let
+        allPackages = config.replit.packages ++ config.replit.dev.packages;
+        allRunners = config.replit.runners // config.replit.dev.runners;
+        verifiedAllRunners = mapAttrs
+          (id: runner:
+            # Make sure only one of fileParam or optionFileParam is used
+            assert !(runner.fileParam && runner.optionalFileParam);
+            stripAttrsWithDefaultValues runner runnerOptions [ "optionalFileParam" ]
+          )
+          allRunners;
+        allEnv = config.replit.env // config.replit.dev.env;
+        allInitializers = config.replit.initializers // config.replit.dev.initializers;
+        allPackagers = config.replit.packagers // config.replit.dev.packagers;
+        allDebuggers = config.replit.debuggers // config.replit.dev.debuggers;
+        allFormatters = config.replit.formatters // config.replit.dev.formatters;
+        allLanguageServers = config.replit.languageServers // config.replit.dev.languageServers;
+        moduleJSON = {
+          id = config.id;
+          name = config.name;
+          description = config.description;
+          env = envWithMergedPath allEnv (lib.makeBinPath allPackages);
+          initializers = allInitializers;
+          runners = verifiedAllRunners;
+          packagers = allPackagers;
+          debuggers = allDebuggers;
+          formatters = allFormatters;
+          languageServers = allLanguageServers;
+        };
+
+      in
+      pkgs.writeText "replit-module-${config.id}" (builtins.toJSON moduleJSON);
+
+    replit.buildDeploymentModule =
+      let
         runners = mapAttrs
           (id: runner:
+            # Make sure only one of fileParam or optionFileParam is used
             assert !(runner.fileParam && runner.optionalFileParam);
             stripAttrsWithDefaultValues runner runnerOptions [ "optionalFileParam" ]
           )
@@ -611,7 +651,7 @@ in
           id = config.id;
           name = config.name;
           description = config.description;
-          env = envWithMergedPath config.replit.env (lib.makeBinPath config.packages);
+          env = envWithMergedPath config.replit.env (lib.makeBinPath config.replit.packages);
           initializers = config.replit.initializers;
           inherit runners;
           packagers = config.replit.packagers;
@@ -621,6 +661,6 @@ in
         };
 
       in
-      pkgs.writeText "replit-module-${config.id}" (builtins.toJSON moduleJSON);
+      pkgs.writeText "replit-deployment-module-${config.id}" (builtins.toJSON moduleJSON);
   };
 }

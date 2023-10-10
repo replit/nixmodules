@@ -19,25 +19,20 @@ in
   id = "swift-${swift-version}";
   name = "Swift Tools";
 
-  packages = with pkgs; [
+  replit.packages = with pkgs; [
     swiftc-wrapper
     swift
   ];
 
+  # TODO: should compile a binary to be used in deployment
   replit.runners.swift = {
     name = "Swift";
     language = "swift";
     start = "${pkgs.swift}/bin/swift $file";
     fileParam = true;
-
-    productionOverride = {
-      start = "./\${file%.swift}.bin";
-      compile = "${swiftc-wrapper}/bin/swiftc $file -o \${file%.swift}.bin";
-      fileParam = true;
-    };
   };
 
-  replit.languageServers.sourcekit = {
+  replit.dev.languageServers.sourcekit = {
     name = "SourceKit";
     language = "swift";
 

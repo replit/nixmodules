@@ -2,7 +2,7 @@
   id = "nix";
   name = "Nix";
 
-  replit.languageServers.nixd = {
+  replit.dev.languageServers.nixd = {
     name = "nixd";
     language = "nix";
     start = "${pkgs.nixd}/bin/nixd";

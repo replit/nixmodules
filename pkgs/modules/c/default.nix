@@ -16,10 +16,11 @@ in
   id = "c-clang${clang-version}";
   name = "C Tools (with Clang)";
 
-  packages = [
+  replit.packages = [
     clang
   ];
 
+  # TODO: should compile a binary to use in deployment and not include the runtime
   replit.runners.clang-project = {
     name = "Clang: Project";
     compile = "${clang-compile}/bin/clang-compile main.c c all";
@@ -41,13 +42,13 @@ in
   #   start = "./\${file}.bin";
   # };
 
-  replit.languageServers.ccls = {
+  replit.dev.languageServers.ccls = {
     name = "ccls";
     language = "c";
     start = "${pkgs.ccls}/bin/ccls";
   };
 
-  replit.debuggers.gdb-project = {
+  replit.dev.debuggers.gdb-project = {
     name = "GDB: Project";
     language = "c";
     start = "${dap-cpp}/bin/dap-cpp";

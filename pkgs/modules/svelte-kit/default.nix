@@ -4,12 +4,12 @@
   id = "svelte-kit-node-20";
   name = "SvelteKit with Node.js 20 Tools";
 
-  packages = with pkgs-unstable; [
-    nodejs
-  ];
-
   replit = {
-    runners.dev-server = {
+    dev.packages = with pkgs-unstable; [
+      nodejs
+    ];
+    # Nothing required for deployment because app compiles to a static site
+    dev.runners.dev-server = {
       name = "package.json dev script";
       language = "svelte";
       extensions = [
@@ -21,7 +21,7 @@
       start = "${pkgs-unstable.nodejs}/bin/npm run dev";
     };
 
-    languageServers.svelte-language-server = {
+    dev.languageServers.svelte-language-server = {
       name = "Svelte Language Server";
       language = "svelte";
       extensions = [ ".svelte" ".js" ".ts" ];
