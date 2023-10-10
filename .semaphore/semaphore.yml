@@ -2,7 +2,7 @@ version: v1.0
 name: test
 agent:
   machine:
-    type: e1-standard-2
+    type: s1-goval
 fail_fast:
   stop:
     when: "true"
