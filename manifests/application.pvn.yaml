@@ -29,6 +29,14 @@ application:
           lifecycle:
             - postDeployment:
                 checkDuration: 600s
+    - name: test_templates
+      preconditions:
+        - releaseChannelStable:
+          releaseChannel: canary
+      runtimes:
+        - name: config-raw
+          runtime: marine-cycle-160323--govalctl-config-raw
+          type: EXTENSION
     - name: tarpit
       constants:
         - name: name
@@ -49,7 +57,7 @@ application:
       preconditions:
         - manualApproval: {}
         - releaseChannelStable:
-            releaseChannel: canary
+            releaseChannel: template_tester
       runtimes:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw

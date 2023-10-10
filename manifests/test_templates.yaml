@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: test-templates
+  namespace: staging
+  labels:
+    component: 'template-tester'
+    cost-center: 'devex'
+    environment: 'development'
+spec:
+  template:
+    metadata:
+      labels:
+        component: 'template-tester'
+        cost-center: 'devex'
+        environment: 'development'
+    spec:
+      serviceAccountName: template-tester
+      automountServiceAccountToken: true
+      restartPolicy: Never
+
+      containers:
+        - name: template-tester
+          command: [script/test_templates.py']
+          envFrom:
+            - configMapRef:
+                name: config
+            - secretRef:
+                name: secrets
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ['all']
+  ttlSecondsAfterFinished: 3600 # 1h
+  backoffLimit: 4

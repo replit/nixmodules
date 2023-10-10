@@ -49,3 +49,8 @@ service:
                 "version":"{{.Params.nixmodules_version}}",
                 "configPullJitter":"1s"
               }
+    - releaseChannel: test_templates
+      externalConfig:
+        type: KUBERNETES
+        local:
+          path: manifests/test_templates.yml
