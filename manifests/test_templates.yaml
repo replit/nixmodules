@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: test-templates
+  generateName: test-templates
   namespace: ansible
   labels:
     component: 'template-tester'
