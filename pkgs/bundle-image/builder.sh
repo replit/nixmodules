@@ -69,7 +69,6 @@ echo "copying to image..."
 cptofs -p \
        -t ext4 \
        -i "$diskImage" \
-       --owner 11000 --group 11000 \
        "$root"/* / ||
     (echo >&2 "ERROR: cptofs failed. diskSize might be too small for closure."; exit 1)
 
