@@ -2,11 +2,14 @@
 #! nix-shell -i python3 -p python311Packages.requests
 
 import requests
+import time
 from time import sleep
 import sys
 import argparse
 
 jitter_wait = 5 * 60
+jitter_timeout = 3600
+
 TEMPLATE_TESTER_URL = "https://templatetester.tobyho.repl.co"
 HEADERS = {
   "Authorization": "BLARGH",
@@ -66,22 +69,28 @@ def main():
       sys.stdout.flush()
 
 def wait_till_nix_modules_matches(expected_version):
+  start = time.time()
   while True:
     print("checking Nix modules version...")
     version = get_nix_modules_version()
     if version != expected_version:
       print("Nix modules version %s does not match expected: %s" % (version, expected_version))
+      if time.time() - start > jitter_timeout:
+        raise Exception("Giving up!")
       sleep(jitter_wait)
     else:
       print("Nix modules version matches!")
       break
 
 def wait_till_pid1_matches(expected_version):
+  start = time.time()
   while True:
     print("checking Pid1 modules version...")
     version = get_pid1_version()
     if version != expected_version:
       print("Pid1 version %s does not match expected: %s" % (version, expected_version))
+      if time.time() - start > jitter_timeout:
+        raise Exception("Giving up!")
       sleep(jitter_wait)
     else:
       print("Pid1 version matches!")
