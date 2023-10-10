@@ -34,9 +34,10 @@ application:
         - releaseChannelStable:
           releaseChannel: canary
       runtimes:
-        - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
-          type: EXTENSION
+          - runtime: marine-cycle-160323--goval
+          containerOrchestration:
+            k8s:
+              namespace: ansible
     - name: tarpit
       constants:
         - name: name
