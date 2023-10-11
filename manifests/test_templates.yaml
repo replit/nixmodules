@@ -21,11 +21,14 @@ spec:
       containers:
         - name: template-tester
           image: nixos/nix
-          command: ['scripts/test_templates.py']
+          command: ['scripts/test_templates.py', '-m', "$(NIX_MODULES_VERSION)"]
           volumeMounts:
             - mountPath: /code
               name: code
           workingDir: /code/nixmodules
+          env:
+            - name: NIX_MODULES_VERSION
+              value: ""{{.Params.nixmodules_version}}"
       initContainers:
         - args:
             - "--ssh"

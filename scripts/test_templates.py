@@ -57,6 +57,7 @@ def main():
           if duration > global_timeout:
             print("Giving up after %ds" % duration)
             exit(1)
+      else:
         print(".", end="")
         sys.stdout.flush()
         sleep(test_poll_wait)
