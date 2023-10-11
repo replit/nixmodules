@@ -18,7 +18,7 @@ global_job_config:
 blocks:
   - name: update prodvana configs
     run:
-      when: "change_in(['/manifests'], {default_branch: 'main'})"
+      when: "branch = 'main' and change_in(['/manifests'], {default_branch: 'main'})"
     task:
       secrets:
         - name: gcp-goval
