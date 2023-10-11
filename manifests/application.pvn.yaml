@@ -37,7 +37,7 @@ application:
           - runtime: marine-cycle-160323--goval
           containerOrchestration:
             k8s:
-              namespace: ansible
+              namespace: nixmodules
     - name: tarpit
       constants:
         - name: name
