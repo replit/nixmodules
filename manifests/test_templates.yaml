@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   generateName: test-templates
-  namespace: ansible
+  namespace: nixmodules
   labels:
     component: 'template-tester'
     cost-center: 'devex'
