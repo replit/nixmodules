@@ -67,4 +67,3 @@ blocks:
     dependencies:
       - build oci images
       - provision nixmodules disks
-      - update prodvana configs
