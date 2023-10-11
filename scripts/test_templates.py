@@ -10,10 +10,10 @@ import subprocess
 import base64
 
 global_timeout = 3600
-wait_when_version_mismatch = 15 * 60
+version_mismatch_wait = 15 * 60
 test_poll_wait = 10
 
-TEMPLATE_TESTER_URL = "https://templatetester-1.tobyho.repl.co"
+TEMPLATE_TESTER_URL = "https://templatetester.tobyho.repl.co"
 TEMPLATES_TO_TEST = [
   "@replit/Blank-Repl",
   "@replit/Python",
@@ -45,7 +45,8 @@ def main():
   auth = get_jobs_auth()
 
   start = time.time()
-  while True:
+  done = False
+  while not done:
     job_id = create_test_job(args, auth)
     print("Started job %d" % job_id)
     while True:
@@ -57,6 +58,17 @@ def main():
           if duration > global_timeout:
             print("Giving up after %ds" % duration)
             exit(1)
+          else:
+            sleep(version_mismatch_wait)
+            break
+        done = True
+        print_test_results(test_runs)
+        if passed(test_runs):
+          print("Pass")
+        else:
+          print("Fail")
+          exit(1)
+        break
       else:
         print(".", end="")
         sys.stdout.flush()
@@ -89,16 +101,19 @@ def version_mismatch(test_runs):
       return True
   return False
 
+def passed(test_runs):
+  for run in test_runs:
+    result = run["result"]
+    if result != "P" and result != "S":
+      return False
+  return True
+
 def print_test_results(test_runs):
   print()
   print("Results:")
-  passed = True
   for run in test_runs:
     result = run["result"]
     print("%s %s: %s" % (run["templateUri"], run["testCase"], result))
-    if result != "P" and result != "S":
-      passed = False
-  return passed
 
 def get_jobs_auth():
   output = subprocess.check_output([
