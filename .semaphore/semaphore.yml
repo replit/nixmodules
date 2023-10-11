@@ -31,7 +31,7 @@ blocks:
             - gcloud auth configure-docker --quiet
             - ./scripts/install_prodvana.sh
             - pvnctl config validate manifests
-            - pvnctl config apply manifests
+            - pvnctl config apply manifests --no-prompt=true
     dependencies: []
 promotions:
 - name: build nixmodules
