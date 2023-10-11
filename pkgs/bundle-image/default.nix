@@ -11,15 +11,21 @@
 , jq
 , upgrade-maps
 , active-modules
-,
+, fetchFromGitHub
 }:
 
 let
-
   label = "nixmodules-${revstring}";
-
   registry = ../../modules.json;
-
+  # wating for upstream to include our patch: https://github.com/lkl/linux/pull/532
+  lkl' = lkl.overrideAttrs (oldAttrs: {
+    src = fetchFromGitHub {
+      owner = "numtide";
+      repo = "linux-lkl";
+      rev = "7a337bf313c82713f33f7b2e3c0b8847857a78b6";
+      sha256 = "sha256-MfOprw5n7kFOzu5Sl2hVG7+/Q22nKgCWGMO6HYN+SvU=";
+    };
+  });
 in
 
 derivation {
@@ -34,7 +40,7 @@ derivation {
     PATH = lib.makeBinPath [
       coreutils
       findutils
-      lkl
+      lkl'
       e2fsprogs
       jq
     ];
