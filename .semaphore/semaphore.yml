@@ -2,7 +2,7 @@ version: v1.0
 name: test
 agent:
   machine:
-    type: e1-standard-2
+    type: s1-goval
 fail_fast:
   stop:
     when: "true"
@@ -16,13 +16,23 @@ global_job_config:
     - name: SEMAPHORE_CACHE_GCS_BUCKET
       value: "goval-semaphore-cache"
 blocks:
-  - name: test
-    dependencies: []
+  - name: update prodvana configs
+    run:
+      when: "branch = 'main' and change_in(['/manifests'], {default_branch: 'main'})"
     task:
+      secrets:
+        - name: gcp-goval
+        - name: ship-it-bot
       jobs:
-        - name: test
+        - name: update Prodvana manifests
           commands:
-            - echo test
+            - set -e
+            - checkout --use-cache
+            - gcloud auth configure-docker --quiet
+            - ./scripts/install_prodvana.sh
+            - pvnctl config validate manifests
+            - pvnctl config apply manifests --no-prompt=true
+    dependencies: []
 promotions:
 - name: build nixmodules
   pipeline_file: build-nixmodules.yml
