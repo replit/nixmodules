@@ -13,13 +13,13 @@ global_timeout = 3600
 version_mismatch_wait = 15 * 60
 test_poll_wait = 10
 
-TEMPLATE_TESTER_URL = "https://templatetester.tobyho.repl.co"
+TEMPLATE_TESTER_URL = "https://template-tester.replit.app"
 TEMPLATES_TO_TEST = [
   "@replit/Blank-Repl",
   "@replit/Python",
   "@replit/Nodejs",
   "@replit/Nodejs-Beta",
-  # "@replit/Java",
+  # "@replit/Java", skip for now due to flaky lsp tests
   "@replit/CSharp",
   "@replit/HTML-CSS-JS",
   "@replit/Go",
@@ -97,6 +97,7 @@ def get_test_job_status(job_id, auth):
 def version_mismatch(test_runs):
   for run in test_runs:
     result = run["result"]
+    # Nix modules version mismatch or Pid1 version mismatch
     if result == "MV" or result == "PV":
       return True
   return False
@@ -104,6 +105,7 @@ def version_mismatch(test_runs):
 def passed(test_runs):
   for run in test_runs:
     result = run["result"]
+    # Not pass or not skip
     if result != "P" and result != "S":
       return False
   return True
@@ -122,7 +124,7 @@ def get_jobs_auth():
     '-n', 'nixmodules', '-o',
     'jsonpath={.data.jobs-auth}'
   ])
-  return str(base64.b64decode(output), 'UTF-8')
+  return str(base64.b64decode(output), 'UTF-8').strip()
 
 if __name__ == "__main__":
   main()
