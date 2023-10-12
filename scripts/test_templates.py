@@ -51,28 +51,31 @@ def main():
     print("Started job %d" % job_id)
     while True:
       reply = get_test_job_status(job_id, auth)
-      if reply["complete"]:
-        test_runs = reply["TestRuns"]
-        if version_mismatch(test_runs):
-          duration = time.time() - start
-          if duration > global_timeout:
-            print("Giving up after %ds" % duration)
-            exit(1)
-          else:
-            sleep(version_mismatch_wait)
-            break
-        done = True
-        print_test_results(test_runs)
-        if passed(test_runs):
-          print("Pass")
-        else:
-          print("Fail")
-          exit(1)
-        break
-      else:
+
+      if not reply["complete"]:
         print(".", end="")
         sys.stdout.flush()
         sleep(test_poll_wait)
+        continue
+      
+      test_runs = reply["TestRuns"]
+      if version_mismatch(test_runs):
+        duration = time.time() - start
+        if duration > global_timeout:
+          print("Giving up after %ds" % duration)
+          exit(1)
+        else:
+          sleep(version_mismatch_wait)
+          break
+      
+      done = True
+      print_test_results(test_runs)
+      if passed(test_runs):
+        print("Pass")
+      else:
+        print("Fail")
+        exit(1)
+      break  
 
 def create_test_job(args, auth):
   resp = requests.post(
@@ -105,7 +108,7 @@ def version_mismatch(test_runs):
 def passed(test_runs):
   for run in test_runs:
     result = run["result"]
-    # Not pass or not skip
+    # Not pass and not skip
     if result != "P" and result != "S":
       return False
   return True
