@@ -21,7 +21,7 @@ let
     (name: module:
       let
         module-id = elemAt (strings.splitString ":" name) 0;
-        m = (flakes.${module.commit}).modules.${module-id};
+        m = (flakes.${module.commit}).deploymentModules.${module-id};
       in
       # verify the outpath matches what the lockfile expects
       assert m.outPath == module.path;

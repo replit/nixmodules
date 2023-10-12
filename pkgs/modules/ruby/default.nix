@@ -10,7 +10,7 @@ in
   id = "ruby-${ruby-version}";
   name = "Ruby Tools";
 
-  packages = [
+  replit.packages = [
     ruby
   ];
 
@@ -32,14 +32,14 @@ in
   #   fileParam = true;
   # };
 
-  replit.languageServers.solargraph = {
+  replit.dev.languageServers.solargraph = {
     name = "Solargraph: A Ruby Language Server";
     language = "ruby";
 
     start = "${rubyPackages.solargraph}/bin/solargraph stdio";
   };
 
-  replit.packagers.ruby = {
+  replit.dev.packagers.ruby = {
     name = "Ruby";
     language = "ruby";
     features = {

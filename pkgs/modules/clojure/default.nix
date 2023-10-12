@@ -13,7 +13,7 @@ in
     fileParam = true;
   };
 
-  replit.languageServers.clojure-lsp = {
+  replit.dev.languageServers.clojure-lsp = {
     name = "Clojure LSP";
     language = "clojure";
 

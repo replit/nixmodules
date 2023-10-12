@@ -31,8 +31,11 @@ in
   id = "java-graalvm${graalvm-version}";
   name = "Java Tools (with Graal VM)";
 
-  packages = [
+  replit.packages = [
     graalvm
+  ];
+
+  replit.dev.packages = [
     pkgs.maven
   ];
 
@@ -44,7 +47,7 @@ in
     start = "${graalvm}/bin/java -classpath .:target/dependency/* Main";
   };
 
-  replit.packagers.maven = {
+  replit.dev.packagers.maven = {
     name = "Maven";
     language = "java-maven";
     features = {
@@ -54,7 +57,7 @@ in
     };
   };
 
-  replit.debuggers.java-debug = {
+  replit.dev.debuggers.java-debug = {
     name = "Jave Debug";
     language = "java";
     extensions = [ ".java" ];
@@ -90,7 +93,7 @@ in
     };
   };
 
-  replit.languageServers.java-language-server = {
+  replit.dev.languageServers.java-language-server = {
     name = "Java Language Server";
     language = "java";
 

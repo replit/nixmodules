@@ -35,11 +35,11 @@ in
     })
   ];
 
-  packages = [
+  replit.packages = [
     bun
   ];
 
-  replit.languageServers.typescript-language-server.extensions = extensions;
+  replit.dev.languageServers.typescript-language-server.extensions = extensions;
 
   replit.runners.bun = {
     name = "bun";
@@ -50,7 +50,7 @@ in
     optionalFileParam = true;
   };
 
-  replit.packagers.bun = {
+  replit.dev.packagers.bun = {
     name = "bun";
     language = "bun";
     features = {
