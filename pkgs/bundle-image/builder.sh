@@ -33,7 +33,7 @@ cp "${env["upgrade-maps"]}/recommend-upgrade.json" $root/etc/nixmodules/recommen
 cp "${env["active-modules"]}" $root/etc/nixmodules/active-modules.json
 cp -a --reflink=auto "${env[registry]}" "$root/etc/nixmodules/modules.json"
 
-diskImage=disk.raw
+diskImage=$out/disk.raw
 
 # Compute required space in filesystem blocks
 diskUsage=$(find . ! -type d -print0 | du --files0-from=- --apparent-size --block-size "${env[blockSize]}" | cut -f1 | sum_lines)
@@ -72,6 +72,3 @@ cptofs -p \
        --owner 11000 --group 11000 \
        "$root"/* / ||
     (echo >&2 "ERROR: cptofs failed. diskSize might be too small for closure."; exit 1)
-
-echo "moving image to out..."
-mv "$diskImage" "$out/disk.raw"

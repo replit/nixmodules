@@ -15,14 +15,18 @@ in
   id = "rust-${rust-version}";
   name = "Rust Tools";
 
-  packages = with pkgs; [
+  replit.packages = with pkgs; [
     cargo
     clang
     rustc
+  ];
+
+  replit.dev.packages = with pkgs; [
     rustfmt
     rust-analyzer
   ];
 
+  # TODO: should compile a binary to use in deployment and not include the runtime
   replit.runners.cargo = {
     name = "cargo run";
     language = "rust";
@@ -31,14 +35,14 @@ in
     fileParam = false;
   };
 
-  replit.languageServers.rust-analyzer = {
+  replit.dev.languageServers.rust-analyzer = {
     name = "rust-analyzer";
     language = "rust";
 
     start = "${pkgs.rust-analyzer}/bin/rust-analyzer";
   };
 
-  replit.formatters.cargo-fmt = {
+  replit.dev.formatters.cargo-fmt = {
     name = "cargo fmt";
     language = "rust";
 
@@ -46,7 +50,7 @@ in
     stdin = false;
   };
 
-  replit.formatters.rustfmt = {
+  replit.dev.formatters.rustfmt = {
     name = "rustfmt";
     language = "rust";
 
@@ -54,7 +58,7 @@ in
     stdin = false;
   };
 
-  replit.packagers.rust = {
+  replit.dev.packagers.rust = {
     name = "Rust";
     language = "rust";
     features = {

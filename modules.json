@@ -375,6 +375,10 @@
     "commit": "0b7a60667d2c29f2686211e952924a9693916a20",
     "path": "/nix/store/abdgkaiy2i39r9bd1k4c6cm1mfnkynzx-replit-module-swift-5.8"
   },
+  "swift-5.8:v2-20231004-5c14992": {
+    "commit": "5c14992744871ffcb60fe619b0314b4e92195948",
+    "path": "/nix/store/hmzl37s9mykls9rdcfahdpk3k87dyv05-replit-module-swift-5.8"
+  },
   "web:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/7lhwlqy8nmrmc27n68ia16q6bn27cwk5-replit-module-web"
@@ -519,8 +523,16 @@
     "commit": "7459cc2a5fd03bda902c2cd8d9d1fb387181b570",
     "path": "/nix/store/kqc84aqshy9v9m5ld4v833b93ym6qbf6-replit-module-python-with-prybar-3.10"
   },
+  "python-with-prybar-3.10:v4-20231004-5c14992": {
+    "commit": "5c14992744871ffcb60fe619b0314b4e92195948",
+    "path": "/nix/store/k9bbbvbl7j6rhq3x6sp9r859z9ckz982-replit-module-python-with-prybar-3.10"
+  },
   "nodejs-with-prybar-18:v1-20230928-1ea5ac0": {
     "commit": "1ea5ac0313085b2ac631b493c925d33489d58410",
     "path": "/nix/store/8v3laig35f30bvgw8mwjcsznk06l7vf3-replit-module-nodejs-with-prybar-18"
+  },
+  "nodejs-with-prybar-18:v2-20231004-5c14992": {
+    "commit": "5c14992744871ffcb60fe619b0314b4e92195948",
+    "path": "/nix/store/qnx2vl8q3fpp67m421dsvhw7ffymqky6-replit-module-nodejs-with-prybar-18"
   }
 }

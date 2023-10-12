@@ -55,20 +55,6 @@ blocks:
           commands:
             - nix-shell -p crane --command "./scripts/build_oci.py"
     dependencies: []
-  - name: update prodvana configs
-    run:
-      when: "change_in(['/manifests'], {default_branch: 'main'})"
-    task:
-      secrets:
-        - name: gcp-goval
-        - name: ship-it-bot
-      jobs:
-        - name: update Prodvana manifests
-          commands:
-            - ./scripts/install_prodvana.sh
-            - pvnctl config validate manifests
-            - pvnctl config apply manifests
-    dependencies: []
   - name: trigger prodvana deploy
     task:
       secrets:
@@ -81,4 +67,3 @@ blocks:
     dependencies:
       - build oci images
       - provision nixmodules disks
-      - update prodvana configs

@@ -5,6 +5,8 @@ let
 
   pylibs-dir = ".pythonlibs";
 
+  userbase = "$REPL_HOME/${pylibs-dir}";
+
   pip = pkgs.callPackage ../../pip {
     inherit pypkgs;
   };
@@ -115,8 +117,11 @@ in
   id = "python-${pythonVersion}";
   name = "Python ${pythonVersion} Tools";
 
-  packages = [
+  replit.packages = [
     python3-wrapper
+  ];
+
+  replit.dev.packages = [
     pip-wrapper
     poetry-wrapper
   ];
@@ -128,15 +133,15 @@ in
     start = "${python3-wrapper}/bin/python3 $file";
   };
 
-  replit.debuggers = debuggerConfig;
+  replit.dev.debuggers = debuggerConfig;
 
-  replit.languageServers.pyright-extended = {
+  replit.dev.languageServers.pyright-extended = {
     name = "pyright-extended";
     language = "python3";
     start = "${pyright-extended}/bin/langserver.index.js --stdio";
   };
 
-  replit.packagers.upmPython = {
+  replit.dev.packagers.upmPython = {
     name = "Python";
     language = "python3";
     ignoredPackages = [ "unit_tests" ];
@@ -148,25 +153,26 @@ in
     };
   };
 
-  replit.env =
-    let userbase = "$REPL_HOME/${pylibs-dir}";
-    in {
-      PYTHONPATH = "${python}/lib/python${pythonVersion}:${userbase}/${python.sitePackages}";
-      PIP_CONFIG_FILE = pip-config.outPath;
-      POETRY_CONFIG_DIR = poetry-config.outPath;
-      POETRY_CACHE_DIR = "$REPL_HOME/.cache/pypoetry";
-      POETRY_VIRTUALENVS_CREATE = "0";
-      POETRY_INSTALLER_MODERN_INSTALLATION = "0";
-      POETRY_PIP_USE_PIP_CACHE = "1";
-      POETRY_PIP_NO_ISOLATE = "1";
-      POETRY_PIP_NO_PREFIX = "1";
-      POETRY_PIP_FROM_PATH = "1";
-      POETRY_USE_USER_SITE = "1";
-      PYTHONUSERBASE = userbase;
-      # Even though it is set-default in the wrapper, add it to the
-      # environment too, so that when someone wants to override it,
-      # they can keep the defaults if they want to.
-      PYTHON_LD_LIBRARY_PATH = python-ld-library-path;
-      PATH = "${userbase}/bin";
-    };
+  replit.dev.env = {
+    PIP_CONFIG_FILE = pip-config.outPath;
+    POETRY_CONFIG_DIR = poetry-config.outPath;
+    POETRY_CACHE_DIR = "$REPL_HOME/.cache/pypoetry";
+    POETRY_VIRTUALENVS_CREATE = "0";
+    POETRY_INSTALLER_MODERN_INSTALLATION = "0";
+    POETRY_PIP_USE_PIP_CACHE = "1";
+    POETRY_PIP_NO_ISOLATE = "1";
+    POETRY_PIP_NO_PREFIX = "1";
+    POETRY_PIP_FROM_PATH = "1";
+    POETRY_USE_USER_SITE = "1";
+    PYTHONUSERBASE = userbase;
+  };
+
+  replit.env = {
+    PYTHONPATH = "${python}/lib/python${pythonVersion}:${userbase}/${python.sitePackages}";
+    # Even though it is set-default in the wrapper, add it to the
+    # environment too, so that when someone wants to override it,
+    # they can keep the defaults if they want to.
+    PYTHON_LD_LIBRARY_PATH = python-ld-library-path;
+    PATH = "${userbase}/bin";
+  };
 }

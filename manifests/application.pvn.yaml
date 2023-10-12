@@ -10,6 +10,8 @@ application:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw
           type: EXTENSION
+        - name: goval
+          runtime: marine-cycle-160323--goval
       protections:
         - ref:
             name: check-no-datadog-alerts
@@ -219,7 +221,7 @@ application:
       runtimes:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw
-          type: EXTENSION 
+          type: EXTENSION
     - name: wesley
       constants:
         - name: name
@@ -231,4 +233,4 @@ application:
       runtimes:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw
-          type: EXTENSION        
+          type: EXTENSION

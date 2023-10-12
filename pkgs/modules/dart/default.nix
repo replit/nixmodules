@@ -4,7 +4,7 @@ in {
   id = "dart-${dart-version}";
   name = "Dart Tools";
 
-  packages = [
+  replit.packages = [
     pkgs.dart
   ];
 
@@ -15,14 +15,14 @@ in {
     start = "${pkgs.dart}/bin/dart main.dart";
   };
 
-  replit.languageServers.dart-pub = {
+  replit.dev.languageServers.dart-pub = {
     name = "dart";
     language = "dart";
 
     start = "${pkgs.dart}/bin/dart language-server";
   };
 
-  replit.packagers.dart-pub = {
+  replit.dev.packagers.dart-pub = {
     name = "dart pub";
     language = "dart-pub";
     features = {

@@ -12,7 +12,7 @@ let
   };
 in
 {
-  replit.languageServers.typescript-language-server = {
+  replit.dev.languageServers.typescript-language-server = {
     name = "TypeScript Language Server";
     language = "javascript";
     start = "${typescript-language-server}/bin/typescript-language-server --stdio";

@@ -104,12 +104,14 @@ rec {
       in
       mkPhonyOCI {
         inherit moduleId;
-        module = flake.modules.${shortModuleId};
+        module = flake.deploymentModules.${shortModuleId};
       })
     all-modules;
 
   bundle-phony-ocis = mkPhonyOCIs { };
 
   inherit all-modules;
+
+  deploymentModules = self.deploymentModules;
 
 } // modules

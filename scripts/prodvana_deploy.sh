@@ -39,5 +39,7 @@ EOF
 curl -X POST \
     -H "Authorization: $SHIP_IT_BOT_AUTH" \
     -H "content-type: application/json" \
+    -H "CF-Access-Client-Secret: $CF_CLIENT_SECRET" \
+    -H "CF-Access-Client-Id: $CF_CLIENT_ID" \
     -d @payload.json \
     $DEPLOY_URL/deploy/$APPLICATION_NAME/$SERVICE_NAME

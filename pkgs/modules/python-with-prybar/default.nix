@@ -34,7 +34,7 @@ in
     })
   ];
 
-  packages = [
+  replit.packages = [
     run-prybar
   ];
 
