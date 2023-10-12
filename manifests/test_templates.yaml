@@ -31,7 +31,7 @@ spec:
             - "--ssh"
             - "--repo=git@github.com:replit/nixmodules.git"
             - "--root=/code"
-            - "--branch=th-tmpl-tests"
+            - "--rev={{.Params.commit_sha}}"
             - "--one-time"
             - "--depth=1"
             - "-dest=nixmodules"
