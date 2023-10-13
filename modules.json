@@ -507,6 +507,10 @@
     "commit": "0b7fed5df10f1eff802e5698b0a7858886fc6384",
     "path": "/nix/store/a0gdw6r206iry30gfshgfi0212cq3jg3-replit-module-bun-1.0"
   },
+  "bun-1.0:v7-20231013-71b6704": {
+    "commit": "71b670463deb5dc9486a64b5806cb38a216d22d5",
+    "path": "/nix/store/9k4pdc2sk21dfqs1j3yyr18rhn8vgxsv-replit-module-bun-1.0"
+  },
   "rust-1.72:v1-20230911-f253fb1": {
     "commit": "f253fb1a97d9a1c950d90081ee1ccb290776cf8b",
     "path": "/nix/store/3siflmi2j4ikwnd35rlnc6g44nbsdpgs-replit-module-rust-1.72"
