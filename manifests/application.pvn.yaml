@@ -31,6 +31,15 @@ application:
           lifecycle:
             - postDeployment:
                 checkDuration: 600s
+    - name: test_templates
+      preconditions:
+        - releaseChannelStable:
+          releaseChannel: canary
+      runtimes:
+          - runtime: marine-cycle-160323--goval
+          containerOrchestration:
+            k8s:
+              namespace: nixmodules
     - name: tarpit
       constants:
         - name: name
@@ -51,7 +60,7 @@ application:
       preconditions:
         - manualApproval: {}
         - releaseChannelStable:
-            releaseChannel: canary
+            releaseChannel: test_templates
       runtimes:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw
