@@ -1,13 +1,13 @@
-const fs = require("node:fs");
-const path = require("node:path");
-const { spawn } = require("node:child_process");
+const fs = require('node:fs');
+const path = require('node:path');
+const { spawn } = require('node:child_process');
 
 const args = process.argv.slice(1);
 
 let runPackageJsonScript = null;
-const runPackageJsonScriptFlag = "--run-package-json-script";
+const runPackageJsonScriptFlag = '--run-package-json-script';
 let runScript = null;
-const runScriptFlag = "--run-script";
+const runScriptFlag = '--run-script';
 
 const checkPackageJsonScript = () => {
   if (!runPackageJsonScript) {
@@ -30,44 +30,44 @@ const checkRunScript = () => {
 while (args.length > 0) {
   const flag = args.shift();
 
-  if (flag.startsWith("--run-package-json-script")) {
+  if (flag.startsWith('--run-package-json-script')) {
     runPackageJsonScript = args.shift();
-  } else if (flag.startsWith("--run-script")) {
+  } else if (flag.startsWith('--run-script')) {
     runScript = args.shift();
   }
 }
 
-const packageJsonPath = path.join(process.cwd(), "package.json");
+const packageJsonPath = path.join(process.cwd(), 'package.json');
 if (!fs.existsSync(packageJsonPath)) {
-  console.error("No package.json found");
+  console.error('No package.json found');
   process.exit(1);
 }
 
-const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
+const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 
 const hasScripts = Boolean(packageJson.scripts);
 
 let cmd = null;
-if (hasScripts && packageJson.scripts["replit-dev"]) {
+if (hasScripts && packageJson.scripts['replit-dev']) {
   checkPackageJsonScript();
   cmd = [runPackageJsonScript, 'replit-dev'];
-} else if (hasScripts && packageJson.scripts["dev"]) {
+} else if (hasScripts && packageJson.scripts['dev']) {
   checkPackageJsonScript();
   cmd = [runPackageJsonScript, 'dev'];
-} else if (packageJson["main"]) {
+} else if (process.env['file']) {
   checkRunScript();
-  cmd = [runScript, packageJson["main"]];
-} else if (process.env.file) {
+  cmd = [runScript, process.env['file']];
+} else if (packageJson['main']) {
   checkRunScript();
-  cmd = [runScript, process.env.file];
+  cmd = [runScript, packageJson['main']];
 } else {
-  console.error("Nothing to run.");
+  console.error('Nothing to run.');
   process.exit(1);
 }
 
 console.info(`+ ${cmd.join(' ')}`);
 
-spawn(cmd[0], cmd.slice(1).join(' '), {
+spawn(cmd[0], cmd.slice(1), {
 	stdio: 'inherit',
 	cwd: process.cwd(),
 	shell: false,

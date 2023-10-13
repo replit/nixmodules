@@ -11,7 +11,7 @@ let
 in
 
 {
-  packages = [
+  replit.packages = [
     script
   ];
 
