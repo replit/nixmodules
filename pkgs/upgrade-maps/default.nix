@@ -41,22 +41,22 @@ let
         - the `entrypoint` defined in `.replit`
       '';
     };
-    # "bun-1.0:v3-20230915-80b0f23" = {
-    #   to = "bun-1.0:v5-20230921-cc7a2dd";
-    #   auto = true;
-    #   changelog = ''# `package.json` runner
-    #     The runner for bun module has changed for increased flexibility and conformance to standards.
-
-    #     The new precedence is:
-    #     - the `replit-dev` script defined in `package.json`
-    #     - the `dev` script defined in `package.json`
-    #     - the `main` file defined in `package.json`
-    #     - the `entrypoint` defined in `.replit`
-    #   '';
-    # };
     "bun-1.0:v5-20230921-cc7a2dd" = { to = "bun-1.0:v3-20230915-80b0f23"; auto = true; };
     "bun-1.0:v3-20230915-80b0f23" = { to = "bun-1.0:v6-20231002-0b7fed5"; auto = true; };
-    "bun-1.0:v6-20231002-0b7fed5" = { to = "bun-1.0:v7-20231013-71b6704"; auto = true; };
+    "bun-1.0:v6-20231002-0b7fed5" = { to = "bun-1.0:v7-20231013-71b6704"; auto = true; changelog = "bun 1.0.6 release"; };
+    "bun-1.0:v7-20231013-71b6704" = {
+      to = "bun-1.0:v8-20231013-f38c84f";
+      auto = true;
+      changelog = ''# `package.json` runner
+        The runner for bun module has changed for increased flexibility and conformance to standards.
+
+        The new precedence is:
+        - the `replit-dev` script defined in `package.json`
+        - the `dev` script defined in `package.json`
+        - the `entrypoint` defined in `.replit`
+        - the `main` file defined in `package.json`
+      '';
+    };
 
     "go" = { to = "go-1.19:v1-20230525-c48c43c"; auto = true; };
     "rust" = { to = "rust-1.69:v1-20230525-c48c43c"; auto = true; };
