@@ -8,14 +8,22 @@
   inputs.prybar.inputs.nixpkgs.follows = "nixpkgs";
   inputs.java-language-server.url = "github:replit/java-language-server";
   inputs.java-language-server.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.zig-overlay.url = "github:mitchellh/zig-overlay";
+  inputs.zig-overlay.inputs.nixpkgs.follows = "nixpkgs";
   inputs.ztoc-rs.url = "github:replit/ztoc-rs";
   inputs.ztoc-rs.inputs.nixpkgs.follows = "nixpkgs";
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, prybar, java-language-server, nixd, ... }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, prybar, java-language-server, nixd, zig-overlay, ... }:
     let
       mkPkgs = nixpkgs-spec: system: import nixpkgs-spec {
         inherit system;
-        overlays = [ self.overlays.default prybar.overlays.default java-language-server.overlays.default nixd.overlays.default ]; # ++ import ;
+        overlays = [
+          self.overlays.default
+          prybar.overlays.default
+          java-language-server.overlays.default
+          nixd.overlays.default
+          zig-overlay.overlays.default
+        ];
         # replbox has an unfree license
         config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
           "@replit/replbox"
