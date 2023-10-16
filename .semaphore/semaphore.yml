@@ -33,6 +33,15 @@ blocks:
             - pvnctl config validate manifests
             - pvnctl config apply manifests --no-prompt=true
     dependencies: []
+  - name: checks
+    task:
+      jobs:
+        - name: checks
+          commands:
+            - checkout
+            - nix develop
+            - scripts/ci_check.sh
+    dependencies: []
 promotions:
 - name: build nixmodules
   pipeline_file: build-nixmodules.yml
