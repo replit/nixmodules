@@ -57,6 +57,7 @@ let
         - the `main` file defined in `package.json`
       '';
     };
+    "bun-1.0:v8-20231013-f38c84f" = { to = "bun-1.0:v9-20231016-30216d8"; auto = true; };
 
     "go" = { to = "go-1.19:v1-20230525-c48c43c"; auto = true; };
     "rust" = { to = "rust-1.69:v1-20230525-c48c43c"; auto = true; };
@@ -77,6 +78,23 @@ let
   // (fns.linearUpgrade "pyright-extended")
   // (fns.linearUpgrade "svelte-kit-node-20")
   // (fns.linearUpgrade "nodejs-with-prybar-18")
+  
+  // (fns.linearUpgrade "c-clang14")
+  // (fns.linearUpgrade "clojure-1.11")
+  // (fns.linearUpgrade "cpp-clang14")
+  // (fns.linearUpgrade "dart-3.0")
+  // (fns.linearUpgrade "dotnet-7.0")
+  // (fns.linearUpgrade "gcloud")
+  // (fns.linearUpgrade "haskell-ghc9.2")
+  // (fns.linearUpgrade "lua-5.2")
+  // (fns.linearUpgrade "nix")
+  // (fns.linearUpgrade "qbasic")
+  // (fns.linearUpgrade "r-4.2")
+  // (fns.linearUpgrade "ruby-3.1")
+  // (fns.linearUpgrade "swift-5.8")
+  // (fns.linearUpgrade "rust-1.72")
+  // (fns.linearUpgrade "web")
+  // (fns.linearUpgrade "zig-0.11")
   ;
 
   present-entries = entries: mapAttrs
