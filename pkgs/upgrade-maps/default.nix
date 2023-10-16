@@ -78,7 +78,7 @@ let
   // (fns.linearUpgrade "pyright-extended")
   // (fns.linearUpgrade "svelte-kit-node-20")
   // (fns.linearUpgrade "nodejs-with-prybar-18")
-  
+
   // (fns.linearUpgrade "c-clang14")
   // (fns.linearUpgrade "clojure-1.11")
   // (fns.linearUpgrade "cpp-clang14")
