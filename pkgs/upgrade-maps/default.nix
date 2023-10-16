@@ -59,7 +59,13 @@ let
     };
 
     "go" = { to = "go-1.19:v1-20230525-c48c43c"; auto = true; };
+
     "rust" = { to = "rust-1.69:v1-20230525-c48c43c"; auto = true; };
+    "rust-1.69:v1-20230525-c48c43c" = { to = "rust-1.69:v2-20230623-0b7a606"; auto = true; };
+    "rust-1.69:v2-20230623-0b7a606" = { to = "rust-1.70:v1-20230724-17660e5"; auto = true; };
+    "rust-1.70:v1-20230724-17660e5" = { to = "rust-1.72:v1-20230911-f253fb1"; auto = true; };
+    "rust-1.72:v1-20230911-f253fb1" = { to = "rust-stable:v1-20231012-19c270f"; auto = true; };
+
     "swift" = { to = "swift-5.6:v1-20230525-c48c43c"; auto = true; };
   }
   // (fns.linearUpgrade "go-1.20")
