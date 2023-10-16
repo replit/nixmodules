@@ -554,5 +554,9 @@
   "zig-0.11:v1-20231014-15426ef": {
     "commit": "15426ef79793bf7c424eb40865d507eacfdd44e6",
     "path": "/nix/store/17ji0rxmrfz30sy2b60c65vjv5sh6ksz-replit-module-zig-0.11"
+  },
+  "rust-stable:v1-20231012-19c270f": {
+    "commit": "19c270f8c0c3147800ada35d9a0755fe10905344",
+    "path": "/nix/store/3hw6spngfg758gz8ygla1458phpdi6x5-replit-module-rust-stable"
   }
 }

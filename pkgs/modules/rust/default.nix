@@ -1,29 +1,16 @@
-{ pkgs-unstable, lib, ... }:
+{ pkgs, lib, ... }:
 let
-  pkgs = pkgs-unstable;
-  cargoRun = pkgs.writeScriptBin "cargo_run" ''
-    if [ ! -f "$HOME/$REPL_SLUG/Cargo.toml" ]; then
-      NAME=$(echo $REPL_SLUG | sed -r 's/([a-z0-9])([A-Z])/\1_\2/g'| tr '[:upper:]' '[:lower:]')
-      ${pkgs.cargo}/bin/cargo init --name=$NAME
-    fi
-
-    ${pkgs.cargo}/bin/cargo run
-  '';
-  rust-version = lib.versions.majorMinor pkgs.rustc.version;
+  inherit (pkgs.fenix.stable) toolchain;
 in
 {
-  id = "rust-${rust-version}";
+  id = "rust-stable";
   name = "Rust Tools";
 
-  replit.packages = with pkgs; [
-    cargo
-    clang
-    rustc
-  ];
+  replit.dev.packages = with toolchain; [
+    toolchain
 
-  replit.dev.packages = with pkgs; [
-    rustfmt
-    rust-analyzer
+    pkgs.clang
+    pkgs.pkg-config
   ];
 
   # TODO: should compile a binary to use in deployment and not include the runtime
@@ -31,7 +18,7 @@ in
     name = "cargo run";
     language = "rust";
 
-    start = "${cargoRun}/bin/cargo_run";
+    start = "${toolchain}/bin/cargo run";
     fileParam = false;
   };
 
@@ -39,23 +26,11 @@ in
     name = "rust-analyzer";
     language = "rust";
 
-    start = "${pkgs.rust-analyzer}/bin/rust-analyzer";
-  };
+    start = "${toolchain}/bin/rust-analyzer";
 
-  replit.dev.formatters.cargo-fmt = {
-    name = "cargo fmt";
-    language = "rust";
-
-    start = "${pkgs.cargo}/bin/cargo fmt";
-    stdin = false;
-  };
-
-  replit.dev.formatters.rustfmt = {
-    name = "rustfmt";
-    language = "rust";
-
-    start = "${pkgs.rustfmt}/bin/rustfmt $file";
-    stdin = false;
+    initializationOptions = {
+      cargo.sysroot = "${toolchain}";
+    };
   };
 
   replit.dev.packagers.rust = {
