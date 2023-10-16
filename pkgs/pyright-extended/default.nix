@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, yapf, ... }:
 let
   version = "2.0.6";
 in
@@ -13,7 +13,7 @@ pkgs.stdenvNoCC.mkDerivation rec {
 
   binPath = lib.makeBinPath [
     pkgs.ruff
-    pkgs.yapf
+    yapf
     pkgs.nodejs_18
   ];
 
