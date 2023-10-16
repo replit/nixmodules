@@ -110,7 +110,9 @@ let
 
   poetry-wrapper = pythonWrapper { bin = "${poetry}/bin/poetry"; name = "poetry"; };
 
-  pyright-extended = pkgs.callPackage ../../pyright-extended { };
+  pyright-extended = pkgs.callPackage ../../pyright-extended {
+    yapf = pypkgs.yapf;
+  };
 
 in
 {
