@@ -39,6 +39,7 @@ blocks:
         - name: checks
           commands:
             - scripts/ci_check.sh
+    dependencies: []
 promotions:
 - name: build nixmodules
   pipeline_file: build-nixmodules.yml
