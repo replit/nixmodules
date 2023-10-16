@@ -38,6 +38,8 @@ blocks:
       jobs:
         - name: checks
           commands:
+            - checkout
+            - nix develop
             - scripts/ci_check.sh
     dependencies: []
 promotions:
