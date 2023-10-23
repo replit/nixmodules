@@ -347,6 +347,10 @@
     "commit": "0b7a60667d2c29f2686211e952924a9693916a20",
     "path": "/nix/store/dplxkcnp1sdw2hf8y07xs1h3izxfshry-replit-module-r-4.2"
   },
+  "r-4.2:v3-20231023-1e1bb66": {
+    "commit": "1e1bb663068482cdb7c04bf585daed00205c0140",
+    "path": "/nix/store/r9bwlmfgilkinlzn87331kj02mdg3z1q-replit-module-r-4.2"
+  },
   "ruby-3.1:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/xac2nbz5f2vczvvq1nphfassipk2wwv2-replit-module-ruby-3.1"

@@ -22,4 +22,8 @@ in
       enabledForHosting = false;
     };
   };
+
+  replit.env = {
+    R_LIBS_USER = "$REPL_HOME/.config/R";
+  };
 }
