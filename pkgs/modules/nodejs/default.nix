@@ -11,6 +11,25 @@ let
 
   prettier = nodepkgs.prettier;
 
+  ldLibraryPathWrapper = bin: pkgs.writeShellScriptBin (builtins.baseNameOf bin) ''
+    if [ -z ''${REPLIT_LD_LIBRARY_PATH+x} ]; then
+      :
+    else
+      export LD_LIBRARY_PATH=''${REPLIT_LD_LIBRARY_PATH}
+    fi
+    exec "${bin}" "$@"
+  '';
+
+  nodejsWrapped = pkgs.symlinkJoin {
+    name="nodejs-wrapped";
+    paths = [
+      (ldLibraryPathWrapper "${nodejs}/bin/corepack")
+      (ldLibraryPathWrapper "${nodejs}/bin/node")
+      (ldLibraryPathWrapper "${nodejs}/bin/npm")
+      (ldLibraryPathWrapper "${nodejs}/bin/npx")
+    ];
+  };
+
 in
 
 {
@@ -25,7 +44,7 @@ in
   replit = {
 
     packages = [
-      nodejs
+      nodejsWrapped
     ];
 
     dev.packages = [
@@ -37,7 +56,7 @@ in
     runners.nodeJS = {
       name = "Node.js";
       language = "javascript";
-      start = "${nodejs}/bin/node $file";
+      start = "${nodejsWrapped}/bin/node $file";
       fileParam = true;
     };
 
