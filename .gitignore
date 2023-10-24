@@ -2,3 +2,5 @@ result
 build
 .envrc
 .direnv
+.netrc
+nix_build_cache_signing_key

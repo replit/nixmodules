@@ -57,6 +57,8 @@ rec {
 
   rev_long = pkgs.writeText "rev_long" revstring_long;
 
+  lkl = pkgs.callPackage ./lkl { };
+
   active-modules = import ./active-modules {
     inherit pkgs;
     inherit self;
@@ -80,6 +82,15 @@ rec {
       inherit pkgs;
     };
   };
+
+  all-historical-modules = mapAttrs
+    (moduleId: module:
+      let
+        flake = builtins.getFlake "github:replit/nixmodules/${module.commit}";
+        shortModuleId = elemAt (strings.splitString ":" moduleId) 0;
+      in
+      flake.modules.${shortModuleId})
+    all-modules;
 
   bundle-squashfs = bundle-squashfs-fn {
     moduleIds = [ "python-3.10" "nodejs-18" ];
