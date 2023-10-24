@@ -1,17 +1,18 @@
-{ pkgs, lib, ... }:
+{ go, gopls }:
+{ lib, ... }:
 let
-  goversion = lib.versions.majorMinor pkgs.go.version;
+  goversion = lib.versions.majorMinor go.version;
 in
 {
   id = "go-${goversion}";
   name = "Go Tools";
 
-  replit.packages = with pkgs; [
+  replit.packages = [
     go
   ];
 
   replit.dev.packages = [
-    pkgs.gopls
+    gopls
   ];
 
   # TODO: should compile a binary to use in deployment and not include the runtime
@@ -19,14 +20,14 @@ in
     name = "go run";
     language = "go";
 
-    start = "${pkgs.go}/bin/go run $REPL_HOME";
+    start = "${go}/bin/go run $REPL_HOME";
   };
 
   replit.dev.formatters.go-fmt = {
     name = "go fmt";
     language = "go";
 
-    start = "${pkgs.go}/bin/go fmt";
+    start = "${go}/bin/go fmt";
     stdin = false;
   };
 
@@ -34,6 +35,6 @@ in
     name = "gopls";
     language = "go";
 
-    start = "${pkgs.gopls}/bin/gopls";
+    start = "${gopls}/bin/gopls";
   };
 }
