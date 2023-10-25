@@ -36,6 +36,7 @@ blocks:
         - name: build nixmodules disk image
           commands:
             - scripts/setup_nix_binary_cache.py
+            - python3 scripts/cache_all_modules.py
             - scripts/build_disk_image.sh 2>&1 | tee nixmodules_build.log
       epilogue:
         always:
