@@ -1,16 +1,16 @@
 { nodejs }:
-{ pkgs, lib, ... }:
+{ pkgs, pkgs-unstable, lib, ... }:
 
 let
-
   community-version = lib.versions.major nodejs.version;
+
+  bun = pkgs-unstable.callPackage ../../bun { };
 
   nodepkgs = pkgs.nodePackages.override {
     inherit nodejs;
   };
 
   prettier = nodepkgs.prettier;
-
 in
 
 {
@@ -23,13 +23,15 @@ in
   ];
 
   replit = {
-
     packages = [
       nodejs
     ];
 
     dev.packages = [
+      bun
       prettier
+      nodepkgs.pnpm
+      nodepkgs.yarn
     ];
 
     dev.languageServers.typescript-language-server.extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ".mjs" ".cjs" ".es6" ];
