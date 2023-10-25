@@ -8,7 +8,7 @@
   inputs.nixd.inputs.nixpkgs.follows = "nixpkgs";
   inputs.prybar.url = "github:replit/prybar";
   inputs.prybar.inputs.nixpkgs.follows = "nixpkgs";
-  inputs.java-language-server.url = "github:replit/java-language-server";
+  inputs.java-language-server.url = "github:replit/java-language-server/a8429dbed50f2de324e44a1b81dc2b94a248adc6";
   inputs.java-language-server.inputs.nixpkgs.follows = "nixpkgs";
   inputs.zig-overlay.url = "github:mitchellh/zig-overlay";
   inputs.zig-overlay.inputs.nixpkgs.follows = "nixpkgs";
