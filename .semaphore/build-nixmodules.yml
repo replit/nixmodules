@@ -1,7 +1,7 @@
 version: v1.0
 name: build nixmodules
 execution_time_limit:
-  hours: 8
+  hours: 3
 agent:
   machine:
     type: s1-goval
