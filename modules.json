@@ -31,6 +31,10 @@
     "commit": "0b7a60667d2c29f2686211e952924a9693916a20",
     "path": "/nix/store/ma4ndwprxw6nxvl3kbmxbyfybzifn6qw-replit-module-c-clang14"
   },
+  "c-clang14:v3-20231025-f6dc97c": {
+    "commit": "f6dc97c19cbc64d2a271be3ba829b87fd5237328",
+    "path": "/nix/store/62vlf5i47d5d60181w31n6zf1xfy2s0y-replit-module-c-clang14"
+  },
   "clojure-1.11:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/giqq76fl3yphzsm6rkl1qxqh4mszknpl-replit-module-clojure-1.11"
@@ -46,6 +50,10 @@
   "cpp-clang14:v2-20230623-0b7a606": {
     "commit": "0b7a60667d2c29f2686211e952924a9693916a20",
     "path": "/nix/store/vml0j4w0smg7n22mwpdygbra2h6kh9nl-replit-module-cpp-clang14"
+  },
+  "cpp-clang14:v3-20231025-f6dc97c": {
+    "commit": "f6dc97c19cbc64d2a271be3ba829b87fd5237328",
+    "path": "/nix/store/mllwdnixmcd6qxy1aw1pxqqjj2wknvpc-replit-module-cpp-clang14"
   },
   "dart-2.18:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
