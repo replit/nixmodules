@@ -57,6 +57,7 @@ let
         - the `main` file defined in `package.json`
       '';
     };
+    "bun-1.0:v8-20231013-f38c84f" = { to = "bun-1.0:v9-20231024-b3ba53c"; auto = true; };
 
     "go" = { to = "go-1.19:v1-20230525-c48c43c"; auto = true; };
 

@@ -435,6 +435,10 @@
     "commit": "f253fb1a97d9a1c950d90081ee1ccb290776cf8b",
     "path": "/nix/store/ldrmd6bmx8j695jjps3fs8zlkki2gn3w-replit-module-svelte-kit-node-20"
   },
+  "svelte-kit-node-20:v4-20231024-b3ba53c": {
+    "commit": "b3ba53c9295b9664fe1b4ea22b7cbaed35e23d86",
+    "path": "/nix/store/xnl830xrhx5s121q12j5dyyjn8rx9f7v-replit-module-svelte-kit-node-20"
+  },
   "gcloud:v1-20230815-e6e4431": {
     "commit": "e6e4431a8f1d71ec0664ce97828bede1608dcfd1",
     "path": "/nix/store/q67zzk6y4zzw7k6nc2plql97z1yv7xwx-replit-module-gcloud"
@@ -527,6 +531,10 @@
     "commit": "f38c84f1afc4c7d42b2bf7eed5ec49faeb872157",
     "path": "/nix/store/6965w0q9sy4cwzxzz38fxfqd09s2ch56-replit-module-bun-1.0"
   },
+  "bun-1.0:v9-20231024-b3ba53c": {
+    "commit": "b3ba53c9295b9664fe1b4ea22b7cbaed35e23d86",
+    "path": "/nix/store/5r595p3m04fy4kr3yzl4p4k72d817s5p-replit-module-bun-1.0"
+  },
   "rust-1.72:v1-20230911-f253fb1": {
     "commit": "f253fb1a97d9a1c950d90081ee1ccb290776cf8b",
     "path": "/nix/store/3siflmi2j4ikwnd35rlnc6g44nbsdpgs-replit-module-rust-1.72"
@@ -562,5 +570,9 @@
   "rust-stable:v1-20231012-19c270f": {
     "commit": "19c270f8c0c3147800ada35d9a0755fe10905344",
     "path": "/nix/store/3hw6spngfg758gz8ygla1458phpdi6x5-replit-module-rust-stable"
+  },
+  "go-1.21:v1-20231024-b3ba53c": {
+    "commit": "b3ba53c9295b9664fe1b4ea22b7cbaed35e23d86",
+    "path": "/nix/store/zkbbhbrnarrnb914ynm47i40n0fc285x-replit-module-go-1.21"
   }
 }

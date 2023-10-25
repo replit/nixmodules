@@ -35,7 +35,16 @@ let
     })
     (import ./nodejs-with-prybar)
 
-    (import ./go)
+    (import ./go {
+      inherit (pkgs) go gopls;
+    })
+    (import ./go {
+      go = pkgs-unstable.go_1_21;
+      gopls = pkgs-unstable.gopls.override {
+        buildGoModule = pkgs-unstable.buildGo121Module;
+      };
+    })
+
     (import ./rust)
     (import ./swift)
     (import ./bun)
