@@ -23,13 +23,13 @@ in
   # TODO: should compile a binary to use in deployment and not include the runtime
   replit.runners.clang-project = {
     name = "Clang: Project";
-    compile = "${clang-compile}/bin/clang-compile main.c c all";
-    fileParam = false;
+    compile = "${clang-compile}/bin/clang-compile $file c all";
+    fileParam = true;
     language = "c";
     start = "./main.c.bin";
   };
 
-  # TODO: add back single runners/debuggers when we have priority for runners
+  # TODO: add back single runners/debuggers when we have multiple runners
   # we want to avoid an unstable first runner for users
   # that do not have multiple runners turned on
 

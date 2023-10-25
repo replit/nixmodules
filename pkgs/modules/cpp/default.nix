@@ -21,8 +21,8 @@ in
   # TODO: should compile a binary to use in deployment and not include the runtime
   replit.runners.clang-project = {
     name = "Clang++: Project";
-    compile = "${clang-compile}/bin/clang-compile main.cpp cpp all";
-    fileParam = false;
+    compile = "${clang-compile}/bin/clang-compile $file cpp all";
+    fileParam = true;
     language = "cpp";
     start = "./main.cpp.bin";
   };
