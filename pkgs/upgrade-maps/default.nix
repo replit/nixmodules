@@ -69,6 +69,7 @@ let
 
     "swift" = { to = "swift-5.6:v1-20230525-c48c43c"; auto = true; };
   }
+  // (fns.linearUpgrade "docker")
   // (fns.linearUpgrade "go-1.20")
   // (fns.linearUpgrade "java-graalvm22.3")
   // (fns.linearUpgrade "nodejs-14")

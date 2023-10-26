@@ -51,6 +51,7 @@ let
     (import ./c)
     (import ./cpp)
     (import ./dart)
+    (import ./docker)
     (import ./gcloud)
     (import ./clojure)
     (import ./dotnet)
