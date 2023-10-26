@@ -23,7 +23,7 @@ gsutil ls "$gcs_path" 2>/dev/null && exit 0
 img_path=$(nix build .#bundle-image-tarball $NIX_FLAGS --print-out-paths)/disk.raw.tar.gz
 
 # TODO determine if it is cheaper to upload to separate asia and us buckets
-gsutil -o "GSUtil:parallel_composite_upload_threshold=150M" cp "${img_path}" "${gcs_path}"
+#gsutil -o "GSUtil:parallel_composite_upload_threshold=150M" cp "${img_path}" "${gcs_path}"
 
 squashfs_path=$(nix build .#bundle-squashfs $NIX_FLAGS --print-out-paths)/disk.sqsh
-gsutil -o "GSUtil:parallel_composite_upload_threshold=150M" cp "${squashfs_path}" "${gcs_path_squashfs}"
+#gsutil -o "GSUtil:parallel_composite_upload_threshold=150M" cp "${squashfs_path}" "${gcs_path_squashfs}"
