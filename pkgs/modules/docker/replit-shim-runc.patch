@@ -1,0 +1,160 @@
+diff --git a/runtime/v2/runc/task/service.go b/runtime/v2/runc/task/service.go
+index 43dfdf941..9105879c1 100644
+--- a/runtime/v2/runc/task/service.go
++++ b/runtime/v2/runc/task/service.go
+@@ -38,7 +38,6 @@ import (
+ 	"github.com/containerd/containerd/pkg/process"
+ 	"github.com/containerd/containerd/pkg/shutdown"
+ 	"github.com/containerd/containerd/pkg/stdio"
+-	"github.com/containerd/containerd/pkg/userns"
+ 	"github.com/containerd/containerd/protobuf"
+ 	ptypes "github.com/containerd/containerd/protobuf/types"
+ 	"github.com/containerd/containerd/runtime/v2/runc"
+@@ -273,21 +272,7 @@ func (s *service) Start(ctx context.Context, r *taskAPI.StartRequest) (*taskAPI.
+ 				logrus.WithError(err).Error("add cg to OOM monitor")
+ 			}
+ 		case *cgroupsv2.Manager:
+-			allControllers, err := cg.RootControllers()
+-			if err != nil {
+-				logrus.WithError(err).Error("failed to get root controllers")
+-			} else {
+-				if err := cg.ToggleControllers(allControllers, cgroupsv2.Enable); err != nil {
+-					if userns.RunningInUserNS() {
+-						logrus.WithError(err).Debugf("failed to enable controllers (%v)", allControllers)
+-					} else {
+-						logrus.WithError(err).Errorf("failed to enable controllers (%v)", allControllers)
+-					}
+-				}
+-			}
+-			if err := s.ep.Add(container.ID, cg); err != nil {
+-				logrus.WithError(err).Error("add cg to OOM monitor")
+-			}
++			// Replit mod: TODO: Figure out how to wire up cgroups correctly.
+ 		}
+ 
+ 		s.send(&eventstypes.TaskStart{
+diff --git a/runtime/v2/shim/shim.go b/runtime/v2/shim/shim.go
+index cf006d805..54791a433 100644
+--- a/runtime/v2/shim/shim.go
++++ b/runtime/v2/shim/shim.go
+@@ -37,6 +37,7 @@ import (
+ 	"github.com/containerd/containerd/plugin"
+ 	"github.com/containerd/containerd/protobuf"
+ 	"github.com/containerd/containerd/protobuf/proto"
++	"github.com/containerd/containerd/sys/reaper"
+ 	"github.com/containerd/containerd/version"
+ 	"github.com/containerd/ttrpc"
+ 	"github.com/sirupsen/logrus"
+@@ -518,6 +519,9 @@ func serve(ctx context.Context, server *ttrpc.Server, signals chan os.Signal, sh
+ 		}
+ 	}()
+ 
++	// Replit mod: Containers are not our direct descendants, so
++	// we need to have an external listener for child death events.
++	reaper.ListenExternalReaps()
+ 	go handleExitSignals(ctx, logger, shutdown)
+ 	return reap(ctx, logger, signals)
+ }
+diff --git a/sys/reaper/reaper_unix.go b/sys/reaper/reaper_unix.go
+index 8172f224e..a4c5941fd 100644
+--- a/sys/reaper/reaper_unix.go
++++ b/sys/reaper/reaper_unix.go
+@@ -21,10 +21,16 @@ package reaper
+ import (
+ 	"errors"
+ 	"fmt"
++	"net"
+ 	"sync"
+ 	"syscall"
++	"path"
++	"os"
++	"encoding/json"
+ 	"time"
+ 
++	log "github.com/sirupsen/logrus"
++
+ 	runc "github.com/containerd/go-runc"
+ 	exec "golang.org/x/sys/execabs"
+ 	"golang.org/x/sys/unix"
+@@ -58,6 +64,67 @@ func (s *subscriber) do(fn func()) {
+ 	s.Unlock()
+ }
+ 
++// Replit mod: Since roci-started containers are not direct descendants
++// of the shim (like they are in a regular containerd system), we need
++// a way to let the various places where the shim waits for the
++// various processes involved in container creation to exit.
++var externalReapsOnce sync.Once
++
++// ListenExternalReaps installs a UNIX domain socket that listens
++// for roci's notifications of when the container process dies.
++func ListenExternalReaps() {
++	externalReapsOnce.Do(func() {
++		go listenExternalReaps()
++	})
++}
++
++func listenExternalReaps() {
++	runtimeDir := os.Getenv("XDG_RUNTIME_DIR")
++	if runtimeDir == "" {
++		runtimeDir = "/run"
++	}
++	socketPath := path.Join(runtimeDir, "containerd/containerd-reaper.sock")
++	os.Remove(socketPath)
++	addr, err := net.ResolveUnixAddr("unix", socketPath)
++	if err != nil {
++		return
++	}
++	l, err := net.ListenUnix("unix", addr)
++	if err != nil {
++		return
++	}
++	for {
++		conn, err := l.Accept()
++		if err != nil {
++			log.WithError(err).Error("reaper.ListenExternalReaps: l.Accept")
++			break
++		}
++		go func() {
++			defer conn.Close()
++			type exit struct {
++				Pid    int `json:"pid"`
++				Status int `json:"status"`
++			}
++			var e exit
++			err := json.NewDecoder(conn).Decode(&e)
++			if err != nil {
++				log.WithError(err).Error("reaper.ListenExternalReaps: Decode")
++				return
++			}
++			done := Default.notify(runc.Exit{
++				Timestamp: time.Now(),
++				Pid:       e.Pid,
++				Status:    e.Status,
++			})
++
++			select {
++			case <-done:
++			case <-time.After(1 * time.Second):
++			}
++		}()
++	}
++}
++
+ // Reap should be called when the process receives an SIGCHLD.  Reap will reap
+ // all exited processes and close their wait channels
+ func Reap() error {
+diff --git a/vendor/github.com/containerd/go-runc/runc.go b/vendor/github.com/containerd/go-runc/runc.go
+index f5f03ae95..d292d4c81 100644
+--- a/vendor/github.com/containerd/go-runc/runc.go
++++ b/vendor/github.com/containerd/go-runc/runc.go
+@@ -51,7 +51,8 @@ const (
+ 	JSON Format = "json"
+ 	Text Format = "text"
+ 	// DefaultCommand is the default command for Runc
+-	DefaultCommand = "runc"
++	// Replit mod: Use our own fork of runc.
++	DefaultCommand = "replit-runc"
+ )
+ 
+ // List returns all containers created inside the provided runc root directory
