@@ -586,5 +586,9 @@
   "go-1.21:v1-20231024-b3ba53c": {
     "commit": "b3ba53c9295b9664fe1b4ea22b7cbaed35e23d86",
     "path": "/nix/store/zkbbhbrnarrnb914ynm47i40n0fc285x-replit-module-go-1.21"
+  },
+  "docker:v1-20231026-3990bf0": {
+    "commit": "3990bf05353ec3cffd54b8376616fdf6165d4580",
+    "path": "/nix/store/0c5i7v9vizdn2yfkkk46haxakrlpjbax-replit-module-docker"
   }
 }
