@@ -26,8 +26,21 @@ let
 
   pythonWrapper = { bin, name, aliases ? [ ] }:
     let
+      # Always include the python-ld-library-path paths, but give them
+      # the least precedence. Give the most precedence to
+      # REPLIT_LD_LIBRARY_PATH.
       ldLibraryPathConvertWrapper = pkgs.writeShellScriptBin name ''
-        export LD_LIBRARY_PATH=''${PYTHON_LD_LIBRARY_PATH}
+        export LD_LIBRARY_PATH=${python-ld-library-path}
+        if [ -z ''${PYTHON_LD_LIBRARY_PATH+x} ]; then
+          :
+        else
+          export LD_LIBRARY_PATH=''${PYTHON_LD_LIBRARY_PATH}:$LD_LIBRARY_PATH
+        fi
+        if [ -z ''${REPLIT_LD_LIBRARY_PATH+x} ]; then
+          :
+        else
+          export LD_LIBRARY_PATH=''${REPLIT_LD_LIBRARY_PATH}:$LD_LIBRARY_PATH
+        fi
         exec "${bin}" "$@"
       '';
     in
@@ -38,7 +51,6 @@ let
       buildCommand = ''
         mkdir -p $out/bin
         makeWrapper ${ldLibraryPathConvertWrapper}/bin/${name} $out/bin/${name} \
-          --set-default PYTHON_LD_LIBRARY_PATH "${python-ld-library-path}" \
           --prefix PYTHONPATH : "${pypkgs.setuptools}/${python.sitePackages}"
       '' + pkgs.lib.concatMapStringsSep "\n" (s: "ln -s $out/bin/${name} $out/bin/${s}") aliases;
 
