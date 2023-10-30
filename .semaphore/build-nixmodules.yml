@@ -31,6 +31,8 @@ global_job_config:
       - gcloud auth configure-docker --quiet
 blocks:
   - name: build nixmodules disk image
+    execution_time_limit:
+      hours: 3
     task:
       jobs:
         - name: build nixmodules disk image
