@@ -83,6 +83,10 @@
     "commit": "0b7a60667d2c29f2686211e952924a9693916a20",
     "path": "/nix/store/7v0xa19kzqpbf1mcm1fzc1b83z5ldvpx-replit-module-haskell-ghc9.2"
   },
+  "haskell-ghc9.2:v2-20231030-2eab632": {
+    "commit": "2eab632aca70d4b8794f7ba474081da7ce86af72",
+    "path": "/nix/store/ysn8kiqwk2r9mqncph9ywkr6g1lf2ysb-replit-module-haskell-ghc9.2"
+  },
   "java-graalvm22.3:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/7zjcdf4z9d0dhwg13cs3xb1rj248m8ri-replit-module-java-graalvm22.3"
