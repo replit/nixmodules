@@ -1,7 +1,7 @@
 version: v1.0
 name: build nixmodules
 execution_time_limit:
-  hours: 3
+  hours: 8
 agent:
   machine:
     type: s1-goval
@@ -31,11 +31,13 @@ global_job_config:
       - gcloud auth configure-docker --quiet
 blocks:
   - name: build nixmodules disk image
+    execution_time_limit:
+      hours: 8
     task:
       jobs:
         - name: build nixmodules disk image
           execution_time_limit:
-            hours: 3
+            hours: 8
           commands:
             - scripts/setup_nix_binary_cache.py
             - python3 scripts/cache_all_modules.py
