@@ -2,6 +2,8 @@
 
 let
 
+  configFiles = pkgs.copyPathToStore ./etc;
+
   replit-runc = pkgs-unstable.buildGo121Module {
     pname = "replit-runc";
     version = "1.1.9+replit";
@@ -53,11 +55,44 @@ let
     '';
   };
 
-  containerdAdditions = pkgs.copyPathToStore ./etc;
+  replit-buildkit-config = pkgs.substituteAll {
+    src = ./etc/buildkitd.toml;
+
+    replitShimRunc = replit-shim-runc;
+  };
+
+  replit-buildkit = pkgs-unstable.buildGo121Module {
+    pname = "replit-buildkit";
+    version = "v0.13.0-beta1+replit";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "moby";
+      repo = "buildkit";
+      rev = "v0.13.0-beta1";
+      sha256 = "sha256-9ndCbjwqXiftRs9qbXUZhSEHIpbDyeT+kUPWcOgm/6k=";
+    };
+
+    # We have a few patches in place to be able to invoke the replit-runc.
+    patches = [ ./replit-buildkit.patch ];
+
+    subPackages = [ "./cmd/buildkitd" "./cmd/buildctl" ];
+
+    vendorSha256 = null;
+
+    doCheck = false;
+
+    postInstall = ''
+      mkdir $out/etc
+      cp ${replit-buildkit-config} $out/etc/buildkitd.toml
+      mv $out/bin/buildkitd $out/bin/replit-buildkitd
+      mv $out/bin/buildctl $out/bin/replit-buildctl
+    '';
+  };
+
   containerd = pkgs.containerd.overrideAttrs (old: {
     postInstall = ''
       mkdir $out/etc
-      cp ${containerdAdditions}/containerd.toml $out/etc/
+      cp ${configFiles}/containerd.toml $out/etc/
     '';
   });
 
@@ -74,5 +109,6 @@ in
     containerd
     replit-shim-runc
     replit-runc
+    replit-buildkit
   ];
 }
