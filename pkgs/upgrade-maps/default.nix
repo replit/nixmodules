@@ -69,22 +69,33 @@ let
 
     "swift" = { to = "swift-5.6:v1-20230525-c48c43c"; auto = true; };
   }
+  // (fns.linearUpgrade "c-clang14")
+  // (fns.linearUpgrade "clojure-1.11")
+  // (fns.linearUpgrade "cpp-clang14")
   // (fns.linearUpgrade "docker")
+  // (fns.linearUpgrade "dotnet-7.0")
   // (fns.linearUpgrade "go-1.20")
+  // (fns.linearUpgrade "haskell-ghc9.2")
   // (fns.linearUpgrade "java-graalvm22.3")
+  // (fns.linearUpgrade "lua-5.2")
   // (fns.linearUpgrade "nodejs-14")
   // (fns.linearUpgrade "nodejs-16")
   // (fns.linearUpgrade "nodejs-18")
   // (fns.linearUpgrade "nodejs-19")
   // (fns.linearUpgrade "nodejs-20")
+  // (fns.linearUpgrade "nodejs-with-prybar-18")
   // (fns.linearUpgrade "php-8.1")
-  // (fns.linearUpgrade "python-3.8")
+  // (fns.linearUpgrade "pyright-extended")
   // (fns.linearUpgrade "python-3.10")
   // (fns.linearUpgrade "python-3.11")
+  // (fns.linearUpgrade "python-3.8")
   // (fns.linearUpgrade "python-with-prybar-3.10")
-  // (fns.linearUpgrade "pyright-extended")
+  // (fns.linearUpgrade "qbasic")
+  // (fns.linearUpgrade "r-4.2")
+  // (fns.linearUpgrade "ruby-3.1")
   // (fns.linearUpgrade "svelte-kit-node-20")
-  // (fns.linearUpgrade "nodejs-with-prybar-18")
+  // (fns.linearUpgrade "swift-5.8")
+  // (fns.linearUpgrade "web")
   ;
 
   present-entries = entries: mapAttrs
