@@ -8,6 +8,10 @@ let
   revstring = builtins.substring 0 7 revstring_long;
   all-modules = builtins.fromJSON (builtins.readFile ../modules.json);
 
+  upgrade-maps = import ./upgrade-maps {
+    inherit pkgs;
+  };
+
   bundle-locked-fn = { modulesLocks }: pkgs.callPackage ./bundle-locked {
     inherit modulesLocks;
     inherit revstring;
@@ -18,7 +22,7 @@ let
   mkPhonyOCIs = { moduleIds ? null }: pkgs.callPackage ./mk-phony-ocis {
     inherit mkPhonyOCI;
     modulesLocks = import ./filter-modules-locks {
-      inherit pkgs;
+      inherit pkgs upgrade-maps;
       inherit moduleIds;
     };
     inherit revstring;
@@ -27,7 +31,7 @@ let
   bundle-squashfs-fn = { moduleIds ? null, upgrade-maps }:
     let
       modulesLocks = import ./filter-modules-locks {
-        inherit pkgs;
+        inherit pkgs upgrade-maps;
         inherit moduleIds;
       };
     in
@@ -46,6 +50,8 @@ let
 
 in
 rec {
+  inherit upgrade-maps;
+
   default = moduleit;
   moduleit = pkgs.callPackage ./moduleit { };
 
@@ -65,10 +71,6 @@ rec {
     inherit all-modules;
   };
 
-  upgrade-maps = import ./upgrade-maps {
-    inherit pkgs;
-  };
-
 
   bundle-image = pkgs.callPackage ./bundle-image {
     inherit bundle-locked revstring;
@@ -79,7 +81,7 @@ rec {
 
   bundle-locked = bundle-locked-fn {
     modulesLocks = import ./filter-modules-locks {
-      inherit pkgs;
+      inherit pkgs upgrade-maps;
     };
   };
 
