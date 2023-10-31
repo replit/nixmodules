@@ -3,7 +3,6 @@
 , lib
 , bundle-locked
 , revstring
-, lkl
 , coreutils
 , findutils
 , e2fsprogs
@@ -11,6 +10,7 @@
 , jq
 , upgrade-maps
 , active-modules
+, squashfsTools
 , fetchFromGitHub
 , pkgs
 }:
@@ -18,7 +18,6 @@
 let
   label = "nixmodules-${revstring}";
   registry = ../../modules.json;
-  lkl' = pkgs.callPackage ../lkl { };
 in
 
 derivation {
@@ -33,13 +32,10 @@ derivation {
     PATH = lib.makeBinPath [
       coreutils
       findutils
-      lkl'
-      e2fsprogs
-      jq
+      squashfsTools
     ];
     inherit upgrade-maps;
     inherit active-modules;
-    blockSize = toString (4 * 1024); # ext4fs block size (not block device sector size)
     diskClosureInfo = closureInfo { rootPaths = [ bundle-locked registry ]; };
   };
 }

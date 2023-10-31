@@ -51,7 +51,6 @@
           pigz
           coreutils
           findutils
-          lkl
           e2fsprogs
           gnutar
           gzip

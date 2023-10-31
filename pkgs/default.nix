@@ -63,8 +63,6 @@ rec {
 
   rev_long = pkgs.writeText "rev_long" revstring_long;
 
-  lkl = pkgs.callPackage ./lkl { };
-
   active-modules = import ./active-modules {
     inherit pkgs;
     inherit self;
