@@ -1,15 +1,13 @@
 { python, pypkgs }:
 { pkgs, lib, ... }:
 let
+  inherit (pypkgs) pip;
+
   pythonVersion = lib.versions.majorMinor python.version;
 
   pylibs-dir = ".pythonlibs";
 
   userbase = "$REPL_HOME/${pylibs-dir}";
-
-  pip = pkgs.callPackage ../../pip {
-    inherit pypkgs;
-  };
 
   pip-config = pkgs.writeTextFile {
     name = "pip.conf";
@@ -18,10 +16,6 @@ let
       user = yes
       disable-pip-version-check = yes
       index-url = https://package-proxy.replit.com/pypi/simple/
-
-      [install]
-      use-feature = content-addressable-pool
-      content-addressable-pool-symlink = yes
     '';
   };
 
