@@ -1,14 +1,14 @@
 { pkgs
 
-# moduleIds is a list of fully or partially resolved module IDs,
-#   or null.
-#
-# if null (the default), return the terminal modules of the upgrade
-# mapping, and their immediate predecessors in the graph.
+  # moduleIds is a list of fully or partially resolved module IDs,
+  #   or null.
+  #
+  # if null (the default), return the terminal modules of the upgrade
+  # mapping, and their immediate predecessors in the graph.
 
-# fully resolved module ID ex: ["php-8.1:v1-20230525-c48c43c" "python-3.10:v10-20230711-6807d41"]
-# partially resolved module ID ex: ["python-3.10" "nodejs-18"]
-#   - when a partially resolved ID is used, the latest 2 versions of that module will be built
+  # fully resolved module ID ex: ["php-8.1:v1-20230525-c48c43c" "python-3.10:v10-20230711-6807d41"]
+  # partially resolved module ID ex: ["python-3.10" "nodejs-18"]
+  #   - when a partially resolved ID is used, the latest 2 versions of that module will be built
 , moduleIds ? null
 
 , upgrade-maps

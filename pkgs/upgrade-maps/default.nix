@@ -37,14 +37,14 @@ let
 
   moduleToTerminal =
     mapAttrs
-    (mod: _: isTerminal mod)
-    modules;
+      (mod: _: isTerminal mod)
+      modules;
 
   terminalAndPreviousModuleLocks =
     filterAttrs
-    # either the module is terminal, or it maps directly to a terminal module
-    (mod: _: moduleToTerminal.${mod} || (moduleToTerminal.${mapping.${mod}.to} or false))
-    modules;
+      # either the module is terminal, or it maps directly to a terminal module
+      (mod: _: moduleToTerminal.${mod} || (moduleToTerminal.${mapping.${mod}.to} or false))
+      modules;
 
 in
 pkgs.symlinkJoin {
