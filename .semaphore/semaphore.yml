@@ -36,4 +36,6 @@ blocks:
 promotions:
 - name: build nixmodules
   pipeline_file: build-nixmodules.yml
+- name: build instance template
+  pipeline_file: build-ci-image.yml
 
