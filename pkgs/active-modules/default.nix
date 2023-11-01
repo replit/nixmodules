@@ -13,7 +13,7 @@
 # or
 # nix eval .#active-modules.meta.info --json | jq
 
-{ self, pkgs, all-modules }:
+{ self, pkgs, modulesLocks }:
 with pkgs.lib;
 let
   active-modules = self.modules;
@@ -26,7 +26,7 @@ let
     in
     version
   );
-  all-modules-list = (attrsets.mapAttrsToList (name: value: { registry-id = name; commit = value.commit; path = value.path; }) all-modules);
+  modulesLocks-list = (attrsets.mapAttrsToList (name: value: { registry-id = name; commit = value.commit; path = value.path; }) modulesLocks);
   active-modules-registry =
     foldr
       (
@@ -70,7 +70,7 @@ let
               }
       )
       { }
-      all-modules-list;
+      modulesLocks-list;
 in
 pkgs.stdenv.mkDerivation {
   pname = "active-modules";
