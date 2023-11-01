@@ -19,8 +19,8 @@ def create_signing_key_file(auth):
 def create_nix_conf(auth, netrc_path):
   homedir = os.getenv("HOME")
   nix_conf = "\n".join([
-    "substituters = https://cache.nixos.org/ https://nix-build-cache.replit.com/",
-    "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= replit-internal-nixcache:%s" % auth["publicKey"],
+    "substituters = https://cache.nixos.org/ https://nix-community.cachix.org/ https://nix-build-cache.replit.com/",
+    "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= replit-internal-nixcache:%s" % auth["publicKey"],
     "netrc-file = %s" % netrc_path,
     "experimental-features = nix-command flakes discard-references"
   ])
