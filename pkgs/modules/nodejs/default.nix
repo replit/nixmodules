@@ -25,13 +25,13 @@ in
   replit = {
     packages = [
       nodejs
+      bun
+      nodepkgs.pnpm
+      nodepkgs.yarn
     ];
 
     dev.packages = [
-      bun
       prettier
-      nodepkgs.pnpm
-      nodepkgs.yarn
     ];
 
     dev.languageServers.typescript-language-server.extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ".mjs" ".cjs" ".es6" ];

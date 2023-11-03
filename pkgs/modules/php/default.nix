@@ -8,9 +8,6 @@ in
 
   replit.packages = with pkgs; [
     php
-  ];
-
-  replit.dev.packages = [
     pkgs.phpPackages.composer
   ];
 
