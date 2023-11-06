@@ -5,19 +5,15 @@
 , revstring
 , coreutils
 , findutils
-, e2fsprogs
 , closureInfo
-, jq
-, upgrade-maps
-, active-modules
 , squashfsTools
 , fetchFromGitHub
 , pkgs
+, diskName
 }:
 
 let
   label = "nixmodules-${revstring}";
-  registry = ../../modules.json;
 in
 
 derivation {
@@ -28,14 +24,12 @@ derivation {
   __structuredAttrs = true;
   unsafeDiscardReferences.out = true;
   env = {
-    inherit label registry;
+    inherit label bundle-locked diskName;
     PATH = lib.makeBinPath [
       coreutils
       findutils
       squashfsTools
     ];
-    inherit upgrade-maps;
-    inherit active-modules;
-    diskClosureInfo = closureInfo { rootPaths = [ bundle-locked registry ]; };
+    diskClosureInfo = closureInfo { rootPaths = [ bundle-locked ]; };
   };
 }
