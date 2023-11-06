@@ -1,23 +1,12 @@
 { python, pypkgs }:
 { pkgs, lib, ... }:
 let
-  inherit (pypkgs) pip;
-
   pythonVersion = lib.versions.majorMinor python.version;
 
   pylibs-dir = ".pythonlibs";
 
   userbase = "$REPL_HOME/${pylibs-dir}";
 
-  pip-config = pkgs.writeTextFile {
-    name = "pip.conf";
-    text = ''
-      [global]
-      user = yes
-      disable-pip-version-check = yes
-      index-url = https://package-proxy.replit.com/pypi/simple/
-    '';
-  };
 
   pythonUtils = import ../../python-utils {
     inherit pkgs python pypkgs;
@@ -25,6 +14,9 @@ let
   pythonWrapper = pythonUtils.pythonWrapper;
   python-ld-library-path = pythonUtils.python-ld-library-path;
 
+  pip = import ./pip.nix (pkgs // {
+    inherit python pypkgs;
+  });
   pip-wrapper = pythonWrapper { bin = "${pip}/bin/pip"; name = "pip"; };
 
   poetry = pkgs.callPackage (../../poetry/poetry-py + "${pythonVersion}.nix") {
@@ -147,7 +139,6 @@ in
   };
 
   replit.dev.env = {
-    PIP_CONFIG_FILE = pip-config.outPath;
     POETRY_CONFIG_DIR = poetry-config.outPath;
     POETRY_CACHE_DIR = "$REPL_HOME/.cache/pypoetry";
     POETRY_VIRTUALENVS_CREATE = "0";
