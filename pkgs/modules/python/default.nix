@@ -121,9 +121,6 @@ in
 
   replit.packages = [
     python3-wrapper
-  ];
-
-  replit.dev.packages = [
     pip-wrapper
     poetry-wrapper
   ];

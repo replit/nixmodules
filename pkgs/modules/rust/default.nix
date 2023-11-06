@@ -1,16 +1,26 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 let
-  inherit (pkgs.fenix.stable) toolchain;
+  inherit (pkgs.fenix) stable;
 in
 {
   id = "rust-stable";
   name = "Rust Tools";
 
-  replit.dev.packages = with toolchain; [
-    toolchain
+  replit.packages = [
+    (stable.withComponents [
+      "cargo"
+      "llvm-tools"
+      "rust-src"
+      "rust-std"
+      "rustc"
+    ])
 
     pkgs.clang
     pkgs.pkg-config
+  ];
+
+  replit.dev.packages = [
+    stable.toolchain
   ];
 
   # TODO: should compile a binary to use in deployment and not include the runtime
@@ -18,7 +28,7 @@ in
     name = "cargo run";
     language = "rust";
 
-    start = "${toolchain}/bin/cargo run";
+    start = "${stable.toolchain}/bin/cargo run";
     fileParam = false;
   };
 
@@ -26,10 +36,10 @@ in
     name = "rust-analyzer";
     language = "rust";
 
-    start = "${toolchain}/bin/rust-analyzer";
+    start = "${stable.toolchain}/bin/rust-analyzer";
 
     initializationOptions = {
-      cargo.sysroot = "${toolchain}";
+      cargo.sysroot = "${stable.toolchain}";
     };
   };
 

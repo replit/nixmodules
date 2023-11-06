@@ -94,6 +94,7 @@ in
 // (fns.linearUpgrade "qbasic")
 // (fns.linearUpgrade "r-4.2")
 // (fns.linearUpgrade "ruby-3.1")
+// (fns.linearUpgrade "rust-stable")
 // (fns.linearUpgrade "svelte-kit-node-20")
 // (fns.linearUpgrade "swift-5.8")
   // (fns.linearUpgrade "web")

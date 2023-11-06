@@ -5,9 +5,10 @@
   name = "SvelteKit with Node.js 20 Tools";
 
   replit = {
-    dev.packages = with pkgs-unstable; [
+    packages = with pkgs-unstable; [
       nodejs
     ];
+
     # Nothing required for deployment because app compiles to a static site
     dev.runners.dev-server = {
       name = "package.json dev script";

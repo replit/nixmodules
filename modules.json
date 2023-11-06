@@ -187,6 +187,10 @@
     "commit": "a3526c9c9fa746df4f7b733d2ca4eb487fb8ae1c",
     "path": "/nix/store/shq2nm1dmzkag17g9yqb4kzny5wqzr1c-replit-module-nodejs-18"
   },
+  "nodejs-18:v13-20231103-2b03dda": {
+    "commit": "2b03dda306d47934f45b8a2402fecc6944a6f956",
+    "path": "/nix/store/nvqn75ich279mskqnzr2vylqd82rp91v-replit-module-nodejs-18"
+  },
   "nodejs-19:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/qwhwjll9vns8vqcc6zjy5s4i3rzh05w3-replit-module-nodejs-19"
@@ -234,6 +238,10 @@
   "nodejs-20:v9-20231020-a3526c9": {
     "commit": "a3526c9c9fa746df4f7b733d2ca4eb487fb8ae1c",
     "path": "/nix/store/h47lk59kdj5hidq79dlbzcly7z5nzswz-replit-module-nodejs-20"
+  },
+  "nodejs-20:v10-20231103-2b03dda": {
+    "commit": "2b03dda306d47934f45b8a2402fecc6944a6f956",
+    "path": "/nix/store/bwlrjb3cgwjqgm2b7qvhzihnbimzpgk2-replit-module-nodejs-20"
   },
   "php-8.1:v2-20230623-0b7a606": {
     "commit": "0b7a60667d2c29f2686211e952924a9693916a20",
@@ -583,6 +591,10 @@
     "commit": "3dd69ae594a9e2ca5bdf33582e036c0788d0e804",
     "path": "/nix/store/31qxlfiz89z76d8hsxi47cvwa86ydk5r-replit-module-python-with-prybar-3.10"
   },
+  "python-with-prybar-3.10:v6-20231103-2b03dda": {
+    "commit": "2b03dda306d47934f45b8a2402fecc6944a6f956",
+    "path": "/nix/store/nabafx6r70ln5vgfzgw1vc4ldsm0ava9-replit-module-python-with-prybar-3.10"
+  },
   "nodejs-with-prybar-18:v1-20230928-1ea5ac0": {
     "commit": "1ea5ac0313085b2ac631b493c925d33489d58410",
     "path": "/nix/store/8v3laig35f30bvgw8mwjcsznk06l7vf3-replit-module-nodejs-with-prybar-18"
@@ -595,6 +607,10 @@
     "commit": "a3526c9c9fa746df4f7b733d2ca4eb487fb8ae1c",
     "path": "/nix/store/m8rs0v4766zq51hmmrr7x3gxisag210v-replit-module-nodejs-with-prybar-18"
   },
+  "nodejs-with-prybar-18:v4-20231103-2b03dda": {
+    "commit": "2b03dda306d47934f45b8a2402fecc6944a6f956",
+    "path": "/nix/store/lrhj3a24mhskxaj5y88jwvdy3yq1pgfz-replit-module-nodejs-with-prybar-18"
+  },
   "zig-0.11:v1-20231014-15426ef": {
     "commit": "15426ef79793bf7c424eb40865d507eacfdd44e6",
     "path": "/nix/store/17ji0rxmrfz30sy2b60c65vjv5sh6ksz-replit-module-zig-0.11"
@@ -602,6 +618,10 @@
   "rust-stable:v1-20231012-19c270f": {
     "commit": "19c270f8c0c3147800ada35d9a0755fe10905344",
     "path": "/nix/store/3hw6spngfg758gz8ygla1458phpdi6x5-replit-module-rust-stable"
+  },
+  "rust-stable:v2-20231103-2b03dda": {
+    "commit": "2b03dda306d47934f45b8a2402fecc6944a6f956",
+    "path": "/nix/store/1wbmhhf77wpnagflz7p2wjscrgdilc7l-replit-module-rust-stable"
   },
   "go-1.21:v1-20231024-b3ba53c": {
     "commit": "b3ba53c9295b9664fe1b4ea22b7cbaed35e23d86",

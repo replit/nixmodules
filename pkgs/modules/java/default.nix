@@ -33,9 +33,6 @@ in
 
   replit.packages = [
     graalvm
-  ];
-
-  replit.dev.packages = [
     pkgs.maven
   ];
 
