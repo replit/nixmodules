@@ -138,7 +138,7 @@ in
     };
   };
 
-  replit.dev.env = {
+  replit.env = {
     POETRY_CONFIG_DIR = poetry-config.outPath;
     POETRY_CACHE_DIR = "$REPL_HOME/.cache/pypoetry";
     POETRY_VIRTUALENVS_CREATE = "0";
@@ -149,9 +149,6 @@ in
     POETRY_PIP_FROM_PATH = "1";
     POETRY_USE_USER_SITE = "1";
     PYTHONUSERBASE = userbase;
-  };
-
-  replit.env = {
     PYTHONPATH = "${python}/lib/python${pythonVersion}:${userbase}/${python.sitePackages}";
     # Even though it is set-default in the wrapper, add it to the
     # environment too, so that when someone wants to override it,
