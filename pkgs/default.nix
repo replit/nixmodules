@@ -108,4 +108,6 @@ rec {
 
   deploymentModules = self.deploymentModules;
 
+  angular-lsp = pkgs.callPackage ./angular-language-server {};
+
 } // modules
