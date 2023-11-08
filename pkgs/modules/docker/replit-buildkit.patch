@@ -15,3 +15,20 @@ index 3375c438a..5c8b018ff 100644
  		ctx, cancel := context.WithCancel(appcontext.Context())
  		defer cancel()
  
+diff --git a/solver/cachemanager.go b/solver/cachemanager.go
+index e5e7e4fb9..1b92f969b 100644
+--- a/solver/cachemanager.go
++++ b/solver/cachemanager.go
+@@ -176,7 +176,11 @@ func (c *cacheManager) Load(ctx context.Context, rec *CacheRecord) (rres Result,
+ 		"stack":         bklog.TraceLevelOnlyStack(),
+ 	})
+ 	defer func() {
+-		lg.WithError(rerr).WithField("return_result", rres.ID()).Trace("cache manager")
++		rresID := "<nil>"
++		if rres != nil {
++			rresID = rres.ID()
++		}
++		lg.WithError(rerr).WithField("return_result", rresID).Trace("cache manager")
+ 	}()
+ 
+ 	c.mu.RLock()
