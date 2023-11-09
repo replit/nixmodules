@@ -75,7 +75,7 @@ rec {
     # publish your feature branch first and make sure modules.json is current, then
     # in goval dir (next to nixmodules), run `make custom-nixmodules-disk` to use this disk in conman
     # There is no need to check in changes to this.
-    moduleIds = [ "python-3.10" "nodejs-18" ];
+    moduleIds = [ "angular-node-20" ];
     diskName = "disk.sqsh";
   };
 
@@ -107,7 +107,5 @@ rec {
   inherit all-modules;
 
   deploymentModules = self.deploymentModules;
-
-  angular-lsp = pkgs.callPackage ./angular-language-server {};
 
 } // modules

@@ -45,6 +45,7 @@ let
       };
     })
 
+    (import ./angular)
     (import ./rust)
     (import ./swift)
     (import ./bun)

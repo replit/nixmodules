@@ -1,8 +1,12 @@
 { pkgs-unstable, ... }:
 
+let
+  angular-language-server = pkgs-unstable.callPackage ../../angular-language-server {};
+in
+
 {
   id = "angular-node-20";
-  name = "angular with Node.js 20 Tools";
+  name = "Angular with Node.js 20 Tools";
 
   replit = {
     packages = with pkgs-unstable; [
@@ -20,14 +24,14 @@
         ".ts"
       ];
 
-      start = "${pkgs-unstable.nodejs}/bin/npm run dev";
+      start = "${pkgs-unstable.nodejs}/bin/npm run watch";
     };
 
     dev.languageServers.svelte-language-server = {
       name = "Svelte Language Server";
       language = "svelte";
       extensions = [ ".svelte" ".js" ".ts" ];
-      start = "${pkgs-unstable.nodePackages.svelte-language-server}/bin/svelteserver --stdio";
+      start = "${angular-language-server}/bin/ngserver --stdio";
     };
   };
 }
