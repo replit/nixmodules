@@ -36,14 +36,16 @@ pkgs.writeShellScriptBin "clang-compile" ''
 
   if [[ "$LANG" == "c" ]]; then
     COMPILER="${clang}/bin/clang"
+    COMPILER_NAME="clang"
   elif [[ "$LANG" == "cpp" ]]; then
     COMPILER="${clang}/bin/clang++"
+    COMPILER_NAME="clang++"
   else
     echo "Invalid LANG parameter: $LANG"
     exit 1
   fi
 
   rm -f ''$FILE.bin
-  set -o xtrace
+  echo $COMPILER_NAME $CFLAGS $SRCS -o "''$FILE.bin"
   $COMPILER $CFLAGS $SRCS -o "''$FILE.bin"
 ''
