@@ -1,0 +1,34 @@
+diff --git a/cmd/buildkitd/main.go b/cmd/buildkitd/main.go
+index 3375c438a..5c8b018ff 100644
+--- a/cmd/buildkitd/main.go
++++ b/cmd/buildkitd/main.go
+@@ -217,11 +217,7 @@ func main() {
+ 	app.Flags = append(app.Flags, serviceFlags()...)
+ 
+ 	app.Action = func(c *cli.Context) error {
+-		// TODO: On Windows this always returns -1. The actual "are you admin" check is very Windows-specific.
+-		// See https://github.com/golang/go/issues/28804#issuecomment-505326268 for the "short" version.
+-		if os.Geteuid() > 0 {
+-			return errors.New("rootless mode requires to be executed as the mapped root in a user namespace; you may use RootlessKit for setting up the namespace")
+-		}
++		// Replit mod: do not perform the rootless detection.
+ 		ctx, cancel := context.WithCancel(appcontext.Context())
+ 		defer cancel()
+ 
+diff --git a/solver/cachemanager.go b/solver/cachemanager.go
+index e5e7e4fb9..1b92f969b 100644
+--- a/solver/cachemanager.go
++++ b/solver/cachemanager.go
+@@ -176,7 +176,11 @@ func (c *cacheManager) Load(ctx context.Context, rec *CacheRecord) (rres Result,
+ 		"stack":         bklog.TraceLevelOnlyStack(),
+ 	})
+ 	defer func() {
+-		lg.WithError(rerr).WithField("return_result", rres.ID()).Trace("cache manager")
++		rresID := "<nil>"
++		if rres != nil {
++			rresID = rres.ID()
++		}
++		lg.WithError(rerr).WithField("return_result", rresID).Trace("cache manager")
+ 	}()
+ 
+ 	c.mu.RLock()

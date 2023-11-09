@@ -41,19 +41,19 @@ To build a specific module, for example `bun-0.5`, you can do:
 nix build .#'"bun-0.5"'
 ```
 
-To build all historical versions of all modules:
+To build the terminal and previous to terminal modules in the upgrade map graph:
 
 ```
 nix build .#bundle-locked
 ```
 
-To build a disk containing all historical versions of all modules:
+To build a disk containing bundle-locked's contents:
 
 ```
 nix build .#bundle-image
 ```
 
-To build a compressed squashfs disk containing all historical versions of all modules:
+To build a disk like above but with only a few modules for development purposes:
 
 ```
 nix build .#bundle-squashfs

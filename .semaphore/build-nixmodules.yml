@@ -4,7 +4,7 @@ execution_time_limit:
   hours: 3
 agent:
   machine:
-    type: s1-goval
+    type: s1-nixmodules
 fail_fast:
   stop:
     when: "true"
@@ -31,10 +31,13 @@ global_job_config:
       - gcloud auth configure-docker --quiet
 blocks:
   - name: build nixmodules disk image
+    execution_time_limit:
+      hours: 3
     task:
       jobs:
         - name: build nixmodules disk image
           commands:
+            - set -o pipefail
             - scripts/setup_nix_binary_cache.py
             - scripts/build_disk_image.sh 2>&1 | tee nixmodules_build.log
       epilogue:

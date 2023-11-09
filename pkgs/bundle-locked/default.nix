@@ -1,6 +1,7 @@
 { pkgs
-, revstring
 , modulesLocks
+, self
+, upgrade-maps
 }:
 
 with pkgs.lib;
@@ -27,8 +28,33 @@ let
       m)
     modulesLocks;
 
+  active-modules = import ../active-modules {
+    inherit pkgs self modulesLocks;
+  };
+
 in
 
-pkgs.linkFarm "nixmodules-bundle-${revstring}" (
+(pkgs.linkFarm "nixmodules-bundle" ([
+  {
+    name = "etc/nixmodules/modules.json";
+    path = builtins.toFile "modules.json" (builtins.toJSON modulesLocks);
+  }
+  {
+    name = "etc/nixmodules/active-modules.json";
+    path = active-modules;
+  }
+  {
+    name = "etc/nixmodules/auto-upgrade.json";
+    path = "${upgrade-maps}/auto-upgrade.json";
+  }
+  {
+    name = "etc/nixmodules/recommend-upgrade.json";
+    path = "${upgrade-maps}/recommend-upgrade.json";
+  }
+] ++ (
   mapAttrsToList (name: value: { inherit name; path = value; }) modules
-)
+))).overrideAttrs (finalAttrs: previousAttrs: {
+  passthru = {
+    inherit active-modules;
+  };
+})

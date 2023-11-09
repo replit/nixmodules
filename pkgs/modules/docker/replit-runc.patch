@@ -1,0 +1,279 @@
+diff --git a/init.go b/init.go
+index 79336306..1b4675ba 100644
+--- a/init.go
++++ b/init.go
+@@ -1,16 +1,90 @@
+ package main
+ 
+ import (
++	"bytes"
+ 	"os"
++	"os/exec"
++	"strconv"
++	"time"
+ 
+-	"github.com/opencontainers/runc/libcontainer"
+-	_ "github.com/opencontainers/runc/libcontainer/nsenter"
++	"github.com/sirupsen/logrus"
+ )
+ 
+ func init() {
+ 	if len(os.Args) > 1 && os.Args[1] == "init" {
+-		// This is the golang entry point for runc init, executed
+-		// before main() but after libcontainer/nsenter's nsexec().
+-		libcontainer.Init()
++		// Replit mod: we recruit the help of the roci binary to
++		// have the container be setup for us.
++		systemLogFile, err := os.OpenFile("/tmp/runc.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND|os.O_SYNC, 0o644)
++		if err != nil {
++			panic(err)
++		}
++		logrus.SetOutput(systemLogFile)
++
++		logrus.Info("running roci")
++
++		// In Replit, we just ask roci to initialize the container for us.
++		args := []string{"runc", "init"}
++		cmd := exec.Command("/usr/bin/roci", args...)
++		cmd.Stdin = os.Stdin
++		cmd.Stdout = os.Stdout
++		var stderr bytes.Buffer
++		cmd.Stderr = &stderr
++		fds := make(map[int]*os.File)
++		maxFd := 0
++		for _, name := range []string{
++			"_LIBCONTAINER_INITPIPE",
++			"_LIBCONTAINER_LOGPIPE",
++			"_LIBCONTAINER_CONSOLE",
++			"_LIBCONTAINER_FIFOFD",
++		} {
++			value := os.Getenv(name)
++			if value == "" {
++				continue
++			}
++			fd, err := strconv.Atoi(os.Getenv(name))
++			if err != nil {
++				logrus.
++					WithError(err).
++					WithField("source", "runc").
++					Errorf("roci %q: %q", args, stderr.String())
++				os.Exit(1)
++			}
++			fds[fd] = os.NewFile(uintptr(fd), name)
++			if maxFd < fd {
++				maxFd = fd
++			}
++		}
++		null, err := os.OpenFile("/dev/null", os.O_RDWR, 0)
++		if err != nil {
++			logrus.
++				WithError(err).
++				WithField("source", "runc").
++				Errorf("roci %q: open /dev/null", args)
++			os.Exit(1)
++		}
++		defer null.Close()
++		for fd := 3; fd <= maxFd; fd++ {
++			cmd.ExtraFiles = append(cmd.ExtraFiles, null)
++		}
++		for fd, f := range fds {
++			cmd.ExtraFiles[fd - 3] = f
++		}
++		cmd.ExtraFiles = append(cmd.ExtraFiles, os.Stderr)
++		cmd.Env = append(os.Environ(), "_ROCI_STDERR_FD=" + strconv.Itoa(len(cmd.ExtraFiles) + 2))
++		err = cmd.Run()
++		if err != nil {
++			logrus.
++				WithError(err).
++				WithField("source", "runc").
++				WithField("env", cmd.Env).
++				Error("roci failed, chilling a bit")
++			time.Sleep(1 * time.Second)
++			logrus.
++				WithError(err).
++				WithField("source", "runc").
++				Errorf("roci %q: %q", args, stderr.String())
++			os.Exit(1)
++		}
++		os.Exit(0)
+ 	}
+ }
+diff --git a/libcontainer/configs/validate/rootless.go b/libcontainer/configs/validate/rootless.go
+index 6d32704a..b00e4533 100644
+--- a/libcontainer/configs/validate/rootless.go
++++ b/libcontainer/configs/validate/rootless.go
+@@ -1,10 +1,6 @@
+ package validate
+ 
+ import (
+-	"errors"
+-	"strconv"
+-	"strings"
+-
+ 	"github.com/opencontainers/runc/libcontainer/configs"
+ )
+ 
+@@ -38,53 +34,13 @@ func hasIDMapping(id int, mappings []configs.IDMap) bool {
+ }
+ 
+ func rootlessEUIDMappings(config *configs.Config) error {
+-	if !config.Namespaces.Contains(configs.NEWUSER) {
+-		return errors.New("rootless container requires user namespaces")
+-	}
+-
+-	if len(config.UIDMappings) == 0 {
+-		return errors.New("rootless containers requires at least one UID mapping")
+-	}
+-	if len(config.GIDMappings) == 0 {
+-		return errors.New("rootless containers requires at least one GID mapping")
+-	}
++	// Replit mod: This is handled outside of the container.
+ 	return nil
+ }
+ 
+ // rootlessEUIDMount verifies that all mounts have valid uid=/gid= options,
+ // i.e. their arguments has proper ID mappings.
+ func rootlessEUIDMount(config *configs.Config) error {
+-	// XXX: We could whitelist allowed devices at this point, but I'm not
+-	//      convinced that's a good idea. The kernel is the best arbiter of
+-	//      access control.
+-
+-	for _, mount := range config.Mounts {
+-		// Check that the options list doesn't contain any uid= or gid= entries
+-		// that don't resolve to root.
+-		for _, opt := range strings.Split(mount.Data, ",") {
+-			if str := strings.TrimPrefix(opt, "uid="); len(str) < len(opt) {
+-				uid, err := strconv.Atoi(str)
+-				if err != nil {
+-					// Ignore unknown mount options.
+-					continue
+-				}
+-				if !hasIDMapping(uid, config.UIDMappings) {
+-					return errors.New("cannot specify uid= mount options for unmapped uid in rootless containers")
+-				}
+-			}
+-
+-			if str := strings.TrimPrefix(opt, "gid="); len(str) < len(opt) {
+-				gid, err := strconv.Atoi(str)
+-				if err != nil {
+-					// Ignore unknown mount options.
+-					continue
+-				}
+-				if !hasIDMapping(gid, config.GIDMappings) {
+-					return errors.New("cannot specify gid= mount options for unmapped gid in rootless containers")
+-				}
+-			}
+-		}
+-	}
+-
++	// Replit mod: This is handled outside of the container.
+ 	return nil
+ }
+diff --git a/libcontainer/process_linux.go b/libcontainer/process_linux.go
+index 8785d657..328b27f8 100644
+--- a/libcontainer/process_linux.go
++++ b/libcontainer/process_linux.go
+@@ -162,62 +162,8 @@ func (p *setnsProcess) start() (retErr error) {
+ 		return fmt.Errorf("error writing config to pipe: %w", err)
+ 	}
+ 
+-	ierr := parseSync(p.messageSockPair.parent, func(sync *syncT) error {
+-		switch sync.Type {
+-		case procReady:
+-			// This shouldn't happen.
+-			panic("unexpected procReady in setns")
+-		case procHooks:
+-			// This shouldn't happen.
+-			panic("unexpected procHooks in setns")
+-		case procSeccomp:
+-			if p.config.Config.Seccomp.ListenerPath == "" {
+-				return errors.New("seccomp listenerPath is not set")
+-			}
+-			if sync.Arg == nil {
+-				return fmt.Errorf("sync %q is missing an argument", sync.Type)
+-			}
+-			var srcFd int
+-			if err := json.Unmarshal(*sync.Arg, &srcFd); err != nil {
+-				return fmt.Errorf("sync %q passed invalid fd arg: %w", sync.Type, err)
+-			}
+-			seccompFd, err := pidGetFd(p.pid(), srcFd)
+-			if err != nil {
+-				return fmt.Errorf("sync %q get fd %d from child failed: %w", sync.Type, srcFd, err)
+-			}
+-			defer seccompFd.Close()
+-			// We have a copy, the child can keep working. We don't need to
+-			// wait for the seccomp notify listener to get the fd before we
+-			// permit the child to continue because the child will happily wait
+-			// for the listener if it hits SCMP_ACT_NOTIFY.
+-			if err := writeSync(p.messageSockPair.parent, procSeccompDone); err != nil {
+-				return err
+-			}
+-
+-			bundle, annotations := utils.Annotations(p.config.Config.Labels)
+-			containerProcessState := &specs.ContainerProcessState{
+-				Version:  specs.Version,
+-				Fds:      []string{specs.SeccompFdName},
+-				Pid:      p.cmd.Process.Pid,
+-				Metadata: p.config.Config.Seccomp.ListenerMetadata,
+-				State: specs.State{
+-					Version:     specs.Version,
+-					ID:          p.config.ContainerID,
+-					Status:      specs.StateRunning,
+-					Pid:         p.initProcessPid,
+-					Bundle:      bundle,
+-					Annotations: annotations,
+-				},
+-			}
+-			if err := sendContainerProcessState(p.config.Config.Seccomp.ListenerPath,
+-				containerProcessState, seccompFd); err != nil {
+-				return err
+-			}
+-		default:
+-			return errors.New("invalid JSON payload from child")
+-		}
+-		return nil
+-	})
++	// Replit mod: our runc implementation does not send this message and instead jumps directly onto the next stage.
++	var ierr error
+ 
+ 	if err := unix.Shutdown(int(p.messageSockPair.parent.Fd()), unix.SHUT_WR); err != nil {
+ 		return &os.PathError{Op: "shutdown", Path: "(init pipe)", Err: err}
+@@ -514,6 +460,38 @@ func (p *initProcess) start() (retErr error) {
+ 			if err := setupRlimits(p.config.Rlimits, p.pid()); err != nil {
+ 				return fmt.Errorf("error setting rlimits for ready process: %w", err)
+ 			}
++			// Replit mod: call prestart and CreateRuntime hooks.
++			// Our implementation of the runc init is run in a separate
++			// binary and therefore we need to still run this code here.
++			if !p.config.Config.Namespaces.Contains(configs.NEWNS) {
++				// Setup cgroup before the hook, so that the prestart and CreateRuntime hook could apply cgroup permissions.
++				if err := p.manager.Set(p.config.Config.Cgroups.Resources); err != nil {
++					return fmt.Errorf("error setting cgroup config for ready process: %w", err)
++				}
++				if p.intelRdtManager != nil {
++					if err := p.intelRdtManager.Set(p.config.Config); err != nil {
++						return fmt.Errorf("error setting Intel RDT config for ready process: %w", err)
++					}
++				}
++
++				if len(p.config.Config.Hooks) != 0 {
++					s, err := p.container.currentOCIState()
++					if err != nil {
++						return err
++					}
++					// initProcessStartTime hasn't been set yet.
++					s.Pid = p.cmd.Process.Pid
++					s.Status = specs.StateCreating
++					hooks := p.config.Config.Hooks
++
++					if err := hooks.Run(configs.Prestart, s); err != nil {
++						return err
++					}
++					if err := hooks.Run(configs.CreateRuntime, s); err != nil {
++						return err
++					}
++				}
++			}
+ 
+ 			// generate a timestamp indicating when the container was started
+ 			p.container.created = time.Now().UTC()

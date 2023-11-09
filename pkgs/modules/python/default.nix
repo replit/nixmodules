@@ -7,23 +7,6 @@ let
 
   userbase = "$REPL_HOME/${pylibs-dir}";
 
-  pip = pkgs.callPackage ../../pip {
-    inherit pypkgs;
-  };
-
-  pip-config = pkgs.writeTextFile {
-    name = "pip.conf";
-    text = ''
-      [global]
-      user = yes
-      disable-pip-version-check = yes
-      index-url = https://package-proxy.replit.com/pypi/simple/
-
-      [install]
-      use-feature = content-addressable-pool
-      content-addressable-pool-symlink = yes
-    '';
-  };
 
   pythonUtils = import ../../python-utils {
     inherit pkgs python pypkgs;
@@ -31,6 +14,9 @@ let
   pythonWrapper = pythonUtils.pythonWrapper;
   python-ld-library-path = pythonUtils.python-ld-library-path;
 
+  pip = import ./pip.nix (pkgs // {
+    inherit python pypkgs;
+  });
   pip-wrapper = pythonWrapper { bin = "${pip}/bin/pip"; name = "pip"; };
 
   poetry = pkgs.callPackage (../../poetry/poetry-py + "${pythonVersion}.nix") {
@@ -121,9 +107,6 @@ in
 
   replit.packages = [
     python3-wrapper
-  ];
-
-  replit.dev.packages = [
     pip-wrapper
     poetry-wrapper
   ];
@@ -155,8 +138,7 @@ in
     };
   };
 
-  replit.dev.env = {
-    PIP_CONFIG_FILE = pip-config.outPath;
+  replit.env = {
     POETRY_CONFIG_DIR = poetry-config.outPath;
     POETRY_CACHE_DIR = "$REPL_HOME/.cache/pypoetry";
     POETRY_VIRTUALENVS_CREATE = "0";
@@ -167,9 +149,6 @@ in
     POETRY_PIP_FROM_PATH = "1";
     POETRY_USE_USER_SITE = "1";
     PYTHONUSERBASE = userbase;
-  };
-
-  replit.env = {
     PYTHONPATH = "${python}/lib/python${pythonVersion}:${userbase}/${python.sitePackages}";
     # Even though it is set-default in the wrapper, add it to the
     # environment too, so that when someone wants to override it,

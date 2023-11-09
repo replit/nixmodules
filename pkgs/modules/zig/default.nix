@@ -15,6 +15,10 @@ in
   name = "zig";
 
   replit = {
+    packages = [
+      zig
+    ];
+
     runners.zig-build-run = {
       name = "zig build run";
       inherit language extensions;
@@ -32,10 +36,6 @@ in
     # };
 
     dev = {
-      packages = [
-        zig
-      ];
-
       formatters.zig-fmt = {
         name = "zig fmt";
         inherit language extensions;

@@ -1,0 +1,10 @@
+version = 2
+root = "" # Set in the commandline
+state = "/run/containerd"
+
+[grpc]
+  address = "/run/containerd/containerd.sock"
+  uid = 1000
+  gid = 1000
+  max_recv_message_size = 16777216
+  max_send_message_size = 16777216
