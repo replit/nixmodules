@@ -14,7 +14,7 @@ in node-packages."@angular/language-server".override {
   postInstall = ''
     wrapProgram $out/bin/ngserver \
       --add-flags '--tsProbeLocations ${pkgs.typescript}/lib' \
-      --add-flags '--ngProbeLocations ${node-packages."@angular/language-service"}/lib' \
+      --add-flags '--ngProbeLocations ${node-packages."@angular/language-service"}/lib'
   '';
 
   meta = {
