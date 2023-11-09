@@ -13,6 +13,10 @@ in
       nodejs
     ];
 
+    env = {
+      PATH = "$REPL_HOME/node_modules/.bin";
+    };
+
     # Nothing required for deployment because app compiles to a static site
     dev.runners.dev-server = {
       name = "package.json dev script";
@@ -24,7 +28,7 @@ in
         ".ts"
       ];
 
-      start = "${pkgs-unstable.nodejs}/bin/npm run watch";
+      start = "${pkgs-unstable.nodejs}/bin/npm run serve --host 0.0.0.0";
     };
 
     dev.languageServers.svelte-language-server = {

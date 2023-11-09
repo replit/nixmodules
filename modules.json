@@ -666,9 +666,5 @@
   "docker:v2-20231030-4e03966": {
     "commit": "4e039665f4a42d5c180e527d58cc4632aa42ec4c",
     "path": "/nix/store/xawdvwwg946rpkwzyimipsp2krw5ad4i-replit-module-docker"
-  },
-  "angular-node-20:v1-20231109-9ee255f": {
-    "commit": "9ee255f74fa56ee7a69ca09bf82964f62631f47e",
-    "path": "/nix/store/ikc0fy7ac3rc4fcc4rndzx63hbqhhr48-replit-module-angular-node-20"
   }
 }
