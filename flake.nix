@@ -54,6 +54,7 @@
           e2fsprogs
           gnutar
           gzip
+          nodePackages.node2nix
         ];
       };
     } // (
