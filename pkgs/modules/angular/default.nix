@@ -28,13 +28,13 @@ in
         ".ts"
       ];
 
-      start = "${pkgs-unstable.nodejs}/bin/npm run serve --host 0.0.0.0";
+      start = "${pkgs-unstable.nodejs}/bin/npm run start -- --host 0.0.0.0";
     };
 
-    dev.languageServers.svelte-language-server = {
-      name = "Svelte Language Server";
-      language = "svelte";
-      extensions = [ ".svelte" ".js" ".ts" ];
+    dev.languageServers.angular-language-server = {
+      name = "Angular Language Server";
+      language = "angular";
+      extensions = [ ".html" ".js" ".jsx" ".ts" ".tsx" ];
       start = "${angular-language-server}/bin/ngserver --stdio";
     };
   };
