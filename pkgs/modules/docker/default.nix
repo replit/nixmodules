@@ -106,6 +106,7 @@ in
 
   replit.dev.packages = [
     pkgs.docker-client
+    pkgs.docker-compose
     containerd
     replit-shim-runc
     replit-runc
