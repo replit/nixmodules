@@ -1,0 +1,16 @@
+{
+  "default-runtime": "replit-shim-runc",
+  "containerd": "/run/containerd/containerd.sock",
+  "containerd-namespace": "moby",
+  "init": false,
+  "iptables": false,
+  "runtimes": {
+    "replit-shim-runc": {
+      "runtimeType": "@replitShimRunc@/bin/replit-shim-runc"
+    }
+  },
+  "features": {
+    "containerd-snapshotter": true,
+    "buildkit": false
+  }
+}

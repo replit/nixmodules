@@ -1,0 +1,301 @@
+diff --git a/cmd/containerd/command/main.go b/cmd/containerd/command/main.go
+index 3b8e9739e..0979fff85 100644
+--- a/cmd/containerd/command/main.go
++++ b/cmd/containerd/command/main.go
+@@ -36,6 +36,7 @@ import (
+ 	srvconfig "github.com/containerd/containerd/services/server/config"
+ 	"github.com/containerd/containerd/sys"
+ 	"github.com/containerd/containerd/version"
++	"github.com/coreos/go-systemd/v22/activation"
+ 	"github.com/urfave/cli"
+ 	"google.golang.org/grpc/grpclog"
+ )
+@@ -257,9 +258,17 @@ can be used and modified as necessary as a custom configuration.`
+ 		serve(ctx, tl, server.ServeTTRPC)
+ 
+ 		if config.GRPC.TCPAddress != "" {
+-			l, err := net.Listen("tcp", config.GRPC.TCPAddress)
+-			if err != nil {
+-				return fmt.Errorf("failed to get listener for TCP grpc endpoint: %w", err)
++			// Replit mod: allow systemd-style activation sockets.
++			al, _ := activation.Listeners()
++			var l net.Listener
++			if len(al) == 1 {
++				l = al[0]
++			} else {
++				var err error
++				l, err = net.Listen("tcp", config.GRPC.TCPAddress)
++				if err != nil {
++					return fmt.Errorf("failed to get listener for TCP grpc endpoint: %w", err)
++				}
+ 			}
+ 			serve(ctx, l, server.ServeTCP)
+ 		}
+diff --git a/vendor/github.com/coreos/go-systemd/v22/activation/files_unix.go b/vendor/github.com/coreos/go-systemd/v22/activation/files_unix.go
+new file mode 100644
+index 000000000..bf7671dd2
+--- /dev/null
++++ b/vendor/github.com/coreos/go-systemd/v22/activation/files_unix.go
+@@ -0,0 +1,70 @@
++// Copyright 2015 CoreOS, Inc.
++//
++// Licensed under the Apache License, Version 2.0 (the "License");
++// you may not use this file except in compliance with the License.
++// You may obtain a copy of the License at
++//
++//     http://www.apache.org/licenses/LICENSE-2.0
++//
++// Unless required by applicable law or agreed to in writing, software
++// distributed under the License is distributed on an "AS IS" BASIS,
++// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++// See the License for the specific language governing permissions and
++// limitations under the License.
++
++//go:build !windows
++// +build !windows
++
++// Package activation implements primitives for systemd socket activation.
++package activation
++
++import (
++	"os"
++	"strconv"
++	"strings"
++	"syscall"
++)
++
++const (
++	// listenFdsStart corresponds to `SD_LISTEN_FDS_START`.
++	listenFdsStart = 3
++)
++
++// Files returns a slice containing a `os.File` object for each
++// file descriptor passed to this process via systemd fd-passing protocol.
++//
++// The order of the file descriptors is preserved in the returned slice.
++// `unsetEnv` is typically set to `true` in order to avoid clashes in
++// fd usage and to avoid leaking environment flags to child processes.
++func Files(unsetEnv bool) []*os.File {
++	if unsetEnv {
++		defer os.Unsetenv("LISTEN_PID")
++		defer os.Unsetenv("LISTEN_FDS")
++		defer os.Unsetenv("LISTEN_FDNAMES")
++	}
++
++	pid, err := strconv.Atoi(os.Getenv("LISTEN_PID"))
++	if err != nil || pid != os.Getpid() {
++		return nil
++	}
++
++	nfds, err := strconv.Atoi(os.Getenv("LISTEN_FDS"))
++	if err != nil || nfds == 0 {
++		return nil
++	}
++
++	names := strings.Split(os.Getenv("LISTEN_FDNAMES"), ":")
++
++	files := make([]*os.File, 0, nfds)
++	for fd := listenFdsStart; fd < listenFdsStart+nfds; fd++ {
++		syscall.CloseOnExec(fd)
++		name := "LISTEN_FD_" + strconv.Itoa(fd)
++		offset := fd - listenFdsStart
++		if offset < len(names) && len(names[offset]) > 0 {
++			name = names[offset]
++		}
++		files = append(files, os.NewFile(uintptr(fd), name))
++	}
++
++	return files
++}
+diff --git a/vendor/github.com/coreos/go-systemd/v22/activation/files_windows.go b/vendor/github.com/coreos/go-systemd/v22/activation/files_windows.go
+new file mode 100644
+index 000000000..d391bf00c
+--- /dev/null
++++ b/vendor/github.com/coreos/go-systemd/v22/activation/files_windows.go
+@@ -0,0 +1,21 @@
++// Copyright 2015 CoreOS, Inc.
++//
++// Licensed under the Apache License, Version 2.0 (the "License");
++// you may not use this file except in compliance with the License.
++// You may obtain a copy of the License at
++//
++//     http://www.apache.org/licenses/LICENSE-2.0
++//
++// Unless required by applicable law or agreed to in writing, software
++// distributed under the License is distributed on an "AS IS" BASIS,
++// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++// See the License for the specific language governing permissions and
++// limitations under the License.
++
++package activation
++
++import "os"
++
++func Files(unsetEnv bool) []*os.File {
++	return nil
++}
+diff --git a/vendor/github.com/coreos/go-systemd/v22/activation/listeners.go b/vendor/github.com/coreos/go-systemd/v22/activation/listeners.go
+new file mode 100644
+index 000000000..3dbe2b087
+--- /dev/null
++++ b/vendor/github.com/coreos/go-systemd/v22/activation/listeners.go
+@@ -0,0 +1,103 @@
++// Copyright 2015 CoreOS, Inc.
++//
++// Licensed under the Apache License, Version 2.0 (the "License");
++// you may not use this file except in compliance with the License.
++// You may obtain a copy of the License at
++//
++//     http://www.apache.org/licenses/LICENSE-2.0
++//
++// Unless required by applicable law or agreed to in writing, software
++// distributed under the License is distributed on an "AS IS" BASIS,
++// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++// See the License for the specific language governing permissions and
++// limitations under the License.
++
++package activation
++
++import (
++	"crypto/tls"
++	"net"
++)
++
++// Listeners returns a slice containing a net.Listener for each matching socket type
++// passed to this process.
++//
++// The order of the file descriptors is preserved in the returned slice.
++// Nil values are used to fill any gaps. For example if systemd were to return file descriptors
++// corresponding with "udp, tcp, tcp", then the slice would contain {nil, net.Listener, net.Listener}
++func Listeners() ([]net.Listener, error) {
++	files := Files(true)
++	listeners := make([]net.Listener, len(files))
++
++	for i, f := range files {
++		if pc, err := net.FileListener(f); err == nil {
++			listeners[i] = pc
++			f.Close()
++		}
++	}
++	return listeners, nil
++}
++
++// ListenersWithNames maps a listener name to a set of net.Listener instances.
++func ListenersWithNames() (map[string][]net.Listener, error) {
++	files := Files(true)
++	listeners := map[string][]net.Listener{}
++
++	for _, f := range files {
++		if pc, err := net.FileListener(f); err == nil {
++			current, ok := listeners[f.Name()]
++			if !ok {
++				listeners[f.Name()] = []net.Listener{pc}
++			} else {
++				listeners[f.Name()] = append(current, pc)
++			}
++			f.Close()
++		}
++	}
++	return listeners, nil
++}
++
++// TLSListeners returns a slice containing a net.listener for each matching TCP socket type
++// passed to this process.
++// It uses default Listeners func and forces TCP sockets handlers to use TLS based on tlsConfig.
++func TLSListeners(tlsConfig *tls.Config) ([]net.Listener, error) {
++	listeners, err := Listeners()
++
++	if listeners == nil || err != nil {
++		return nil, err
++	}
++
++	if tlsConfig != nil {
++		for i, l := range listeners {
++			// Activate TLS only for TCP sockets
++			if l.Addr().Network() == "tcp" {
++				listeners[i] = tls.NewListener(l, tlsConfig)
++			}
++		}
++	}
++
++	return listeners, err
++}
++
++// TLSListenersWithNames maps a listener name to a net.Listener with
++// the associated TLS configuration.
++func TLSListenersWithNames(tlsConfig *tls.Config) (map[string][]net.Listener, error) {
++	listeners, err := ListenersWithNames()
++
++	if listeners == nil || err != nil {
++		return nil, err
++	}
++
++	if tlsConfig != nil {
++		for _, ll := range listeners {
++			// Activate TLS only for TCP sockets
++			for i, l := range ll {
++				if l.Addr().Network() == "tcp" {
++					ll[i] = tls.NewListener(l, tlsConfig)
++				}
++			}
++		}
++	}
++
++	return listeners, err
++}
+diff --git a/vendor/github.com/coreos/go-systemd/v22/activation/packetconns.go b/vendor/github.com/coreos/go-systemd/v22/activation/packetconns.go
+new file mode 100644
+index 000000000..a97206785
+--- /dev/null
++++ b/vendor/github.com/coreos/go-systemd/v22/activation/packetconns.go
+@@ -0,0 +1,38 @@
++// Copyright 2015 CoreOS, Inc.
++//
++// Licensed under the Apache License, Version 2.0 (the "License");
++// you may not use this file except in compliance with the License.
++// You may obtain a copy of the License at
++//
++//     http://www.apache.org/licenses/LICENSE-2.0
++//
++// Unless required by applicable law or agreed to in writing, software
++// distributed under the License is distributed on an "AS IS" BASIS,
++// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++// See the License for the specific language governing permissions and
++// limitations under the License.
++
++package activation
++
++import (
++	"net"
++)
++
++// PacketConns returns a slice containing a net.PacketConn for each matching socket type
++// passed to this process.
++//
++// The order of the file descriptors is preserved in the returned slice.
++// Nil values are used to fill any gaps. For example if systemd were to return file descriptors
++// corresponding with "udp, tcp, udp", then the slice would contain {net.PacketConn, nil, net.PacketConn}
++func PacketConns() ([]net.PacketConn, error) {
++	files := Files(true)
++	conns := make([]net.PacketConn, len(files))
++
++	for i, f := range files {
++		if pc, err := net.FilePacketConn(f); err == nil {
++			conns[i] = pc
++			f.Close()
++		}
++	}
++	return conns, nil
++}
+diff --git a/vendor/modules.txt b/vendor/modules.txt
+index 8faad70b6..db44b4e96 100644
+--- a/vendor/modules.txt
++++ b/vendor/modules.txt
+@@ -187,6 +187,7 @@ github.com/containers/ocicrypt/utils
+ github.com/containers/ocicrypt/utils/keyprovider
+ # github.com/coreos/go-systemd/v22 v22.5.0
+ ## explicit; go 1.12
++github.com/coreos/go-systemd/v22/activation
+ github.com/coreos/go-systemd/v22/daemon
+ github.com/coreos/go-systemd/v22/dbus
+ # github.com/cpuguy83/go-md2man/v2 v2.0.2

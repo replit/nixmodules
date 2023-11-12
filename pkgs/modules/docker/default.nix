@@ -30,8 +30,8 @@ let
     '';
   };
 
-  replit-shim-runc = pkgs-unstable.buildGo121Module {
-    pname = "replit-shim-runc";
+  replit-containerd = pkgs-unstable.buildGo121Module {
+    pname = "replit-containerd";
     version = "1.7.5+replit";
 
     src = pkgs.fetchFromGitHub {
@@ -41,24 +41,28 @@ let
       sha256 = "sha256-g+1JfXO1k0ijPpVTo+WxmXro4p4MbRCIZdgtgy58M60=";
     };
 
-    # We have a few patches in place to be able to invoke the replit-runc.
-    patches = [ ./replit-shim-runc.patch ];
+    # We have a few patches in place to be able to start containerd with an
+    # activation socket and to be able to invoke the replit version of runc.
+    patches = [ ./replit-containerd.patch ./replit-shim-runc.patch ];
 
-    subPackages = [ "./cmd/containerd-shim-runc-v2" ];
+    subPackages = [ "./cmd/containerd" "./cmd/ctr" "./cmd/containerd-shim-runc-v2" ];
 
     vendorSha256 = null;
 
     doCheck = false;
 
     postInstall = ''
+      mkdir $out/etc
+      mv $out/bin/containerd $out/bin/replit-containerd
       mv $out/bin/containerd-shim-runc-v2 $out/bin/replit-shim-runc
+      cp ${configFiles}/containerd.toml $out/etc/
     '';
   };
 
   replit-buildkit-config = pkgs.substituteAll {
     src = ./etc/buildkitd.toml;
 
-    replitShimRunc = replit-shim-runc;
+    replitShimRunc = replit-containerd;
   };
 
   replit-buildkit = pkgs-unstable.buildGo121Module {
@@ -82,20 +86,79 @@ let
     doCheck = false;
 
     postInstall = ''
+      mv $out/bin/buildkitd $out/bin/replit-buildkitd
+
       mkdir $out/etc
       cp ${replit-buildkit-config} $out/etc/buildkitd.toml
-      mv $out/bin/buildkitd $out/bin/replit-buildkitd
-      mv $out/bin/buildctl $out/bin/replit-buildctl
     '';
   };
 
-  containerd = pkgs.containerd.overrideAttrs (old: {
-    postInstall = ''
-      mkdir $out/etc
-      cp ${configFiles}/containerd.toml $out/etc/
-    '';
-  });
+  replit-dockerd-config = pkgs.substituteAll {
+    src = ./etc/dockerd.json;
 
+    replitShimRunc = replit-containerd;
+  };
+
+  mobyGoPackagePath = "github.com/docker/docker";
+  mobyVersion = "24.0.7+replit";
+
+  replit-moby = pkgs.buildGoPackage {
+    pname = "replit-moby";
+    version = mobyVersion;
+
+    src = pkgs.fetchFromGitHub {
+      owner = "moby";
+      repo = "moby";
+      rev = "v24.0.7";
+      sha256 = "sha256-VUgsclXkoHHNT+GgYL7qiCV/4V3P9RZrT9BegMVYaRU=";
+    };
+
+    goPackagePath = mobyGoPackagePath;
+
+    nativeBuildInputs = [ pkgs.makeWrapper pkgs.pkg-config pkgs.go pkgs.libtool ];
+
+    buildInputs = [ pkgs.sqlite ];
+
+    extraPath = [ pkgs.xz pkgs.procps pkgs.util-linux pkgs.git ];
+
+    # We have a few patches in place to avoid using namespaces directly.
+    patches = [ ./replit-moby.patch ];
+
+    doCheck = false;
+
+    postPatch = ''
+      patchShebangs hack/make.sh hack/with-go-mod.sh hack/make/
+    '';
+
+    buildPhase = ''
+      export GOCACHE="$TMPDIR/go-cache"
+      # build engine
+      cd ./go/src/${mobyGoPackagePath}
+      export AUTO_GOPATH=1
+      export DOCKER_GITCOMMIT="v${mobyVersion}"
+      export VERSION="${mobyVersion}"
+      ./hack/make.sh dynbinary
+      cd -
+    '';
+
+    postInstall = ''
+      cd ./go/src/${mobyGoPackagePath}
+      install -Dm755 ./bundles/dynbinary-daemon/dockerd $out/libexec/docker/replit-dockerd
+
+      makeWrapper $out/libexec/docker/replit-dockerd $out/bin/replit-dockerd \
+        --prefix PATH : "$out/libexec/docker:$extraPath"
+
+      mkdir $out/etc
+      cp ${replit-dockerd-config} $out/etc/dockerd.json
+    '';
+
+    DOCKER_BUILDTAGS = [
+      "exclude_graphdriver_btrfs"
+      "exclude_graphdriver_devicemapper"
+      "exclude_graphdriver_fuseoverlayfs"
+      "exclude_graphdriver_overlay2"
+    ];
+  };
 in
 
 {
@@ -107,8 +170,8 @@ in
   replit.dev.packages = [
     pkgs.docker-client
     pkgs.docker-compose
-    containerd
-    replit-shim-runc
+    replit-moby
+    replit-containerd
     replit-runc
     replit-buildkit
   ];

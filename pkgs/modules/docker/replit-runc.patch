@@ -169,6 +169,25 @@ index 6d32704a..b00e4533 100644
 +	// Replit mod: This is handled outside of the container.
  	return nil
  }
+diff --git a/libcontainer/container_linux.go b/libcontainer/container_linux.go
+index c941239b..c329c89f 100644
+--- a/libcontainer/container_linux.go
++++ b/libcontainer/container_linux.go
+@@ -500,6 +500,14 @@ func (c *Container) commandTemplate(p *Process, childInitPipe *os.File, childLog
+ 	if p.LogLevel != "" {
+ 		cmd.Env = append(cmd.Env, "_LIBCONTAINER_LOGLEVEL="+p.LogLevel)
+ 	}
++	// Replit mod: we want to be able to get the configuration from roci. So we
++	// pass the current directory as an extra environment variable so that it can
++	// find it: Normally libcontainer will have the rootfs as a sibling of the
++	// config.json, but Docker does not believe in that level of uniformity.
++	wd, err := os.Getwd()
++	if err == nil {
++		cmd.Env = append(cmd.Env, "_REPLIT_CONFIG_JSON="+path.Join(wd, "config.json"))
++	}
+ 
+ 	// NOTE: when running a container with no PID namespace and the parent process spawning the container is
+ 	// PID1 the pdeathsig is being delivered to the container's init process by the kernel for some reason
 diff --git a/libcontainer/process_linux.go b/libcontainer/process_linux.go
 index 8785d657..328b27f8 100644
 --- a/libcontainer/process_linux.go

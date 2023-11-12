@@ -3,7 +3,7 @@
 
 [worker.containerd]
   enabled = true
-  namespace = "docker"
+  namespace = "buildkit"
   platforms = ["linux/amd64", "linux/amd64/v2", "linux/amd64/v3"]
 
   [worker.containerd.runtime]

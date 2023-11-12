@@ -1,0 +1,152 @@
+diff --git a/builder/builder-next/executor_unix.go b/builder/builder-next/executor_unix.go
+index 4a1d93c25f..dbaa48f3f6 100644
+--- a/builder/builder-next/executor_unix.go
++++ b/builder/builder-next/executor_unix.go
+@@ -53,8 +53,9 @@ func newExecutor(root, cgroupParent string, net *libnetwork.Controller, dnsConfi
+ 	}
+ 
+ 	return runcexecutor.New(runcexecutor.Opt{
+-		Root:                filepath.Join(root, "executor"),
+-		CommandCandidates:   []string{"runc"},
++		Root: filepath.Join(root, "executor"),
++		// Replit mod: Use Replit's version of runc
++		CommandCandidates:   []string{"replit-runc"},
+ 		DefaultCgroupParent: cgroupParent,
+ 		Rootless:            rootless,
+ 		NoPivot:             os.Getenv("DOCKER_RAMDISK") != "",
+diff --git a/cmd/dockerd/daemon.go b/cmd/dockerd/daemon.go
+index 50193d5f97..d8f43e60d7 100644
+--- a/cmd/dockerd/daemon.go
++++ b/cmd/dockerd/daemon.go
+@@ -8,7 +8,6 @@ import (
+ 	"net/http"
+ 	"os"
+ 	"path/filepath"
+-	"runtime"
+ 	"sort"
+ 	"strings"
+ 	"sync"
+@@ -123,10 +122,11 @@ func (cli *DaemonCli) start(opts *daemonOptions) (err error) {
+ 		}
+ 	}
+ 
++	// Replit mod: don't error out when running in rootless mode.
+ 	// return human-friendly error before creating files
+-	if runtime.GOOS == "linux" && os.Geteuid() != 0 {
+-		return fmt.Errorf("dockerd needs to be started with root privileges. To run dockerd in rootless mode as an unprivileged user, see https://docs.docker.com/go/rootless/")
+-	}
++	// if runtime.GOOS == "linux" && os.Geteuid() != 0 {
++	// 	return fmt.Errorf("dockerd needs to be started with root privileges. To run dockerd in rootless mode as an unprivileged user, see https://docs.docker.com/go/rootless/")
++	// }
+ 
+ 	if err := setDefaultUmask(); err != nil {
+ 		return err
+diff --git a/libnetwork/controller.go b/libnetwork/controller.go
+index cd5ad761c9..090e09835e 100644
+--- a/libnetwork/controller.go
++++ b/libnetwork/controller.go
+@@ -929,7 +929,8 @@ func (c *Controller) NewSandbox(containerID string, options ...SandboxOption) (*
+ 
+ 		if err != nil {
+ 			c.sboxOnce = sync.Once{}
+-			return nil, fmt.Errorf("failed to create default sandbox: %v", err)
++			// Replit mod: we don't have network sandboxing.
++			logrus.WithError(err).Warn("failed to create default sandbox")
+ 		}
+ 
+ 		sb.osSbox = c.defOsSbox
+diff --git a/libnetwork/osl/namespace_linux.go b/libnetwork/osl/namespace_linux.go
+index d7d2fe2d63..aaa312fa8b 100644
+--- a/libnetwork/osl/namespace_linux.go
++++ b/libnetwork/osl/namespace_linux.go
+@@ -13,7 +13,6 @@ import (
+ 	"syscall"
+ 	"time"
+ 
+-	"github.com/docker/docker/internal/unshare"
+ 	"github.com/docker/docker/libnetwork/ns"
+ 	"github.com/docker/docker/libnetwork/osl/kernel"
+ 	"github.com/docker/docker/libnetwork/types"
+@@ -303,7 +302,8 @@ func createNetworkNamespace(path string, osCreate bool) error {
+ 		return mountNetworkNamespace(fmt.Sprintf("/proc/self/task/%d/ns/net", unix.Gettid()), path)
+ 	}
+ 	if osCreate {
+-		return unshare.Go(unix.CLONE_NEWNET, do, nil)
++		// Replit mod: We don't create network namespaces
++		return do()
+ 	}
+ 	return do()
+ }
+diff --git a/pkg/archive/archive.go b/pkg/archive/archive.go
+index 34361a24ac..6154b7a65c 100644
+--- a/pkg/archive/archive.go
++++ b/pkg/archive/archive.go
+@@ -13,6 +13,7 @@ import (
+ 	"io"
+ 	"os"
+ 	"os/exec"
++	"path"
+ 	"path/filepath"
+ 	"runtime"
+ 	"strconv"
+@@ -70,6 +71,8 @@ type (
+ 		// replaced with the matching name from this map.
+ 		RebaseNames map[string]string
+ 		InUserNS    bool
++		// Replit mod: we don't have access to chroot, so make the protection in a best-effort fashion.
++		Root string
+ 	}
+ )
+ 
+@@ -1092,6 +1095,10 @@ loop:
+ 		// This keeps "../" as-is, but normalizes "/../" to "/". Or Windows:
+ 		// This keeps "..\" as-is, but normalizes "\..\" to "\".
+ 		hdr.Name = filepath.Clean(hdr.Name)
++		// Replit mod: we don't chroot, so always make sure this is normalized to be within the chroot.
++		if options.Root != "" {
++			hdr.Name = path.Join(options.Root, path.Clean(path.Join("/", hdr.Name))[1:])
++		}
+ 
+ 		for _, exclude := range options.ExcludePatterns {
+ 			if strings.HasPrefix(hdr.Name, exclude) {
+diff --git a/pkg/chrootarchive/archive_unix.go b/pkg/chrootarchive/archive_unix.go
+index 1e0e2382ec..28ba0e1737 100644
+--- a/pkg/chrootarchive/archive_unix.go
++++ b/pkg/chrootarchive/archive_unix.go
+@@ -27,12 +27,10 @@ func invokeUnpack(decompressedArchive io.Reader, dest string, options *archive.T
+ 		return err
+ 	}
+ 
+-	done := make(chan error)
+-	err = goInChroot(root, func() { done <- archive.Unpack(decompressedArchive, relDest, options) })
+-	if err != nil {
+-		return err
+-	}
+-	return <-done
++	// Replit mod: we don't have access to chroot.
++	newOptions := *options
++	newOptions.Root = root
++	return archive.Unpack(decompressedArchive, relDest, &newOptions)
+ }
+ 
+ func invokePack(srcPath string, options *archive.TarOptions, root string) (io.ReadCloser, error) {
+@@ -46,14 +44,14 @@ func invokePack(srcPath string, options *archive.TarOptions, root string) (io.Re
+ 		relSrc += "/"
+ 	}
+ 
+-	tb, err := archive.NewTarballer(relSrc, options)
++	// Replit mod: we don't have access to chroot.
++	newOptions := *options
++	newOptions.Root = root
++	tb, err := archive.NewTarballer(srcPath, &newOptions)
+ 	if err != nil {
+ 		return nil, errors.Wrap(err, "error processing tar file")
+ 	}
+-	err = goInChroot(root, tb.Do)
+-	if err != nil {
+-		return nil, errors.Wrap(err, "could not chroot")
+-	}
++	tb.Do()
+ 	return tb.Reader(), nil
+ }
+ 
