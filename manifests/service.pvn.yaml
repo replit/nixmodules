@@ -24,21 +24,6 @@ service:
       description: duration to wait between pulls of new configs
       string:
         defaultValue: "3600s"
-  runtimeConnection: config-raw
-  runtimeExtension:
-    parameterValues:
-      - name: image
-        string: "{{.Params.image_govalctl}}"
-      - name: service
-        string: "nixmodules"
-      - name: name
-        string: "{{.Constants.name}}"
-      - name: json
-        string: >-
-          {
-            "version":"{{.Params.nixmodules_version}}",
-            "configPullJitter":"{{.Params.jitter}}"
-          }
   perReleaseChannel:
     - releaseChannel: canary
       runtimeExtension:
@@ -49,8 +34,266 @@ service:
                 "version":"{{.Params.nixmodules_version}}",
                 "configPullJitter":"1s"
               }
-    - releaseChannel: test_templates
+    - releaseChannel: test-templates
       externalConfig:
         type: KUBERNETES
         local:
-          path: manifests/test_templates.yml
+          path: test_templates.yaml
+
+
+    - releaseChannel: tarpit
+      runtimeConnection: config-raw
+      runtimeExtension:
+        parameterValues:
+          - name: image
+            string: "{{.Params.image_govalctl}}"
+          - name: service
+            string: "nixmodules"
+          - name: name
+            string: "{{.Constants.name}}"
+          - name: json
+            string: >-
+              {
+                "version":"{{.Params.nixmodules_version}}",
+                "configPullJitter":"{{.Params.jitter}}"
+              }
+    - releaseChannel: global
+      runtimeConnection: config-raw
+      runtimeExtension:
+        parameterValues:
+          - name: image
+            string: "{{.Params.image_govalctl}}"
+          - name: service
+            string: "nixmodules"
+          - name: name
+            string: "{{.Constants.name}}"
+          - name: json
+            string: >-
+              {
+                "version":"{{.Params.nixmodules_version}}",
+                "configPullJitter":"{{.Params.jitter}}"
+              }
+    - releaseChannel: hacker
+      runtimeConnection: config-raw
+      runtimeExtension:
+        parameterValues:
+          - name: image
+            string: "{{.Params.image_govalctl}}"
+          - name: service
+            string: "nixmodules"
+          - name: name
+            string: "{{.Constants.name}}"
+          - name: json
+            string: >-
+              {
+                "version":"{{.Params.nixmodules_version}}",
+                "configPullJitter":"{{.Params.jitter}}"
+              }
+    - releaseChannel: teams
+      runtimeConnection: config-raw
+      runtimeExtension:
+        parameterValues:
+          - name: image
+            string: "{{.Params.image_govalctl}}"
+          - name: service
+            string: "nixmodules"
+          - name: name
+            string: "{{.Constants.name}}"
+          - name: json
+            string: >-
+              {
+                "version":"{{.Params.nixmodules_version}}",
+                "configPullJitter":"{{.Params.jitter}}"
+              }
+    - releaseChannel: asia-a
+      runtimeConnection: config-raw
+      runtimeExtension:
+        parameterValues:
+          - name: image
+            string: "{{.Params.image_govalctl}}"
+          - name: service
+            string: "nixmodules"
+          - name: name
+            string: "{{.Constants.name}}"
+          - name: json
+            string: >-
+              {
+                "version":"{{.Params.nixmodules_version}}",
+                "configPullJitter":"{{.Params.jitter}}"
+              }
+    - releaseChannel: asia-b
+      runtimeConnection: config-raw
+      runtimeExtension:
+        parameterValues:
+          - name: image
+            string: "{{.Params.image_govalctl}}"
+          - name: service
+            string: "nixmodules"
+          - name: name
+            string: "{{.Constants.name}}"
+          - name: json
+            string: >-
+              {
+                "version":"{{.Params.nixmodules_version}}",
+                "configPullJitter":"{{.Params.jitter}}"
+              }
+    - releaseChannel: staging
+      runtimeConnection: config-raw
+      runtimeExtension:
+        parameterValues:
+          - name: image
+            string: "{{.Params.image_govalctl}}"
+          - name: service
+            string: "nixmodules"
+          - name: name
+            string: "{{.Constants.name}}"
+          - name: json
+            string: >-
+              {
+                "version":"{{.Params.nixmodules_version}}",
+                "configPullJitter":"{{.Params.jitter}}"
+              }
+    - releaseChannel: picard
+      runtimeConnection: config-raw
+      runtimeExtension:
+        parameterValues:
+          - name: image
+            string: "{{.Params.image_govalctl}}"
+          - name: service
+            string: "nixmodules"
+          - name: name
+            string: "{{.Constants.name}}"
+          - name: json
+            string: >-
+              {
+                "version":"{{.Params.nixmodules_version}}",
+                "configPullJitter":"{{.Params.jitter}}"
+              }
+    - releaseChannel: riker
+      runtimeConnection: config-raw
+      runtimeExtension:
+        parameterValues:
+          - name: image
+            string: "{{.Params.image_govalctl}}"
+          - name: service
+            string: "nixmodules"
+          - name: name
+            string: "{{.Constants.name}}"
+          - name: json
+            string: >-
+              {
+                "version":"{{.Params.nixmodules_version}}",
+                "configPullJitter":"{{.Params.jitter}}"
+              }
+    - releaseChannel: kirk
+      runtimeConnection: config-raw
+      runtimeExtension:
+        parameterValues:
+          - name: image
+            string: "{{.Params.image_govalctl}}"
+          - name: service
+            string: "nixmodules"
+          - name: name
+            string: "{{.Constants.name}}"
+          - name: json
+            string: >-
+              {
+                "version":"{{.Params.nixmodules_version}}",
+                "configPullJitter":"{{.Params.jitter}}"
+              }
+    - releaseChannel: spock
+      runtimeConnection: config-raw
+      runtimeExtension:
+        parameterValues:
+          - name: image
+            string: "{{.Params.image_govalctl}}"
+          - name: service
+            string: "nixmodules"
+          - name: name
+            string: "{{.Constants.name}}"
+          - name: json
+            string: >-
+              {
+                "version":"{{.Params.nixmodules_version}}",
+                "configPullJitter":"{{.Params.jitter}}"
+              }
+    - releaseChannel: worf
+      runtimeConnection: config-raw
+      runtimeExtension:
+        parameterValues:
+          - name: image
+            string: "{{.Params.image_govalctl}}"
+          - name: service
+            string: "nixmodules"
+          - name: name
+            string: "{{.Constants.name}}"
+          - name: json
+            string: >-
+              {
+                "version":"{{.Params.nixmodules_version}}",
+                "configPullJitter":"{{.Params.jitter}}"
+              }
+    - releaseChannel: janeway
+      runtimeConnection: config-raw
+      runtimeExtension:
+        parameterValues:
+          - name: image
+            string: "{{.Params.image_govalctl}}"
+          - name: service
+            string: "nixmodules"
+          - name: name
+            string: "{{.Constants.name}}"
+          - name: json
+            string: >-
+              {
+                "version":"{{.Params.nixmodules_version}}",
+                "configPullJitter":"{{.Params.jitter}}"
+              }
+    - releaseChannel: sisko
+      runtimeConnection: config-raw
+      runtimeExtension:
+        parameterValues:
+          - name: image
+            string: "{{.Params.image_govalctl}}"
+          - name: service
+            string: "nixmodules"
+          - name: name
+            string: "{{.Constants.name}}"
+          - name: json
+            string: >-
+              {
+                "version":"{{.Params.nixmodules_version}}",
+                "configPullJitter":"{{.Params.jitter}}"
+              }
+    - releaseChannel: pike
+      runtimeConnection: config-raw
+      runtimeExtension:
+        parameterValues:
+          - name: image
+            string: "{{.Params.image_govalctl}}"
+          - name: service
+            string: "nixmodules"
+          - name: name
+            string: "{{.Constants.name}}"
+          - name: json
+            string: >-
+              {
+                "version":"{{.Params.nixmodules_version}}",
+                "configPullJitter":"{{.Params.jitter}}"
+              }
+    - releaseChannel: wesley
+      runtimeConnection: config-raw
+      runtimeExtension:
+        parameterValues:
+          - name: image
+            string: "{{.Params.image_govalctl}}"
+          - name: service
+            string: "nixmodules"
+          - name: name
+            string: "{{.Constants.name}}"
+          - name: json
+            string: >-
+              {
+                "version":"{{.Params.nixmodules_version}}",
+                "configPullJitter":"{{.Params.jitter}}"
+              }
