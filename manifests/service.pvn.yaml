@@ -28,6 +28,10 @@ service:
     - releaseChannel: canary
       runtimeExtension:
         parameterValues:
+          - name: image
+            string: "{{.Params.image_govalctl}}"
+          - name: service
+            string: "nixmodules"
           - name: json
             string: >-
               {
