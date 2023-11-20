@@ -66,7 +66,7 @@ rec {
   bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle-image revstring; };
 
   bundle-squashfs = bundle-squashfs-fn {
-    moduleIds = [ "python-3.10" "nodejs-18" "docker" ];
+    moduleIds = [ "python-3.10" "nodejs-18" "nodejs-20" "docker" ];
     diskName = "disk.sqsh";
   };
 
@@ -75,7 +75,7 @@ rec {
     # publish your feature branch first and make sure modules.json is current, then
     # in goval dir (next to nixmodules), run `make custom-nixmodules-disk` to use this disk in conman
     # There is no need to check in changes to this.
-    moduleIds = [ "python-3.10" "nodejs-18" ];
+    moduleIds = [ "python-3.10" "nodejs-18" "nodejs-20" ];
     diskName = "disk.sqsh";
   };
 
@@ -88,7 +88,7 @@ rec {
       flake.modules.${shortModuleId})
     all-modules;
 
-  custom-bundle-phony-ocis = mkPhonyOCIs { moduleIds = [ "nodejs-18" ]; };
+  custom-bundle-phony-ocis = mkPhonyOCIs { moduleIds = [ "nodejs-18" "nodejs-20" ]; };
 
   all-phony-oci-bundles = mapAttrs
     (moduleId: module:
