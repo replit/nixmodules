@@ -23,7 +23,6 @@ in
       language = "svelte";
       extensions = [
         ".html"
-        ".css"
         ".js"
         ".ts"
       ];

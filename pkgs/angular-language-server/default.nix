@@ -13,6 +13,8 @@ in node-packages."@angular/language-server".override {
   nativeBuildInputs = [ pkgs.buildPackages.makeWrapper ];
   postInstall = ''
     wrapProgram $out/bin/ngserver \
+      --add-flags '--logFile /home/runner/HighFrequentDataset/ng.log' \
+      --add-flags '--logVerbosity verbose' \
       --add-flags '--tsProbeLocations ${pkgs.typescript}/lib' \
       --add-flags '--ngProbeLocations ${node-packages."@angular/language-service"}/lib'
   '';
