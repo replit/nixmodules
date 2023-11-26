@@ -170,10 +170,10 @@ index 6d32704a..b00e4533 100644
  	return nil
  }
 diff --git a/libcontainer/container_linux.go b/libcontainer/container_linux.go
-index c941239b..c329c89f 100644
+index c941239b..e58468e4 100644
 --- a/libcontainer/container_linux.go
 +++ b/libcontainer/container_linux.go
-@@ -500,6 +500,14 @@ func (c *Container) commandTemplate(p *Process, childInitPipe *os.File, childLog
+@@ -500,6 +500,21 @@ func (c *Container) commandTemplate(p *Process, childInitPipe *os.File, childLog
  	if p.LogLevel != "" {
  		cmd.Env = append(cmd.Env, "_LIBCONTAINER_LOGLEVEL="+p.LogLevel)
  	}
@@ -185,6 +185,13 @@ index c941239b..c329c89f 100644
 +	if err == nil {
 +		cmd.Env = append(cmd.Env, "_REPLIT_CONFIG_JSON="+path.Join(wd, "config.json"))
 +	}
++	// Replit mod: replit-shim-runc starts one reaper socket per instance.
++	runtimeDir := os.Getenv("XDG_RUNTIME_DIR")
++	if runtimeDir == "" {
++			runtimeDir = "/run"
++	}
++	externalReapsSocketPath := path.Join(runtimeDir, fmt.Sprintf("containerd/s/%s-reaper.sock", c.id))
++	cmd.Env = append(cmd.Env, "_REPLIT_REAPER_SOCKET="+externalReapsSocketPath)
  
  	// NOTE: when running a container with no PID namespace and the parent process spawning the container is
  	// PID1 the pdeathsig is being delivered to the container's init process by the kernel for some reason

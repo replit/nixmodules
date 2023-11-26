@@ -34,7 +34,7 @@ index 43dfdf941..9105879c1 100644
  
  		s.send(&eventstypes.TaskStart{
 diff --git a/runtime/v2/shim/shim.go b/runtime/v2/shim/shim.go
-index cf006d805..54791a433 100644
+index cf006d805..60316fa8d 100644
 --- a/runtime/v2/shim/shim.go
 +++ b/runtime/v2/shim/shim.go
 @@ -37,6 +37,7 @@ import (
@@ -45,18 +45,27 @@ index cf006d805..54791a433 100644
  	"github.com/containerd/containerd/version"
  	"github.com/containerd/ttrpc"
  	"github.com/sirupsen/logrus"
-@@ -518,6 +519,9 @@ func serve(ctx context.Context, server *ttrpc.Server, signals chan os.Signal, sh
+@@ -477,6 +478,8 @@ func run(ctx context.Context, manager Manager, initFunc Init, name string, confi
+ 	if address, err := ReadAddress("address"); err == nil {
+ 		_ = RemoveSocket(address)
+ 	}
++	// Replit mod: clean up the reaper socket.
++	reaper.CleanExternalReaps()
+ 
+ 	select {
+ 	case <-publisher.Done():
+@@ -518,6 +521,9 @@ func serve(ctx context.Context, server *ttrpc.Server, signals chan os.Signal, sh
  		}
  	}()
  
 +	// Replit mod: Containers are not our direct descendants, so
 +	// we need to have an external listener for child death events.
-+	reaper.ListenExternalReaps()
++	reaper.ListenExternalReaps(id)
  	go handleExitSignals(ctx, logger, shutdown)
  	return reap(ctx, logger, signals)
  }
 diff --git a/sys/reaper/reaper_unix.go b/sys/reaper/reaper_unix.go
-index 8172f224e..a4c5941fd 100644
+index 8172f224e..58663681e 100644
 --- a/sys/reaper/reaper_unix.go
 +++ b/sys/reaper/reaper_unix.go
 @@ -21,10 +21,16 @@ package reaper
@@ -76,7 +85,7 @@ index 8172f224e..a4c5941fd 100644
  	runc "github.com/containerd/go-runc"
  	exec "golang.org/x/sys/execabs"
  	"golang.org/x/sys/unix"
-@@ -58,6 +64,67 @@ func (s *subscriber) do(fn func()) {
+@@ -58,6 +64,85 @@ func (s *subscriber) do(fn func()) {
  	s.Unlock()
  }
  
@@ -84,22 +93,31 @@ index 8172f224e..a4c5941fd 100644
 +// of the shim (like they are in a regular containerd system), we need
 +// a way to let the various places where the shim waits for the
 +// various processes involved in container creation to exit.
-+var externalReapsOnce sync.Once
++var (
++	externalReapsOnce       sync.Once
++	externalReapsSocketPath string
++)
 +
 +// ListenExternalReaps installs a UNIX domain socket that listens
 +// for roci's notifications of when the container process dies.
-+func ListenExternalReaps() {
++func ListenExternalReaps(id string) {
 +	externalReapsOnce.Do(func() {
-+		go listenExternalReaps()
++		runtimeDir := os.Getenv("XDG_RUNTIME_DIR")
++		if runtimeDir == "" {
++			runtimeDir = "/run"
++		}
++
++		// Register one listener specific to this this shim.
++		externalReapsSocketPath = path.Join(runtimeDir, fmt.Sprintf("containerd/s/%s-reaper.sock", id))
++		go listenExternalReaps(externalReapsSocketPath)
++
++		// TODO: Once roci has been upgraded fully, we can remove this.
++		sharedSocketPath := path.Join(runtimeDir, "containerd/containerd-reaper.sock")
++		go listenExternalReaps(sharedSocketPath)
 +	})
 +}
 +
-+func listenExternalReaps() {
-+	runtimeDir := os.Getenv("XDG_RUNTIME_DIR")
-+	if runtimeDir == "" {
-+		runtimeDir = "/run"
-+	}
-+	socketPath := path.Join(runtimeDir, "containerd/containerd-reaper.sock")
++func listenExternalReaps(socketPath string) {
 +	os.Remove(socketPath)
 +	addr, err := net.ResolveUnixAddr("unix", socketPath)
 +	if err != nil {
@@ -139,6 +157,15 @@ index 8172f224e..a4c5941fd 100644
 +			}
 +		}()
 +	}
++}
++
++// CleanExternalReaps removes the UNIX domain socket that listens
++// for roci's notifications of when the container process dies.
++func CleanExternalReaps() {
++	if externalReapsSocketPath == "" {
++		return
++	}
++	os.Remove(externalReapsSocketPath)
 +}
 +
  // Reap should be called when the process receives an SIGCHLD.  Reap will reap
