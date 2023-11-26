@@ -1,15 +1,12 @@
 diff --git a/init.go b/init.go
-index 79336306..1b4675ba 100644
+index 79336306..ec47f694 100644
 --- a/init.go
 +++ b/init.go
-@@ -1,16 +1,90 @@
- package main
+@@ -2,15 +2,46 @@ package main
  
  import (
-+	"bytes"
  	"os"
-+	"os/exec"
-+	"strconv"
++	"syscall"
 +	"time"
  
 -	"github.com/opencontainers/runc/libcontainer"
@@ -33,66 +30,25 @@ index 79336306..1b4675ba 100644
 +		logrus.Info("running roci")
 +
 +		// In Replit, we just ask roci to initialize the container for us.
-+		args := []string{"runc", "init"}
-+		cmd := exec.Command("/usr/bin/roci", args...)
-+		cmd.Stdin = os.Stdin
-+		cmd.Stdout = os.Stdout
-+		var stderr bytes.Buffer
-+		cmd.Stderr = &stderr
-+		fds := make(map[int]*os.File)
-+		maxFd := 0
-+		for _, name := range []string{
-+			"_LIBCONTAINER_INITPIPE",
-+			"_LIBCONTAINER_LOGPIPE",
-+			"_LIBCONTAINER_CONSOLE",
-+			"_LIBCONTAINER_FIFOFD",
-+		} {
-+			value := os.Getenv(name)
-+			if value == "" {
-+				continue
-+			}
-+			fd, err := strconv.Atoi(os.Getenv(name))
-+			if err != nil {
-+				logrus.
-+					WithError(err).
-+					WithField("source", "runc").
-+					Errorf("roci %q: %q", args, stderr.String())
-+				os.Exit(1)
-+			}
-+			fds[fd] = os.NewFile(uintptr(fd), name)
-+			if maxFd < fd {
-+				maxFd = fd
-+			}
-+		}
-+		null, err := os.OpenFile("/dev/null", os.O_RDWR, 0)
++
++		args := []string{"/usr/bin/roci", "runc", "init"}
++		env := os.Environ()
++		err = syscall.Exec(
++			args[0],
++			args,
++			env,
++		)
 +		if err != nil {
 +			logrus.
 +				WithError(err).
 +				WithField("source", "runc").
-+				Errorf("roci %q: open /dev/null", args)
-+			os.Exit(1)
-+		}
-+		defer null.Close()
-+		for fd := 3; fd <= maxFd; fd++ {
-+			cmd.ExtraFiles = append(cmd.ExtraFiles, null)
-+		}
-+		for fd, f := range fds {
-+			cmd.ExtraFiles[fd - 3] = f
-+		}
-+		cmd.ExtraFiles = append(cmd.ExtraFiles, os.Stderr)
-+		cmd.Env = append(os.Environ(), "_ROCI_STDERR_FD=" + strconv.Itoa(len(cmd.ExtraFiles) + 2))
-+		err = cmd.Run()
-+		if err != nil {
-+			logrus.
-+				WithError(err).
-+				WithField("source", "runc").
-+				WithField("env", cmd.Env).
++				WithField("env", env).
 +				Error("roci failed, chilling a bit")
 +			time.Sleep(1 * time.Second)
 +			logrus.
 +				WithError(err).
 +				WithField("source", "runc").
-+				Errorf("roci %q: %q", args, stderr.String())
++				Errorf("roci %q", args)
 +			os.Exit(1)
 +		}
 +		os.Exit(0)
@@ -323,8 +279,192 @@ index 8785d657..328b27f8 100644
  
  			// generate a timestamp indicating when the container was started
  			p.container.created = time.Now().UTC()
+diff --git a/signals.go b/signals.go
+index e0bc7c61..19401ac2 100644
+--- a/signals.go
++++ b/signals.go
+@@ -1,8 +1,12 @@
+ package main
+ 
+ import (
++	"encoding/json"
++	"fmt"
++	"net"
+ 	"os"
+ 	"os/signal"
++	"path"
+ 
+ 	"github.com/opencontainers/runc/libcontainer"
+ 	"github.com/opencontainers/runc/libcontainer/system"
+@@ -18,8 +22,31 @@ const signalBufferSize = 2048
+ // while still forwarding all other signals to the process.
+ // If notifySocket is present, use it to read systemd notifications from the container and
+ // forward them to notifySocketHost.
+-func newSignalHandler(enableSubreaper bool, notifySocket *notifySocket) *signalHandler {
++func newSignalHandler(enableSubreaper bool, notifySocket *notifySocket, id string) *signalHandler {
++	// Replit mod: since we can't be a subreaper because the containers are not our
++	// children, we install an external subreaper.
++	var reaperSocket *net.UnixListener
+ 	if enableSubreaper {
++		runtimeDir := os.Getenv("XDG_RUNTIME_DIR")
++		if runtimeDir == "" {
++			runtimeDir = "/run"
++		}
++		// Even if containerd had set up its own reaper socket, the
++		// intention by setting the subreaper is that this process
++		// will get the signal that the process has died. When that
++		// happens, we'll completely overwrite the reaper socket.
++		reaperPath := path.Join(runtimeDir, fmt.Sprintf("containerd/s/%s-reaper.sock", id))
++		os.MkdirAll(path.Dir(reaperPath), 0o700)
++		os.Remove(reaperPath)
++		var err error
++		reaperSocket, err = net.ListenUnix("unix", &net.UnixAddr{
++			Name: reaperPath,
++			Net:  "unix",
++		})
++		if err != nil {
++			logrus.WithError(err).Warn("failed to listen on subreaper socket")
++		}
++
+ 		// set us as the subreaper before registering the signal handler for the container
+ 		if err := system.SetSubreaper(1); err != nil {
+ 			logrus.Warn(err)
+@@ -33,6 +60,7 @@ func newSignalHandler(enableSubreaper bool, notifySocket *notifySocket) *signalH
+ 	return &signalHandler{
+ 		signals:      s,
+ 		notifySocket: notifySocket,
++		reaperSocket: reaperSocket,
+ 	}
+ }
+ 
+@@ -46,6 +74,7 @@ type exit struct {
+ type signalHandler struct {
+ 	signals      chan os.Signal
+ 	notifySocket *notifySocket
++	reaperSocket *net.UnixListener
+ }
+ 
+ // forward handles the main signal event loop forwarding, resizing, or reaping depending
+@@ -71,43 +100,86 @@ func (h *signalHandler) forward(process *libcontainer.Process, tty *tty, detach
+ 		go func() { _ = h.notifySocket.run(0) }()
+ 	}
+ 
++	// Replit mod: listen to children exiting.
++	type reaperStatus struct {
++		Pid    int `json:"pid"`
++		Status int `json:"status"`
++	}
++	reaperChan := make(chan reaperStatus, 1)
++	if h.reaperSocket != nil {
++		go func() {
++			for {
++				sock, err := h.reaperSocket.Accept()
++				if err != nil {
++					logrus.WithError(err).Error("failed to accept reaper socket")
++					return
++				}
++				var st reaperStatus
++				if err := json.NewDecoder(sock).Decode(&st); err != nil {
++					logrus.WithError(err).Error("failed to decode reaper message")
++					continue
++				}
++				reaperChan <- st
++			}
++		}()
++	}
++
+ 	// Perform the initial tty resize. Always ignore errors resizing because
+ 	// stdout might have disappeared (due to races with when SIGHUP is sent).
+ 	_ = tty.resize()
+ 	// Handle and forward signals.
+-	for s := range h.signals {
+-		switch s {
+-		case unix.SIGWINCH:
+-			// Ignore errors resizing, as above.
+-			_ = tty.resize()
+-		case unix.SIGCHLD:
+-			exits, err := h.reap()
+-			if err != nil {
+-				logrus.Error(err)
++L:
++	for {
++		select {
++		case st := <-reaperChan:
++			logrus.WithFields(logrus.Fields{
++				"pid":    st.Pid,
++				"status": st.Status,
++			}).Debug("process exited")
++			if st.Pid == pid1 {
++				// call Wait() on the process even though we already have the exit
++				// status because we must ensure that any of the go specific process
++				// fun such as flushing pipes are complete before we return.
++				_, _ = process.Wait()
++				return st.Status, nil
+ 			}
+-			for _, e := range exits {
+-				logrus.WithFields(logrus.Fields{
+-					"pid":    e.pid,
+-					"status": e.status,
+-				}).Debug("process exited")
+-				if e.pid == pid1 {
+-					// call Wait() on the process even though we already have the exit
+-					// status because we must ensure that any of the go specific process
+-					// fun such as flushing pipes are complete before we return.
+-					_, _ = process.Wait()
+-					return e.status, nil
+-				}
++		case s, ok := <-h.signals:
++			if !ok {
++				break L
+ 			}
+-		case unix.SIGURG:
+-			// SIGURG is used by go runtime for async preemptive
+-			// scheduling, so runc receives it from time to time,
+-			// and it should not be forwarded to the container.
+-			// Do nothing.
+-		default:
+-			us := s.(unix.Signal)
+-			logrus.Debugf("forwarding signal %d (%s) to %d", int(us), unix.SignalName(us), pid1)
+-			if err := unix.Kill(pid1, us); err != nil {
+-				logrus.Error(err)
++			switch s {
++			case unix.SIGWINCH:
++				// Ignore errors resizing, as above.
++				_ = tty.resize()
++			case unix.SIGCHLD:
++				exits, err := h.reap()
++				if err != nil {
++					logrus.Error(err)
++				}
++				for _, e := range exits {
++					logrus.WithFields(logrus.Fields{
++						"pid":    e.pid,
++						"status": e.status,
++					}).Debug("process exited")
++					if e.pid == pid1 {
++						// call Wait() on the process even though we already have the exit
++						// status because we must ensure that any of the go specific process
++						// fun such as flushing pipes are complete before we return.
++						_, _ = process.Wait()
++						return e.status, nil
++					}
++				}
++			case unix.SIGURG:
++				// SIGURG is used by go runtime for async preemptive
++				// scheduling, so runc receives it from time to time,
++				// and it should not be forwarded to the container.
++				// Do nothing.
++			default:
++				us := s.(unix.Signal)
++				logrus.Debugf("forwarding signal %d (%s) to %d", int(us), unix.SignalName(us), pid1)
++				if err := unix.Kill(pid1, us); err != nil {
++					logrus.Error(err)
++				}
+ 			}
+ 		}
+ 	}
 diff --git a/utils_linux.go b/utils_linux.go
-index 0f787cb3..9ffde63b 100644
+index 0f787cb3..9e5ba318 100644
 --- a/utils_linux.go
 +++ b/utils_linux.go
 @@ -180,6 +180,15 @@ func createContainer(context *cli.Context, id string, spec *specs.Spec) (*libcon
@@ -343,3 +483,14 @@ index 0f787cb3..9ffde63b 100644
  
  	root := context.GlobalString("root")
  	return libcontainer.Create(root, id, config)
+@@ -243,7 +252,9 @@ func (r *runner) run(config *specs.Process) (int, error) {
+ 	// Setting up IO is a two stage process. We need to modify process to deal
+ 	// with detaching containers, and then we get a tty after the container has
+ 	// started.
+-	handler := newSignalHandler(r.enableSubreaper, r.notifySocket)
++	// Replit mod: Pass the container ID to the signal handler so that it can
++	// create the reaper socket if needed.
++	handler := newSignalHandler(r.enableSubreaper, r.notifySocket, r.container.ID())
+ 	tty, err := setupIO(process, rootuid, rootgid, config.Terminal, detach, r.consoleSocket)
+ 	if err != nil {
+ 		return -1, err
