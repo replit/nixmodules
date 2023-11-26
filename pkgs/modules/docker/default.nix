@@ -157,6 +157,7 @@ let
       "exclude_graphdriver_devicemapper"
       "exclude_graphdriver_fuseoverlayfs"
       "exclude_graphdriver_overlay2"
+      "replit"
     ];
   };
 in

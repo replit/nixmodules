@@ -188,6 +188,26 @@ index c941239b..c329c89f 100644
  
  	// NOTE: when running a container with no PID namespace and the parent process spawning the container is
  	// PID1 the pdeathsig is being delivered to the container's init process by the kernel for some reason
+diff --git a/libcontainer/factory_linux.go b/libcontainer/factory_linux.go
+index 4cb4a88b..299316e2 100644
+--- a/libcontainer/factory_linux.go
++++ b/libcontainer/factory_linux.go
+@@ -165,6 +165,15 @@ func loadState(root string) (*State, error) {
+ 	if err := json.NewDecoder(f).Decode(&state); err != nil {
+ 		return nil, err
+ 	}
++	// Replit mod: prevent adding net namespaces.
++	for i := 0; i < len(state.Config.Namespaces); i++ {
++		if state.Config.Namespaces[i].Type == configs.NEWNET {
++			state.Config.Namespaces = append(state.Config.Namespaces[:i], state.Config.Namespaces[i+1:]...)
++			i--
++		}
++	}
++	state.Config.Networks = nil
++	state.Config.Routes = nil
+ 	return state, nil
+ }
+ 
 diff --git a/libcontainer/process_linux.go b/libcontainer/process_linux.go
 index 8785d657..328b27f8 100644
 --- a/libcontainer/process_linux.go
@@ -296,3 +316,23 @@ index 8785d657..328b27f8 100644
  
  			// generate a timestamp indicating when the container was started
  			p.container.created = time.Now().UTC()
+diff --git a/utils_linux.go b/utils_linux.go
+index 0f787cb3..9ffde63b 100644
+--- a/utils_linux.go
++++ b/utils_linux.go
+@@ -180,6 +180,15 @@ func createContainer(context *cli.Context, id string, spec *specs.Spec) (*libcon
+ 	if err != nil {
+ 		return nil, err
+ 	}
++	// Replit mod: prevent adding net namespaces.
++	for i := 0; i < len(config.Namespaces); i++ {
++		if config.Namespaces[i].Type == configs.NEWNET {
++			config.Namespaces = append(config.Namespaces[:i], config.Namespaces[i+1:]...)
++			i--
++		}
++	}
++	config.Networks = nil
++	config.Routes = nil
+ 
+ 	root := context.GlobalString("root")
+ 	return libcontainer.Create(root, id, config)
