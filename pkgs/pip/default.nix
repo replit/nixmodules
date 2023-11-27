@@ -26,7 +26,7 @@ pypkgs.buildPythonPackage rec {
     name = "${pname}-${version}-source";
   };
 
-  nativeBuildInputs = [ pypkgs.bootstrapped-pip ];
+  nativeBuildInputs = [ pypkgs.pip ];
 
   # pip detects that we already have bootstrapped_pip "installed", so we need
   # to force it a little.

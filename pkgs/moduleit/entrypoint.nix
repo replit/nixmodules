@@ -1,5 +1,4 @@
 { pkgs ? import <nixpkgs> { }
-, pkgs-unstable ? import <nixpkgs-unstable> { }
 , configPath
 , deployment ? false
 }:
@@ -10,7 +9,7 @@ let
       (import ./module-definition.nix)
     ];
     specialArgs = {
-      inherit pkgs pkgs-unstable;
+      inherit pkgs;
       modulesPath = builtins.toString ./.;
     };
   });
