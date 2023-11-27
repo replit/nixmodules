@@ -55,28 +55,178 @@ index cd5ad761c9..090e09835e 100644
  		}
  
  		sb.osSbox = c.defOsSbox
+diff --git a/libnetwork/osl/interface_linux.go b/libnetwork/osl/interface_linux.go
+index ee1b4ab842..85d4896b5b 100644
+--- a/libnetwork/osl/interface_linux.go
++++ b/libnetwork/osl/interface_linux.go
+@@ -1,3 +1,6 @@
++//go:build !replit
++// +build !replit
++
+ package osl
+ 
+ import (
 diff --git a/libnetwork/osl/namespace_linux.go b/libnetwork/osl/namespace_linux.go
-index d7d2fe2d63..aaa312fa8b 100644
+index d7d2fe2d63..f6d4bb9672 100644
 --- a/libnetwork/osl/namespace_linux.go
 +++ b/libnetwork/osl/namespace_linux.go
-@@ -13,7 +13,6 @@ import (
- 	"syscall"
- 	"time"
+@@ -1,3 +1,6 @@
++//go:build !replit
++// +build !replit
++
+ package osl
  
--	"github.com/docker/docker/internal/unshare"
- 	"github.com/docker/docker/libnetwork/ns"
- 	"github.com/docker/docker/libnetwork/osl/kernel"
- 	"github.com/docker/docker/libnetwork/types"
-@@ -303,7 +302,8 @@ func createNetworkNamespace(path string, osCreate bool) error {
- 		return mountNetworkNamespace(fmt.Sprintf("/proc/self/task/%d/ns/net", unix.Gettid()), path)
- 	}
- 	if osCreate {
--		return unshare.Go(unix.CLONE_NEWNET, do, nil)
-+		// Replit mod: We don't create network namespaces
-+		return do()
- 	}
- 	return do()
- }
+ import (
+diff --git a/libnetwork/osl/neigh_linux.go b/libnetwork/osl/neigh_linux.go
+index e46b12a89f..c7d88651f2 100644
+--- a/libnetwork/osl/neigh_linux.go
++++ b/libnetwork/osl/neigh_linux.go
+@@ -1,3 +1,6 @@
++//go:build !replit
++// +build !replit
++
+ package osl
+ 
+ import (
+diff --git a/libnetwork/osl/options_linux.go b/libnetwork/osl/options_linux.go
+index 818669647f..e3507dd69e 100644
+--- a/libnetwork/osl/options_linux.go
++++ b/libnetwork/osl/options_linux.go
+@@ -1,3 +1,6 @@
++//go:build !replit
++// +build !replit
++
+ package osl
+ 
+ import "net"
+diff --git a/libnetwork/osl/route_linux.go b/libnetwork/osl/route_linux.go
+index c2a6390956..d04f07f376 100644
+--- a/libnetwork/osl/route_linux.go
++++ b/libnetwork/osl/route_linux.go
+@@ -1,3 +1,6 @@
++//go:build !replit
++// +build !replit
++
+ package osl
+ 
+ import (
+diff --git a/libnetwork/osl/sandbox_replit.go b/libnetwork/osl/sandbox_replit.go
+new file mode 100644
+index 0000000000..589ae12aaa
+--- /dev/null
++++ b/libnetwork/osl/sandbox_replit.go
+@@ -0,0 +1,111 @@
++//go:build replit
++// +build replit
++
++package osl
++
++import (
++	"fmt"
++	"net"
++
++	"github.com/docker/docker/libnetwork/types"
++)
++
++type sandboxNoOp struct {
++	key string
++}
++
++type nwIface struct{}
++
++type neigh struct{}
++
++// NewSandbox provides a new sandbox instance created in an os specific way
++// provided a key which uniquely identifies the sandbox
++func NewSandbox(key string, osCreate, isRestore bool) (Sandbox, error) {
++	return &sandboxNoOp{key: key}, nil
++}
++
++// GenerateKey generates a sandbox key based on the passed
++// container id.
++func GenerateKey(containerID string) string { return containerID }
++
++// GC triggers garbage collection of namespace path right away
++// and waits for it.
++func GC() {}
++
++// GetSandboxForExternalKey returns sandbox object for the supplied path
++func GetSandboxForExternalKey(path string, key string) (Sandbox, error) {
++	return nil, nil
++}
++
++// SetBasePath sets the base url prefix for the ns path
++func SetBasePath(path string) {}
++
++// NeighborSearchError indicates that the neighbor is already present
++type NeighborSearchError struct {
++	ip      net.IP
++	mac     net.HardwareAddr
++	present bool
++}
++
++func (n NeighborSearchError) Error() string {
++	return fmt.Sprintf("Search neighbor failed for IP %v, mac %v, present in db:%t", n.ip, n.mac, n.present)
++}
++
++func (s *sandboxNoOp) Key() string { return s.key }
++func (*sandboxNoOp) AddInterface(SrcName string, DstPrefix string, options ...IfaceOption) error {
++	return nil
++}
++func (*sandboxNoOp) SetGateway(gw net.IP) error                       { return nil }
++func (*sandboxNoOp) SetGatewayIPv6(gw net.IP) error                   { return nil }
++func (*sandboxNoOp) UnsetGateway() error                              { return nil }
++func (*sandboxNoOp) UnsetGatewayIPv6() error                          { return nil }
++func (*sandboxNoOp) GetLoopbackIfaceName() string                     { return "lo" }
++func (*sandboxNoOp) AddAliasIP(ifName string, ip *net.IPNet) error    { return nil }
++func (*sandboxNoOp) RemoveAliasIP(ifName string, ip *net.IPNet) error { return nil }
++func (*sandboxNoOp) DisableARPForVIP(ifName string) error             { return nil }
++func (*sandboxNoOp) AddStaticRoute(*types.StaticRoute) error          { return nil }
++func (*sandboxNoOp) RemoveStaticRoute(*types.StaticRoute) error       { return nil }
++func (*sandboxNoOp) AddNeighbor(dstIP net.IP, dstMac net.HardwareAddr, force bool, option ...NeighOption) error {
++	return nil
++}
++func (*sandboxNoOp) DeleteNeighbor(dstIP net.IP, dstMac net.HardwareAddr, osDelete bool) error {
++	return nil
++}
++func (*sandboxNoOp) NeighborOptions() NeighborOptionSetter { return &neighborOptionSetterNoOp{} }
++func (*sandboxNoOp) InterfaceOptions() IfaceOptionSetter   { return &ifaceOptionSetterNoOp{} }
++func (*sandboxNoOp) InvokeFunc(func()) error               { return nil }
++func (*sandboxNoOp) Info() Info                            { return &infoNoOp{} }
++func (*sandboxNoOp) Destroy() error                        { return nil }
++func (*sandboxNoOp) Restore(ifsopt map[Iface][]IfaceOption, routes []*types.StaticRoute, gw net.IP, gw6 net.IP) error {
++	return nil
++}
++func (*sandboxNoOp) ApplyOSTweaks([]SandboxType) {}
++
++type infoNoOp struct{}
++
++func (*infoNoOp) Interfaces() []Interface { return nil }
++func (*infoNoOp) Gateway() net.IP {
++	// This is the hardcoded IPv4 gateway in Repls.
++	return net.IPv4(172, 31, 196, 1)
++}
++func (*infoNoOp) GatewayIPv6() net.IP                { return nil }
++func (*infoNoOp) StaticRoutes() []*types.StaticRoute { return nil }
++
++type neighborOptionSetterNoOp struct{}
++
++func neighOptionNoOp(nh *neigh) {}
++
++func (*neighborOptionSetterNoOp) LinkName(string) NeighOption { return neighOptionNoOp }
++func (*neighborOptionSetterNoOp) Family(int) NeighOption      { return neighOptionNoOp }
++
++type ifaceOptionSetterNoOp struct{}
++
++func ifaceOptionNoOp(i *nwIface) {}
++
++func (*ifaceOptionSetterNoOp) Bridge(bool) IfaceOption                     { return ifaceOptionNoOp }
++func (*ifaceOptionSetterNoOp) MacAddress(net.HardwareAddr) IfaceOption     { return ifaceOptionNoOp }
++func (*ifaceOptionSetterNoOp) Address(*net.IPNet) IfaceOption              { return ifaceOptionNoOp }
++func (*ifaceOptionSetterNoOp) AddressIPv6(*net.IPNet) IfaceOption          { return ifaceOptionNoOp }
++func (*ifaceOptionSetterNoOp) LinkLocalAddresses([]*net.IPNet) IfaceOption { return ifaceOptionNoOp }
++func (*ifaceOptionSetterNoOp) Master(string) IfaceOption                   { return ifaceOptionNoOp }
++func (*ifaceOptionSetterNoOp) Routes([]*net.IPNet) IfaceOption             { return ifaceOptionNoOp }
 diff --git a/pkg/archive/archive.go b/pkg/archive/archive.go
 index 34361a24ac..6154b7a65c 100644
 --- a/pkg/archive/archive.go

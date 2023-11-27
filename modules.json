@@ -698,5 +698,9 @@
   "docker:v4-20231112-413d16d": {
     "commit": "413d16d05197abaa66bfdfa6ecd35a1e04abbdd3",
     "path": "/nix/store/yn9bbinj75dq2nxhd4dwdv4bh8q7m3bx-replit-module-docker"
+  },
+  "docker:v5-20231126-c101ba9": {
+    "commit": "c101ba914d5a42467781a681cf4561e952cd1627",
+    "path": "/nix/store/kq5zvhmmvnd9fnmad7rr8wj0wqkxydqc-replit-module-docker"
   }
 }
