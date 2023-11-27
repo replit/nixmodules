@@ -65,7 +65,6 @@ let
     (import ./ruby)
     (import ./svelte-kit)
     (import ./web)
-    (import ./zig)
   ];
 
   modules = builtins.listToAttrs (
