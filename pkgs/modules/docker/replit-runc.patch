@@ -152,10 +152,18 @@ index c941239b..e58468e4 100644
  	// NOTE: when running a container with no PID namespace and the parent process spawning the container is
  	// PID1 the pdeathsig is being delivered to the container's init process by the kernel for some reason
 diff --git a/libcontainer/factory_linux.go b/libcontainer/factory_linux.go
-index 4cb4a88b..299316e2 100644
+index 4cb4a88b..275e0d32 100644
 --- a/libcontainer/factory_linux.go
 +++ b/libcontainer/factory_linux.go
-@@ -165,6 +165,15 @@ func loadState(root string) (*State, error) {
+@@ -5,6 +5,7 @@ import (
+ 	"errors"
+ 	"fmt"
+ 	"os"
++	"strings"
+ 
+ 	securejoin "github.com/cyphar/filepath-securejoin"
+ 	"golang.org/x/sys/unix"
+@@ -165,6 +166,21 @@ func loadState(root string) (*State, error) {
  	if err := json.NewDecoder(f).Decode(&state); err != nil {
  		return nil, err
  	}
@@ -168,6 +176,12 @@ index 4cb4a88b..299316e2 100644
 +	}
 +	state.Config.Networks = nil
 +	state.Config.Routes = nil
++	for s := range state.Config.Sysctl {
++		if strings.HasPrefix(s, "net") {
++			delete(state.Config.Sysctl, s)
++		}
++	}
++
  	return state, nil
  }
  
@@ -464,10 +478,18 @@ index e0bc7c61..19401ac2 100644
  		}
  	}
 diff --git a/utils_linux.go b/utils_linux.go
-index 0f787cb3..9e5ba318 100644
+index 0f787cb3..78ae4de2 100644
 --- a/utils_linux.go
 +++ b/utils_linux.go
-@@ -180,6 +180,15 @@ func createContainer(context *cli.Context, id string, spec *specs.Spec) (*libcon
+@@ -7,6 +7,7 @@ import (
+ 	"os"
+ 	"path/filepath"
+ 	"strconv"
++	"strings"
+ 
+ 	"github.com/coreos/go-systemd/v22/activation"
+ 	"github.com/opencontainers/runtime-spec/specs-go"
+@@ -180,6 +181,20 @@ func createContainer(context *cli.Context, id string, spec *specs.Spec) (*libcon
  	if err != nil {
  		return nil, err
  	}
@@ -480,10 +502,15 @@ index 0f787cb3..9e5ba318 100644
 +	}
 +	config.Networks = nil
 +	config.Routes = nil
++	for s := range config.Sysctl {
++		if strings.HasPrefix(s, "net") {
++			delete(config.Sysctl, s)
++		}
++	}
  
  	root := context.GlobalString("root")
  	return libcontainer.Create(root, id, config)
-@@ -243,7 +252,9 @@ func (r *runner) run(config *specs.Process) (int, error) {
+@@ -243,7 +258,9 @@ func (r *runner) run(config *specs.Process) (int, error) {
  	// Setting up IO is a two stage process. We need to modify process to deal
  	// with detaching containers, and then we get a tty after the container has
  	// started.
