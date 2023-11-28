@@ -718,5 +718,9 @@
   "docker:v5-20231126-c101ba9": {
     "commit": "c101ba914d5a42467781a681cf4561e952cd1627",
     "path": "/nix/store/kq5zvhmmvnd9fnmad7rr8wj0wqkxydqc-replit-module-docker"
+  },
+  "docker:v6-20231128-8cef170": {
+    "commit": "8cef17041b553bad202c306e5d9b726ddd007544",
+    "path": "/nix/store/mb6v56in36xplrs8783q9923cdimdgvd-replit-module-docker"
   }
 }
