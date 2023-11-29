@@ -40,8 +40,7 @@ let
     })
 
     (import ./rust)
-    # TODO: re-enable when building swift is fixed in nixpkgs
-    # (import ./swift)
+    (import ./swift)
     (import ./bun)
     (import ./c)
     (import ./cpp)
@@ -51,7 +50,6 @@ let
     (import ./clojure)
     (import ./dotnet)
     (import ./haskell)
-    # TODO: re-enable when java-debug and java-language-server are fixed, other unknowns
     # (import ./java)
     (import ./lua)
     (import ./nix)
