@@ -50,7 +50,7 @@ let
     (import ./clojure)
     (import ./dotnet)
     (import ./haskell)
-    # (import ./java)
+    (import ./java)
     (import ./lua)
     (import ./nix)
     (import ./php)
