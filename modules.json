@@ -722,5 +722,9 @@
   "docker:v6-20231128-8cef170": {
     "commit": "8cef17041b553bad202c306e5d9b726ddd007544",
     "path": "/nix/store/mb6v56in36xplrs8783q9923cdimdgvd-replit-module-docker"
+  },
+  "docker:v7-20231129-8a00f4c": {
+    "commit": "8a00f4c802548dd05d00ecc3a04589d442e917f9",
+    "path": "/nix/store/yq9n8rm0spjxcq9407fh756vjl06p44a-replit-module-docker"
   }
 }
