@@ -6,7 +6,7 @@
 }:
 
 let
-  jdk = pkgs.graalvm-ce;
+  jdk = if pkgs ? graalvm17-ce then pkgs.graalvm17-ce else pkgs.jdk;
 
 in
 stdenv.mkDerivation rec {
