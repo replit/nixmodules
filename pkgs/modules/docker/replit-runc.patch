@@ -126,10 +126,10 @@ index 6d32704a..b00e4533 100644
  	return nil
  }
 diff --git a/libcontainer/container_linux.go b/libcontainer/container_linux.go
-index c941239b..e58468e4 100644
+index c941239b..c329c89f 100644
 --- a/libcontainer/container_linux.go
 +++ b/libcontainer/container_linux.go
-@@ -500,6 +500,21 @@ func (c *Container) commandTemplate(p *Process, childInitPipe *os.File, childLog
+@@ -500,6 +500,14 @@ func (c *Container) commandTemplate(p *Process, childInitPipe *os.File, childLog
  	if p.LogLevel != "" {
  		cmd.Env = append(cmd.Env, "_LIBCONTAINER_LOGLEVEL="+p.LogLevel)
  	}
@@ -141,13 +141,6 @@ index c941239b..e58468e4 100644
 +	if err == nil {
 +		cmd.Env = append(cmd.Env, "_REPLIT_CONFIG_JSON="+path.Join(wd, "config.json"))
 +	}
-+	// Replit mod: replit-shim-runc starts one reaper socket per instance.
-+	runtimeDir := os.Getenv("XDG_RUNTIME_DIR")
-+	if runtimeDir == "" {
-+			runtimeDir = "/run"
-+	}
-+	externalReapsSocketPath := path.Join(runtimeDir, fmt.Sprintf("containerd/s/%s-reaper.sock", c.id))
-+	cmd.Env = append(cmd.Env, "_REPLIT_REAPER_SOCKET="+externalReapsSocketPath)
  
  	// NOTE: when running a container with no PID namespace and the parent process spawning the container is
  	// PID1 the pdeathsig is being delivered to the container's init process by the kernel for some reason
@@ -186,10 +179,22 @@ index 4cb4a88b..275e0d32 100644
  }
  
 diff --git a/libcontainer/process_linux.go b/libcontainer/process_linux.go
-index 8785d657..328b27f8 100644
+index 8785d657..749df199 100644
 --- a/libcontainer/process_linux.go
 +++ b/libcontainer/process_linux.go
-@@ -162,62 +162,8 @@ func (p *setnsProcess) start() (retErr error) {
+@@ -81,6 +81,11 @@ func (p *setnsProcess) signal(sig os.Signal) error {
+ 
+ func (p *setnsProcess) start() (retErr error) {
+ 	defer p.messageSockPair.parent.Close()
++	// Replit mod: Set the console socket if we overrode it in this process.
++	socketPath := os.Getenv("_REPLIT_REAPER_SOCKET")
++	if socketPath != "" {
++		p.cmd.Env = append(p.cmd.Env, "_REPLIT_REAPER_SOCKET="+socketPath)
++	}
+ 	// get the "before" value of oom kill count
+ 	oom, _ := p.manager.OOMKillCount()
+ 	err := p.cmd.Start()
+@@ -162,62 +167,8 @@ func (p *setnsProcess) start() (retErr error) {
  		return fmt.Errorf("error writing config to pipe: %w", err)
  	}
  
@@ -254,7 +259,19 @@ index 8785d657..328b27f8 100644
  
  	if err := unix.Shutdown(int(p.messageSockPair.parent.Fd()), unix.SHUT_WR); err != nil {
  		return &os.PathError{Op: "shutdown", Path: "(init pipe)", Err: err}
-@@ -514,6 +460,38 @@ func (p *initProcess) start() (retErr error) {
+@@ -363,6 +314,11 @@ func (p *initProcess) waitForChildExit(childPid int) error {
+ 
+ func (p *initProcess) start() (retErr error) {
+ 	defer p.messageSockPair.parent.Close() //nolint: errcheck
++	// Replit mod: Set the console socket if we overrode it in this process.
++	socketPath := os.Getenv("_REPLIT_REAPER_SOCKET")
++	if socketPath != "" {
++		p.cmd.Env = append(p.cmd.Env, "_REPLIT_REAPER_SOCKET="+socketPath)
++	}
+ 	err := p.cmd.Start()
+ 	p.process.ops = p
+ 	// close the write-side of the pipes (controlled by child)
+@@ -514,6 +470,38 @@ func (p *initProcess) start() (retErr error) {
  			if err := setupRlimits(p.config.Rlimits, p.pid()); err != nil {
  				return fmt.Errorf("error setting rlimits for ready process: %w", err)
  			}
@@ -294,10 +311,10 @@ index 8785d657..328b27f8 100644
  			// generate a timestamp indicating when the container was started
  			p.container.created = time.Now().UTC()
 diff --git a/signals.go b/signals.go
-index e0bc7c61..19401ac2 100644
+index e0bc7c61..68a3bde9 100644
 --- a/signals.go
 +++ b/signals.go
-@@ -1,8 +1,12 @@
+@@ -1,8 +1,13 @@
  package main
  
  import (
@@ -307,10 +324,11 @@ index e0bc7c61..19401ac2 100644
  	"os"
  	"os/signal"
 +	"path"
++	"time"
  
  	"github.com/opencontainers/runc/libcontainer"
  	"github.com/opencontainers/runc/libcontainer/system"
-@@ -18,8 +22,31 @@ const signalBufferSize = 2048
+@@ -18,8 +23,35 @@ const signalBufferSize = 2048
  // while still forwarding all other signals to the process.
  // If notifySocket is present, use it to read systemd notifications from the container and
  // forward them to notifySocketHost.
@@ -328,22 +346,26 @@ index e0bc7c61..19401ac2 100644
 +		// intention by setting the subreaper is that this process
 +		// will get the signal that the process has died. When that
 +		// happens, we'll completely overwrite the reaper socket.
-+		reaperPath := path.Join(runtimeDir, fmt.Sprintf("containerd/s/%s-reaper.sock", id))
++		reaperPath := path.Join(runtimeDir, fmt.Sprintf("containerd/s/%s-reaper-%016x.sock", id[:16], time.Now().UnixNano()))
 +		os.MkdirAll(path.Dir(reaperPath), 0o700)
 +		os.Remove(reaperPath)
 +		var err error
-+		reaperSocket, err = net.ListenUnix("unix", &net.UnixAddr{
-+			Name: reaperPath,
-+			Net:  "unix",
-+		})
++		reaperSocket, err = net.ListenUnix("unix", &net.UnixAddr{Name: reaperPath})
 +		if err != nil {
 +			logrus.WithError(err).Warn("failed to listen on subreaper socket")
++		} else {
++			previousReaperPath := os.Getenv("_REPLIT_REAPER_SOCKET")
++			if previousReaperPath != "" {
++				os.Setenv("_REPLIT_REAPER_SOCKET", previousReaperPath+":"+reaperPath)
++			} else {
++				os.Setenv("_REPLIT_REAPER_SOCKET", reaperPath)
++			}
 +		}
 +
  		// set us as the subreaper before registering the signal handler for the container
  		if err := system.SetSubreaper(1); err != nil {
  			logrus.Warn(err)
-@@ -33,6 +60,7 @@ func newSignalHandler(enableSubreaper bool, notifySocket *notifySocket) *signalH
+@@ -33,6 +65,7 @@ func newSignalHandler(enableSubreaper bool, notifySocket *notifySocket) *signalH
  	return &signalHandler{
  		signals:      s,
  		notifySocket: notifySocket,
@@ -351,7 +373,7 @@ index e0bc7c61..19401ac2 100644
  	}
  }
  
-@@ -46,6 +74,7 @@ type exit struct {
+@@ -46,6 +79,7 @@ type exit struct {
  type signalHandler struct {
  	signals      chan os.Signal
  	notifySocket *notifySocket
@@ -359,7 +381,7 @@ index e0bc7c61..19401ac2 100644
  }
  
  // forward handles the main signal event loop forwarding, resizing, or reaping depending
-@@ -71,43 +100,86 @@ func (h *signalHandler) forward(process *libcontainer.Process, tty *tty, detach
+@@ -71,43 +105,86 @@ func (h *signalHandler) forward(process *libcontainer.Process, tty *tty, detach
  		go func() { _ = h.notifySocket.run(0) }()
  	}
  

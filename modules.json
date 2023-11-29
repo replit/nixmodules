@@ -811,6 +811,10 @@
     "commit": "1e033d9d59a9bf041a2c24e96eb281d1decdc6b4",
     "path": "/nix/store/zw2cczaql8awhcp0c69si1ib9vidxbjb-replit-module-docker"
   },
+  "docker:v8-20231129-29c8905": {
+    "commit": "29c8905d4ee3c9183c6c36b91fcf6d8041f19da6",
+    "path": "/nix/store/26g4nkrndbf2bf50fp17cp8rl5xdz1gi-replit-module-docker"
+  },
   "dart-3.1:v1-20231128-1e033d9": {
     "commit": "1e033d9d59a9bf041a2c24e96eb281d1decdc6b4",
     "path": "/nix/store/ra46cfdhzrp1gn6rh4l5nnycn3vjv18l-replit-module-dart-3.1"

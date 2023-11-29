@@ -1,8 +1,19 @@
 diff --git a/builder/builder-next/executor_unix.go b/builder/builder-next/executor_unix.go
-index 4a1d93c25f..dbaa48f3f6 100644
+index 4a1d93c25f..25b0594764 100644
 --- a/builder/builder-next/executor_unix.go
 +++ b/builder/builder-next/executor_unix.go
-@@ -53,8 +53,9 @@ func newExecutor(root, cgroupParent string, net *libnetwork.Controller, dnsConfi
+@@ -24,7 +24,9 @@ import (
+ 	"github.com/sirupsen/logrus"
+ )
+ 
+-const networkName = "bridge"
++// Replit mod: We don't have a bridge, so forcing users to specify `--network=host`
++// every build command gets old real fast.
++const networkName = "host"
+ 
+ func newExecutor(root, cgroupParent string, net *libnetwork.Controller, dnsConfig *oci.DNSConfig, rootless bool, idmap idtools.IdentityMapping, apparmorProfile string) (executor.Executor, error) {
+ 	netRoot := filepath.Join(root, "net")
+@@ -53,8 +55,9 @@ func newExecutor(root, cgroupParent string, net *libnetwork.Controller, dnsConfi
  	}
  
  	return runcexecutor.New(runcexecutor.Opt{
