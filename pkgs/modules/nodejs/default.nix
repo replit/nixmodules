@@ -1,10 +1,10 @@
 { nodejs }:
-{ pkgs, lib, ... }:
+{ pkgs, pkgs-unstable, lib, ... }:
 
 let
   community-version = lib.versions.major nodejs.version;
 
-  bun = pkgs.callPackage ../../bun { };
+  bun = pkgs-unstable.callPackage ../../bun { };
 
   nodepkgs = pkgs.nodePackages.override {
     inherit nodejs;

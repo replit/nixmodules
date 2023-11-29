@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 
 let
-  graalvm = pkgs.graalvm-ce;
+  graalvm = pkgs.graalvm19-ce;
 
   graalvm-version = lib.versions.majorMinor graalvm.version;
 
@@ -9,13 +9,11 @@ let
 
   jdt-language-server = pkgs.callPackage ../../jdt-language-server { };
 
-  java-language-server = pkgs.java-language-server.override {
-    jdk = pkgs.graalvm-ce;
-  };
+  java-language-server = pkgs.java-language-server;
 
   java-debug = pkgs.callPackage ../../java-debug {
     inherit jdt-language-server;
-    jdk = pkgs.graalvm-ce;
+    jdk = pkgs.graalvm11-ce;
   };
 
   run-lsp = pkgs.writeShellScriptBin "run-lsp" ''

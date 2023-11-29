@@ -1,11 +1,11 @@
-{ pkgs, ... }:
+{ pkgs-unstable, ... }:
 
 {
   id = "svelte-kit-node-20";
   name = "SvelteKit with Node.js 20 Tools";
 
   replit = {
-    packages = with pkgs; [
+    packages = with pkgs-unstable; [
       nodejs
     ];
 
@@ -19,14 +19,14 @@
         ".ts"
       ];
 
-      start = "${pkgs.nodejs}/bin/npm run dev";
+      start = "${pkgs-unstable.nodejs}/bin/npm run dev";
     };
 
     dev.languageServers.svelte-language-server = {
       name = "Svelte Language Server";
       language = "svelte";
       extensions = [ ".svelte" ".js" ".ts" ];
-      start = "${pkgs.nodePackages.svelte-language-server}/bin/svelteserver --stdio";
+      start = "${pkgs-unstable.nodePackages.svelte-language-server}/bin/svelteserver --stdio";
     };
   };
 }

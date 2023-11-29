@@ -43,7 +43,7 @@
     "fenix": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs-unstable"
+          "nixpkgs"
         ],
         "rust-analyzer-src": "rust-analyzer-src"
       },
@@ -143,7 +143,7 @@
     "java-language-server": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs-unstable"
+          "nixpkgs"
         ]
       },
       "locked": {
@@ -164,7 +164,7 @@
       "inputs": {
         "flake-parts": "flake-parts",
         "nixpkgs": [
-          "nixpkgs-unstable"
+          "nixpkgs"
         ]
       },
       "locked": {
@@ -178,6 +178,22 @@
       "original": {
         "owner": "nix-community",
         "repo": "nixd",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1700989516,
+        "narHash": "sha256-oKbmPa2wpTHh9XB3+zIx97uMZGNnp97GPliKKG2/plo=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "d2e4de209881b38392933fabf303cde3454b0b4c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-23.05",
+        "repo": "nixpkgs",
         "type": "github"
       }
     },
@@ -219,7 +235,7 @@
       "inputs": {
         "flake-utils": "flake-utils",
         "nixpkgs": [
-          "nixpkgs-unstable"
+          "nixpkgs"
         ]
       },
       "locked": {
@@ -241,6 +257,7 @@
         "fenix": "fenix",
         "java-language-server": "java-language-server",
         "nixd": "nixd",
+        "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "prybar": "prybar",
         "ztoc-rs": "ztoc-rs"
@@ -296,7 +313,7 @@
         "crane": "crane",
         "flake-utils": "flake-utils_3",
         "nixpkgs": [
-          "nixpkgs-unstable"
+          "nixpkgs"
         ]
       },
       "locked": {

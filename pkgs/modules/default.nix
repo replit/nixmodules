@@ -1,14 +1,20 @@
-{ pkgs }:
+{ pkgs, pkgs-unstable }:
 let
   mkModule = path: pkgs.callPackage ../moduleit/entrypoint.nix {
     configPath = path;
+    inherit pkgs-unstable;
   };
   mkDeploymentModule = path: pkgs.callPackage ../moduleit/entrypoint.nix {
     configPath = path;
+    inherit pkgs-unstable;
     deployment = true;
   };
 
   modulesList = [
+    (import ./python {
+      python = pkgs.python38Full;
+      pypkgs = pkgs.python38Packages;
+    })
     (import ./python {
       python = pkgs.python310Full;
       pypkgs = pkgs.python310Packages;
@@ -33,9 +39,9 @@ let
       inherit (pkgs) go gopls;
     })
     (import ./go {
-      go = pkgs.go_1_21;
-      gopls = pkgs.gopls.override {
-        buildGoModule = pkgs.buildGo121Module;
+      go = pkgs-unstable.go_1_21;
+      gopls = pkgs-unstable.gopls.override {
+        buildGoModule = pkgs-unstable.buildGo121Module;
       };
     })
 

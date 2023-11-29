@@ -1,7 +1,7 @@
-{ pkgs, lib, ... }:
+{ pkgs, pkgs-unstable, lib, ... }:
 
 let
-  bun = pkgs.callPackage ../../bun { };
+  bun = pkgs-unstable.callPackage ../../bun { };
 
   extensions = [ ".json" ".js" ".jsx" ".ts" ".tsx" ];
 
