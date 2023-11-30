@@ -11,6 +11,11 @@ let
   };
 
   prettier = nodepkgs.prettier;
+
+  npx-wrapper = pkgs.writeShellScriptBin "npx" ''
+    mkdir -p ''${XDG_CONFIG_HOME}/npm/node_global/lib
+    ${nodejs}/bin/npx "$@"
+  '';
 in
 
 {
@@ -110,7 +115,7 @@ in
     env = {
       XDG_CONFIG_HOME = "$REPL_HOME/.config";
       npm_config_prefix = "$REPL_HOME/.config/npm/node_global";
-      PATH = "$REPL_HOME/.config/npm/node_global/bin:$REPL_HOME/node_modules/.bin";
+      PATH = "${npx-wrapper}/bin:$XDG_CONFIG_HOME/npm/node_global/bin:$REPL_HOME/node_modules/.bin";
     };
 
   };
