@@ -427,6 +427,10 @@
     "commit": "0b7a60667d2c29f2686211e952924a9693916a20",
     "path": "/nix/store/1qlvg6wh8wg7il1njmsspr6fhda9bdgj-replit-module-ruby-3.1"
   },
+  "ruby-3.1:v3-20231130-c16dd76": {
+    "commit": "c16dd76d69047cb0cccdd37b39c6163b130368a6",
+    "path": "/nix/store/0nlckd8698v5cr1nlkmdr2bqh82xipvh-replit-module-ruby-3.1"
+  },
   "rust-1.69:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/xkp307fdmgwn8dnbqadzlrb8fr0bvkx4-replit-module-rust-1.69"
@@ -758,5 +762,9 @@
   "docker:v7-20231129-8a00f4c": {
     "commit": "8a00f4c802548dd05d00ecc3a04589d442e917f9",
     "path": "/nix/store/yq9n8rm0spjxcq9407fh756vjl06p44a-replit-module-docker"
+  },
+  "ruby-3.2:v1-20231130-c16dd76": {
+    "commit": "c16dd76d69047cb0cccdd37b39c6163b130368a6",
+    "path": "/nix/store/2n9kykvlhk9h1xp6d99839wqf6bd7hl6-replit-module-ruby-3.2"
   }
 }
