@@ -62,7 +62,14 @@ let
     (import ./php)
     (import ./qbasic)
     (import ./R)
-    (import ./ruby)
+    (import ./ruby {
+      ruby = pkgs.ruby_3_1;
+      rubyPackages = pkgs.rubyPackages_3_1;
+    })
+    (import ./ruby {
+      ruby = pkgs.ruby_3_2;
+      rubyPackages = pkgs.rubyPackages_3_2;
+    })
     (import ./svelte-kit)
     (import ./web)
   ];
