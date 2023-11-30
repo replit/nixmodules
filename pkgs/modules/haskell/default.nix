@@ -32,6 +32,6 @@ in
     name = "Haskell Language Server";
     language = "haskell";
 
-    start = "${pkgs.haskell-language-server}/bin/haskell-language-server-wrapper --lsp";
+    start = "${pkgs.haskellPackages.haskell-language-server}/bin/haskell-language-server --lsp";
   };
 }
