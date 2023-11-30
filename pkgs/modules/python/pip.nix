@@ -28,13 +28,17 @@ let
     '';
   };
 in
-pkgs.writeShellScriptBin "pip" ''
-  flags=()
-  if [[ -n "$__REPLIT_PIP_CACHE_ENABLE" ]]; then
-    export PIP_CONFIG_FILE=${config-cache-enabled}
-    flags+=("--cache-dir=''${HOME}/.cache/pip")
-  else
-    export PIP_CONFIG_FILE=${config-cache-disabled}
-  fi
-  exec "${pip}/bin/pip" "''${flags[@]}" "$@"
-''
+{
+  bin = pkgs.writeShellScriptBin "pip" ''
+    flags=()
+    if [[ -n "$__REPLIT_PIP_CACHE_ENABLE" ]]; then
+      export PIP_CONFIG_FILE=${config-cache-enabled}
+      flags+=("--cache-dir=''${HOME}/.cache/pip")
+    else
+      export PIP_CONFIG_FILE=${config-cache-disabled}
+    fi
+    exec "${pip}/bin/pip" "''${flags[@]}" "$@"
+  '';
+
+  inherit pip;
+}
