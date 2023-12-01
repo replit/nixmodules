@@ -66,7 +66,7 @@ rec {
   bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle-image revstring; };
 
   bundle-squashfs = bundle-squashfs-fn {
-    moduleIds = [ "python-3.10" "nodejs-18" "nodejs-20" "docker" ];
+    moduleIds = [ "nodejs-20" ];
     diskName = "disk.sqsh";
   };
 

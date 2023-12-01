@@ -23,7 +23,7 @@ in
   name = "Node.js ${community-version} Tools";
   imports = [
     (import ../typescript-language-server {
-      inherit nodepkgs;
+      inherit nodejs nodepkgs;
     })
   ];
 

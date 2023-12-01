@@ -18,6 +18,7 @@ in
       runFileScript = "${bun}/bin/bun";
     })
     (import ../typescript-language-server {
+      nodejs = pkgs.nodejs_20;
       nodepkgs = pkgs.nodePackages;
     })
   ];

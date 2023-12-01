@@ -4,6 +4,7 @@
 
   imports = [
     (import ../typescript-language-server {
+      nodejs = pkgs.nodejs;
       nodepkgs = pkgs.nodePackages;
     })
   ];
