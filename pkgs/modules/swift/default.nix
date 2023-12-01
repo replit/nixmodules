@@ -1,5 +1,6 @@
-{ pkgs, lib, ... }:
+{ pkgs-23_05, lib, ... }:
 let
+  pkgs = pkgs-23_05;
   swift-version = lib.versions.majorMinor pkgs.swift.version;
 
   swiftc-wrapper = pkgs.stdenv.mkDerivation {

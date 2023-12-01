@@ -6,8 +6,7 @@ let
     nativeBuildInputs = [ pkgs.makeWrapper ];
     postInstall = ''
       wrapProgram "$out/bin/typescript-language-server" \
-        --suffix PATH : ${pkgs.lib.makeBinPath [ nodepkgs.typescript ]} \
-        --add-flags "--tsserver-path ${nodepkgs.typescript}/lib/node_modules/typescript/lib/"
+        --suffix PATH : ${pkgs.lib.makeBinPath [ nodepkgs.typescript ]}
     '';
   };
 in
@@ -16,5 +15,9 @@ in
     name = "TypeScript Language Server";
     language = "javascript";
     start = "${typescript-language-server}/bin/typescript-language-server --stdio";
+
+    initializationOptions = {
+      tsserver.path = "${nodepkgs.typescript}/lib/node_modules/typescript/lib";
+    };
   };
 }
