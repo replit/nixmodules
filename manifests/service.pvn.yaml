@@ -38,13 +38,6 @@ service:
                 "version":"{{.Params.nixmodules_version}}",
                 "configPullJitter":"1s"
               }
-    - releaseChannel: test-templates
-      externalConfig:
-        type: KUBERNETES
-        local:
-          path: test_templates.yaml
-
-
     - releaseChannel: tarpit
       runtimeConnection: config-raw
       runtimeExtension:
