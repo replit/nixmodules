@@ -60,6 +60,7 @@ in
   };
   "bun-1.0:v8-20231013-f38c84f" = { to = "bun-1.0:v9-20231024-b3ba53c"; auto = true; };
   "bun-1.0:v9-20231024-b3ba53c" = { to = "bun-1.0:v10-20231122-8e4093b"; auto = true; };
+  "bun-1.0:v10-20231122-8e4093b" = { to = "bun-1.0:v11-20231201-0971a6d"; auto = true; };
 
   "go" = { to = "go-1.19:v1-20230525-c48c43c"; auto = true; };
 
@@ -74,12 +75,17 @@ in
 // (fns.linearUpgrade "c-clang14")
 // (fns.linearUpgrade "clojure-1.11")
 // (fns.linearUpgrade "cpp-clang14")
+// (fns.linearUpgrade "dart-3.1")
 // (fns.linearUpgrade "docker")
 // (fns.linearUpgrade "dotnet-7.0")
+// (fns.linearUpgrade "gcloud")
 // (fns.linearUpgrade "go-1.20")
+// (fns.linearUpgrade "go-1.21")
 // (fns.linearUpgrade "haskell-ghc9.2")
+// (fns.linearUpgrade "haskell-ghc9.4")
 // (fns.linearUpgrade "java-graalvm22.3")
 // (fns.linearUpgrade "lua-5.2")
+// (fns.linearUpgrade "nix")
 // (fns.linearUpgrade "nodejs-14")
 // (fns.linearUpgrade "nodejs-16")
 // (fns.linearUpgrade "nodejs-18")
@@ -87,6 +93,7 @@ in
 // (fns.linearUpgrade "nodejs-20")
 // (fns.linearUpgrade "nodejs-with-prybar-18")
 // (fns.linearUpgrade "php-8.1")
+// (fns.linearUpgrade "php-8.2")
 // (fns.linearUpgrade "pyright-extended")
 // (fns.linearUpgrade "python-3.10")
 // (fns.linearUpgrade "python-3.11")
@@ -94,6 +101,7 @@ in
 // (fns.linearUpgrade "python-with-prybar-3.10")
 // (fns.linearUpgrade "qbasic")
 // (fns.linearUpgrade "r-4.2")
+// (fns.linearUpgrade "r-4.3")
 // (fns.linearUpgrade "ruby-3.1")
 // (fns.linearUpgrade "ruby-3.2")
 // (fns.linearUpgrade "rust-stable")
