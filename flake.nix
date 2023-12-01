@@ -30,9 +30,9 @@
         ];
       };
 
-      pkgs = mkPkgs nixpkgs "x86_64-linux";
+      pkgs-23_05 = mkPkgs nixpkgs "x86_64-linux";
 
-      pkgs-unstable = mkPkgs nixpkgs-unstable "x86_64-linux";
+      pkgs = mkPkgs nixpkgs-unstable "x86_64-linux";
     in
     {
       overlays.default = final: prev: {
@@ -56,7 +56,7 @@
     } // (
       import ./pkgs/modules {
         inherit pkgs;
-        inherit pkgs-unstable;
+        inherit pkgs-23_05;
       }
     );
 }

@@ -1,27 +1,27 @@
-{ pkgs, pkgs-unstable }:
+{ pkgs, pkgs-23_05 }:
 let
   mkModule = path: pkgs.callPackage ../moduleit/entrypoint.nix {
     configPath = path;
-    inherit pkgs-unstable;
+    inherit pkgs-23_05;
   };
   mkDeploymentModule = path: pkgs.callPackage ../moduleit/entrypoint.nix {
     configPath = path;
-    inherit pkgs-unstable;
+    inherit pkgs-23_05;
     deployment = true;
   };
 
   modulesList = [
     (import ./python {
-      python = pkgs.python38Full;
-      pypkgs = pkgs.python38Packages;
+      python = pkgs-23_05.python38Full;
+      pypkgs = pkgs-23_05.python38Packages;
     })
     (import ./python {
-      python = pkgs.python310Full;
-      pypkgs = pkgs.python310Packages;
+      python = pkgs-23_05.python310Full;
+      pypkgs = pkgs-23_05.python310Packages;
     })
     (import ./python {
-      python = pkgs.python311Full;
-      pypkgs = pkgs.python311Packages;
+      python = pkgs-23_05.python311Full;
+      pypkgs = pkgs-23_05.python311Packages;
     })
     (import ./python-with-prybar)
 
@@ -39,9 +39,9 @@ let
       inherit (pkgs) go gopls;
     })
     (import ./go {
-      go = pkgs-unstable.go_1_21;
-      gopls = pkgs-unstable.gopls.override {
-        buildGoModule = pkgs-unstable.buildGo121Module;
+      go = pkgs.go_1_21;
+      gopls = pkgs.gopls.override {
+        buildGoModule = pkgs.buildGo121Module;
       };
     })
 
