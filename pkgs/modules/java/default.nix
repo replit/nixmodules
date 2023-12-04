@@ -1,6 +1,8 @@
-{ pkgs, lib, ... }:
+{ pkgs-23_05, lib, ... }:
 
 let
+  pkgs = pkgs-23_05;
+
   graalvm = pkgs.graalvm19-ce;
 
   graalvm-version = lib.versions.majorMinor graalvm.version;
