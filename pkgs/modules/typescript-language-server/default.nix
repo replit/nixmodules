@@ -1,7 +1,7 @@
 { nodepkgs }:
 { pkgs, ... }:
 let
-  typescript-language-server = pkgs.importPackage ../../typescript-language-server {};
+  typescript-language-server = pkgs.callPackage ../../typescript-language-server {};
 
   # typescript-language-server = nodepkgs.typescript-language-server.override {
   #   nativeBuildInputs = [ pkgs.makeWrapper ];
