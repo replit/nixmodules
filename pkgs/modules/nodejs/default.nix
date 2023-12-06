@@ -95,7 +95,7 @@ in
     dev.formatters.prettier = {
       name = "Prettier";
       language = "javascript";
-      extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ];
+      extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ".html" ];
       start = {
         args = [ "${prettier}/bin/prettier" "--stdin-filepath" "$file" ];
       };
