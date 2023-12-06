@@ -21,7 +21,7 @@ let
 
     subPackages = [ "./" ];
 
-    vendorSha256 = null;
+    vendorHash = null;
 
     doCheck = false;
 
@@ -47,7 +47,7 @@ let
 
     subPackages = [ "./cmd/containerd" "./cmd/ctr" "./cmd/containerd-shim-runc-v2" ];
 
-    vendorSha256 = null;
+    vendorHash = null;
 
     doCheck = false;
 
@@ -81,7 +81,7 @@ let
 
     subPackages = [ "./cmd/buildkitd" "./cmd/buildctl" ];
 
-    vendorSha256 = null;
+    vendorHash = null;
 
     doCheck = false;
 
