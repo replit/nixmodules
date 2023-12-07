@@ -10,6 +10,7 @@ let
       for bin in ${nodejs}/bin/*; do
         local binName=$(basename $bin)
         cat >$out/bin/$binName <<-EOF
+      #!${pkgs.bash}/bin/bash
       if [ -n "\$REPLIT_LD_LIBRARY_PATH" ]; then
         export LD_LIBRARY_PATH="\$REPLIT_LD_LIBRARY_PATH:\$LD_LIBRARY_PATH"
       fi
