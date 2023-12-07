@@ -31,14 +31,10 @@ let
       # REPLIT_LD_LIBRARY_PATH.
       ldLibraryPathConvertWrapper = pkgs.writeShellScriptBin name ''
         export LD_LIBRARY_PATH=${python-ld-library-path}
-        if [ -z ''${PYTHON_LD_LIBRARY_PATH+x} ]; then
-          :
-        else
+        if [ -n "''${PYTHON_LD_LIBRARY_PATH}" ]; then
           export LD_LIBRARY_PATH=''${PYTHON_LD_LIBRARY_PATH}:$LD_LIBRARY_PATH
         fi
-        if [ -z ''${REPLIT_LD_LIBRARY_PATH+x} ]; then
-          :
-        else
+        if [ -n "''${REPLIT_LD_LIBRARY_PATH}" ]; then
           export LD_LIBRARY_PATH=''${REPLIT_LD_LIBRARY_PATH}:$LD_LIBRARY_PATH
         fi
         exec "${bin}" "$@"
