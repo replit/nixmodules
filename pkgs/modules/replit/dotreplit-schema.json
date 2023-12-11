@@ -1,0 +1,661 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/DotReplit",
+  "definitions": {
+    "DotReplit": {
+      "title": ".replit file",
+      "description": "Configuration for your Replit Repl.",
+      "type": "object",
+      "properties": {
+        "onBoot": {
+          "$ref": "#/definitions/Command"
+        },
+        "run": {
+          "$ref": "#/definitions/Command"
+        },
+        "compile": {
+          "$ref": "#/definitions/Command"
+        },
+        "language": {
+          "type": "string"
+        },
+        "audio": {
+          "type": "boolean"
+        },
+        "entrypoint": {
+          "type": "string"
+        },
+        "disableInstallBeforeRun": {
+          "type": "boolean"
+        },
+        "disableGuessImports": {
+          "type": "boolean"
+        },
+        "env": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "debugger": {
+          "$ref": "#/definitions/DebuggerConfig"
+        },
+        "packager": {
+          "$ref": "#/definitions/PackagerConfig"
+        },
+        "interp": {
+          "$ref": "#/definitions/InterpConfig"
+        },
+        "unitTest": {
+          "$ref": "#/definitions/UnitTestConfig"
+        },
+        "hidden": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "nix": {
+          "$ref": "#/definitions/NixConfig"
+        },
+        "languages": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/LanguageConfig"
+          }
+        },
+        "hosting": {
+          "$ref": "#/definitions/HostingConfig"
+        },
+        "auth": {
+          "$ref": "#/definitions/AuthConfig"
+        },
+        "hints": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/HintConfig"
+          }
+        },
+        "ports": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PortConfig"
+          }
+        },
+        "githubImport": {
+          "$ref": "#/definitions/GitHubImportConfig"
+        },
+        "refreshWebViewOnFileChange": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "deployment": {
+          "$ref": "#/definitions/DeploymentConfig"
+        },
+        "modules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+	  }
+        },
+        "inotifyDebounceDuration": {
+          "type": "string"
+        },
+        "extension": {
+          "$ref": "#/definitions/ExtensionConfig"
+        },
+        "rules": {
+          "$ref": "#/definitions/RulesConfig"
+        },
+        "suggestions": {
+          "$ref": "#/definitions/SuggestionsConfig"
+        }
+      }
+    },
+
+    "Command": {
+      "title": "Replit Command",
+      "description": "The command to run",
+      "anyOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" } },
+        {
+          "type": "object",
+          "properties": {
+            "args": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "env": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+
+    "AuthConfig": {
+      "title": "ReplAuth Configuration",
+      "description": "Configure ReplAuth for your Repl.",
+      "type": "object",
+      "properties": {
+        "pageEnabled": {
+          "type": "boolean"
+        },
+        "pageTitle": {
+          "type": "string"
+        },
+        "pageDescription": {
+          "type": "string"
+        },
+        "pageColor": {
+          "type": "string"
+        },
+        "pageImage": {
+          "type": "string"
+        },
+        "buttonEnabled": {
+          "type": "boolean"
+        }
+      }
+    },
+
+    "DebuggerConfig": {
+      "title": "Debugger Configuration",
+      "description": "DAP Configuration for debugging support",
+      "type": "object",
+      "properties": {
+        "support": {
+          "type": "boolean"
+        },
+        "compile": {
+          "$ref": "#/definitions/DebuggerCompileConfig"
+        },
+        "interactive": {
+          "$ref": "#/definitions/DebuggerDAPConfig"
+        },
+        "dapTransport": {
+          "enum": [ "stdio" ]
+        },
+        "dapConnectTimeout": {
+          "type": "number"
+        },
+        "dapIntegratedAdapter": {
+          "$ref": "#/definitions/DebuggerDAPIntegratedAdapterConfig"
+        },
+        "dapStartCommand": {
+          "$ref": "#/definitions/Command"
+        },
+        "dapInitializeMessage": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "dapLaunchMessage": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+
+    "DebuggerCompileConfig": {
+      "title": "Debugger Compile Config",
+      "description": "The command to use to compile your project before starting the debugger.",
+      "type": "object",
+      "properties": {
+        "command": {
+          "$ref": "#/definitions/Command"
+        },
+        "onlyMain": {
+          "type": "boolean"
+        },
+        "noFileArgs": {
+          "type": "boolean"
+        }
+      }
+    },
+
+    "DebuggerDAPConfig": {
+      "title": "Debugger DAP Config",
+      "description": "Configuration for the debugger DAP.",
+      "type": "object",
+      "properties": {
+        "transport": {
+          "enum": ["stdio"]
+        },
+        "connectTimeout": {
+          "type": "number"
+        },
+        "integratedAdapter": {
+          "$ref": "#/definitions/DebuggerDAPIntegratedAdapterConfig"
+        },
+        "startCommand": {
+          "$ref": "#/definitions/Command"
+        },
+        "initializeMessage": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "launchMessage": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+
+    "DebuggerDAPIntegratedAdapterConfig": {
+      "title": "Debugger DAP Integrated Adapter Config",
+      "description": "Configuration for integrated DAP adapters (debugger and adapter in same process).",
+      "type": "object",
+      "properties": {
+        "dapTcpAddress": {
+          "type": "string"
+        }
+      }
+    },
+
+    "DeploymentConfig": {
+      "title": "Deployment Config",
+      "description": "Configuration for deploying your Repl.",
+      "type": "object",
+      "properties": {
+        "build": {
+          "$ref": "#/definitions/Command"
+        },
+        "run": {
+          "$ref": "#/definitions/Command"
+        },
+        "ignorePorts": {
+          "type": "boolean"
+        },
+        "deploymentTarget": {
+          "enum": ["cloudrun", "gce", "static"]
+        },
+        "publicDir": {
+          "type": "string"
+        },
+        "ignore": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "preservedSymlinks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "health": {
+          "$ref": "#/definitions/DeploymentHealthConfig"
+        },
+        "responseHeaders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DeploymentHeaderConfig"
+          }
+        },
+        "rewrites": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DeploymentRewriteRule"
+          }
+        }
+      }
+    },
+
+    "DeploymentHeaderConfig": {
+      "title": "Static Deployment Headers",
+      "description": "Headers to apply to responses for static deployments.",
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+
+    "DeploymentHealthConfig": {
+      "title": "Deployment HealthChecks Configuration",
+      "description": "Configuration for specifying healthchecks in deployments.",
+      "type": "object",
+      "properties": {
+        "startup": {
+          "$ref": "#/definitions/DeploymentCheckConfig"
+        },
+        "liveness": {
+          "$ref": "#/definitions/DeploymentCheckConfig"
+        }
+      }
+    },
+
+    "DeploymentCheckConfig": {
+      "title": "Deployment HealthCheck Configuration",
+      "description": "Configuration for a single healthcheck in deployments.",
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+
+    "DeploymentRewriteRule": {
+      "title": "Deployment Rewrite Rule",
+      "description": "Path rewrite rules for static deployments.",
+      "type": "object",
+      "properties": {
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        }
+      }
+    },
+
+    "ExtensionConfig": {
+      "title": "Extensions Configuration",
+      "description": "Configuration of your Repl as an extension.",
+      "type": "object",
+      "properties": {
+        "isExtension": {
+          "type": "boolean"
+        },
+        "extensionId": {
+          "type": "string"
+        },
+        "buildCommand": {
+          "type": "string"
+        },
+        "outputDirectory": {
+          "type": "string"
+        },
+        "staticDirectory": {
+          "type": "string"
+        }
+      }
+    },
+
+    "GitHubImportConfig": {
+      "title": "GitHub Imports Configuration",
+      "description": "Template files that are necessary to use as a base for GitHub imports.",
+      "type": "object",
+      "properties": {
+        "requiredFiles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+
+    "HintConfig": {
+      "title": "Hints configuration",
+      "description": "Hint that shows in the Console based on stderr.",
+      "type": "object",
+      "properties": {
+        "regex": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+
+    "HostingConfig": {
+      "title": "Static Repl Hosting Configuration",
+      "description": "Configure which route and directory to use for static Repl hosting.",
+      "type": "object",
+      "properties": {
+        "route": {
+          "type": "string"
+        },
+        "directory": {
+          "type": "string"
+        }
+      }
+    },
+
+    "InterpConfig": {
+      "title": "Interpreter Configuration",
+      "description": "Configure the interpreter to use in the Console.",
+      "type": "object",
+      "properties": {
+        "command": {
+          "$ref": "#/definitions/Command"
+        },
+        "prompt": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "noFileArgs": {
+          "type": "boolean"
+        }
+      }
+    },
+
+    "LanguageConfig": {
+      "title": "Language Configuration",
+      "description": "Per-language configurations.",
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "type": "string"
+        },
+        "syntax": {
+          "type": "string"
+        },
+        "languageServer": {
+          "$ref": "#/definitions/LanguageServerConfig"
+        }
+      }
+    },
+
+    "LanguageServerConfig": {
+      "title": "Language Server Configuration",
+      "description": "LSP server configurations.",
+      "type": "object",
+      "properties": {
+        "start": {
+          "$ref": "#/definitions/Command"
+        },
+        "configuration": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "initializationOptions": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+
+    "NixConfig": {
+      "title": "Nix Configuration",
+      "description": "Configure Nix on Replit.",
+      "type": "object",
+      "properties": {
+        "channel": {
+          "enum": ["unstable", "stable-21_11", "stable-22_05", "stable-22_11", "stable-23_05"]
+        }
+      }
+    },
+
+    "PackagerConfig": {
+      "title": "Packager Configuration",
+      "description": "Configure UPM",
+      "type": "object",
+      "properties": {
+        "afterInstall": {
+          "$ref": "#/definitions/Command"
+        },
+        "language": {
+          "type": "string"
+        },
+        "features": {
+          "type": "object",
+          "properties": {
+            "packageSearch": {
+              "type": "boolean"
+            },
+            "guessImports": {
+              "type": "boolean"
+            },
+            "enabledForHosting": {
+              "type": "boolean"
+            }
+          }
+        },
+        "env": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "ignoredPackages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ignoredPaths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+
+    "PortConfig": {
+      "title": "Port Configuration",
+      "description": "Port mapping for developing in your Repl.",
+      "type": "object",
+      "properties": {
+        "localPort": {
+          "type": "number"
+        },
+        "externalPort": {
+          "type": "number"
+        },
+        "exposeLocalhost": {
+          "type": "boolean"
+        },
+        "allowHttpConnectMethod": {
+          "type": "string"
+        }
+      }
+    },
+
+    "RulesConfig": {
+      "title": "Rules configuration",
+      "description": "Rules-based configuration for various services.",
+      "type": "object",
+      "properties": {
+        "formatter": {
+          "$ref": "#/definitions/FormatterRulesConfig"
+        }
+      }
+    },
+
+    "FormatterRulesConfig": {
+      "title": "Formatter configuration",
+      "description": "Configuration for formatter",
+      "type": "object",
+      "properties": {
+        "patterns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FormatterConfigWithPattern"
+          }
+        },
+        "fileExtensions": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/FormatterConfig"
+          }
+        },
+        "languages": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/FormatterConfig"
+          }
+        }
+      }
+    },
+
+    "FormatterConfig": {
+      "title": "Formatter Configuration",
+      "description": "Formatter configuration.",
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "string"
+        }
+      }
+    },
+
+    "FormatterConfigWithPattern": {
+      "title": "Pattern Formatter Configuration",
+      "description": "Formatter configuration applied to a pattern",
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "string"
+        },
+        "pattern": {
+          "type": "string"
+        }
+      }
+    },
+
+    "SuggestionsConfig": {
+      "title": "Suggestions Configuration",
+      "description": "Configure your template to suggest resources for the user to action on.",
+      "type": "object",
+      "properties": {
+        "extensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+
+    "UnitTestConfig": {
+      "title": "Unit Test Configuration",
+      "description": "Configure unit testing.",
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
+
