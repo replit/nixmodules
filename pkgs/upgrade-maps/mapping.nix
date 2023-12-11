@@ -99,6 +99,7 @@ in
 // (fns.linearUpgrade "python-with-prybar-3.10")
 // (fns.linearUpgrade "qbasic")
 // (fns.linearUpgrade "r-4.2")
+// (fns.linearUpgrade "replit")
 // (fns.linearUpgrade "ruby-3.1")
 // (fns.linearUpgrade "ruby-3.2")
 // (fns.linearUpgrade "rust-stable")
