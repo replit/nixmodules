@@ -65,6 +65,11 @@ in
 
   "go" = { to = "go-1.19:v1-20230525-c48c43c"; auto = true; };
 
+  # IMPORTANT: DO NOT REMOVE THIS. ***ONLY*** change it.
+  # pid1 auto-loads the replit module by attempting to resolve `replit`. If this line is
+  # removed, then the `replit` module will fail to resolve in pid1.
+  "replit" = { to = "replit:v1-20231211-d5ddcff"; auto = true; };
+
   "rust" = { to = "rust-1.69:v1-20230525-c48c43c"; auto = true; };
   "rust-1.69:v1-20230525-c48c43c" = { to = "rust-1.69:v2-20230623-0b7a606"; auto = true; };
   "rust-1.69:v2-20230623-0b7a606" = { to = "rust-1.70:v1-20230724-17660e5"; auto = true; };
