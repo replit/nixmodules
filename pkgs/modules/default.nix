@@ -62,6 +62,7 @@ let
     (import ./php)
     (import ./qbasic)
     (import ./R)
+    (import ./replit)
     (import ./ruby {
       ruby = pkgs.ruby_3_1;
       rubyPackages = pkgs.rubyPackages_3_1;

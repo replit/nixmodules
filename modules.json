@@ -970,5 +970,9 @@
   "r-4.3:v1-20231201-3b22c78": {
     "commit": "3b22c787fd20b13fe5afb868589c574068303b5e",
     "path": "/nix/store/naz6n9b9fd8swy5yb2i9sn4haw4h3c48-replit-module-r-4.3"
+  },
+  "replit:v1-20231211-d5ddcff": {
+    "commit": "d5ddcff9419456ecf54d2582c4b1cc4242198ac0",
+    "path": "/nix/store/lljp25m1lvjs4kvz24rpdfifx4qn2jrj-replit-module-replit"
   }
 }
