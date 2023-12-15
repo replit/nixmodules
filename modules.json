@@ -974,5 +974,9 @@
   "replit:v1-20231211-d5ddcff": {
     "commit": "d5ddcff9419456ecf54d2582c4b1cc4242198ac0",
     "path": "/nix/store/lljp25m1lvjs4kvz24rpdfifx4qn2jrj-replit-module-replit"
+  },
+  "bash:v1-20231215-e6d471c": {
+    "commit": "e6d471c9fd81b6ca469e1c42692953146c7cfb20",
+    "path": "/nix/store/0j5kz53myr8kycfc4w1vkfccz4m5rsyv-replit-module-bash"
   }
 }

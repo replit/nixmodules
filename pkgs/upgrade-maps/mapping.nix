@@ -79,6 +79,7 @@ in
 
   "swift" = { to = "swift-5.6:v1-20230525-c48c43c"; auto = true; };
 }
+// (fns.linearUpgrade "bash")
 // (fns.linearUpgrade "c-clang14")
 // (fns.linearUpgrade "clojure-1.11")
 // (fns.linearUpgrade "cpp-clang14")
