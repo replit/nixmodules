@@ -31,8 +31,6 @@ let
     inherit nodejs;
   };
 
-  prettier = nodepkgs.prettier;
-
   npx-wrapper = pkgs.writeShellScriptBin "npx" ''
     mkdir -p ''${XDG_CONFIG_HOME}/npm/node_global/lib
     ${nodejs-wrapped}/bin/npx "$@"
@@ -57,7 +55,7 @@ in
     ];
 
     dev.packages = [
-      prettier
+      nodepkgs.prettier
     ];
 
     dev.languageServers.typescript-language-server.extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ".mjs" ".cjs" ".es6" ];
@@ -118,7 +116,8 @@ in
       language = "javascript";
       extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ".html" ];
       start = {
-        args = [ "${prettier}/bin/prettier" "--stdin-filepath" "$file" ];
+        # Resolve to first prettier in path
+        args = [ "prettier" "--stdin-filepath" "$file" ];
       };
       stdin = true;
     };
