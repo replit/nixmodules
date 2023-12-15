@@ -45,8 +45,7 @@ let
       };
     })
 
-    (import ./rust)
-    (import ./swift)
+    (import ./bash)
     (import ./bun)
     (import ./c)
     (import ./cpp)
@@ -71,6 +70,8 @@ let
       ruby = pkgs.ruby_3_2;
       rubyPackages = pkgs.rubyPackages_3_2;
     })
+    (import ./rust)
+    (import ./swift)
     (import ./svelte-kit)
     (import ./web)
   ];
