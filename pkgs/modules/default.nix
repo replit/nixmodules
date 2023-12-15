@@ -50,6 +50,7 @@ let
     (import ./c)
     (import ./cpp)
     (import ./dart)
+    (import ./deno)
     (import ./docker)
     (import ./gcloud)
     (import ./clojure)
