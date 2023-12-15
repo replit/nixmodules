@@ -7,7 +7,10 @@ pkgs.stdenv.mkDerivation {
     inherit url sha256;
   };
 
-  buildInputs = [ pypkgs.pip ];
+  buildInputs = [
+    pkgs.curl
+    pypkgs.pip
+  ];
 
   installPhase = ''
     mkdir -p $out/bin
