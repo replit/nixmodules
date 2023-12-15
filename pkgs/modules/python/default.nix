@@ -93,7 +93,7 @@ let
     };
   };
 
-  python3-wrapper = pythonWrapper { bin = "${python}/bin/python3"; name = "python3"; aliases = [ "python" "python${pythonVersion}" ]; };
+  python3-wrapper = pythonWrapper { bin = "${python}/bin/python3"; name = "python${pythonVersion}"; aliases = [ "python" "python${pythonVersion}" ]; };
 
   poetry-wrapper = pythonWrapper { bin = "${poetry}/bin/poetry"; name = "poetry"; };
 
