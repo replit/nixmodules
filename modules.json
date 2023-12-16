@@ -259,10 +259,6 @@
     "commit": "ac14ad7d32e0324bb577d9c43bb1bb14d6faf5bf",
     "path": "/nix/store/jdd5f9c6n1pysswnf0qgzs7y8phvmg53-replit-module-nodejs-18"
   },
-  "nodejs-18:v22-20231215-55ca3c2": {
-    "commit": "55ca3c23609b43c5e1fc2aa5e1a9fd46ef8ee327",
-    "path": "/nix/store/m2j90520zk4a76zwdpsq4c6fab4zaray-replit-module-nodejs-18"
-  },
   "nodejs-19:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/qwhwjll9vns8vqcc6zjy5s4i3rzh05w3-replit-module-nodejs-19"
@@ -346,10 +342,6 @@
   "nodejs-20:v18-20231211-ac14ad7": {
     "commit": "ac14ad7d32e0324bb577d9c43bb1bb14d6faf5bf",
     "path": "/nix/store/j0iws8rh1nmpc96p74kgxgkf1m3c2qrl-replit-module-nodejs-20"
-  },
-  "nodejs-20:v19-20231215-55ca3c2": {
-    "commit": "55ca3c23609b43c5e1fc2aa5e1a9fd46ef8ee327",
-    "path": "/nix/store/81i7lrycpwm4hdhlf3r8azp55ns4cj4y-replit-module-nodejs-20"
   },
   "php-8.1:v2-20230623-0b7a606": {
     "commit": "0b7a60667d2c29f2686211e952924a9693916a20",
@@ -486,14 +478,6 @@
   "python-3.10:v33-20231207-2f65342": {
     "commit": "2f65342007d64f02e7c26cfa0246cefa97eeca25",
     "path": "/nix/store/jzs39sdn5k4364lkwd7d65cfd2l9ngqf-replit-module-python-3.10"
-  },
-  "python-3.10:v34-20231215-0c5d1c6": {
-    "commit": "0c5d1c6d5a3c687b88bb8ecff8cedad7d99ffcd5",
-    "path": "/nix/store/lndbs67l0h9vl2iinfdli23m5fsk6d3m-replit-module-python-3.10"
-  },
-  "python-3.10:v35-20231215-614b0fb": {
-    "commit": "614b0fb7f94265cfa13476f84ac7baa8145f60c0",
-    "path": "/nix/store/2qm7kkfzp2mcrakb96czcxa81r4lhj4b-replit-module-python-3.10"
   },
   "qbasic:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
@@ -695,14 +679,6 @@
     "commit": "2f65342007d64f02e7c26cfa0246cefa97eeca25",
     "path": "/nix/store/ljq0wqiry1szra8g2yw2ayv6xkdk2ry6-replit-module-python-3.11"
   },
-  "python-3.11:v15-20231215-0c5d1c6": {
-    "commit": "0c5d1c6d5a3c687b88bb8ecff8cedad7d99ffcd5",
-    "path": "/nix/store/jn4d033bydnkva0i39i4wh96j988d275-replit-module-python-3.11"
-  },
-  "python-3.11:v16-20231215-614b0fb": {
-    "commit": "614b0fb7f94265cfa13476f84ac7baa8145f60c0",
-    "path": "/nix/store/j2fdb396brwg54jqw1i0866is703b4kw-replit-module-python-3.11"
-  },
   "python-3.8:v1-20230829-e1c0916": {
     "commit": "e1c0916e9629e64e596aa4730df2da68363ddeeb",
     "path": "/nix/store/rsycf8rjpznldnf51h83yl0mx3v3ddij-replit-module-python-3.8"
@@ -758,14 +734,6 @@
   "python-3.8:v14-20231207-2f65342": {
     "commit": "2f65342007d64f02e7c26cfa0246cefa97eeca25",
     "path": "/nix/store/pkk5b5afh2b0dk8dshfqqqzygj9irp11-replit-module-python-3.8"
-  },
-  "python-3.8:v15-20231215-0c5d1c6": {
-    "commit": "0c5d1c6d5a3c687b88bb8ecff8cedad7d99ffcd5",
-    "path": "/nix/store/9aifh90qvjss9xif5ld9cl6z607szsn8-replit-module-python-3.8"
-  },
-  "python-3.8:v16-20231215-614b0fb": {
-    "commit": "614b0fb7f94265cfa13476f84ac7baa8145f60c0",
-    "path": "/nix/store/i9g38sxvh12fx97nvwn5yanv1ygxg124-replit-module-python-3.8"
   },
   "bun-1.0:v1-20230911-f253fb1": {
     "commit": "f253fb1a97d9a1c950d90081ee1ccb290776cf8b",
@@ -875,14 +843,6 @@
     "commit": "2f65342007d64f02e7c26cfa0246cefa97eeca25",
     "path": "/nix/store/7vjziiddzg6rdx9cyfdamj79lgbvjihk-replit-module-python-with-prybar-3.10"
   },
-  "python-with-prybar-3.10:v13-20231215-0c5d1c6": {
-    "commit": "0c5d1c6d5a3c687b88bb8ecff8cedad7d99ffcd5",
-    "path": "/nix/store/27lyqyqic4h82vksrvnv35mim9hva1xn-replit-module-python-with-prybar-3.10"
-  },
-  "python-with-prybar-3.10:v14-20231215-614b0fb": {
-    "commit": "614b0fb7f94265cfa13476f84ac7baa8145f60c0",
-    "path": "/nix/store/ywg4541j5b7wl880i1wgy8hx095rp4v5-replit-module-python-with-prybar-3.10"
-  },
   "nodejs-with-prybar-18:v1-20230928-1ea5ac0": {
     "commit": "1ea5ac0313085b2ac631b493c925d33489d58410",
     "path": "/nix/store/8v3laig35f30bvgw8mwjcsznk06l7vf3-replit-module-nodejs-with-prybar-18"
@@ -930,10 +890,6 @@
   "nodejs-with-prybar-18:v12-20231211-ac14ad7": {
     "commit": "ac14ad7d32e0324bb577d9c43bb1bb14d6faf5bf",
     "path": "/nix/store/kcw4n6knglqznm6jg30ji2n6fia7j7bp-replit-module-nodejs-with-prybar-18"
-  },
-  "nodejs-with-prybar-18:v13-20231215-55ca3c2": {
-    "commit": "55ca3c23609b43c5e1fc2aa5e1a9fd46ef8ee327",
-    "path": "/nix/store/skkcl6dv0fw9daqil594sghkhss4waw5-replit-module-nodejs-with-prybar-18"
   },
   "zig-0.11:v1-20231014-15426ef": {
     "commit": "15426ef79793bf7c424eb40865d507eacfdd44e6",
