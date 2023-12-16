@@ -32,6 +32,7 @@ let
       name = "replit"
       url = "https://package-proxy.replit.com/pypi/simple/"
       default = true
+
     '';
     destination = "/conf.toml";
   };
