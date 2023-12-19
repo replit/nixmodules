@@ -1,8 +1,15 @@
 { nodepkgs }:
 { pkgs, ... }:
 let
-
   typescript-language-server = nodepkgs.typescript-language-server.override {
+    # TODO: we can get rid of this patch once >=4.2.0 is in the nixpkgs-unstable we use.
+    # but we want this version because of https://github.com/typescript-language-server/typescript-language-server/pull/831
+    version = "4.2.0";
+    src = pkgs.fetchurl {
+      url = "https://registry.npmjs.org/typescript-language-server/-/typescript-language-server-4.2.0.tgz";
+      hash = "sha256-sg0O1uw6L3LDlPKTbXXsXVYwR+c7HH5c89xNIefEov8=";
+    };
+
     nativeBuildInputs = [ pkgs.makeWrapper ];
     postInstall = ''
       wrapProgram "$out/bin/typescript-language-server" \
@@ -17,7 +24,7 @@ in
     start = "${typescript-language-server}/bin/typescript-language-server --stdio";
 
     initializationOptions = {
-      tsserver.path = "${nodepkgs.typescript}/lib/node_modules/typescript/lib";
+      tsserver.fallbackPath = "${nodepkgs.typescript}/lib/node_modules/typescript/lib";
     };
   };
 }
