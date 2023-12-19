@@ -83,6 +83,7 @@ in
 // (fns.linearUpgrade "c-clang14")
 // (fns.linearUpgrade "clojure-1.11")
 // (fns.linearUpgrade "cpp-clang14")
+// (fns.linearUpgrade "deno-1")
 // (fns.linearUpgrade "docker")
 // (fns.linearUpgrade "dotnet-7.0")
 // (fns.linearUpgrade "gcloud")

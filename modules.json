@@ -1026,5 +1026,9 @@
   "bash:v1-20231215-e6d471c": {
     "commit": "e6d471c9fd81b6ca469e1c42692953146c7cfb20",
     "path": "/nix/store/0j5kz53myr8kycfc4w1vkfccz4m5rsyv-replit-module-bash"
+  },
+  "deno-1:v1-20231215-5d427a8": {
+    "commit": "5d427a83eae4fc1be41c3842b294c98f41271462",
+    "path": "/nix/store/z02na0yx2xlnrkaaf1k515ddnib8hd2h-replit-module-deno-1"
   }
 }
