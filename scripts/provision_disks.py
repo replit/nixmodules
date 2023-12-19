@@ -64,8 +64,6 @@ async def main():
     create_disk(project_replit_platform_prod, "asia", "asia-south1-c"),
 
     create_disk(project_replit_platform_staging, "us", "us-central1-a"),
-    create_disk(project_replit_platform_staging, "us", "us-central1-c"),
-    create_disk(project_replit_platform_staging, "us", "us-central1-f"),
   )
 
 async def create_image(project, region):
