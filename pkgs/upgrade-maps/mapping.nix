@@ -92,6 +92,7 @@ in
   # start of actual node 20
   "vue-node-20:v2-20240116-2181bf7" = { to = "vue-node-20:v3-20240117-0bd73cd"; auto = true; };
 }
+// (fns.linearUpgrade "angular-node-20")
 // (fns.linearUpgrade "bash")
 // (fns.linearUpgrade "c-clang14")
 // (fns.linearUpgrade "clojure-1.11")
