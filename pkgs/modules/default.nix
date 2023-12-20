@@ -74,6 +74,7 @@ let
     (import ./rust)
     (import ./swift)
     (import ./svelte-kit)
+    (import ./vue)
     (import ./web)
   ];
 

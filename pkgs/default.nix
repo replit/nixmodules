@@ -108,6 +108,4 @@ rec {
 
   deploymentModules = self.deploymentModules;
 
-  vls = pkgs.callPackage ./vls {};
-
 } // modules

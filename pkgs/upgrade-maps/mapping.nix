@@ -113,4 +113,5 @@ in
 // (fns.linearUpgrade "rust-stable")
 // (fns.linearUpgrade "svelte-kit-node-20")
 // (fns.linearUpgrade "swift-5.8")
+// (fns.linearUpgrade "vue-node-20")
   // (fns.linearUpgrade "web")

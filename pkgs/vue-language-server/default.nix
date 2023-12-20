@@ -1,6 +1,6 @@
 # TODO: upstream this file into nixpkgs
-{ buildNpmPackage,
-  fetchurl,
+{ buildNpmPackage
+, fetchurl
 }:
 
 buildNpmPackage rec {
