@@ -1030,5 +1030,9 @@
   "deno-1:v1-20231215-5d427a8": {
     "commit": "5d427a83eae4fc1be41c3842b294c98f41271462",
     "path": "/nix/store/z02na0yx2xlnrkaaf1k515ddnib8hd2h-replit-module-deno-1"
+  },
+  "vue-node-20:v1-20231220-a18bbd4": {
+    "commit": "a18bbd4b3508bf0c247a67f407cbd9023b8d2ebb",
+    "path": "/nix/store/lmk3sapswzjx1clighaxdaw7c0hp411x-replit-module-vue-node-20"
   }
 }
