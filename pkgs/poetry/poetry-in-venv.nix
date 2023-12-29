@@ -28,5 +28,5 @@ pkgs.writeShellScriptBin "poetry" ''
   if [ "''${numVCpu}" = "0.5" ]; then
     export POETRY_INSTALLER_PARALLEL="0"
   fi
-  ${poetry}/bin/poetry $@
+  ${poetry}/bin/poetry "$@"
 ''
