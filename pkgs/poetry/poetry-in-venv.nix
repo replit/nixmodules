@@ -21,12 +21,15 @@ let
     '';
   };
 in
-pkgs.writeShellScriptBin "poetry" ''
-  # Don't run multiple install workers in parallel if we have only 0.5 CPUs:
-  # helps with speed in free accounts
-  numVCpu=$(cat /repl/stats/resources.json | ${pkgs.jq}/bin/jq .numVCpu)
-  if [ "''${numVCpu}" = "0.5" ]; then
+pkgs.writeShellApplication {
+  name = "poetry";
+  text = ''
+    # Don't run multiple install workers in parallel if we have only 0.5 CPUs:
+    # helps with speed in free accounts
+    numVCpu=$(${pkgs.jq}/bin/jq .numVCpu </repl/stats/resources.json)
+    if [ "''${numVCpu}" = "0.5" ]; then
     export POETRY_INSTALLER_PARALLEL="0"
-  fi
-  ${poetry}/bin/poetry "$@"
-''
+    fi
+    ${poetry}/bin/poetry "$@"
+  '';
+}

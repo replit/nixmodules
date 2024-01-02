@@ -30,3 +30,7 @@ python scripts/build_changed_modules.py origin/main
 
 echo "Build moduleit example"
 scripts/moduleit_test.sh
+
+git grep writeShellScriptBin | grep -v "Please use writeShellApplication" && \
+    (echo "Please use writeShellApplication instead of writeShellScriptBin" && \
+         exit 1) || true

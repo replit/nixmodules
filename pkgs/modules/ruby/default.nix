@@ -14,12 +14,15 @@ let
     '';
   };
 
-  bundle-wrapper = pkgs.writeShellScriptBin "bundle" ''
-    if ! test -f ''${REPL_HOME}/Gemfile; then
-      cp ${initial-gem-file} ''${REPL_HOME}/Gemfile
-    fi
-    ${ruby}/bin/bundle "$@"
-  '';
+  bundle-wrapper = pkgs.writeShellApplication {
+    name = "bundle";
+    text = ''
+      if ! test -f "''${REPL_HOME}/Gemfile"; then
+        cp ${initial-gem-file} "''${REPL_HOME}/Gemfile"
+      fi
+      ${ruby}/bin/bundle "$@"
+    '';
+  };
 in
 
 {

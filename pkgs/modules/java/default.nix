@@ -18,15 +18,17 @@ let
     jdk = pkgs.graalvm11-ce;
   };
 
-  run-lsp = pkgs.writeShellScriptBin "run-lsp" ''
-    # Allow setting this env var to diagnose the lsp
-    if [[ $JAVA_LANGUAGE_SERVER_LOG ]]; then
-      ${java-language-server}/bin/java-language-server --logFile $JAVA_LANGUAGE_SERVER_LOG
-    else
-      ${java-language-server}/bin/java-language-server
-    fi
-  '';
-
+  run-lsp = pkgs.writeShellApplication {
+    name = "run-lsp";
+    text = ''
+      # Allow setting this env var to diagnose the lsp
+      if [[ -n "$JAVA_LANGUAGE_SERVER_LOG" ]]; then
+        ${java-language-server}/bin/java-language-server --logFile "$JAVA_LANGUAGE_SERVER_LOG"
+      else
+        ${java-language-server}/bin/java-language-server
+      fi
+    '';
+  };
 in
 
 {
