@@ -29,16 +29,19 @@ let
       # Always include the python-ld-library-path paths, but give them
       # the least precedence. Give the most precedence to
       # REPLIT_LD_LIBRARY_PATH.
-      ldLibraryPathConvertWrapper = pkgs.writeShellScriptBin name ''
-        export LD_LIBRARY_PATH=${python-ld-library-path}
-        if [ -n "''${PYTHON_LD_LIBRARY_PATH}" ]; then
-          export LD_LIBRARY_PATH=''${PYTHON_LD_LIBRARY_PATH}:$LD_LIBRARY_PATH
-        fi
-        if [ -n "''${REPLIT_LD_LIBRARY_PATH}" ]; then
-          export LD_LIBRARY_PATH=''${REPLIT_LD_LIBRARY_PATH}:$LD_LIBRARY_PATH
-        fi
-        exec "${bin}" "$@"
-      '';
+      ldLibraryPathConvertWrapper = pkgs.writeShellApplication {
+        inherit name;
+        text = ''
+          export LD_LIBRARY_PATH=${python-ld-library-path}
+          if [ -n "''${PYTHON_LD_LIBRARY_PATH}" ]; then
+            export LD_LIBRARY_PATH=''${PYTHON_LD_LIBRARY_PATH}:$LD_LIBRARY_PATH
+          fi
+          if [ -n "''${REPLIT_LD_LIBRARY_PATH}" ]; then
+            export LD_LIBRARY_PATH=''${REPLIT_LD_LIBRARY_PATH}:$LD_LIBRARY_PATH
+          fi
+          exec "${bin}" "$@"
+        '';
+      };
     in
     pkgs.stdenvNoCC.mkDerivation {
       name = "${name}-wrapper";
