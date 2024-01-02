@@ -31,10 +31,13 @@ let
     inherit nodejs;
   };
 
-  npx-wrapper = pkgs.writeShellScriptBin "npx" ''
-    mkdir -p ''${XDG_CONFIG_HOME}/npm/node_global/lib
-    ${nodejs-wrapped}/bin/npx "$@"
-  '';
+  npx-wrapper = pkgs.writeShellApplication {
+    name = "npx";
+    text = ''
+      mkdir -p "''${XDG_CONFIG_HOME}/npm/node_global/lib"
+      ${nodejs-wrapped}/bin/npx "$@"
+    '';
+  };
 in
 
 {

@@ -17,9 +17,12 @@ let
 
   stderred = pkgs-23_05.callPackage ../../stderred { };
 
-  run-prybar-bin = pkgs-23_05.writeShellScriptBin "run-prybar" ''
-    ${stderred}/bin/stderred -- ${pkgs.prybar."prybar-python${prybar-python-version}"}/bin/prybar-python${prybar-python-version} -q --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" -i ''$1
-  '';
+  run-prybar-bin = pkgs-23_05.writeShellApplication {
+    name = "run-prybar";
+    text = ''
+      ${stderred}/bin/stderred -- ${pkgs.prybar."prybar-python${prybar-python-version}"}/bin/prybar-python${prybar-python-version} -q --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" -i "''$1"
+    '';
+  };
 
   run-prybar = pythonWrapper { bin = "${run-prybar-bin}/bin/run-prybar"; name = "run-prybar"; };
 in
