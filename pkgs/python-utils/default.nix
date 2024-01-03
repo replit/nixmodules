@@ -33,10 +33,10 @@ let
         inherit name;
         text = ''
           export LD_LIBRARY_PATH=${python-ld-library-path}
-          if [ -n "''${PYTHON_LD_LIBRARY_PATH}" ]; then
+          if [ -n "''${PYTHON_LD_LIBRARY_PATH-}" ]; then
             export LD_LIBRARY_PATH=''${PYTHON_LD_LIBRARY_PATH}:$LD_LIBRARY_PATH
           fi
-          if [ -n "''${REPLIT_LD_LIBRARY_PATH}" ]; then
+          if [ -n "''${REPLIT_LD_LIBRARY_PATH-}" ]; then
             export LD_LIBRARY_PATH=''${REPLIT_LD_LIBRARY_PATH}:$LD_LIBRARY_PATH
           fi
           exec "${bin}" "$@"
