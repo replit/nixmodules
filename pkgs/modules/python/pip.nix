@@ -33,7 +33,7 @@ in
     name = "pip";
     text = ''
       flags=()
-      if [[ -n "$__REPLIT_PIP_CACHE_ENABLE" ]]; then
+      if [[ -n "''${__REPLIT_PIP_CACHE_ENABLE-}" ]]; then
         export PIP_CONFIG_FILE=${config-cache-enabled}
         flags+=("--cache-dir=''${HOME}/.cache/pip")
       else
