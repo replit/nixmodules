@@ -15,7 +15,7 @@ rev=$(nix build --refresh --quiet .#rev --print-out-paths $NIX_FLAGS| xargs cat)
 img_name="nixmodules-${rev}"
 gcs_path="gs://nixmodules/$img_name.tar.gz"
 # squashfs is used in Goval CI and local dev
-gcs_path_squashfs="gs://nixmodules/nixmodules.sqsh"
+gcs_path_dev="gs://nixmodules/dev/${img_name}.sqsh"
 
 # exit early if it already exists
 gsutil ls "$gcs_path" 2>/dev/null && exit 0
@@ -25,5 +25,5 @@ img_path=$(nix build .#bundle-image-tarball $NIX_FLAGS --print-out-paths)/disk.r
 # TODO determine if it is cheaper to upload to separate asia and us buckets
 gsutil -o "GSUtil:parallel_composite_upload_threshold=150M" cp "${img_path}" "${gcs_path}"
 
-squashfs_path=$(nix build .#bundle-squashfs $NIX_FLAGS --print-out-paths)/disk.sqsh
-gsutil -o "GSUtil:parallel_composite_upload_threshold=150M" cp "${squashfs_path}" "${gcs_path_squashfs}"
+dev_path=$(nix build .#bundle-squashfs $NIX_FLAGS --print-out-paths)/disk.sqsh
+gsutil -o "GSUtil:parallel_composite_upload_threshold=150M" cp "${dev_path}" "${gcs_path_dev}"
