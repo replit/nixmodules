@@ -317,7 +317,7 @@ service:
                 "version":"{{.Params.nixmodules_version}}",
                 "configPullJitter":"{{.Params.jitter}}"
               }
-    - releaseChannel: block
+    - releaseChannel: block-us-central1
       runtimeConnection: config-raw
       runtimeExtension:
         parameterValues:
