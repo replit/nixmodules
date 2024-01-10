@@ -240,3 +240,15 @@ application:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw
           type: EXTENSION
+    - name: block-us-central1
+      constants:
+        - name: name
+          string:
+            value: block-us-central1
+      preconditions:
+        - releaseChannelStable:
+            releaseChannel: prerelease
+      runtimes:
+        - name: config-raw
+          runtime: marine-cycle-160323--govalctl-config-raw
+          type: EXTENSION
