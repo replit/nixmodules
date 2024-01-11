@@ -94,12 +94,10 @@ in
     };
   };
 
-  replit.dev.languageServers.java-language-server = {
-    name = "Java Language Server";
+  replit.languageServers.jdt = {
+    name = "JDT Language Server";
     language = "java";
 
-    start = "${run-lsp}/bin/run-lsp";
-    configuration.java.home = graalvm.outPath;
-    configuration.java.setSystemPath = true;
+    start = "${jdt-language-server}/bin/jdt-language-server";
   };
 }
