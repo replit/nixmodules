@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let
-  inherit (pkgs) nodejs;
+  nodejs = pkgs.nodejs_20;
   nodepkgs = nodejs.pkgs;
 
   vue-language-server = pkgs.callPackage ../../vue-language-server { };
@@ -11,8 +11,8 @@ let
 in
 
 {
-  id = "vue-node-18";
-  name = "Vue with Node.js 18 Tools";
+  id = "vue-node-20";
+  name = "Vue with Node.js 20 Tools";
 
   replit = {
     packages = [
@@ -25,7 +25,7 @@ in
     dev.runners.dev-runner = {
       name = "package.json dev script";
       inherit language extensions;
-      start = "${pkgs.nodejs}/bin/npm run dev";
+      start = "${nodejs}/bin/npm run dev";
     };
 
     dev.languageServers.vue-language-server = {
