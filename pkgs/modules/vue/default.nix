@@ -11,8 +11,8 @@ let
 in
 
 {
-  id = "vue-node-20";
-  name = "Vue with Node.js 20 Tools";
+  id = "vue-node-18";
+  name = "Vue with Node.js 18 Tools";
 
   replit = {
     packages = [
