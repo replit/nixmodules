@@ -1171,6 +1171,10 @@
     "commit": "a18bbd4b3508bf0c247a67f407cbd9023b8d2ebb",
     "path": "/nix/store/lmk3sapswzjx1clighaxdaw7c0hp411x-replit-module-vue-node-20"
   },
+  "vue-node-20:v2-20240116-2181bf7": {
+    "commit": "2181bf7e0edc9eb2adced53ffd034a975582a7e3",
+    "path": "/nix/store/iyhmq1qij7mvwxns9ll8icmpgg7716lj-replit-module-vue-node-20"
+  },
   "vue-node-18:v1-20240116-3ea4bcd": {
     "commit": "3ea4bcdbdc3c5e3c09b37b07edcd61781f9695f7",
     "path": "/nix/store/87p91q8irymjmykl8bc3ccq62i00qv78-replit-module-vue-node-18"
