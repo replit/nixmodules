@@ -3,7 +3,7 @@
 let
   bun = pkgs.callPackage ../../bun { };
 
-  extensions = [ ".json" ".js" ".jsx" ".ts" ".tsx" ];
+  extensions = [ ".js" ".jsx" ".cjs" ".mjs" ".ts" ".tsx" ".mts" ];
 
   community-version = lib.versions.majorMinor bun.version;
 in
@@ -26,7 +26,7 @@ in
     bun
   ];
 
-  replit.dev.languageServers.typescript-language-server.extensions = extensions;
+  replit.dev.languageServers.typescript-language-server.extensions = extensions ++ [ ".json" ];
 
   replit.runners."package.json" = {
     language = "javascript";
