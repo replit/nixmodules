@@ -291,6 +291,10 @@
     "commit": "2da491110c9866a9afb0bb9f668a6d35a8b98b43",
     "path": "/nix/store/9w79qqz78k39a16xvwy6knrsrd3837hp-replit-module-nodejs-18"
   },
+  "nodejs-18:v26-20240116-9f73277": {
+    "commit": "9f7327707747c1e29db7e753976d177436d5f967",
+    "path": "/nix/store/a262pxh7kwfvsw30351dlifj6ij516z7-replit-module-nodejs-18"
+  },
   "nodejs-19:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/qwhwjll9vns8vqcc6zjy5s4i3rzh05w3-replit-module-nodejs-19"
@@ -390,6 +394,10 @@
   "nodejs-20:v22-20240103-2da4911": {
     "commit": "2da491110c9866a9afb0bb9f668a6d35a8b98b43",
     "path": "/nix/store/j4nihbidsv0gl1353xc3mx668s26xgxm-replit-module-nodejs-20"
+  },
+  "nodejs-20:v23-20240116-9f73277": {
+    "commit": "9f7327707747c1e29db7e753976d177436d5f967",
+    "path": "/nix/store/w6bkgq3kb1c2bvc1s9whsbpxvqy8s7r2-replit-module-nodejs-20"
   },
   "php-8.1:v2-20230623-0b7a606": {
     "commit": "0b7a60667d2c29f2686211e952924a9693916a20",
@@ -927,6 +935,10 @@
     "commit": "a63003a9dab48fa11b5d8da78967ccdfbd906c11",
     "path": "/nix/store/s1jxjg6as57am6ink291dpv779m08abw-replit-module-bun-1.0"
   },
+  "bun-1.0:v16-20240116-9f73277": {
+    "commit": "9f7327707747c1e29db7e753976d177436d5f967",
+    "path": "/nix/store/1xizpm6xj2q1zqp24va1vhwvh41v078q-replit-module-bun-1.0"
+  },
   "rust-1.72:v1-20230911-f253fb1": {
     "commit": "f253fb1a97d9a1c950d90081ee1ccb290776cf8b",
     "path": "/nix/store/3siflmi2j4ikwnd35rlnc6g44nbsdpgs-replit-module-rust-1.72"
@@ -1070,6 +1082,10 @@
   "nodejs-with-prybar-18:v16-20240103-2da4911": {
     "commit": "2da491110c9866a9afb0bb9f668a6d35a8b98b43",
     "path": "/nix/store/fwmh4wzszqhk6gkvflzikq3bg1qd3qrv-replit-module-nodejs-with-prybar-18"
+  },
+  "nodejs-with-prybar-18:v17-20240116-9f73277": {
+    "commit": "9f7327707747c1e29db7e753976d177436d5f967",
+    "path": "/nix/store/1w7wg7cgl7v36cvnjb7zjl83bkjhglbl-replit-module-nodejs-with-prybar-18"
   },
   "zig-0.11:v1-20231014-15426ef": {
     "commit": "15426ef79793bf7c424eb40865d507eacfdd44e6",
