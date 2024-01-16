@@ -18,7 +18,7 @@ import sys
 import time
 
 from typing import Any, IO, Dict, List, Mapping, Optional
-
+repl_dir = os.getenv('REPL_HOME')
 
 def _send_lsp_message(msg: Dict[str, Any], lsp: IO[bytes]) -> None:
     """Sends one LSP message."""
@@ -87,11 +87,15 @@ def _run(use_ephemeral_port: bool, language_server: str, debug_plugin: str) -> b
                         },
                         'trace': 'verbose',
                         'capabilities': {},
+                        'rootUri': 'file://' + repl_dir,
                     },
                 }, dap.stdin)
-            # Wait for the initialize message has been acknowledged.
+            # Wait for the initialize message has been acknowledged,
+            # as well as the LSP status to be ready.
             # This maximizes the probability of success.
-            while True:
+            got_reply = False
+            ready = False
+            while not got_reply or not ready:
                 message = _receive_lsp_message(dap.stdout)
                 if not message:
                     return True
@@ -99,7 +103,10 @@ def _run(use_ephemeral_port: bool, language_server: str, debug_plugin: str) -> b
                     print(message.get('params', {}).get('message'),
                           file=sys.stderr)
                 if message.get('id') == 1:
-                    break
+                    got_reply = True
+                if message.get('method') == 'language/status' and \
+                  message.get('params') == {'type': 'Started', 'message': 'Ready'}:
+                    ready = True
             _send_lsp_message(
                 {
                     'id': 2,

@@ -33,9 +33,13 @@ stdenv.mkDerivation rec {
     let
       # The application ships with config directories for linux and mac
       configDir = if stdenv.isDarwin then "config_mac" else "config_linux";
-      # The application will store it's data here. Note especially the escaping so
-      # that the env vars are interpreted at runtime and not during installPhase.
-      runtimePath = "\\\${XDG_CACHE_HOME:-\\$HOME/.cache}/jdt-language-server";
+      # The JDT server will store config data here. It contains some Eclipse jars and
+      # can take up to 18M.
+      configDirPath = "\\\${XDG_CACHE_HOME:-\\$HOME/.cache}/jdt-language-server/config";
+      # The JDT server will store workspace data here. For small projects this takes <2M.
+      # We need to put this outside of $REPL_HOME because JDT doesn't allow its workspace
+      # data to be contained within a project directory.
+      dataDirPath = "\\$HOME/.cache/jdt-language-server/data";
     in
     ''
       # Copy jars
@@ -74,8 +78,9 @@ stdenv.mkDerivation rec {
       #
       # Java options, such as -Xms and Xmx can be specified by setting JAVA_OPTS.
       makeWrapper ${jdk}/bin/java $out/bin/jdt-language-server \
-        --run "mkdir -p ${runtimePath}" \
-        --run "install -Dm 1777 -t ${runtimePath}/config $out/share/config/*" \
+        --run "mkdir -p ${configDirPath}" \
+        --run "mkdir -p ${dataDirPath}" \
+        --run "install -Dm 1777 -t ${configDirPath} $out/share/config/*" \
         --run 'MEMORY_LIMIT_BYTES=$(${pkgs.jq}/bin/jq ".memorySoftLimitBytes" /repl/stats/resources.json)' \
         --run 'MEMORY_LIMIT_MB=$(expr $MEMORY_LIMIT_BYTES / 1048576)' \
         --run 'LSP_MAX_HEAP=$(expr $MEMORY_LIMIT_MB / 4)' \
@@ -91,8 +96,8 @@ stdenv.mkDerivation rec {
         --add-flags "--add-modules=ALL-SYSTEM" \
         --add-flags "--add-opens java.base/java.util=ALL-UNNAMED" \
         --add-flags "--add-opens java.base/java.lang=ALL-UNNAMED" \
-        --add-flags "-configuration \"${runtimePath}/config\"" \
-        --add-flags "-data \"${runtimePath}/data\$PWD\""
+        --add-flags "-configuration \"${configDirPath}\"" \
+        --add-flags "-data \"${dataDirPath}\$PWD\""
     '';
 
   meta = with lib; {
