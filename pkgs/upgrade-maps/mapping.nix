@@ -80,6 +80,8 @@ in
   "rust-1.72:v1-20230911-f253fb1" = { to = "rust-stable:v1-20231012-19c270f"; auto = true; };
 
   "swift" = { to = "swift-5.6:v1-20230525-c48c43c"; auto = true; };
+
+  "vue-node-20:v1-20231220-a18bbd4" = { to = "vue-node-18:v1-20240116-3ea4bcd"; auto = true; };
 }
 // (fns.linearUpgrade "bash")
 // (fns.linearUpgrade "c-clang14")
@@ -115,5 +117,4 @@ in
 // (fns.linearUpgrade "rust-stable")
 // (fns.linearUpgrade "svelte-kit-node-20")
 // (fns.linearUpgrade "swift-5.8")
-// (fns.linearUpgrade "vue-node-20")
   // (fns.linearUpgrade "web")
