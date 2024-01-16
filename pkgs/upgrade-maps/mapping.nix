@@ -65,6 +65,7 @@ in
   "bun-1.0:v12-20231207-25d440f" = { to = "bun-1.0:v13-20231211-ac14ad7"; auto = true; };
   "bun-1.0:v13-20231211-ac14ad7" = { to = "bun-1.0:v14-20231219-faac932"; auto = true; };
   "bun-1.0:v14-20231219-faac932" = { to = "bun-1.0:v15-20240106-a63003a"; auto = true; };
+  "bun-1.0:v15-20240106-a63003a" = { to = "bun-1.0:v16-20240116-9f73277"; auto = true; };
 
   "go" = { to = "go-1.19:v1-20230525-c48c43c"; auto = true; };
 
