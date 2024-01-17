@@ -24,6 +24,10 @@ service:
       description: duration to wait between pulls of new configs
       string:
         defaultValue: "3600s"
+    - name: canary_jitter
+      description: duration to wait between pulls of new configs in non prod stages
+      string:
+        defaultValue: "1s"
   perReleaseChannel:
     - releaseChannel: canary
       runtimeExtension:
@@ -36,15 +40,8 @@ service:
             string: >-
               {
                 "version":"{{.Params.nixmodules_version}}",
-                "configPullJitter":"1s"
+                "configPullJitter":"{{.Params.canary_jitter}}"
               }
-    # - releaseChannel: test-templates
-    #   externalConfig:
-    #     type: KUBERNETES
-    #     local:
-    #       path: test_templates.yaml
-
-
     - releaseChannel: tarpit
       runtimeConnection: config-raw
       runtimeExtension:
@@ -155,7 +152,7 @@ service:
             string: >-
               {
                 "version":"{{.Params.nixmodules_version}}",
-                "configPullJitter":"{{.Params.jitter}}"
+                "configPullJitter":"{{.Params.canary_jitter}}"
               }
     - releaseChannel: prerelease
       runtimeConnection: config-raw
@@ -171,7 +168,7 @@ service:
             string: >-
               {
                 "version":"{{.Params.nixmodules_version}}",
-                "configPullJitter":"{{.Params.jitter}}"
+                "configPullJitter":"{{.Params.canary_jitter}}"
               }
     - releaseChannel: picard
       runtimeConnection: config-raw
