@@ -125,9 +125,6 @@ application:
         - name: name
           string:
             value: prerelease
-      preconditions:
-        - releaseChannelStable:
-            releaseChannel: staging
       runtimes:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw
@@ -140,6 +137,8 @@ application:
       preconditions:
         - releaseChannelStable:
             releaseChannel: prerelease
+        - sharedManualApproval:
+            name: prod-wave-rg
       runtimes:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw
@@ -152,6 +151,8 @@ application:
       preconditions:
         - releaseChannelStable:
             releaseChannel: prerelease
+        - sharedManualApproval:
+            name: prod-wave-rg
       runtimes:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw
@@ -164,6 +165,8 @@ application:
       preconditions:
         - releaseChannelStable:
             releaseChannel: prerelease
+        - sharedManualApproval:
+            name: prod-wave-rg
       runtimes:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw
@@ -176,6 +179,8 @@ application:
       preconditions:
         - releaseChannelStable:
             releaseChannel: prerelease
+        - sharedManualApproval:
+            name: prod-wave-rg
       runtimes:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw
@@ -188,6 +193,8 @@ application:
       preconditions:
         - releaseChannelStable:
             releaseChannel: prerelease
+        - sharedManualApproval:
+            name: prod-wave-rg
       runtimes:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw
@@ -200,6 +207,8 @@ application:
       preconditions:
         - releaseChannelStable:
             releaseChannel: prerelease
+        - sharedManualApproval:
+            name: prod-wave-rg
       runtimes:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw
@@ -212,6 +221,8 @@ application:
       preconditions:
         - releaseChannelStable:
             releaseChannel: prerelease
+        - sharedManualApproval:
+            name: prod-wave-rg
       runtimes:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw
@@ -224,6 +235,8 @@ application:
       preconditions:
         - releaseChannelStable:
             releaseChannel: prerelease
+        - sharedManualApproval:
+            name: prod-wave-rg
       runtimes:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw
@@ -236,6 +249,8 @@ application:
       preconditions:
         - releaseChannelStable:
             releaseChannel: prerelease
+        - sharedManualApproval:
+            name: prod-wave-rg
       runtimes:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw
@@ -248,6 +263,8 @@ application:
       preconditions:
         - releaseChannelStable:
             releaseChannel: prerelease
+        - sharedManualApproval:
+            name: prod-wave-rg
       runtimes:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw
