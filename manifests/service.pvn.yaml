@@ -24,7 +24,7 @@ service:
       description: duration to wait between pulls of new configs
       string:
         defaultValue: "3600s"
-    - name: canary_jitter
+    - name: nonprod_jitter
       description: duration to wait between pulls of new configs in non prod stages
       string:
         defaultValue: "1s"
@@ -40,7 +40,7 @@ service:
             string: >-
               {
                 "version":"{{.Params.nixmodules_version}}",
-                "configPullJitter":"{{.Params.canary_jitter}}"
+                "configPullJitter":"{{.Params.nonprod_jitter}}"
               }
     - releaseChannel: tarpit
       runtimeConnection: config-raw
@@ -152,7 +152,7 @@ service:
             string: >-
               {
                 "version":"{{.Params.nixmodules_version}}",
-                "configPullJitter":"{{.Params.canary_jitter}}"
+                "configPullJitter":"{{.Params.nonprod_jitter}}"
               }
     - releaseChannel: prerelease
       runtimeConnection: config-raw
@@ -168,7 +168,7 @@ service:
             string: >-
               {
                 "version":"{{.Params.nixmodules_version}}",
-                "configPullJitter":"{{.Params.canary_jitter}}"
+                "configPullJitter":"{{.Params.nonprod_jitter}}"
               }
     - releaseChannel: picard
       runtimeConnection: config-raw
