@@ -126,8 +126,7 @@ application:
           string:
             value: prerelease
       preconditions:
-        - releaseChannelStable:
-            releaseChannel: staging
+        - manualApproval: {}
       runtimes:
         - name: config-raw
           runtime: marine-cycle-160323--govalctl-config-raw
