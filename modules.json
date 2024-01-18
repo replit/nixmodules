@@ -1330,5 +1330,9 @@
   "dart-3.2:v1-20240117-0bd73cd": {
     "commit": "0bd73cd137ee828d927e95d97e8199e7b66b6c29",
     "path": "/nix/store/kzk98zr5v02miqsd4n29k2vwvv7yj4pi-replit-module-dart-3.2"
+  },
+  "angular-node-20:v1-20231220-48a5a72": {
+    "commit": "48a5a72ac95590da6719cf0c7f2dc728b1087903",
+    "path": "/nix/store/8b167sws0ngpb3f9pvlmncx23j590min-replit-module-angular-node-20"
   }
 }

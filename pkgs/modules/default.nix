@@ -45,6 +45,7 @@ let
       };
     })
 
+    (import ./angular)
     (import ./bash)
     (import ./bun)
     (import ./c)
