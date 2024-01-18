@@ -10,6 +10,13 @@ set -eo pipefail
 # To run, make sure you are logged in via:
 # gcloud auth login
 
+# We've been having some authentication-related issues. Sledgehammer to figure out what's wrong.
+if hash md5sum; then
+  md5sum $(nix --extra-experimental-features nix-command show-config netrc-file) || true
+elif hash md5; then
+  md5 $(nix --extra-experimental-features nix-command show-config netrc-file) || true
+fi
+
 rev=$(nix build --refresh --quiet .#rev --print-out-paths $NIX_FLAGS| xargs cat)
 
 img_name="nixmodules-${rev}"
