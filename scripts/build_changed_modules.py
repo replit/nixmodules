@@ -16,7 +16,7 @@ def get_modules():
   return modules
 
 def build_module(module_id):
-  args = ['nix', 'build', '.#modules."%s"' % module_id, '--print-out-paths']
+  args = ['nix', 'build', '-L', '.#modules."%s"' % module_id, '--print-out-paths']
   print(" ".join(args))
   output = subprocess.check_output(args)
   return str(output, 'UTF-8').strip()
