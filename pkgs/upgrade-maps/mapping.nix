@@ -66,6 +66,11 @@ in
   "bun-1.0:v13-20231211-ac14ad7" = { to = "bun-1.0:v14-20231219-faac932"; auto = true; };
   "bun-1.0:v14-20231219-faac932" = { to = "bun-1.0:v15-20240106-a63003a"; auto = true; };
   "bun-1.0:v15-20240106-a63003a" = { to = "bun-1.0:v16-20240116-9f73277"; auto = true; };
+  "bun-1.0:v16-20240116-9f73277" = { to = "bun-1.0:v17-20240117-0bd73cd"; auto = true; };
+
+  # dart minor versions aren't forwards-compatible
+  "dart-3.0:v1-20230623-0b7a606".to = "dart-3.1:v1-20231201-3b22c78";
+  "dart-3.1:v1-20231201-3b22c78".to = "dart-3.2:v1-20240117-0bd73cd";
 
   "go" = { to = "go-1.19:v1-20230525-c48c43c"; auto = true; };
 
@@ -82,7 +87,10 @@ in
 
   "swift" = { to = "swift-5.6:v1-20230525-c48c43c"; auto = true; };
 
+  # vue-node-20:v1 was actually using node 18 🤦
   "vue-node-20:v1-20231220-a18bbd4" = { to = "vue-node-18:v1-20240116-3ea4bcd"; auto = true; };
+  # start of actual node 20
+  "vue-node-20:v2-20240116-2181bf7" = { to = "vue-node-20:v3-20240117-0bd73cd"; auto = true; };
 }
 // (fns.linearUpgrade "bash")
 // (fns.linearUpgrade "c-clang14")
@@ -92,9 +100,10 @@ in
 // (fns.linearUpgrade "docker")
 // (fns.linearUpgrade "dotnet-7.0")
 // (fns.linearUpgrade "gcloud")
-// (fns.linearUpgrade "go-1.20")
+// (fns.linearUpgrade "go-1.20") # golang isn't forwards-compatible at the minor version level
 // (fns.linearUpgrade "go-1.21")
-// (fns.linearUpgrade "haskell-ghc9.2")
+// (fns.linearUpgrade "haskell-ghc9.2") # haskell isn't guaranteed to be forwards-compatible at the minor version level
+// (fns.linearUpgrade "haskell-ghc9.4")
 // (fns.linearUpgrade "java-graalvm22.3")
 // (fns.linearUpgrade "lua-5.2")
 // (fns.linearUpgrade "nix")
@@ -105,6 +114,7 @@ in
 // (fns.linearUpgrade "nodejs-20")
 // (fns.linearUpgrade "nodejs-with-prybar-18")
 // (fns.linearUpgrade "php-8.1")
+// (fns.linearUpgrade "php-8.2")
 // (fns.linearUpgrade "pyright-extended")
 // (fns.linearUpgrade "python-3.10")
 // (fns.linearUpgrade "python-3.11")
@@ -112,6 +122,7 @@ in
 // (fns.linearUpgrade "python-with-prybar-3.10")
 // (fns.linearUpgrade "qbasic")
 // (fns.linearUpgrade "r-4.2")
+// (fns.linearUpgrade "r-4.3")
 // (fns.linearUpgrade "replit")
 // (fns.linearUpgrade "ruby-3.1")
 // (fns.linearUpgrade "ruby-3.2")
