@@ -28,13 +28,8 @@ let
   poetry-config = pkgs.writeTextFile {
     name = "poetry-config";
     text = ''
-      [[tool.poetry.source]]
-      name = "replit"
-      url = "https://package-proxy.replit.com/pypi/simple/"
-      default = true
-
     '';
-    destination = "/conf.toml";
+    destination = "/config.toml";
   };
 
   debugpy = pypkgs.debugpy.overridePythonAttrs
