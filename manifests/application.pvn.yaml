@@ -14,7 +14,7 @@ application:
           runtime: govalctl-config-raw
           type: EXTENSION
         - name: goval
-          runtime: marine-cycle-160323--goval
+          runtime: marine-cycle-160323--prodvana
       protections:
         - ref:
             name: check-no-datadog-alerts
