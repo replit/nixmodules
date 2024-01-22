@@ -11,7 +11,7 @@ application:
             value: canary
       runtimes:
         - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
+          runtime: govalctl-config-raw
           type: EXTENSION
         - name: goval
           runtime: marine-cycle-160323--goval
@@ -44,7 +44,7 @@ application:
             releaseChannel: global
       runtimes:
         - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
+          runtime: govalctl-config-raw
           type: EXTENSION
     - name: global
       constants:
@@ -57,7 +57,7 @@ application:
             releaseChannel: canary
       runtimes:
         - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
+          runtime: govalctl-config-raw
           type: EXTENSION
     - name: hacker
       constants:
@@ -69,7 +69,7 @@ application:
             releaseChannel: global
       runtimes:
         - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
+          runtime: govalctl-config-raw
           type: EXTENSION
     - name: teams
       constants:
@@ -81,7 +81,7 @@ application:
             releaseChannel: global
       runtimes:
         - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
+          runtime: govalctl-config-raw
           type: EXTENSION
     - name: asia-a
       constants:
@@ -93,7 +93,7 @@ application:
             releaseChannel: global
       runtimes:
         - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
+          runtime: govalctl-config-raw
           type: EXTENSION
     - name: asia-b
       constants:
@@ -105,7 +105,7 @@ application:
             releaseChannel: global
       runtimes:
         - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
+          runtime: govalctl-config-raw
           type: EXTENSION
     - name: staging
       constants:
@@ -117,7 +117,7 @@ application:
             releaseChannel: global
       runtimes:
         - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
+          runtime: govalctl-config-raw
           type: EXTENSION
     # regional goval
     - name: prerelease
@@ -127,7 +127,7 @@ application:
             value: prerelease
       runtimes:
         - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
+          runtime: govalctl-config-raw
           type: EXTENSION
     - name: picard
       constants:
@@ -141,7 +141,7 @@ application:
             name: prod-wave-rg
       runtimes:
         - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
+          runtime: govalctl-config-raw
           type: EXTENSION
     - name: riker
       constants:
@@ -155,7 +155,7 @@ application:
             name: prod-wave-rg
       runtimes:
         - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
+          runtime: govalctl-config-raw
           type: EXTENSION
     - name: kirk
       constants:
@@ -169,7 +169,7 @@ application:
             name: prod-wave-rg
       runtimes:
         - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
+          runtime: govalctl-config-raw
           type: EXTENSION
     - name: spock
       constants:
@@ -183,7 +183,7 @@ application:
             name: prod-wave-rg
       runtimes:
         - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
+          runtime: govalctl-config-raw
           type: EXTENSION
     - name: worf
       constants:
@@ -197,7 +197,7 @@ application:
             name: prod-wave-rg
       runtimes:
         - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
+          runtime: govalctl-config-raw
           type: EXTENSION
     - name: janeway
       constants:
@@ -211,7 +211,7 @@ application:
             name: prod-wave-rg
       runtimes:
         - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
+          runtime: govalctl-config-raw
           type: EXTENSION
     - name: sisko
       constants:
@@ -225,7 +225,7 @@ application:
             name: prod-wave-rg
       runtimes:
         - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
+          runtime: govalctl-config-raw
           type: EXTENSION
     - name: pike
       constants:
@@ -239,7 +239,7 @@ application:
             name: prod-wave-rg
       runtimes:
         - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
+          runtime: govalctl-config-raw
           type: EXTENSION
     - name: wesley
       constants:
@@ -253,7 +253,7 @@ application:
             name: prod-wave-rg
       runtimes:
         - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
+          runtime: govalctl-config-raw
           type: EXTENSION
     - name: block-us-central1
       constants:
@@ -267,5 +267,5 @@ application:
             name: prod-wave-rg
       runtimes:
         - name: config-raw
-          runtime: marine-cycle-160323--govalctl-config-raw
+          runtime: govalctl-config-raw
           type: EXTENSION
