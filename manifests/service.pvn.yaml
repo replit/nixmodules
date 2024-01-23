@@ -314,19 +314,3 @@ service:
                 "version":"{{.Params.nixmodules_version}}",
                 "configPullJitter":"{{.Params.jitter}}"
               }
-    - releaseChannel: block-us-central1
-      runtimeConnection: config-raw
-      runtimeExtension:
-        parameterValues:
-          - name: image
-            string: "{{.Params.image_govalctl}}"
-          - name: service
-            string: "nixmodules"
-          - name: name
-            string: "{{.Constants.name}}"
-          - name: json
-            string: >-
-              {
-                "version":"{{.Params.nixmodules_version}}",
-                "configPullJitter":"{{.Params.jitter}}"
-              }
