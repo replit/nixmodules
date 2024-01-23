@@ -4,17 +4,24 @@ application:
     slack:
       channel: audit
   releaseChannels:
-    - name: canary
+    - name: staging
       constants:
         - name: name
           string:
-            value: canary
+            value: staging
       runtimes:
         - name: config-raw
           runtime: govalctl-config-raw
           type: EXTENSION
-        - name: goval
-          runtime: marine-cycle-160323--prodvana
+    - name: prerelease
+      constants:
+        - name: name
+          string:
+            value: prerelease
+      runtimes:
+        - name: config-raw
+          runtime: govalctl-config-raw
+          type: EXTENSION
       protections:
         - ref:
             name: check-no-datadog-alerts
@@ -34,101 +41,6 @@ application:
           lifecycle:
             - postDeployment:
                 checkDuration: 600s
-    - name: tarpit
-      constants:
-        - name: name
-          string:
-            value: tarpit
-      preconditions:
-        - releaseChannelStable:
-            releaseChannel: global
-      runtimes:
-        - name: config-raw
-          runtime: govalctl-config-raw
-          type: EXTENSION
-    - name: global
-      constants:
-        - name: name
-          string:
-            value: global
-      preconditions:
-        - manualApproval: {}
-        - releaseChannelStable:
-            releaseChannel: canary
-      runtimes:
-        - name: config-raw
-          runtime: govalctl-config-raw
-          type: EXTENSION
-    - name: hacker
-      constants:
-        - name: name
-          string:
-            value: hacker
-      preconditions:
-        - releaseChannelStable:
-            releaseChannel: global
-      runtimes:
-        - name: config-raw
-          runtime: govalctl-config-raw
-          type: EXTENSION
-    - name: teams
-      constants:
-        - name: name
-          string:
-            value: teams
-      preconditions:
-        - releaseChannelStable:
-            releaseChannel: global
-      runtimes:
-        - name: config-raw
-          runtime: govalctl-config-raw
-          type: EXTENSION
-    - name: asia-a
-      constants:
-        - name: name
-          string:
-            value: asia-a
-      preconditions:
-        - releaseChannelStable:
-            releaseChannel: global
-      runtimes:
-        - name: config-raw
-          runtime: govalctl-config-raw
-          type: EXTENSION
-    - name: asia-b
-      constants:
-        - name: name
-          string:
-            value: asia-b
-      preconditions:
-        - releaseChannelStable:
-            releaseChannel: global
-      runtimes:
-        - name: config-raw
-          runtime: govalctl-config-raw
-          type: EXTENSION
-    - name: staging
-      constants:
-        - name: name
-          string:
-            value: staging
-      preconditions:
-        - releaseChannelStable:
-            releaseChannel: global
-      runtimes:
-        - name: config-raw
-          runtime: govalctl-config-raw
-          type: EXTENSION
-    # regional goval
-    - name: prerelease
-      constants:
-        - name: name
-          string:
-            value: prerelease
-      runtimes:
-        - name: config-raw
-          runtime: govalctl-config-raw
-          type: EXTENSION
     - name: picard
       constants:
         - name: name
