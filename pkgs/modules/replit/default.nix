@@ -34,7 +34,7 @@ let
 
     [schema]
     enabled = true
-    path = "${./dotreplit-schema.json}"
+    path = "/etc/replit/dotreplit.schema.json"
   '';
 in
 
