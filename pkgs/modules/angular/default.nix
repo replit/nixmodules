@@ -37,9 +37,9 @@ in
     dev.languageServers.typescript-language-server.extensions = [ ".js" ".jsx" ".ts" ".tsx" ".mjs" ".mts" ".cjs" ".cts" ".es6" ];
 
     dev.runners.dev-runner = {
-      name = "package.json dev script";
+      name = "package.json watch script";
       inherit language;
-      start = "${nodejs}/bin/npm run dev";
+      start = "${nodejs}/bin/npm run start";
     };
 
     dev.languageServers.angular-language-server = {
