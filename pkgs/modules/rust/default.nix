@@ -1,13 +1,15 @@
+fenix-channel-name:
 { pkgs, ... }:
 let
-  inherit (pkgs.fenix) stable;
+  rust-channel-name = if fenix-channel-name == "latest" then "nightly" else fenix-channel-name;
+  channel = pkgs.fenix."${fenix-channel-name}";
 in
 {
-  id = "rust-stable";
-  name = "Rust Tools";
+  id = "rust-${rust-channel-name}";
+  name = "Rust Tools (${rust-channel-name})";
 
   replit.packages = [
-    (stable.withComponents [
+    (channel.withComponents [
       "cargo"
       "llvm-tools"
       "rust-src"
@@ -20,7 +22,7 @@ in
   ];
 
   replit.dev.packages = [
-    stable.toolchain
+    channel.toolchain
   ];
 
   # TODO: should compile a binary to use in deployment and not include the runtime
@@ -28,7 +30,7 @@ in
     name = "cargo run";
     language = "rust";
 
-    start = "${stable.toolchain}/bin/cargo run";
+    start = "${channel.toolchain}/bin/cargo run";
     fileParam = false;
   };
 
@@ -36,10 +38,10 @@ in
     name = "rust-analyzer";
     language = "rust";
 
-    start = "${stable.toolchain}/bin/rust-analyzer";
+    start = "${channel.toolchain}/bin/rust-analyzer";
 
     initializationOptions = {
-      cargo.sysroot = "${stable.toolchain}";
+      cargo.sysroot = "${channel.toolchain}";
     };
   };
 

@@ -45,6 +45,9 @@ let
       };
     })
 
+    (import ./rust "stable")
+    (import ./rust "latest")
+
     (import ./angular)
     (import ./bash)
     (import ./bun)
@@ -72,7 +75,6 @@ let
       ruby = pkgs.ruby_3_2;
       rubyPackages = pkgs.rubyPackages_3_2;
     })
-    (import ./rust)
     (import ./swift)
     (import ./svelte-kit)
     (import ./vue)

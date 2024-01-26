@@ -127,6 +127,7 @@ in
 // (fns.linearUpgrade "replit")
 // (fns.linearUpgrade "ruby-3.1")
 // (fns.linearUpgrade "ruby-3.2")
+// (fns.linearUpgrade "rust-nightly")
 // (fns.linearUpgrade "rust-stable")
 // (fns.linearUpgrade "svelte-kit-node-20")
 // (fns.linearUpgrade "swift-5.8")
