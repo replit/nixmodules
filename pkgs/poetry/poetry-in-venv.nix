@@ -30,6 +30,12 @@ pkgs.writeShellApplication {
     if [ "''${numVCpu}" = "0.5" ]; then
     export POETRY_INSTALLER_PARALLEL="0"
     fi
+    # Temporarily work around upm locking infrastructute being very slow
+    # In replit, poetry is not currently configured in such a way that this
+    # would ever print any virtualenv paths.
+    if [ "$1" = env ] && [ "$2" = list ]; then
+      exit 0
+    fi
     ${poetry}/bin/poetry "$@"
   '';
 }
