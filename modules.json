@@ -1227,6 +1227,10 @@
     "commit": "0bd73cd137ee828d927e95d97e8199e7b66b6c29",
     "path": "/nix/store/n5wn8jgxia9jisw615i1hk6alklpwckw-replit-module-rust-stable"
   },
+  "rust-stable:v5-20240126-d98d19e": {
+    "commit": "d98d19ee06a8b30ecabf9cf154fd403103c7fee6",
+    "path": "/nix/store/9s6kxk29chccbnwv4f0qgndmv2lrxj9i-replit-module-rust-stable"
+  },
   "go-1.21:v1-20231024-b3ba53c": {
     "commit": "b3ba53c9295b9664fe1b4ea22b7cbaed35e23d86",
     "path": "/nix/store/zkbbhbrnarrnb914ynm47i40n0fc285x-replit-module-go-1.21"
@@ -1378,5 +1382,9 @@
   "angular-node-20:v3-20240126-939674c": {
     "commit": "939674c9587905d8fb333e54e554288be95bda1b",
     "path": "/nix/store/m9j5l1knjhrb5p5m57bcznaqncpd508d-replit-module-angular-node-20"
+  },
+  "rust-nightly:v1-20240126-d98d19e": {
+    "commit": "d98d19ee06a8b30ecabf9cf154fd403103c7fee6",
+    "path": "/nix/store/f71v169hdnv8g9w5kjpmv9z4dhzpfzjp-replit-module-rust-nightly"
   }
 }
