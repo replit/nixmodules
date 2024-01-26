@@ -39,7 +39,7 @@ in
     dev.runners.dev-runner = {
       name = "package.json watch script";
       inherit language;
-      start = "${nodejs}/bin/npm run start";
+      start = "${nodejs}/bin/npm run watch";
     };
 
     dev.languageServers.angular-language-server = {

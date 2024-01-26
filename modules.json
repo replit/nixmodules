@@ -1374,5 +1374,9 @@
   "angular-node-20:v2-20240124-02d14a4": {
     "commit": "02d14a4b0fd84ad1e451a613838931144a8788e9",
     "path": "/nix/store/3ai9vin6330qicbyyfqs6n0n70zzy286-replit-module-angular-node-20"
+  },
+  "angular-node-20:v3-20240126-939674c": {
+    "commit": "939674c9587905d8fb333e54e554288be95bda1b",
+    "path": "/nix/store/m9j5l1knjhrb5p5m57bcznaqncpd508d-replit-module-angular-node-20"
   }
 }
