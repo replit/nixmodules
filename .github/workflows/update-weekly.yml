@@ -1,0 +1,45 @@
+name: weekly updates
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"
+
+jobs:
+  fenix:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: update Fenix
+        run: nix flake lock --update-input fenix
+
+      - name: lock modules
+        run: nix develop -c python scripts/lock_modules.py
+
+      - name: open PR
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: update Fenix
+          branch: actions/update-weekly
+          title: Fenix update
+          body: >-
+            # Why
+
+            Rustaceans like having the latest nightly. Let's give it to them.
+
+            # What Changed
+
+            Updated fenix input.
+
+            # Notes
+            
+            ***Please*** test before merging!
+
+            This PR is created via a GitHub Actions Workflow. Please
+            take care to ensure its contents are correct. This Workflow
+            runs every week to ensure the rust-nightly module is regularly
+            updated.
