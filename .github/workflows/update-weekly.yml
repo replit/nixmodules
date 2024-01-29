@@ -2,7 +2,7 @@ name: weekly updates
 
 on:
   schedule:
-    - cron: "0 8 * * 1"
+    - cron: "0 18 * * 1" # NOTE: Mondays at 6 pm GMT
 
 jobs:
   fenix:
@@ -16,9 +16,6 @@ jobs:
 
       - name: update Fenix
         run: nix flake lock --update-input fenix
-
-      - name: lock modules
-        run: nix develop -c python scripts/lock_modules.py
 
       - name: open PR
         uses: peter-evans/create-pull-request@v5
@@ -43,3 +40,11 @@ jobs:
             take care to ensure its contents are correct. This Workflow
             runs every week to ensure the rust-nightly module is regularly
             updated.
+
+      - name: lock modules
+        run: nix develop -c python scripts/lock_modules.py
+
+      - name: push locked modules
+        run: |
+          git commit -am 'lock modules'
+          git push actions/update-weekly
