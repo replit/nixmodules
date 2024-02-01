@@ -24,10 +24,24 @@ in
 pkgs.writeShellApplication {
   name = "poetry";
   text = ''
+    # Determine how many vcpus we have, first in the standard location, with a fallback
+    # to the cgroup info, since resources.json does not exist during Deployments.
+    if [ -e /repl/stats/resources.json ]; then  # Common resources location
+      numVCpu="$(${pkgs.jq}/bin/jq .numVCpu </repl/stats/resources.json)"
+    else
+      cgroup_path="$(cut -f 3 -d : < /proc/1/cgroup)"
+      if [ -f "$cgroup_path" ]; then
+        cpu_path="/sys/fs/cgroup/$cgroup_path/cpu.max"
+        if [ -f "$cpu_path" ]; then
+          numVCpu="$(${pkgs.jq}/bin/jq -R 'split(" ") | map(tonumber) | .[0] / .[1]' < "$cpu_path")"
+        fi
+      fi
+    fi
+
+    # If we can't determine numVCpu, presume 0.5 to help free users.
+    if [ "''${numVCpu:-0.5}" = "0.5" ]; then
     # Don't run multiple install workers in parallel if we have only 0.5 CPUs:
     # helps with speed in free accounts
-    numVCpu=$(${pkgs.jq}/bin/jq .numVCpu </repl/stats/resources.json)
-    if [ "''${numVCpu}" = "0.5" ]; then
     export POETRY_INSTALLER_PARALLEL="0"
     fi
     # Temporarily work around upm locking infrastructute being very slow
