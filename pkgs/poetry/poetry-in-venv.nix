@@ -39,11 +39,14 @@ pkgs.writeShellApplication {
     fi
 
     # If we can't determine numVCpu, presume 0.5 to help free users.
-    if [ "''${numVCpu:-0.5}" = "0.5" ]; then
-    # Don't run multiple install workers in parallel if we have only 0.5 CPUs:
-    # helps with speed in free accounts
+    numVCpu="''${numVCpu:-0.5}"
+
+    # Don't run multiple install workers in parallel if we have fewer than 0.5
+    # CPUs, which helps with speed in free accounts.
+    if [ "$(echo "$numVCpu" | ${pkgs.jq}/bin/jq '. <= 0.5')" = true ]; then
     export POETRY_INSTALLER_PARALLEL="0"
     fi
+
     # Temporarily work around upm locking infrastructute being very slow
     # In replit, poetry is not currently configured in such a way that this
     # would ever print any virtualenv paths.
