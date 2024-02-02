@@ -6,7 +6,7 @@ rustPlatform.buildRustPackage {
 
   src = builtins.path { path = ./.; name = "stderred"; };
 
-  cargoSha256 = "sha256-ixJY/O6pE1YJ08GJY4kZ4RaDf+1s17satbOhyBEjyuQ=";
+  cargoSha256 = "sha256-1L/5mEjSN3zTCYHFWRBW6ODqMLQ2yyvfzUZY0o3aanE=";
 
   nativeBuildInputs = [ makeWrapper ];
 
