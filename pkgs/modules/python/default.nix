@@ -101,6 +101,7 @@ in
 {
   id = "python-${pythonVersion}";
   name = "Python ${pythonVersion} Tools";
+  community-version = python.version;
 
   replit.packages = [
     python3-wrapper

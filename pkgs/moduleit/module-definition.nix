@@ -570,6 +570,11 @@ in
       description = "Name of the module";
     };
 
+    community-version = mkOption {
+      type = types.str;
+      description = "Community version - the version of the runtime or compiler provided by this module";
+    };
+
     description = mkOption {
       type = types.str;
       description = "Description of the module";
@@ -625,6 +630,7 @@ in
         moduleJSON = {
           id = config.id;
           name = config.name;
+          community-version = config.community-version;
           description = config.description;
           env = envWithMergedPath allEnv (lib.makeBinPath allPackages);
           initializers = allInitializers;
@@ -650,6 +656,7 @@ in
         moduleJSON = {
           id = config.id;
           name = config.name;
+          community-version = config.community-version;
           description = config.description;
           env = envWithMergedPath config.replit.env (lib.makeBinPath config.replit.packages);
           initializers = config.replit.initializers;
