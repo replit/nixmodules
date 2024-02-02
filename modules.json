@@ -1135,6 +1135,10 @@
     "commit": "d91747b1a9655b307a69613063d0599aef8b8f3e",
     "path": "/nix/store/58p275vnh2ajp0bi3w43pbj0150w39jk-replit-module-python-with-prybar-3.10"
   },
+  "python-with-prybar-3.10:v22-20240203-ce85ddb": {
+    "commit": "ce85ddbaacf5bb78c6fec1174ad6899abe102850",
+    "path": "/nix/store/brnql4lydsahvv3xhw445nn544cq80fs-replit-module-python-with-prybar-3.10"
+  },
   "nodejs-with-prybar-18:v1-20230928-1ea5ac0": {
     "commit": "1ea5ac0313085b2ac631b493c925d33489d58410",
     "path": "/nix/store/8v3laig35f30bvgw8mwjcsznk06l7vf3-replit-module-nodejs-with-prybar-18"
