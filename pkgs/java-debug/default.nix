@@ -13,6 +13,7 @@ let
 in
 stdenv.mkDerivation {
   name = "java-debug";
+  version = debug-plugin.version;
 
   unpackPhase = "true";
   dontBuild = true;
