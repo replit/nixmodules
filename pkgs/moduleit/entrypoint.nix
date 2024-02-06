@@ -11,7 +11,6 @@ let
     ];
     specialArgs = {
       inherit pkgs pkgs-23_05;
-      pkgs-unstable = pkgs;
       modulesPath = builtins.toString ./.;
     };
   });

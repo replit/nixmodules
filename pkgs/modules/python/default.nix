@@ -1,9 +1,7 @@
 { python, pypkgs }:
-{ pkgs-unstable, pkgs-23_05, lib, ... }:
+{ pkgs, lib, ... }:
 let
   pythonVersion = lib.versions.majorMinor python.version;
-
-  pkgs = pkgs-unstable;
 
   pylibs-dir = ".pythonlibs";
 
