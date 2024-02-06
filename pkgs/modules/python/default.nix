@@ -51,7 +51,8 @@ let
 
   debuggerConfig = {
     dapPython = {
-      name = "DAP Python";
+      name = "debugpy";
+      display-version = dapPython.version;
       language = "python3";
       start = {
         args = [ "${dapPython}/bin/dap-python" "$file" ];
@@ -100,7 +101,8 @@ let
 in
 {
   id = "python-${pythonVersion}";
-  name = "Python ${pythonVersion} Tools";
+  name = "Python Tools";
+  display-version = python.version;
 
   replit.packages = [
     python3-wrapper
@@ -110,6 +112,7 @@ in
 
   replit.runners.python = {
     name = "Python ${pythonVersion}";
+    display-version = python.version;
     fileParam = true;
     language = "python3";
     start = "${python3-wrapper}/bin/python3 $file";
@@ -119,6 +122,7 @@ in
 
   replit.dev.languageServers.pyright-extended = {
     name = "pyright-extended";
+    display-version = pyright-extended.version;
     language = "python3";
     start = "${pyright-extended}/bin/langserver.index.js --stdio";
   };

@@ -23,7 +23,7 @@ let
     inherit (nodejs) meta version;
   };
 
-  community-version = lib.versions.major nodejs.version;
+  short-version = lib.versions.major nodejs.version;
 
   bun = pkgs.callPackage ../../bun { };
 
@@ -41,8 +41,9 @@ let
 in
 
 {
-  id = "nodejs-${community-version}";
-  name = "Node.js ${community-version} Tools";
+  id = "nodejs-${short-version}";
+  name = "Node.js Tools";
+  display-version = nodejs.version;
   imports = [
     (import ../typescript-language-server {
       inherit nodepkgs;
@@ -65,6 +66,7 @@ in
 
     runners.nodeJS = {
       name = "Node.js";
+      display-version = nodejs.version;
       language = "javascript";
       start = "${nodejs-wrapped}/bin/node $file";
       fileParam = true;
@@ -116,6 +118,7 @@ in
 
     dev.formatters.prettier = {
       name = "Prettier";
+      display-version = nodepkgs.prettier.version;
       language = "javascript";
       extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ".html" ];
       start = {
