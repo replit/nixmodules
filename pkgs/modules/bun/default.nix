@@ -11,6 +11,7 @@ in
 {
   id = "bun-${community-version}";
   name = "Bun Tools";
+  display-version = bun.version;
 
   imports = [
     (import ../run-package-json {

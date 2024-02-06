@@ -5,7 +5,7 @@ let
 
   graalvm = pkgs.graalvm19-ce;
 
-  graalvm-version = lib.versions.majorMinor graalvm.version;
+  short-graalvm-version = lib.versions.majorMinor graalvm.version;
 
   graal-compile-command = "${graalvm}/bin/javac -classpath .:target/dependency/* -d . $(find . -type f -name '*.java')";
 
@@ -32,8 +32,9 @@ let
 in
 
 {
-  id = "java-graalvm${graalvm-version}";
+  id = "java-graalvm${short-graalvm-version}";
   name = "Java Tools (with Graal VM)";
+  display-version = graalvm.version;
 
   replit.packages = [
     graalvm
@@ -41,7 +42,8 @@ in
   ];
 
   replit.runners.graal = {
-    name = "GraalVM ${graalvm-version}";
+    name = "GraalVM ${short-graalvm-version}";
+    display-version = graalvm.version;
     language = "java";
 
     compile = graal-compile-command;
@@ -60,6 +62,7 @@ in
 
   replit.dev.debuggers.java-debug = {
     name = "Jave Debug";
+    display-version = java-debug.version;
     language = "java";
     extensions = [ ".java" ];
 
@@ -96,6 +99,7 @@ in
 
   replit.dev.languageServers.java-language-server = {
     name = "Java Language Server";
+    display-version = java-language-server.version;
     language = "java";
 
     start = "${run-lsp}/bin/run-lsp";

@@ -2,7 +2,7 @@
 
 pypkgs.buildPythonPackage rec {
   pname = "replit-python-dap-wrapper";
-  version = "1.0.0";
+  version = debugpy.version;
 
   src = ./.;
 

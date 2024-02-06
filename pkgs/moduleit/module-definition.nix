@@ -117,6 +117,14 @@ let
         '';
       };
 
+      display-version = mkOption {
+        type = types.str;
+        description = lib.mdDoc ''
+          The display version of the runner.
+        '';
+        default = "";
+      };
+
       language = mkOption {
         type = types.str;
         description = lib.mdDoc ''
@@ -193,6 +201,14 @@ let
         '';
       };
 
+      display-version = mkOption {
+        type = types.str;
+        description = lib.mdDoc ''
+          The display version of the language server.
+        '';
+        default = "";
+      };
+
       language = mkOption {
         type = types.str;
         description = lib.mdDoc ''
@@ -245,6 +261,14 @@ let
         '';
       };
 
+      display-version = mkOption {
+        type = types.str;
+        description = lib.mdDoc ''
+          The display version of the formatter.
+        '';
+        default = "";
+      };
+
       language = mkOption {
         type = types.str;
         description = lib.mdDoc ''
@@ -283,6 +307,14 @@ let
         description = lib.mdDoc ''
           The name of the debugger.
         '';
+      };
+
+      display-version = mkOption {
+        type = types.str;
+        description = lib.mdDoc ''
+          The display version of the debugger.
+        '';
+        default = "";
       };
 
       language = mkOption {
@@ -402,6 +434,14 @@ let
         description = lib.mdDoc ''
           The name of the packager.
         '';
+      };
+
+      display-version = mkOption {
+        type = types.str;
+        description = lib.mdDoc ''
+          The display version of the language server.
+        '';
+        default = "";
       };
 
       language = mkOption {
@@ -570,6 +610,12 @@ in
       description = "Name of the module";
     };
 
+    display-version = mkOption {
+      type = types.str;
+      description = "Display version - version of the main product (language or framework) provided by this module";
+      default = "";
+    };
+
     description = mkOption {
       type = types.str;
       description = "Description of the module";
@@ -625,6 +671,7 @@ in
         moduleJSON = {
           id = config.id;
           name = config.name;
+          display-version = config.display-version;
           description = config.description;
           env = envWithMergedPath allEnv (lib.makeBinPath allPackages);
           initializers = allInitializers;
@@ -650,6 +697,7 @@ in
         moduleJSON = {
           id = config.id;
           name = config.name;
+          display-version = config.display-version;
           description = config.description;
           env = envWithMergedPath config.replit.env (lib.makeBinPath config.replit.packages);
           initializers = config.replit.initializers;
