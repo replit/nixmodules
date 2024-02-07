@@ -1,9 +1,9 @@
 { python, pypkgs }:
-{ pkgs-unstable, pkgs-23_05, lib, ... }:
+{ pkgs-23_05, lib, ... }:
 let
-  pythonVersion = lib.versions.majorMinor python.version;
+  pkgs = pkgs-23_05;
 
-  pkgs = if pythonVersion == "3.8" then pkgs-23_05 else pkgs-unstable;
+  pythonVersion = lib.versions.majorMinor python.version;
 
   pylibs-dir = ".pythonlibs";
 
@@ -15,8 +15,10 @@ let
   pythonWrapper = pythonUtils.pythonWrapper;
   python-ld-library-path = pythonUtils.python-ld-library-path;
 
-  pip = pypkgs.pip;
-  pip-wrapper = pythonWrapper { bin = "${pip}/bin/pip"; name = "pip"; };
+  pip = import ./pip.nix (pkgs // {
+    inherit python pypkgs;
+  });
+  pip-wrapper = pythonWrapper { bin = "${pip.bin}/bin/pip"; name = "pip"; };
 
   poetry = pkgs.callPackage (../../poetry/poetry-py + "${pythonVersion}.nix") {
     inherit python;
@@ -149,7 +151,7 @@ in
     POETRY_PIP_FROM_PATH = "1";
     POETRY_USE_USER_SITE = "1";
     PYTHONUSERBASE = userbase;
-    PYTHONPATH = "${python}/lib/python${pythonVersion}:${userbase}/${python.sitePackages}:${pip}/${python.sitePackages}";
+    PYTHONPATH = "${python}/lib/python${pythonVersion}:${userbase}/${python.sitePackages}:${pip.pip}/${python.sitePackages}";
     # Even though it is set-default in the wrapper, add it to the
     # environment too, so that when someone wants to override it,
     # they can keep the defaults if they want to.
