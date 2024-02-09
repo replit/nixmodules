@@ -117,7 +117,7 @@ let
         '';
       };
 
-      display-version = mkOption {
+      displayVersion = mkOption {
         type = types.str;
         description = lib.mdDoc ''
           The display version of the runner.
@@ -201,7 +201,7 @@ let
         '';
       };
 
-      display-version = mkOption {
+      displayVersion = mkOption {
         type = types.str;
         description = lib.mdDoc ''
           The display version of the language server.
@@ -261,7 +261,7 @@ let
         '';
       };
 
-      display-version = mkOption {
+      displayVersion = mkOption {
         type = types.str;
         description = lib.mdDoc ''
           The display version of the formatter.
@@ -309,7 +309,7 @@ let
         '';
       };
 
-      display-version = mkOption {
+      displayVersion = mkOption {
         type = types.str;
         description = lib.mdDoc ''
           The display version of the debugger.
@@ -436,7 +436,7 @@ let
         '';
       };
 
-      display-version = mkOption {
+      displayVersion = mkOption {
         type = types.str;
         description = lib.mdDoc ''
           The display version of the language server.
@@ -610,7 +610,7 @@ in
       description = "Name of the module";
     };
 
-    display-version = mkOption {
+    displayVersion = mkOption {
       type = types.str;
       description = "Display version - version of the main product (language or framework) provided by this module";
       default = "";
@@ -671,7 +671,7 @@ in
         moduleJSON = {
           id = config.id;
           name = config.name;
-          display-version = config.display-version;
+          displayVersion = config.displayVersion;
           description = config.description;
           env = envWithMergedPath allEnv (lib.makeBinPath allPackages);
           initializers = allInitializers;
@@ -697,7 +697,7 @@ in
         moduleJSON = {
           id = config.id;
           name = config.name;
-          display-version = config.display-version;
+          displayVersion = config.displayVersion;
           description = config.description;
           env = envWithMergedPath config.replit.env (lib.makeBinPath config.replit.packages);
           initializers = config.replit.initializers;

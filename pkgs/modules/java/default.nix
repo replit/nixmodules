@@ -34,7 +34,7 @@ in
 {
   id = "java-graalvm${short-graalvm-version}";
   name = "Java Tools (with Graal VM)";
-  display-version = graalvm.version;
+  displayVersion = graalvm.version;
 
   replit.packages = [
     graalvm
@@ -43,7 +43,7 @@ in
 
   replit.runners.graal = {
     name = "GraalVM ${short-graalvm-version}";
-    display-version = graalvm.version;
+    displayVersion = graalvm.version;
     language = "java";
 
     compile = graal-compile-command;
@@ -62,7 +62,7 @@ in
 
   replit.dev.debuggers.java-debug = {
     name = "Jave Debug";
-    display-version = java-debug.version;
+    displayVersion = java-debug.version;
     language = "java";
     extensions = [ ".java" ];
 
@@ -99,7 +99,7 @@ in
 
   replit.dev.languageServers.java-language-server = {
     name = "Java Language Server";
-    display-version = java-language-server.version;
+    displayVersion = java-language-server.version;
     language = "java";
 
     start = "${run-lsp}/bin/run-lsp";

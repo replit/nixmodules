@@ -32,6 +32,10 @@ let
     inherit pkgs self modulesLocks;
   };
 
+  registry = import ../registry {
+    inherit pkgs self modulesLocks;
+  };
+
 in
 
 (pkgs.linkFarm "nixmodules-bundle" ([
@@ -51,10 +55,15 @@ in
     name = "etc/nixmodules/recommend-upgrade.json";
     path = "${upgrade-maps}/recommend-upgrade.json";
   }
+  {
+    name = "etc/nixmodules/registry.json";
+    path = registry;
+  }
 ] ++ (
   mapAttrsToList (name: value: { inherit name; path = value; }) modules
 ))).overrideAttrs (finalAttrs: previousAttrs: {
   passthru = {
     inherit active-modules;
+    inherit registry;
   };
 })
