@@ -43,7 +43,7 @@ in
 {
   id = "nodejs-${short-version}";
   name = "Node.js Tools";
-  display-version = nodejs.version;
+  displayVersion = nodejs.version;
   imports = [
     (import ../typescript-language-server {
       inherit nodepkgs;
@@ -66,7 +66,7 @@ in
 
     runners.nodeJS = {
       name = "Node.js";
-      display-version = nodejs.version;
+      displayVersion = nodejs.version;
       language = "javascript";
       start = "${nodejs-wrapped}/bin/node $file";
       fileParam = true;
@@ -118,7 +118,7 @@ in
 
     dev.formatters.prettier = {
       name = "Prettier";
-      display-version = nodepkgs.prettier.version;
+      displayVersion = nodepkgs.prettier.version;
       language = "javascript";
       extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ".html" ];
       start = {

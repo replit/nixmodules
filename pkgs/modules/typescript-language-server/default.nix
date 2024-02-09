@@ -20,7 +20,7 @@ in
 {
   replit.dev.languageServers.typescript-language-server = {
     name = "TypeScript Language Server";
-    display-version = typescript-language-server.version;
+    displayVersion = typescript-language-server.version;
     language = "javascript";
     start = "${typescript-language-server}/bin/typescript-language-server --stdio";
 

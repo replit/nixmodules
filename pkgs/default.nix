@@ -59,7 +59,15 @@ rec {
       inherit pkgs upgrade-maps;
     };
   };
-  inherit (bundle-locked) active-modules;
+
+  custom-bundle-locked = bundle-locked-fn {
+    modulesLocks = import ./filter-modules-locks {
+      inherit pkgs upgrade-maps;
+      moduleIds = [ "python-3.10" "nodejs-20" ];
+    };
+  };
+
+  inherit (bundle-locked) active-modules registry;
 
   bundle-image = bundle-squashfs-fn { };
 
