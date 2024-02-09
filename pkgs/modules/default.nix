@@ -79,6 +79,7 @@ let
     (import ./svelte-kit)
     (import ./vue)
     (import ./web)
+    (import ./hermit)
   ];
 
   modules = builtins.listToAttrs (

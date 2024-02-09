@@ -1550,5 +1550,9 @@
   "rust-nightly:v2-20240206-fdbd396": {
     "commit": "fdbd39619614e07d1ff44cfe20de2ad56eb8a40f",
     "path": "/nix/store/9cz5z738s9vc45dvfkmgm2cp5inmhj3h-replit-module-rust-nightly"
+  },
+  "hermit-0.38.2:v1-20240208-9bf7683": {
+    "commit": "9bf76831508415761756fbb980dabe6d21b6394f",
+    "path": "/nix/store/iy17j7mn74d26bdd19k5v0cciipdf6hp-replit-module-hermit-0.38.2"
   }
 }
