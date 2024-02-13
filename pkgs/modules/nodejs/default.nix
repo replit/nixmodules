@@ -2,26 +2,7 @@
 { pkgs, lib, ... }:
 
 let
-  nodejs-wrapped = pkgs.stdenvNoCC.mkDerivation {
-    name = "nodejs-wrapped";
-    buildInputs = [ pkgs.makeWrapper ];
-    buildCommand = ''
-      mkdir -p $out/bin
-      for bin in ${nodejs}/bin/*; do
-        local binName=$(basename $bin)
-        cat >$out/bin/$binName <<-EOF
-      #!${pkgs.bash}/bin/bash
-      if [ -n "\''${REPLIT_LD_LIBRARY_PATH-}" ]; then
-        export LD_LIBRARY_PATH="\$REPLIT_LD_LIBRARY_PATH:\$LD_LIBRARY_PATH"
-      fi
-      exec "$bin" "\$@"
-      EOF
-        chmod +x $out/bin/$binName
-      done
-    '';
-
-    inherit (nodejs) meta version;
-  };
+  nodejs-wrapped = pkgs.lib.mkWrapper-replit_ld_library_path nodejs;
 
   short-version = lib.versions.major nodejs.version;
 

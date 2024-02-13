@@ -2,6 +2,7 @@
 
 let
   bun = pkgs.callPackage ../../bun { };
+  bun-wrapped = pkgs.lib.mkWrapper-replit_ld_library_path bun;
 
   extensions = [ ".js" ".jsx" ".cjs" ".mjs" ".ts" ".tsx" ".mts" ];
 
@@ -15,8 +16,8 @@ in
 
   imports = [
     (import ../run-package-json {
-      runPackageJsonScript = "${bun}/bin/bun run";
-      runFileScript = "${bun}/bin/bun";
+      runPackageJsonScript = "${bun-wrapped}/bin/bun run";
+      runFileScript = "${bun-wrapped}/bin/bun";
     })
     (import ../typescript-language-server {
       nodepkgs = pkgs.nodePackages;
@@ -24,7 +25,7 @@ in
   ];
 
   replit.packages = [
-    bun
+    bun-wrapped
   ];
 
   replit.dev.languageServers.typescript-language-server.extensions = extensions ++ [ ".json" ];

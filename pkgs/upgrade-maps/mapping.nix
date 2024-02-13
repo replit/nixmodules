@@ -68,6 +68,7 @@ in
   "bun-1.0:v15-20240106-a63003a" = { to = "bun-1.0:v16-20240116-9f73277"; auto = true; };
   "bun-1.0:v16-20240116-9f73277" = { to = "bun-1.0:v17-20240117-0bd73cd"; auto = true; };
   "bun-1.0:v17-20240117-0bd73cd" = { to = "bun-1.0:v20-20240213-5e75727"; auto = true; };
+  "bun-1.0:v20-20240213-5e75727" = { to = "bun-1.0:v21-20240213-3f08513"; auto = true; };
 
   # dart minor versions aren't forwards-compatible
   "dart-3.0:v1-20230623-0b7a606".to = "dart-3.1:v1-20231201-3b22c78";
