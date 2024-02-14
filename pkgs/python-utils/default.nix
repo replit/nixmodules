@@ -32,12 +32,19 @@ let
       ldLibraryPathConvertWrapper = pkgs.writeShellApplication {
         inherit name;
         text = ''
-          export LD_LIBRARY_PATH=${python-ld-library-path}
-          if [ -n "''${PYTHON_LD_LIBRARY_PATH-}" ]; then
-            export LD_LIBRARY_PATH=''${PYTHON_LD_LIBRARY_PATH}:$LD_LIBRARY_PATH
-          fi
-          if [ -n "''${REPLIT_LD_LIBRARY_PATH-}" ]; then
-            export LD_LIBRARY_PATH=''${REPLIT_LD_LIBRARY_PATH}:$LD_LIBRARY_PATH
+          if test "$REPLIT_RTLD_LOADER" = "1" && test "$REPLIT_NIX_CHANNEL" != "legacy"
+          then
+            # activate RTLD loader!
+            export LD_AUDIT="${pkgs.replit-rtld-loader}/rtld_loader.so"
+            export REPLIT_LD_LIBRARY_PATH=${python-ld-library-path}:''${REPLIT_LD_LIBRARY_PATH}
+          else
+            export LD_LIBRARY_PATH=${python-ld-library-path}
+            if [ -n "''${PYTHON_LD_LIBRARY_PATH-}" ]; then
+              export LD_LIBRARY_PATH=''${PYTHON_LD_LIBRARY_PATH}:$LD_LIBRARY_PATH
+            fi
+            if [ -n "''${REPLIT_LD_LIBRARY_PATH-}" ]; then
+              export LD_LIBRARY_PATH=''${REPLIT_LD_LIBRARY_PATH}:$LD_LIBRARY_PATH
+            fi
           fi
           exec "${bin}" "$@"
         '';

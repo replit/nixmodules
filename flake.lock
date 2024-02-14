@@ -252,6 +252,26 @@
         "type": "github"
       }
     },
+    "replit-rtld-loader": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1707923725,
+        "narHash": "sha256-FkahFyXa4OAE18HZz47da9IVCbV3t8EyClaVTvCWEkk=",
+        "owner": "replit",
+        "repo": "replit_rtld_loader",
+        "rev": "25fe9a9118525d458b44d689832d62b592d93a98",
+        "type": "github"
+      },
+      "original": {
+        "owner": "replit",
+        "repo": "replit_rtld_loader",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "fenix": "fenix",
@@ -260,6 +280,7 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "prybar": "prybar",
+        "replit-rtld-loader": "replit-rtld-loader",
         "ztoc-rs": "ztoc-rs"
       }
     },
