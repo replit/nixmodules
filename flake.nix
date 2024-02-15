@@ -12,8 +12,10 @@
   inputs.java-language-server.inputs.nixpkgs.follows = "nixpkgs";
   inputs.ztoc-rs.url = "github:replit/ztoc-rs";
   inputs.ztoc-rs.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.replit-rtld-loader.url = "github:replit/replit_rtld_loader";
+  inputs.replit-rtld-loader.inputs.nixpkgs.follows = "nixpkgs";
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, prybar, java-language-server, nixd, fenix, ... }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, prybar, java-language-server, nixd, fenix, replit-rtld-loader, ... }:
     let
       mkPkgs = nixpkgs-spec: system: import nixpkgs-spec {
         inherit system;
@@ -23,6 +25,7 @@
           java-language-server.overlays.default
           nixd.overlays.default
           fenix.overlays.default
+          replit-rtld-loader.overlays.default
         ];
         # replbox has an unfree license
         config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
@@ -49,9 +52,9 @@
                 echo "No bin directory found in ${package}"
                 exit 1
               fi
-          
+
               mkdir -p $out/bin
-          
+
               for bin in ${package}/bin/*; do
                 local binName=$(basename $bin)
                 cat >$out/bin/$binName <<-EOF
