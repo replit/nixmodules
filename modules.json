@@ -779,6 +779,10 @@
     "commit": "9e3a33995f94a52e61ae962777e9bcbe6d75885e",
     "path": "/nix/store/kfax6rn26vlkgdzznxvw02qg7gcpbsw3-replit-module-ruby-3.1"
   },
+  "ruby-3.1:v9-20240216-98f4cde": {
+    "commit": "98f4cde081b4f2921b16bea2096c4f32639f37bb",
+    "path": "/nix/store/7bzxkbsi76ck2c64ilxidgrdwrq5j725-replit-module-ruby-3.1"
+  },
   "rust-1.69:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/xkp307fdmgwn8dnbqadzlrb8fr0bvkx4-replit-module-rust-1.69"
@@ -1602,6 +1606,10 @@
   "ruby-3.2:v6-20240209-9e3a339": {
     "commit": "9e3a33995f94a52e61ae962777e9bcbe6d75885e",
     "path": "/nix/store/whpmpscmx65p7bkx1pwbaai3lmjbpww3-replit-module-ruby-3.2"
+  },
+  "ruby-3.2:v7-20240216-98f4cde": {
+    "commit": "98f4cde081b4f2921b16bea2096c4f32639f37bb",
+    "path": "/nix/store/cag0688y6kq7hsa0s76bhg249ybjaf2d-replit-module-ruby-3.2"
   },
   "dart-3.1:v1-20231201-3b22c78": {
     "commit": "3b22c787fd20b13fe5afb868589c574068303b5e",

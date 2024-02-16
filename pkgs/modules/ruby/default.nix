@@ -19,6 +19,7 @@ let
     text = ''
       if ! test -f "''${REPL_HOME}/Gemfile"; then
         cp ${initial-gem-file} "''${REPL_HOME}/Gemfile"
+        chmod u+rw,g+r,o+r "''${REPL_HOME}/Gemfile"
       fi
       ${ruby}/bin/bundle "$@"
     '';
