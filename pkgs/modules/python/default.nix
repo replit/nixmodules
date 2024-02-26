@@ -1,8 +1,6 @@
 { python, pypkgs }:
-{ pkgs-23_05, lib, ... }:
+{ pkgs, lib, ... }:
 let
-  pkgs = pkgs-23_05;
-
   pythonVersion = lib.versions.majorMinor python.version;
 
   pylibs-dir = ".pythonlibs";
