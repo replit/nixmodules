@@ -711,6 +711,10 @@
     "commit": "aba8eb66f6ff96c4f341bb18d71c715a2501ec83",
     "path": "/nix/store/55d7s1ydlwfbv03sfyd38vvszp16ddwk-replit-module-python-3.10"
   },
+  "python-3.10:v50-20240226-762a753": {
+    "commit": "762a7534c42e3300de266ae402de0e9ef98a007a",
+    "path": "/nix/store/4qv9bg202ylx62wy49xrd91d0mh54v7k-replit-module-python-3.10"
+  },
   "qbasic:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/4n4raazspqy2zgawkkyaqc9xapl1f5sz-replit-module-qbasic"
@@ -1075,6 +1079,10 @@
     "commit": "aba8eb66f6ff96c4f341bb18d71c715a2501ec83",
     "path": "/nix/store/lyq6nk6k6lq2mfkzmvj1sjfi6li5fqsa-replit-module-python-3.11"
   },
+  "python-3.11:v31-20240226-762a753": {
+    "commit": "762a7534c42e3300de266ae402de0e9ef98a007a",
+    "path": "/nix/store/xcg20afhkdnw0hznhjqn5hj73ab3n3ac-replit-module-python-3.11"
+  },
   "python-3.8:v1-20230829-e1c0916": {
     "commit": "e1c0916e9629e64e596aa4730df2da68363ddeeb",
     "path": "/nix/store/rsycf8rjpznldnf51h83yl0mx3v3ddij-replit-module-python-3.8"
@@ -1194,6 +1202,10 @@
   "python-3.8:v30-20240222-aba8eb6": {
     "commit": "aba8eb66f6ff96c4f341bb18d71c715a2501ec83",
     "path": "/nix/store/qfilaq2r60vp93bd9p2pg408k4j7vwkg-replit-module-python-3.8"
+  },
+  "python-3.8:v31-20240226-762a753": {
+    "commit": "762a7534c42e3300de266ae402de0e9ef98a007a",
+    "path": "/nix/store/y4qjqnwp78zhm58g10shcss95plhvjc0-replit-module-python-3.8"
   },
   "bun-1.0:v1-20230911-f253fb1": {
     "commit": "f253fb1a97d9a1c950d90081ee1ccb290776cf8b",
@@ -1414,6 +1426,10 @@
   "python-with-prybar-3.10:v29-20240222-aba8eb6": {
     "commit": "aba8eb66f6ff96c4f341bb18d71c715a2501ec83",
     "path": "/nix/store/s8bna95gv43q864nl8jwxbmqshj1acgi-replit-module-python-with-prybar-3.10"
+  },
+  "python-with-prybar-3.10:v30-20240226-762a753": {
+    "commit": "762a7534c42e3300de266ae402de0e9ef98a007a",
+    "path": "/nix/store/yavxaxinfvlc9wcdxfyimwcqrj5sydgp-replit-module-python-with-prybar-3.10"
   },
   "nodejs-with-prybar-18:v1-20230928-1ea5ac0": {
     "commit": "1ea5ac0313085b2ac631b493c925d33489d58410",
