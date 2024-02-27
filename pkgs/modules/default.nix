@@ -12,16 +12,16 @@ let
 
   modulesList = [
     (import ./python {
-      python = pkgs.python38Full;
-      pypkgs = pkgs.python38Packages;
+      python = pkgs-23_05.python38Full;
+      pypkgs = pkgs-23_05.python38Packages;
     })
     (import ./python {
-      python = pkgs.python310Full;
-      pypkgs = pkgs.python310Packages;
+      python = pkgs-23_05.python310Full;
+      pypkgs = pkgs-23_05.python310Packages;
     })
     (import ./python {
-      python = pkgs.python311Full;
-      pypkgs = pkgs.python311Packages;
+      python = pkgs-23_05.python311Full;
+      pypkgs = pkgs-23_05.python311Packages;
     })
     (import ./python-with-prybar)
 
