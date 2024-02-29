@@ -16,12 +16,12 @@ let
       pypkgs = pkgs-23_05.python38Packages;
     })
     (import ./python {
-      python = pkgs-23_05.python310Full;
-      pypkgs = pkgs-23_05.python310Packages;
+      python = pkgs.python310Full;
+      pypkgs = pkgs.python310Packages;
     })
     (import ./python {
-      python = pkgs-23_05.python311Full;
-      pypkgs = pkgs-23_05.python311Packages;
+      python = pkgs.python311Full;
+      pypkgs = pkgs.python311Packages;
     })
     (import ./python-with-prybar)
 
