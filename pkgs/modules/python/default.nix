@@ -98,7 +98,7 @@ let
     yapf = pypkgs.yapf;
   };
 
-  sitecustomize = pkgs.callPackage ./sitecustomize.nix { };
+  sitecustomize = pkgs.callPackage ./sitecustomize { };
 
 in
 {
