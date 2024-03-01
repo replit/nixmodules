@@ -7,6 +7,6 @@
 # upgrade pip.
 pkgs.writeTextFile {
   name = "sitecustomize";
-  text = ./sitecustomize.py;
+  text = builtins.readFile ./sitecustomize.py;
   destination = "/sitecustomize.py";
 }
