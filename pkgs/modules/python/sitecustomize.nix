@@ -8,5 +8,5 @@
 pkgs.writeTextFile {
   name = "sitecustomize";
   text = builtins.readFile ./sitecustomize.py;
-  destination = "/sitecustomize.py";
+  destination = "/lib/python3/site-packages/sitecustomize.py";
 }
