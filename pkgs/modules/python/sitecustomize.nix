@@ -5,8 +5,12 @@
 # Using this approach also allows this scheme to work with a version of pip
 # which the user has installed into their .pythonlibs, which can happen if they
 # upgrade pip.
-pkgs.writeTextFile {
-  name = "sitecustomize";
-  text = builtins.readFile ./sitecustomize.py;
-  destination = "/sitecustomize.py";
-}
+let
+  dirpath = "lib/python/site-packages";
+  textFile = pkgs.writeTextFile {
+    name = "sitecustomize";
+    text = builtins.readFile ./sitecustomize.py;
+    destination = "/${dirpath}/sitecustomize.py";
+  };
+in
+"${textFile}/${dirpath}"
