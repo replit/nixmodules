@@ -1,5 +1,5 @@
 { nodepkgs }:
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   typescript-language-server = nodepkgs.typescript-language-server.override {
     # TODO: we can get rid of this patch once >=4.2.0 is in the nixpkgs-unstable we use.
@@ -20,7 +20,7 @@ in
 {
   replit.dev.languageServers.typescript-language-server = {
     name = "TypeScript Language Server";
-    displayVersion = typescript-language-server.version;
+    displayVersion = "${typescript-language-server.version} (Node ${lib.versions.majorMinor nodepkgs.nodejs.version})";
     language = "javascript";
     start = "${typescript-language-server}/bin/typescript-language-server --stdio";
 

@@ -15,6 +15,7 @@
     name = "HTML Language Server";
     language = "html";
     extensions = [ ".html" ];
+    displayVersion = pkgs.nodePackages.vscode-langservers-extracted.version;
 
     start = "${pkgs.nodePackages.vscode-langservers-extracted}/bin/vscode-html-language-server --stdio";
 
@@ -66,6 +67,7 @@
     name = "CSS Language Server";
     language = "css";
     extensions = [ ".css" ".less" ".scss" ];
+    displayVersion = pkgs.nodePackages.vscode-langservers-extracted.version;
 
     start = "${pkgs.nodePackages.vscode-langservers-extracted}/bin/vscode-css-language-server --stdio";
 
@@ -89,7 +91,7 @@
           # Configure linting
           # ignore = don't show any warning or error
           # warning = show yellow underline
-          # error = show red underline 
+          # error = show red underline
           lint = {
             # Invalid number of parameters
             argumentsInColorFunction = "error";

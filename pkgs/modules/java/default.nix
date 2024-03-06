@@ -53,6 +53,7 @@ in
   replit.dev.packagers.maven = {
     name = "Maven";
     language = "java-maven";
+    displayVersion = pkgs.maven.version;
     features = {
       enabledForHosting = false;
       packageSearch = true;

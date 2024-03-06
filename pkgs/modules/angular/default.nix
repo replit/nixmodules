@@ -45,6 +45,7 @@ in
     dev.languageServers.angular-language-server = {
       name = "Angular Language Server";
       inherit language;
+      displayVersion = angular-language-server.version;
       start = "${angular-language-server}/bin/ngserver --stdio --tsProbeLocations node_modules,${nodepkgs.typescript}/lib/node_modules/typescript/lib --ngProbeLocations node_modules,${angular-language-server}/lib/node_modules/@angular/language-server/node_modules";
       extensions = [ ".html" ];
     };

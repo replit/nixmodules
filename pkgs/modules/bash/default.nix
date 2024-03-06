@@ -13,6 +13,7 @@
     name = "Bash Language Server";
     language = "bash";
     extensions = [ ".sh" ".bash" ];
+    displayVersion = pkgs.nodePackages.bash-language-server.version;
 
     start = "${pkgs.nodePackages.bash-language-server}/bin/bash-language-server start";
   };

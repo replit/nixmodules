@@ -20,6 +20,7 @@ in
   replit.dev.languageServers.sumneko = {
     name = "lua-language-server";
     language = "lua";
+    displayVersion = pkgs.sumneko-lua-language-server.version;
 
     start = "${pkgs.sumneko-lua-language-server}/bin/lua-language-server";
   };

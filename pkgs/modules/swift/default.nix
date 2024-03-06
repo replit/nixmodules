@@ -36,6 +36,7 @@ in
   replit.dev.languageServers.sourcekit = {
     name = "SourceKit";
     language = "swift";
+    displayVersion = "Swift ${swift-version}";
 
     start = "${pkgs.swift}/bin/sourcekit-lsp";
   };

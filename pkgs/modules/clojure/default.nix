@@ -17,6 +17,8 @@ in
     name = "Clojure LSP";
     language = "clojure";
 
+    displayVersion = pkgs.clojure-lsp.version;
+
     start = "${pkgs.clojure-lsp}/bin/clojure-lsp";
   };
 }

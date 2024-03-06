@@ -29,12 +29,14 @@ in
     name = "OmniSharp";
     language = "dotnet";
 
+    displayVersion = pkgs.omnisharp-roslyn.version;
     start = "${pkgs.omnisharp-roslyn}/bin/OmniSharp --languageserver";
   };
 
   replit.dev.packagers.dotnet = {
     name = ".NET";
     language = "dotnet";
+    displayVersion = dotnet.version;
     features = {
       packageSearch = true;
       guessImports = false;

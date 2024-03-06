@@ -206,7 +206,6 @@ let
         description = lib.mdDoc ''
           The display version of the language server.
         '';
-        default = "";
       };
 
       language = mkOption {
@@ -266,7 +265,6 @@ let
         description = lib.mdDoc ''
           The display version of the formatter.
         '';
-        default = "";
       };
 
       language = mkOption {
@@ -441,7 +439,7 @@ let
         description = lib.mdDoc ''
           The display version of the language server.
         '';
-        default = "";
+
       };
 
       language = mkOption {

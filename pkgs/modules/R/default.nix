@@ -16,6 +16,7 @@ in
   replit.dev.packagers.r = {
     name = "R";
     language = "r";
+    displayVersion = r-version;
     features = {
       packageSearch = true;
       guessImports = false;

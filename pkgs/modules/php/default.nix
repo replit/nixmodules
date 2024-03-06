@@ -22,12 +22,15 @@ in
     name = "phpactor";
     language = "php";
 
+    displayVersion = pkgs.phpactor.version;
+
     start = "${pkgs.phpactor}/bin/phpactor language-server";
   };
 
   replit.dev.packagers.php = {
-    name = "PHP";
+    name = "Composer";
     language = "php";
+    displayVersion = pkgs.phpPackages.composer.version;
     features = {
       packageSearch = true;
       guessImports = false;

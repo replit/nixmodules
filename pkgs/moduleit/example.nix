@@ -100,8 +100,9 @@ in
     };
 
     packagers.upmNodejs = {
-      name = "UPM for Node.js";
+      name = "Node.js packager";
       language = "nodejs";
+      displayVersion = "Node ${pkgs.nodejs_20.version}";
       features = {
         packageSearch = true;
         guessImports = true;

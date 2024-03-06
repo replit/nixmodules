@@ -6,11 +6,11 @@ let
 
   extensions = [ ".js" ".jsx" ".cjs" ".mjs" ".ts" ".tsx" ".mts" ];
 
-  community-version = lib.versions.majorMinor bun.version;
+  bun-version = lib.versions.majorMinor bun.version;
 in
 
 {
-  id = "bun-${community-version}";
+  id = "bun-${bun-version}";
   name = "Bun Tools";
   displayVersion = bun.version;
 
@@ -38,6 +38,7 @@ in
   replit.dev.packagers.bun = {
     name = "bun";
     language = "bun";
+    displayVersion = bun.version;
     features = {
       packageSearch = true;
       guessImports = true;
