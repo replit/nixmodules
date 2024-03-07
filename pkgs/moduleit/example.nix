@@ -96,6 +96,7 @@ in
       name = "TypeScript Language Server";
       language = "javascript";
       extensions = [ ".js" ".ts" ".jsx" ".tsx" ];
+      displayVersion = "Node ${typescript-language-server.version}";
       start = "${typescript-language-server}/bin/typescript-language-server --stdio";
     };
 
