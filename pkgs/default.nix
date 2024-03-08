@@ -1,9 +1,8 @@
-{ pkgs, self }:
+{ pkgs, pkgs-23_05, self }:
 
 with pkgs.lib;
 
 let
-  modules = self.modules;
   revstring_long = self.rev or "dirty";
   revstring = builtins.substring 0 7 revstring_long;
   all-modules = builtins.fromJSON (builtins.readFile ../modules.json);
@@ -27,7 +26,7 @@ let
 
   bundle-squashfs-fn = { moduleIds ? null, diskName ? "disk.raw" }:
     let
-      modulesLocks = import ./filter-modules-locks {
+      modulesLockmoduless = import ./filter-modules-locks {
         inherit pkgs upgrade-maps;
         inherit moduleIds;
       };
@@ -115,5 +114,28 @@ rec {
   inherit all-modules;
 
   deploymentModules = self.deploymentModules;
+
+  topLevelModule = with pkgs.lib; {
+    config = {
+      # go.enabled = true;
+      ruby.enabled = true;
+      ruby.version = "3.1";
+      ruby.packager.enabled = false;
+    };
+  };
+
+  v2 = (pkgs.lib.evalModules {
+    modules = [
+      topLevelModule
+      (import ./moduleit/module-definition.nix)
+      (import ./modules/go)
+      (import ./modules/ruby)
+    ];
+    specialArgs = {
+      inherit pkgs pkgs-23_05;
+      pkgs-unstable = pkgs;
+      modulesPath = builtins.toString ./.;
+    };
+  }).config.replit.buildModule;
 
 } // modules

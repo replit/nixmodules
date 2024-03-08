@@ -601,11 +601,13 @@ in
     id = mkOption {
       type = types.str;
       description = "ID of the module";
+      default = "";
     };
 
     name = mkOption {
       type = types.str;
       description = "Name of the module";
+      default = "";
     };
 
     displayVersion = mkOption {
