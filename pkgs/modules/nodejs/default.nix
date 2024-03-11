@@ -1,15 +1,14 @@
-{ pkgs, lib, ... }:
-
+{ pkgs, lib, config, ... }:
 let
-  nodejs-wrapped = pkgs.lib.mkWrapper-replit_ld_library_path nodejs;
-
-  short-version = lib.versions.major nodejs.version;
-
-  bun = pkgs.callPackage ../../bun { };
-
+  cfg = config.nodejs;
+  nodejs = pkgs.${"nodejs_${cfg.version}"};
   nodepkgs = pkgs.nodePackages.override {
     inherit nodejs;
   };
+
+  nodejs-wrapped = pkgs.lib.mkWrapper-replit_ld_library_path nodejs;
+
+  short-version = lib.versions.major nodejs.version;
 
   npx-wrapper = pkgs.writeShellApplication {
     name = "npx";
@@ -19,48 +18,38 @@ let
     '';
   };
 in
-
-{
+with lib; {
   options = {
-    nodejs.enabled = mkOption {
-      type = types.bool;
-      default = false;
-    };
+    nodejs.enabled = mkEnableOption "Node.js Tools";
 
-    nodejs.packager.enabled = mkOption {
-      type = types.bool;
-      default = false;
-    };
-
-    version = mkOption {
+    nodejs.version = mkOption {
       type = types.enum ["18" "20"];
+      default = "20";
     };
+
+    nodejs.packager.enabled = mkEnableOption "Node.js Packager";
+
+    nodejs.debugger.enabled = mkEnableOption "Node.js Debugger";
+
   };
 
   config = {
+    nodejs.packager.enabled = mkDefault cfg.enabled;
+    nodejs.debugger.enabled = mkDefault cfg.enabled;
     typescript-language-server.enabled = mkDefault cfg.enabled;
-
-    imports = [
-      (import ../typescript-language-server {
-        inherit nodepkgs;
-      })
-    ];
+    typescript-language-server.extensions = mkDefault [ ".js" ".jsx" ".ts" ".tsx" ".json" ".mjs" ".cjs" ".es6" ];
+    typescript-language-server.nodejsVersion = mkDefault cfg.version;
+    prettier.enabled = mkDefault cfg.enabled;
+    prettier.nodejsVersion = mkDefault cfg.version;
 
     replit = {
       packages = [
         nodejs-wrapped
-        bun
         nodepkgs.pnpm
         nodepkgs.yarn
       ];
 
-      dev.packages = [
-        nodepkgs.prettier
-      ];
-
-      dev.languageServers.typescript-language-server.extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ".mjs" ".cjs" ".es6" ];
-
-      runners.nodeJS = {
+      runners.nodeJS = mkIf cfg.enabled {
         name = "Node.js";
         displayVersion = nodejs.version;
         language = "javascript";
@@ -68,7 +57,7 @@ in
         fileParam = true;
       };
 
-      dev.debuggers.nodeDAP = {
+      dev.debuggers.nodeDAP = mkIf cfg.debugger.enabled {
         name = "Node DAP";
         language = "javascript";
         transport = "localhost:0";
@@ -112,19 +101,7 @@ in
         };
       };
 
-      dev.formatters.prettier = {
-        name = "Prettier";
-        displayVersion = "${nodepkgs.prettier.version} (Node ${lib.versions.majorMinor nodejs.version})";
-        language = "javascript";
-        extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ".html" ];
-        start = {
-          # Resolve to first prettier in path
-          args = [ "prettier" "--stdin-filepath" "$file" ];
-        };
-        stdin = true;
-      };
-
-      dev.packagers.nodejsPackager = {
+      dev.packagers.nodejsPackager = mkIf cfg.packager.enabled {
         name = "Node.js packager";
         language = "nodejs";
         displayVersion = "Node ${lib.versions.majorMinor nodejs.version}";

@@ -115,27 +115,28 @@ rec {
 
   deploymentModules = self.deploymentModules;
 
-  topLevelModule = with pkgs.lib; {
-    config = {
-      # go.enabled = true;
-      ruby.enabled = true;
-      ruby.version = "3.1";
-      ruby.packager.enabled = false;
-    };
-  };
+  v2BuildModule = path:
+    (pkgs.lib.evalModules {
+      modules = [
+        (import path)
+        (import ./moduleit/module-definition.nix)
+        (import ./modules/go)
+        (import ./modules/ruby)
+        (import ./modules/nodejs)
+        (import ./modules/prettier)
+        (import ./modules/typescript-language-server)
+      ];
+      specialArgs = {
+        inherit pkgs pkgs-23_05;
+        pkgs-unstable = pkgs;
+        modulesPath = builtins.toString ./.;
+      };
+    }).config.replit.buildModule;
 
-  v2 = (pkgs.lib.evalModules {
-    modules = [
-      topLevelModule
-      (import ./moduleit/module-definition.nix)
-      (import ./modules/go)
-      (import ./modules/ruby)
-    ];
-    specialArgs = {
-      inherit pkgs pkgs-23_05;
-      pkgs-unstable = pkgs;
-      modulesPath = builtins.toString ./.;
-    };
-  }).config.replit.buildModule;
+  v2 = {
+    ruby = v2BuildModule ./v2/ruby.nix;
+    go = v2BuildModule ./v2/go.nix;
+    nodejs = v2BuildModule ./v2/nodejs.nix;
+  };
 
 } // modules
