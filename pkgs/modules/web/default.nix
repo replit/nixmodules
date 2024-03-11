@@ -1,15 +1,22 @@
 { pkgs, lib, config, ... }:
-let cfg = config.web;
+let cfg = config.bundles.web;
 in with lib; {
   options = {
-    web.enable = mkEnableOption "Web";
+    bundles.web.enable = mkEnableOption "Web";
+    v1bundles.web.enable = mkEnableOption "Web";
   };
 
   config = mkIf cfg.enable {
-    typescript-language-server.enable = mkDefault true;
-    typescript-language-server.extensions = mkDefault [ ".js" ".jsx" ".ts" ".tsx" ".mjs" ".mts" ".cjs" ".cts" ".es6" ];
+    languageServers.typescript-language-server.enable = mkDefault true;
+    languageServers.typescript-language-server.extensions = mkDefault [ ".js" ".jsx" ".ts" ".tsx" ".mjs" ".mts" ".cjs" ".cts" ".es6" ];
 
-    html-language-server.enable = mkDefault true;
-    css-language-server.enable = mkDefault true;
+    languageServers.html-language-server.enable = mkDefault true;
+    languageServers.css-language-server.enable = mkDefault true;
   };
 }
+
+# bundles
+# languageServers
+# packagers
+# * upm configs?
+# formatters

@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 let cfg = config.css-language-server;
 in
 with lib; {
@@ -7,7 +7,7 @@ with lib; {
   };
 
   config = mkIf cfg.enable {
-    replit.dev.languageServers.css = {
+    replit.dev.languageServers.css-language-server = {
       name = "CSS Language Server";
       language = "css";
       extensions = [ ".css" ".less" ".scss" ];
