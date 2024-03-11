@@ -125,6 +125,8 @@ rec {
         (import ./modules/nodejs)
         (import ./modules/prettier)
         (import ./modules/typescript-language-server)
+        (import ./modules/bun)
+        (import ./modules/web)
       ];
       specialArgs = {
         inherit pkgs pkgs-23_05;
@@ -137,6 +139,9 @@ rec {
     ruby = v2BuildModule ./v2/ruby.nix;
     go = v2BuildModule ./v2/go.nix;
     nodejs = v2BuildModule ./v2/nodejs.nix;
+    bun = v2BuildModule ./v2/bun.nix;
+    bun_and_node = v2BuildModule ./v2/bun_and_node.nix;
+    bun_and_node_and_web = v2BuildModule ./v2/bun_and_node_and_web.nix;
   };
 
 } // modules

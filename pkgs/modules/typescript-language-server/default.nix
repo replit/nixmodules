@@ -23,7 +23,7 @@ let
 in
 with lib; {
   options = {
-    typescript-language-server.enabled = mkEnableOption "TypeScript Language Server";
+    typescript-language-server.enable = mkEnableOption "TypeScript Language Server";
 
     typescript-language-server.extensions = mkOption {
       type = types.listOf (types.str);
@@ -36,8 +36,8 @@ with lib; {
     };
   };
 
-  config = {
-    replit.dev.languageServers.typescript-language-server = mkIf cfg.enabled {
+  config = mkIf cfg.enable {
+    replit.dev.languageServers.typescript-language-server = mkIf cfg.enable {
       name = "TypeScript Language Server";
       displayVersion = "${typescript-language-server.version} (Node ${lib.versions.majorMinor nodepkgs.nodejs.version})";
       language = "javascript";

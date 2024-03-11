@@ -1,5 +1,5 @@
 {
-  ruby.enabled = true;
+  ruby.enable = true;
   ruby.version = "3.2";
-  ruby.packager.enabled = false;
+  ruby.packager.enable = false;
 }

@@ -1,6 +1,6 @@
-{ pkgs, lib, ... }:
-
+{ pkgs, lib, config, ... }:
 let
+  cfg = config.bun;
   bun = pkgs.callPackage ../../bun { };
   bun-wrapped = pkgs.lib.mkWrapper-replit_ld_library_path bun;
 
@@ -8,41 +8,33 @@ let
 
   bun-version = lib.versions.majorMinor bun.version;
 in
+with lib; {
 
-{
-  id = "bun-${bun-version}";
-  name = "Bun Tools";
-  displayVersion = bun.version;
-
-  imports = [
-    (import ../run-package-json {
-      runPackageJsonScript = "${bun-wrapped}/bin/bun run";
-      runFileScript = "${bun-wrapped}/bin/bun";
-    })
-    (import ../typescript-language-server {
-      nodepkgs = pkgs.nodePackages;
-    })
-  ];
-
-  replit.packages = [
-    bun-wrapped
-  ];
-
-  replit.dev.languageServers.typescript-language-server.extensions = extensions ++ [ ".json" ];
-
-  replit.runners."package.json" = {
-    language = "javascript";
-    inherit extensions;
+  options = {
+    bun.enable = mkEnableOption "Bun";
   };
 
-  replit.dev.packagers.bun = {
-    name = "bun";
-    language = "bun";
+  config = mkIf cfg.enable {
+    typescript-language-server.enable = mkDefault true;
+    typescript-language-server.extensions = mkDefault (extensions ++ [ ".json" ]);
+
     displayVersion = bun.version;
-    features = {
-      packageSearch = true;
-      guessImports = true;
-      enabledForHosting = false;
+
+    replit = mkIf cfg.enable {
+      packages = [
+        bun-wrapped
+      ];
+
+      dev.packagers.bun = {
+        name = "bun";
+        language = "bun";
+        displayVersion = bun.version;
+        features = {
+          packageSearch = true;
+          guessImports = true;
+          enabledForHosting = false;
+        };
+      };
     };
   };
 }

@@ -29,17 +29,17 @@ let
 in
 with lib; {
   options = {
-    ruby.enabled = mkOption {
+    ruby.enable = mkOption {
       type = types.bool;
       default = false;
     };
 
-    ruby.languageServer.enabled = mkOption {
+    ruby.languageServer.enable = mkOption {
       type = types.bool;
       default = false;
     };
 
-    ruby.packager.enabled = mkOption {
+    ruby.packager.enable = mkOption {
       type = types.bool;
       default = false;
     };
@@ -50,15 +50,15 @@ with lib; {
     };
   };
 
-  config = {
-    ruby.languageServer.enabled = mkDefault cfg.enabled;
-    ruby.packager.enabled = mkDefault cfg.enabled;
+  config = mkIf cfg.enable {
+    ruby.languageServer.enable = mkDefault true;
+    ruby.packager.enable = mkDefault true;
 
-    replit.packages = mkIf cfg.enabled [
+    replit.packages = mkIf cfg.enable [
       ruby
     ];
 
-    replit.runners.bundle = mkIf cfg.enabled {
+    replit.runners.bundle = mkIf cfg.enable {
       name = "bundle exec ruby";
       language = "ruby";
 
@@ -67,7 +67,7 @@ with lib; {
       fileParam = true;
     };
 
-    replit.dev.languageServers.solargraph = mkIf cfg.languageServer.enabled {
+    replit.dev.languageServers.solargraph = mkIf cfg.languageServer.enable {
       name = "Solargraph: A Ruby Language Server";
       language = "ruby";
 
@@ -76,7 +76,7 @@ with lib; {
       start = "${rubyPackages.solargraph}/bin/solargraph stdio";
     };
 
-    replit.packagers.gem = mkIf cfg.packager.enabled {
+    replit.packagers.gem = mkIf cfg.packager.enable {
       name = "Gem";
       language = "ruby";
       displayVersion = "Ruby ${ruby-version}";
@@ -87,7 +87,7 @@ with lib; {
       };
     };
 
-    replit.env = mkIf cfg.enabled {
+    replit.env = mkIf cfg.enable {
       PATH = "${bundle-wrapper}/bin:$XDG_DATA_HOME/gem/ruby/${ruby-version}.0/bin";
     };
   };

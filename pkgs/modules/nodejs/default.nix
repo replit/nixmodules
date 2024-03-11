@@ -20,26 +20,26 @@ let
 in
 with lib; {
   options = {
-    nodejs.enabled = mkEnableOption "Node.js Tools";
+    nodejs.enable = mkEnableOption "Node.js Tools";
 
     nodejs.version = mkOption {
       type = types.enum ["18" "20"];
       default = "20";
     };
 
-    nodejs.packager.enabled = mkEnableOption "Node.js Packager";
+    nodejs.packager.enable = mkEnableOption "Node.js Packager";
 
-    nodejs.debugger.enabled = mkEnableOption "Node.js Debugger";
+    nodejs.debugger.enable = mkEnableOption "Node.js Debugger";
 
   };
 
-  config = {
-    nodejs.packager.enabled = mkDefault cfg.enabled;
-    nodejs.debugger.enabled = mkDefault cfg.enabled;
-    typescript-language-server.enabled = mkDefault cfg.enabled;
+  config = mkIf cfg.enable {
+    nodejs.packager.enable = mkDefault true;
+    nodejs.debugger.enable = mkDefault true;
+    typescript-language-server.enable = mkDefault true;
     typescript-language-server.extensions = mkDefault [ ".js" ".jsx" ".ts" ".tsx" ".json" ".mjs" ".cjs" ".es6" ];
     typescript-language-server.nodejsVersion = mkDefault cfg.version;
-    prettier.enabled = mkDefault cfg.enabled;
+    prettier.enable = mkDefault true;
     prettier.nodejsVersion = mkDefault cfg.version;
 
     replit = {
@@ -49,7 +49,7 @@ with lib; {
         nodepkgs.yarn
       ];
 
-      runners.nodeJS = mkIf cfg.enabled {
+      runners.nodeJS = {
         name = "Node.js";
         displayVersion = nodejs.version;
         language = "javascript";
@@ -57,7 +57,7 @@ with lib; {
         fileParam = true;
       };
 
-      dev.debuggers.nodeDAP = mkIf cfg.debugger.enabled {
+      dev.debuggers.nodeDAP = mkIf cfg.debugger.enable {
         name = "Node DAP";
         language = "javascript";
         transport = "localhost:0";
@@ -101,7 +101,7 @@ with lib; {
         };
       };
 
-      dev.packagers.nodejsPackager = mkIf cfg.packager.enabled {
+      dev.packagers.nodejsPackager = mkIf cfg.packager.enable {
         name = "Node.js packager";
         language = "nodejs";
         displayVersion = "Node ${lib.versions.majorMinor nodejs.version}";

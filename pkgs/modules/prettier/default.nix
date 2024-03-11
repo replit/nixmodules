@@ -8,7 +8,7 @@ in
 with lib; {
 
   options = {
-    prettier.enabled = mkEnableOption "Prettier Formatter";
+    prettier.enable = mkEnableOption "Prettier Formatter";
 
     prettier.extensions = mkOption {
       type = types.listOf (types.str);
@@ -21,9 +21,9 @@ with lib; {
     };
   };
 
-  config = {
+  config = mkIf cfg.enable {
 
-    replit.dev = mkIf cfg.enabled {
+    replit.dev = mkIf cfg.enable {
       packages = [
         nodepkgs.prettier
       ];

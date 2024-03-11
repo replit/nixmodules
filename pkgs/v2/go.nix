@@ -1,3 +1,3 @@
 {
-  go.enabled = true;
+  go.enable = true;
 }

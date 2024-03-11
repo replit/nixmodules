@@ -1,0 +1,3 @@
+{
+  bun.enable = true;
+}
