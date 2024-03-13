@@ -57,6 +57,7 @@ let
       buildCommand = ''
         mkdir -p $out/bin
         makeWrapper ${ldLibraryPathConvertWrapper}/bin/${name} $out/bin/${name} \
+          --prefix PYTHONPATH : "${pypkgs.setuptools}/${python.sitePackages}" \
           --unset PYTHONNOUSERSITE
 
       '' + pkgs.lib.concatMapStringsSep "\n" (s: "ln -s $out/bin/${name} $out/bin/${s}") aliases;

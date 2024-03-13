@@ -25,9 +25,3 @@ exe = sys.argv[0]
 if exe.endswith('/pip') or exe.endswith('/pip3') or exe.endswith('/.pip-wrapped'):
     from pip._vendor.distlib.scripts import ScriptMaker
     ScriptMaker._build_shebang = pip_build_shebang
-
-import os
-pythonpath = os.getenv('REPLIT_PYTHONPATH')
-if pythonpath:
-  paths = pythonpath.split(':')
-  sys.path.extend(paths)

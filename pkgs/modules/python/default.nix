@@ -154,8 +154,7 @@ in
     POETRY_USE_USER_SITE = "1";
     PIP_CONFIG_FILE = pip.config.outPath;
     PYTHONUSERBASE = userbase;
-    PYTHONPATH = "${sitecustomize}";
-    REPLIT_PYTHONPATH = "${userbase}/${python.sitePackages}:${pip.pip}/${python.sitePackages}:${pypkgs.setuptools}/${python.sitePackages}";
+    PYTHONPATH = "${sitecustomize}:${python}/lib/python${pythonVersion}:${userbase}/${python.sitePackages}:${pip.pip}/${python.sitePackages}";
     # Even though it is set-default in the wrapper, add it to the
     # environment too, so that when someone wants to override it,
     # they can keep the defaults if they want to.
