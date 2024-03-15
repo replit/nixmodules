@@ -129,9 +129,10 @@ in
     start = "${pyright-extended}/bin/langserver.index.js --stdio";
   };
 
-  replit.dev.packagers.upmPython = {
-    name = "Python";
+  replit.dev.packagers.pythonPackager = {
+    name = "Python 3 Packager";
     language = "python3";
+    displayVersion = pythonVersion;
     ignoredPackages = [ "unit_tests" ];
     ignoredPaths = [ pylibs-dir ];
     features = {

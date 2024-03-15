@@ -99,7 +99,7 @@ in
 
     dev.formatters.prettier = {
       name = "Prettier";
-      displayVersion = nodepkgs.prettier.version;
+      displayVersion = "${nodepkgs.prettier.version} (Node ${lib.versions.majorMinor nodejs.version})";
       language = "javascript";
       extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ".html" ];
       start = {
@@ -109,9 +109,10 @@ in
       stdin = true;
     };
 
-    dev.packagers.upmNodejs = {
-      name = "UPM for Node.js";
+    dev.packagers.nodejsPackager = {
+      name = "Node.js packager";
       language = "nodejs";
+      displayVersion = "Node ${lib.versions.majorMinor nodejs.version}";
       features = {
         packageSearch = true;
         guessImports = true;

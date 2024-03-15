@@ -45,6 +45,7 @@ in
   replit.dev.languageServers.ccls = {
     name = "ccls";
     language = "c";
+    displayVersion = pkgs.ccls.version;
     start = "${pkgs.ccls}/bin/ccls";
   };
 

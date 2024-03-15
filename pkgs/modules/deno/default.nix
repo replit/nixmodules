@@ -26,6 +26,7 @@ in
   replit.dev.languageServers.deno = {
     name = "deno";
     language = "javascript";
+    displayVersion = "Deno ${version}";
     inherit extensions;
     start = "${deno}/bin/deno lsp --quiet";
   };

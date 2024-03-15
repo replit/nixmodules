@@ -96,12 +96,14 @@ in
       name = "TypeScript Language Server";
       language = "javascript";
       extensions = [ ".js" ".ts" ".jsx" ".tsx" ];
+      displayVersion = "Node ${typescript-language-server.version}";
       start = "${typescript-language-server}/bin/typescript-language-server --stdio";
     };
 
     packagers.upmNodejs = {
-      name = "UPM for Node.js";
+      name = "Node.js packager";
       language = "nodejs";
+      displayVersion = "Node ${pkgs.nodejs_20.version}";
       features = {
         packageSearch = true;
         guessImports = true;

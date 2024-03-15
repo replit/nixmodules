@@ -45,6 +45,7 @@ in
   replit.dev.languageServers.dotreplit-lsp = {
     name = ".replit LSP";
     language = "dotreplit";
+    displayVersion = "latest";
     start = "${taplo}/bin/taplo lsp -c ${taplo-config} stdio";
   };
 }

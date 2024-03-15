@@ -26,6 +26,7 @@ in
   replit.dev.formatters.go-fmt = {
     name = "go fmt";
     language = "go";
+    displayVersion = "Go ${go.version}";
 
     start = "${go}/bin/go fmt";
     stdin = false;
@@ -34,6 +35,8 @@ in
   replit.dev.languageServers.gopls = {
     name = "gopls";
     language = "go";
+
+    displayVersion = gopls.version;
 
     start = "${gopls}/bin/gopls";
   };

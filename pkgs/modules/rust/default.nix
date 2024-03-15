@@ -38,6 +38,7 @@ in
     name = "rust-analyzer";
     language = "rust";
 
+    displayVersion = rust-channel-name;
     start = "${channel.toolchain}/bin/rust-analyzer";
 
     initializationOptions = {
@@ -48,6 +49,7 @@ in
   replit.dev.packagers.rust = {
     name = "Rust";
     language = "rust";
+    displayVersion = rust-channel-name;
     features = {
       packageSearch = true;
       guessImports = false;

@@ -8,6 +8,7 @@ in
   replit.languageServers.pyright-extended = {
     name = "pyright-extended";
     language = "python3";
+    displayVersion = pyright-extended.version;
     start = "${pyright-extended}/bin/langserver.index.js --stdio";
   };
 }

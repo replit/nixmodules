@@ -15,16 +15,18 @@ in {
     start = "${pkgs.dart}/bin/dart main.dart";
   };
 
-  replit.dev.languageServers.dart-pub = {
-    name = "dart";
+  replit.dev.languageServers.dart-lsp = {
+    name = "dart LSP";
     language = "dart";
 
+    displayVersion = "Dart ${pkgs.dart.version}";
     start = "${pkgs.dart}/bin/dart language-server";
   };
 
   replit.dev.packagers.dart-pub = {
     name = "dart pub";
     language = "dart-pub";
+    displayVersion = "Dart ${pkgs.dart.version}";
     features = {
       packageSearch = true;
       guessImports = false;

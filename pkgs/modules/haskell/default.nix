@@ -31,6 +31,7 @@ in
   replit.dev.languageServers.haskell-language-server = {
     name = "Haskell Language Server";
     language = "haskell";
+    displayVersion = pkgs.haskellPackages.haskell-language-server.version;
 
     start = "${pkgs.haskellPackages.haskell-language-server}/bin/haskell-language-server --lsp";
   };

@@ -47,12 +47,15 @@ in
     name = "Solargraph: A Ruby Language Server";
     language = "ruby";
 
+    displayVersion = "${rubyPackages.solargraph.version} (Ruby ${ruby-version})";
+
     start = "${rubyPackages.solargraph}/bin/solargraph stdio";
   };
 
-  replit.packagers.ruby = {
-    name = "Ruby";
+  replit.packagers.gem = {
+    name = "Gem";
     language = "ruby";
+    displayVersion = "Ruby ${ruby-version}";
     features = {
       packageSearch = true;
       guessImports = true;

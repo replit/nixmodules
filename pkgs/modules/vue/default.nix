@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 let
   nodejs = pkgs.nodejs_20;
@@ -31,6 +31,7 @@ in
     dev.languageServers.vue-language-server = {
       name = "Vue Language Server";
       inherit language extensions;
+      displayVersion = "${vue-language-server.version} (Node ${lib.versions.majorMinor nodejs.version})";
       start = "${vue-language-server}/bin/vue-language-server --stdio";
 
       initializationOptions = {

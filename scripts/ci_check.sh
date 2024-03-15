@@ -29,8 +29,8 @@ python scripts/check_modules.py
 echo "Verify upgrade maps"
 python scripts/check_upgrade_maps.py
 
-echo "Build new/updated modules"
-python scripts/build_changed_modules.py origin/main
-
 echo "Build moduleit example"
 scripts/moduleit_test.sh
+
+echo "Build new/updated modules"
+python scripts/build_changed_modules.py origin/main

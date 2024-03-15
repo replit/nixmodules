@@ -26,6 +26,7 @@
       name = "Svelte Language Server";
       language = "svelte";
       extensions = [ ".svelte" ".js" ".ts" ];
+      displayVersion = pkgs.nodePackages.svelte-language-server.version;
       start = "${pkgs.nodePackages.svelte-language-server}/bin/svelteserver --stdio";
     };
   };
