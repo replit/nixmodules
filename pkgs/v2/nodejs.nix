@@ -1,6 +1,6 @@
 {
-  nodejs.enable = true;
-  nodejs.version = "18";
-  prettier.nodejsVersion = "20";
-  typescript-language-server.enable = false;
+  bundles.nodejs.enable = true;
+  interpreters.nodejs.version = "18";
+  formatters.prettier.nodejsVersion = "20";
+  languageServers.typescript-language-server.enable = false;
 }

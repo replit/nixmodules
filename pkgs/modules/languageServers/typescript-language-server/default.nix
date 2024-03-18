@@ -1,6 +1,6 @@
 { pkgs, lib, config, ... }:
 let
-  cfg = config.typescript-language-server;
+  cfg = config.languageServers.typescript-language-server;
   nodejs = pkgs.${"nodejs_${cfg.nodejsVersion}"};
   nodepkgs = pkgs.nodePackages.override {
     inherit nodejs;
@@ -23,23 +23,24 @@ let
 in
 with lib; {
   options = {
-    typescript-language-server.enable = mkEnableOption "TypeScript Language Server";
+    languageServers.typescript-language-server = {
+      enable = mkEnableOption "TypeScript Language Server";
 
-    typescript-language-server.extensions = mkOption {
-      type = types.listOf (types.str);
-      default = [];
-    };
+      extensions = mkOption {
+        type = types.listOf (types.str);
+        default = [];
+      };
 
-    typescript-language-server.nodejsVersion = mkOption {
-      type = types.enum ["18" "20"];
-      default = "20";
+      nodejsVersion = mkOption {
+        type = types.enum ["18" "20"];
+        default = "20";
+      };
     };
   };
 
   config = mkIf cfg.enable {
     replit.dev.languageServers.typescript-language-server = mkIf cfg.enable {
       name = "TypeScript Language Server";
-      displayVersion = "${typescript-language-server.version} (Node ${lib.versions.majorMinor nodepkgs.nodejs.version})";
       language = "javascript";
       start = "${typescript-language-server}/bin/typescript-language-server --stdio";
       extensions = cfg.extensions;
