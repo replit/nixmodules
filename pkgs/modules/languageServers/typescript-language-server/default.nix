@@ -43,6 +43,7 @@ with lib; {
       name = "TypeScript Language Server";
       language = "javascript";
       start = "${typescript-language-server}/bin/typescript-language-server --stdio";
+      displayVersion = "${typescript-language-server.version} (Node ${nodejs.version})";
       extensions = cfg.extensions;
       initializationOptions = {
         tsserver.fallbackPath = "${nodepkgs.typescript}/lib/node_modules/typescript/lib";

@@ -1,6 +1,7 @@
 { pkgs, lib, config, ... }:
 let
   cfg = config.packagers.nodejs-packager;
+  nodejs = pkgs.${"nodejs_${config.interpreters.nodejs.version}"};
 in
 with lib; {
   options = {
@@ -15,6 +16,7 @@ with lib; {
     replit.dev.packagers.nodejs-packager = {
       name = "Node.js packager";
       language = "nodejs";
+      displayVersion = "Node ${nodejs.version}";
       features = {
         packageSearch = true;
         guessImports = true;
