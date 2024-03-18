@@ -3,7 +3,6 @@ let cfg = config.bundles.web;
 in with lib; {
   options = {
     bundles.web.enable = mkEnableOption "Web";
-    v1bundles.web.enable = mkEnableOption "Web";
   };
 
   config = mkIf cfg.enable {
@@ -14,9 +13,3 @@ in with lib; {
     languageServers.css-language-server.enable = mkDefault true;
   };
 }
-
-# bundles
-# languageServers
-# packagers
-# * upm configs?
-# formatters

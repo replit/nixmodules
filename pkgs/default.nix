@@ -115,27 +115,39 @@ rec {
 
   deploymentModules = self.deploymentModules;
 
-  v2BuildModule = path:
+  myEvalModule = path:
     (pkgs.lib.evalModules {
       modules = [
         (import path)
         (import ./moduleit/module-definition.nix)
-        (import ./modules/go)
-        (import ./modules/ruby)
-        (import ./modules/nodejs)
-        (import ./modules/prettier)
-        (import ./modules/typescript-language-server)
-        (import ./modules/bun)
-        (import ./modules/web)
-        (import ./modules/css-language-server)
-        (import ./modules/html-language-server)
+        (import ./modules/bundles/go)
+        (import ./modules/compilers/go)
+        (import ./modules/languageServers/gopls)
+        (import ./modules/formatters/gofmt)
+        (import ./modules/bundles/ruby)
+        (import ./modules/interpreters/ruby)
+        (import ./modules/languageServers/solargraph)
+        (import ./modules/packagers/rubygems)
+        # (import ./modules/nodejs)
+        # (import ./modules/prettier)
+        # (import ./modules/typescript-language-server)
+        # (import ./modules/bun)
+        # (import ./modules/web)
+        # (import ./modules/css-language-server)
+        # (import ./modules/html-language-server)
       ];
       specialArgs = {
         inherit pkgs pkgs-23_05;
         pkgs-unstable = pkgs;
         modulesPath = builtins.toString ./.;
       };
-    }).config.replit.buildModule;
+    });
+
+  v2BuildModule = path:
+    (myEvalModule path).config.replit.buildModule;
+
+  buildConfig = path:
+    builtins.removeAttrs (myEvalModule path).config ["description" "displayVersion" "id" "name" "replit"];
 
   v2 = {
     ruby = v2BuildModule ./v2/ruby.nix;
@@ -144,6 +156,37 @@ rec {
     bun = v2BuildModule ./v2/bun.nix;
     bun_and_node = v2BuildModule ./v2/bun_and_node.nix;
     bun_and_node_and_web = v2BuildModule ./v2/bun_and_node_and_web.nix;
+    combined = v2BuildModule ./v2/combined.nix;
   };
+
+  debugOptions =
+    let eval = (pkgs.lib.evalModules {
+      modules = [
+        (import ./moduleit/module-definition.nix)
+        (import ./modules/compilers/go)
+        (import ./modules/languageServers/gopls)
+        # (import ./modules/ruby)
+        # (import ./modules/nodejs)
+        # (import ./modules/prettier)
+        # (import ./modules/typescript-language-server)
+        # (import ./modules/bun)
+        # (import ./modules/web)
+        # (import ./modules/css-language-server)
+        # (import ./modules/html-language-server)
+      ];
+      specialArgs = {
+        inherit pkgs pkgs-23_05;
+        pkgs-unstable = pkgs;
+        modulesPath = builtins.toString ./.;
+      };
+    });
+    lib = pkgs.lib;
+    options = eval.options;
+    filteredOptions = builtins.removeAttrs options ["_module" "description" "displayVersion" "id" "name" "replit"];
+    docsJson = (pkgs.nixosOptionsDoc {
+      options = filteredOptions;
+    }).optionsJSON;
+    # in lib.optionAttrSetToDocList filteredOptions;
+    in filteredOptions;
 
 } // modules

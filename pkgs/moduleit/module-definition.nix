@@ -625,9 +625,6 @@ in
     replit = replitOptions // {
       dev = replitOptions;
     } // {
-      builtPackages = mkOption {
-        internal = true;
-      };
 
       buildModule = mkOption {
         internal = true;
@@ -637,19 +634,10 @@ in
         internal = true;
       };
 
-      configJSON = mkOption {
-        internal = true;
-      };
-
     };
   };
 
   config = {
-
-    replit.builtPackages = pkgs.buildEnv {
-      name = "module-env";
-      paths = config.packages;
-    };
 
     replit.buildModule =
       let

@@ -1,5 +1,5 @@
 {
-  ruby.enable = true;
-  ruby.version = "3.2";
-  ruby.packager.enable = false;
+  bundles.ruby.enable = true;
+  interpreters.ruby.version = "3.2";
+  packagers.rubygems.enable = false;
 }

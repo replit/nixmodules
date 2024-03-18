@@ -1,3 +1,3 @@
 {
-  go.enable = true;
+  bundles.go.enable = true;
 }
