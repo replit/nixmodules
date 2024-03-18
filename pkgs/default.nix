@@ -131,7 +131,6 @@ rec {
     (import ./modules/languageServers/typescript-language-server)
     (import ./modules/packagers/nodejs-packager)
     (import ./modules/debuggers/js-debug)
-
     (import ./modules/bundles/bun)
     (import ./modules/interpreters/bun)
     (import ./modules/packagers/bun)
@@ -168,7 +167,7 @@ rec {
     combined = v2BuildModule ./v2/combined.nix;
   };
 
-  debugOptions =
+  allModulesOptions =
     let eval = (pkgs.lib.evalModules {
       modules = allModules;
       specialArgs = {
@@ -183,7 +182,6 @@ rec {
     docsJson = (pkgs.nixosOptionsDoc {
       options = filteredOptions;
     }).optionsJSON;
-    # in lib.optionAttrSetToDocList filteredOptions;
     in filteredOptions;
 
 } // modules
