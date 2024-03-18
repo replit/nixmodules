@@ -2,12 +2,12 @@
 let
   cfg = config.bundles.nodejs;
 in
-with lib; {
+with pkgs.lib; {
   options = {
-    bundles.nodejs.enable = mkEnableOption ''
-    Node.js Tools Bundle
-    Development tools for the Node.js JavaScript runtime.
-    '';
+    bundles.nodejs.enable = mkModuleEnableOption {
+      name = "Node.js Tools Bundle";
+      description = "Development tools for the Node.js JavaScript runtime";
+    };
   };
 
   config = mkIf cfg.enable {

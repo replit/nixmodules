@@ -2,9 +2,12 @@
 let
   cfg = config.bundles.go;
 in
-with lib; {
+with pkgs.lib; {
   options = {
-    bundles.go.enable = mkEnableOption "Go tools bundle";
+    bundles.go.enable = mkModuleEnableOption {
+      name = "Go tools bundle";
+      description = "Development tools for the Go programming language";
+    };
   };
 
   config = mkIf cfg.enable {

@@ -3,12 +3,12 @@ let
   cfg = config.packagers.rubygems;
   ruby-version = config.interpreters.ruby.version;
 in
-with lib; {
+with pkgs.lib; {
   options = {
-    packagers.rubygems.enable = mkEnableOption ''
-    Rubygems
-    Ruby packager support with Rubygems.
-    '';
+    packagers.rubygems.enable = mkModuleEnableOption {
+      name = "Rubygems";
+      description = "Ruby packager support with Rubygems";
+    };
   };
 
   config = mkIf cfg.enable {

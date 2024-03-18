@@ -2,7 +2,10 @@
 let cfg = config.bundles.web;
 in with lib; {
   options = {
-    bundles.web.enable = mkEnableOption "Web";
+    bundles.web.enable = mkModuleEnableOption {
+      name = "Web";
+      description = "Tools for web development";
+    };
   };
 
   config = mkIf cfg.enable {

@@ -2,12 +2,12 @@
 let
   cfg = config.bundles.ruby;
 in
-with lib; {
+with pkgs.lib; {
   options = {
-    bundles.ruby.enable = mkEnableOption ''
-    Ruby Tools Bundle
-    Developer tools for the Ruby programming language.
-    '';
+    bundles.ruby.enable = mkModuleEnableOption {
+      name = "Ruby Tools Bundle";
+      description = "Developer tools for the Ruby programming language";
+    };
   };
 
   config = mkIf cfg.enable {

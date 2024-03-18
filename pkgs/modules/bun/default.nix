@@ -11,7 +11,10 @@ in
 with lib; {
 
   options = {
-    bun.enable = mkEnableOption "Bun";
+    bun.enable = mkModuleEnableOption {
+      name = "Bun";
+      description = "Bun is a fast JavaScript runtime, package manager, and all-in-one toolkit";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -20,7 +23,7 @@ with lib; {
 
     displayVersion = bun.version;
 
-    replit = mkIf cfg.enable {
+    replit = {
       packages = [
         bun-wrapped
       ];

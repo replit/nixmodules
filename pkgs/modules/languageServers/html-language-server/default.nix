@@ -1,9 +1,12 @@
 { pkgs, config, lib, ... }:
 let cfg = config.html-language-server;
 in
-with lib; {
+with pkgs.lib; {
   options = {
-    html-language-server.enable = mkEnableOption "HTML Language Server";
+    html-language-server.enable = mkModuleEnableOption {
+      name = "HTML Language Server";
+      description = "HTML language server from vscode";
+    };
   };
 
   config = mkIf cfg.enable {

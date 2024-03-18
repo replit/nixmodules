@@ -115,31 +115,34 @@ rec {
 
   deploymentModules = self.deploymentModules;
 
+  allModules = [
+    (import ./moduleit/module-definition.nix)
+    (import ./modules/bundles/go)
+    (import ./modules/compilers/go)
+    (import ./modules/languageServers/gopls)
+    (import ./modules/formatters/gofmt)
+    (import ./modules/bundles/ruby)
+    (import ./modules/interpreters/ruby)
+    (import ./modules/languageServers/solargraph)
+    (import ./modules/packagers/rubygems)
+    (import ./modules/bundles/nodejs)
+    (import ./modules/interpreters/nodejs)
+    (import ./modules/formatters/prettier)
+    (import ./modules/languageServers/typescript-language-server)
+    (import ./modules/packagers/nodejs-packager)
+    (import ./modules/debuggers/js-debug)
+
+    # (import ./modules/bun)
+    # (import ./modules/web)
+    # (import ./modules/css-language-server)
+    # (import ./modules/html-language-server)
+  ];
+
   myEvalModule = path:
     (pkgs.lib.evalModules {
       modules = [
         (import path)
-        (import ./moduleit/module-definition.nix)
-        (import ./modules/bundles/go)
-        (import ./modules/compilers/go)
-        (import ./modules/languageServers/gopls)
-        (import ./modules/formatters/gofmt)
-        (import ./modules/bundles/ruby)
-        (import ./modules/interpreters/ruby)
-        (import ./modules/languageServers/solargraph)
-        (import ./modules/packagers/rubygems)
-        (import ./modules/bundles/nodejs)
-        (import ./modules/interpreters/nodejs)
-        (import ./modules/formatters/prettier)
-        (import ./modules/languageServers/typescript-language-server)
-        (import ./modules/packagers/nodejs-packager)
-        (import ./modules/debuggers/js-debug)
-        # (import ./modules/bun)
-        # (import ./modules/web)
-        # (import ./modules/css-language-server)
-        # (import ./modules/html-language-server)
-
-      ];
+      ] ++ allModules;
       specialArgs = {
         inherit pkgs pkgs-23_05;
         pkgs-unstable = pkgs;
@@ -165,19 +168,7 @@ rec {
 
   debugOptions =
     let eval = (pkgs.lib.evalModules {
-      modules = [
-        (import ./moduleit/module-definition.nix)
-        (import ./modules/compilers/go)
-        (import ./modules/languageServers/gopls)
-        # (import ./modules/ruby)
-        # (import ./modules/nodejs)
-        # (import ./modules/prettier)
-        # (import ./modules/typescript-language-server)
-        # (import ./modules/bun)
-        # (import ./modules/web)
-        # (import ./modules/css-language-server)
-        # (import ./modules/html-language-server)
-      ];
+      modules = allModules;
       specialArgs = {
         inherit pkgs pkgs-23_05;
         pkgs-unstable = pkgs;

@@ -2,12 +2,12 @@
 let cfg = config.languageServers.gopls;
 gopls = pkgs.gopls;
 in
-with lib; {
+with pkgs.lib; {
   options = {
-    languageServers.gopls.enable = mkEnableOption ''
-    Gopls - Go language server
-    (pronounced "Go please") is the official Go language server developed by the Go team.
-    '';
+    languageServers.gopls.enable = mkModuleEnableOption {
+      name = "Gopls - Go language server";
+      description = ''(pronounced "Go please") is the official Go language server developed by the Go team'';
+    };
 
     languageServers.gopls.version = mkOption {
       type = types.enum [gopls.version];

@@ -19,13 +19,13 @@ let
   };
 
 in
-with lib; {
+with pkgs.lib; {
   options = {
     interpreters.nodejs = {
-      enable = mkEnableOption ''
-      Node.js JavaScript runtime
-      Node.js is an open-source, cross-platform JavaScript runtime environment.
-      '';
+      enable = mkModuleEnableOption {
+        name = "Node.js JavaScript runtime";
+        description = "Node.js is an open-source, cross-platform JavaScript runtime environment";
+      };
 
       version = mkOption {
         type = types.enum ["18" "20"];

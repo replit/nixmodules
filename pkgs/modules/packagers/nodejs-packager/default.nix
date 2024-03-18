@@ -3,13 +3,12 @@ let
   cfg = config.packagers.nodejs-packager;
   nodejs = pkgs.${"nodejs_${config.interpreters.nodejs.version}"};
 in
-with lib; {
+with pkgs.lib; {
   options = {
-    packagers.nodejs-packager.enable = mkEnableOption ''
-    Node.js Packager
-    Package management for Node.js: supports one of npm, yarn, and pnpm.
-    '';
-
+    packagers.nodejs-packager.enable = mkModuleEnableOption {
+      name = "Node.js Packager";
+      description = "Package management for Node.js: supports one of npm, yarn, and pnpm";
+    };
   };
 
   config = mkIf cfg.enable {

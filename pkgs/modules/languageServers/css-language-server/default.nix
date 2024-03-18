@@ -1,9 +1,12 @@
 { pkgs, config, lib, ... }:
 let cfg = config.css-language-server;
 in
-with lib; {
+with pkgs.lib; {
   options = {
-    css-language-server.enable = mkEnableOption "CSS Language Server";
+    css-language-server.enable = mkModuleEnableOption {
+      name = "CSS Language Server";
+      description = "CSS language server from vscode";
+    };
   };
 
   config = mkIf cfg.enable {

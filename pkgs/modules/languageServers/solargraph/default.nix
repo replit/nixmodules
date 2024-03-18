@@ -4,13 +4,13 @@ let
   ruby-version = config.interpreters.ruby.version;
   rubyPackages = config.interpreters.ruby._rubyPackages;
 in
-with lib;
+with pkgs.lib;
 {
   options = {
-    languageServers.solargraph.enable = mkEnableOption ''
-    Solargraph - a Ruby Language Server
-    Solargraph is a Ruby gem that provides intellisense features through Microsoft's language server protocol.
-    '';
+    languageServers.solargraph.enable = mkModuleEnableOption {
+      name = "Solargraph - a Ruby Language Server";
+      description = "Solargraph is a Ruby gem that provides intellisense features through Microsoft's language server protocol";
+    };
   };
   config = mkIf cfg.enable {
     replit.dev.languageServers.solargraph =  {

@@ -2,12 +2,12 @@
 let
   cfg = config.debuggers.js-debug;
 in
-with lib; {
+with pkgs.lib; {
   options = {
-    debuggers.js-debug.enable = mkEnableOption ''
-    JS-Debug
-    JS-Debug is a DAP-based JavaScript debugger for Node.js.
-    '';
+    debuggers.js-debug.enable = mkModuleEnableOption {
+      name = "JS-Debug";
+      description = "JS-Debug is a DAP-based JavaScript debugger for Node.js";
+    };
   };
 
   config = mkIf cfg.enable {

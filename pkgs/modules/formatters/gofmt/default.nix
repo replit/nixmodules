@@ -3,12 +3,12 @@ let
   cfg = config.formatters.gofmt;
   go = pkgs.go;
 in
-with lib; {
+with pkgs.lib; {
   options = {
-    formatters.gofmt.enable = mkEnableOption ''
-    Gofmt formatter
-    Gofmt is a tool that automatically formats Go source code.
-    '';
+    formatters.gofmt.enable = mkModuleEnableOption {
+      name = "Gofmt";
+      description = "Gofmt is a tool that automatically formats Go source code";
+    };
   };
 
   config = mkIf cfg.enable {

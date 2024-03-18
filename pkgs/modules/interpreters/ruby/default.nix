@@ -27,13 +27,13 @@ let
     '';
   };
 in
-with lib; {
+with pkgs.lib; {
   options = {
     interpreters.ruby = {
-      enable = mkEnableOption ''
-      Ruby Programming Language
-      A dynamic, open source programming language with a focus on simplicity and productivity.
-      '';
+      enable = mkModuleEnableOption {
+        name = "Ruby Programming Language";
+        description = "A dynamic, open source programming language with a focus on simplicity and productivity";
+      };
 
       version = mkOption {
         type = types.enum ["3.1" "3.2"];
@@ -44,6 +44,7 @@ with lib; {
       _rubyPackages = mkOption {
         type = types.anything;
         description = "rubyPackages attr on nixpkgs to use: for internal use.";
+        default = null;
       };
     };
   };

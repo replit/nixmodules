@@ -68,6 +68,17 @@
               done
             '';
           };
+
+          mkModuleEnableOption =
+            { name, description }: prev.lib.mkOption {
+              default = false;
+              example = true;
+              description = "Whether to enable ${name}.";
+              type = prev.lib.types.bool;
+            } // {
+              moduleName = name;
+              moduleDescription = description;
+            };
         };
       };
       formatter.x86_64-linux = pkgs.nixpkgs-fmt;

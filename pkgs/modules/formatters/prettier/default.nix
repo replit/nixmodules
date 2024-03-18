@@ -5,11 +5,14 @@ let cfg = config.formatters.prettier;
     inherit nodejs;
   };
 in
-with lib; {
+with pkgs.lib; {
 
   options = {
     formatters.prettier = {
-      enable = mkEnableOption "Prettier Formatter";
+      enable = mkModuleEnableOption {
+        name = "Prettier";
+        description = "An opinionated code formatter";
+      };
 
       extensions = mkOption {
         type = types.listOf (types.str);

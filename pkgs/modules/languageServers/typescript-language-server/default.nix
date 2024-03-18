@@ -21,10 +21,13 @@ let
     '';
   };
 in
-with lib; {
+with pkgs.lib; {
   options = {
     languageServers.typescript-language-server = {
-      enable = mkEnableOption "TypeScript Language Server";
+      enable = mkModuleEnableOption {
+        name = "TypeScript Language Server";
+        description = "Language Server Protocol implementation for TypeScript wrapping tsserver";
+      };
 
       extensions = mkOption {
         type = types.listOf (types.str);
