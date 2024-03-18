@@ -132,10 +132,12 @@ rec {
     (import ./modules/packagers/nodejs-packager)
     (import ./modules/debuggers/js-debug)
 
-    # (import ./modules/bun)
-    # (import ./modules/web)
-    # (import ./modules/css-language-server)
-    # (import ./modules/html-language-server)
+    (import ./modules/bundles/bun)
+    (import ./modules/interpreters/bun)
+    (import ./modules/packagers/bun)
+    (import ./modules/bundles/web)
+    (import ./modules/languageServers/css-language-server)
+    (import ./modules/languageServers/html-language-server)
   ];
 
   myEvalModule = path:

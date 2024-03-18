@@ -1,6 +1,6 @@
 { pkgs, lib, config, ... }:
 let cfg = config.bundles.web;
-in with lib; {
+in with pkgs.lib; {
   options = {
     bundles.web.enable = mkModuleEnableOption {
       name = "Web";
