@@ -140,10 +140,10 @@ rec {
     (import ./modules/languageServers/html-language-server)
   ];
 
-  myEvalModule = path:
+  myEvalModule = module:
     (pkgs.lib.evalModules {
       modules = [
-        (import path)
+          module
       ] ++ allModules;
       specialArgs = {
         inherit pkgs pkgs-23_05;
@@ -154,6 +154,10 @@ rec {
 
   v2BuildModule = path:
     (myEvalModule path).config.replit.buildModule;
+
+  v2BuildFromDotReplit = path:
+    let toml = builtins.fromTOML (builtins.readFile path);
+    in (myEvalModule toml.moduleConfig).config.replit.buildModule;
 
   buildConfig = path:
     builtins.removeAttrs (myEvalModule path).config ["description" "displayVersion" "id" "name" "replit"];

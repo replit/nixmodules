@@ -588,7 +588,7 @@ let
     };
 
     env = mkOption {
-      type = types.attrsOf types.str;
+      type = types.attrsOf types.envVar;
       default = { };
       description = lib.mdDoc ''
         A set of environment variables to export.
