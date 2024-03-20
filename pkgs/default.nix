@@ -91,7 +91,7 @@ let
     pkgs.callPackage ./bundle-image {
       bundle-locked = all-bundles-enabled-v2;
       inherit revstring;
-      diskName = "disk.raw";
+      diskName = "disk.sqsh";
     };
 
 in
@@ -133,7 +133,14 @@ rec {
     diskName = "disk.sqsh";
   };
 
-  custom-bundle-squashfs = bundle-squashfs-v2;
+  custom-bundle-squashfs = bundle-squashfs-fn {
+    # customize these IDs for dev. They can be like "python-3.10:v10-20230711-6807d41" or "python-3.10"
+    # publish your feature branch first and make sure modules.json is current, then
+    # in goval dir (next to nixmodules), run `make custom-nixmodules-disk` to use this disk in conman
+    # There is no need to check in changes to this.
+    moduleIds = [ "python-3.10" "nodejs-18" "nodejs-20" "docker" "replit" ];
+    diskName = "disk.sqsh";
+  };
 
   all-historical-modules = mapAttrs
     (moduleId: module:
