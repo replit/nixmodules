@@ -85,6 +85,9 @@ let
   all-bundles-enabled-v2 = v2BuildModule {
     bundles.go.enable = true;
     bundles.ruby.enable = true;
+    bundles.nodejs.enable = true;
+    bundles.bun.enable = true;
+    bundles.web.enable = true;
   };
 
   bundle-squashfs-v2 =
