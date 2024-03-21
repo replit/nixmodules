@@ -9,8 +9,8 @@
   inputs.prybar.inputs.nixpkgs.follows = "nixpkgs-unstable";
   inputs.java-language-server.url = "github:replit/java-language-server";
   inputs.java-language-server.inputs.nixpkgs.follows = "nixpkgs-unstable";
-  inputs.ztoc-rs.url = "github:replit/ztoc-rs";
-  inputs.ztoc-rs.inputs.nixpkgs.follows = "nixpkgs-unstable";
+  # inputs.ztoc-rs.url = "github:replit/ztoc-rs";
+  # inputs.ztoc-rs.inputs.nixpkgs.follows = "nixpkgs-unstable";
   inputs.replit-rtld-loader.url = "github:replit/replit_rtld_loader";
   inputs.replit-rtld-loader.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
