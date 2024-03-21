@@ -168,6 +168,7 @@ rec {
     builtins.removeAttrs (myEvalModule path).config ["description" "displayVersion" "id" "name" "replit"];
 
   inherit bundle-squashfs-v2;
+  inherit v2BuildFromDotReplit;
 
   allModulesOptions =
     let eval = (pkgs.lib.evalModules {
