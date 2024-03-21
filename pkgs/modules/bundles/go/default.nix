@@ -13,6 +13,6 @@ with pkgs.lib; {
   config = mkIf cfg.enable {
     compilers.go.enable = mkDefault true;
     languageServers.gopls.enable = mkDefault true;
-  formatters.gofmt.enable = mkDefault true;
+    formatters.gofmt.enable = mkDefault true;
   };
 }

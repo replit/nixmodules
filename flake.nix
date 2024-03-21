@@ -1,7 +1,7 @@
 {
   description = "Nix expressions for defining Replit development environments";
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
-  inputs.nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+  inputs.nixpkgs-unstable.url = "github:nixos/nixpkgs/?rev=7c4c20509c4363195841faa6c911777a134acdf3";
   inputs.fenix.url = "github:nix-community/fenix";
   inputs.fenix.inputs.nixpkgs.follows = "nixpkgs";
   inputs.nixd.url = "github:nix-community/nixd";
