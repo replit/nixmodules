@@ -69,7 +69,7 @@ let
         module
       ] ++ allModules;
       specialArgs = {
-        inherit pkgs pkgs-23_05;
+        inherit pkgs;
         pkgs-unstable = pkgs;
         modulesPath = builtins.toString ./.;
       };
@@ -177,7 +177,7 @@ rec {
     let eval = (pkgs.lib.evalModules {
       modules = allModules;
       specialArgs = {
-        inherit pkgs pkgs-23_05;
+        inherit pkgs;
         pkgs-unstable = pkgs;
         modulesPath = builtins.toString ./.;
       };
