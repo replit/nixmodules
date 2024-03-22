@@ -3,12 +3,8 @@ fenix-channel-name:
 let
   rust-channel-name = if fenix-channel-name == "latest" then "nightly" else fenix-channel-name;
   channel = pkgs.fenix."${fenix-channel-name}";
-in
-{
-  id = "rust-${rust-channel-name}";
-  name = "Rust Tools (${rust-channel-name})";
 
-  replit.packages = [
+  stripped-toolchain = pkgs.fenix.combine [
     (channel.withComponents [
       "cargo"
       "llvm-tools"
@@ -16,13 +12,28 @@ in
       "rust-std"
       "rustc"
     ])
+    pkgs.fenix.targets.wasm32-wasi.${fenix-channel-name}.rust-std
+    pkgs.fenix.targets.wasm32-unknown-unknown.${fenix-channel-name}.rust-std
+  ];
 
+  toolchain = pkgs.fenix.combine [
+    channel.toolchain
+    pkgs.fenix.targets.wasm32-wasi.${fenix-channel-name}.rust-std
+    pkgs.fenix.targets.wasm32-unknown-unknown.${fenix-channel-name}.rust-std
+  ];
+in
+{
+  id = "rust-${rust-channel-name}";
+  name = "Rust Tools (${rust-channel-name})";
+
+  replit.packages = [
+    stripped-toolchain
     pkgs.clang
     pkgs.pkg-config
   ];
 
   replit.dev.packages = [
-    channel.toolchain
+    toolchain
   ];
 
   # TODO: should compile a binary to use in deployment and not include the runtime
@@ -30,7 +41,7 @@ in
     name = "cargo run";
     language = "rust";
 
-    start = "${channel.toolchain}/bin/cargo run";
+    start = "${toolchain}/bin/cargo run";
     fileParam = false;
   };
 
@@ -38,10 +49,10 @@ in
     name = "rust-analyzer";
     language = "rust";
 
-    start = "${channel.toolchain}/bin/rust-analyzer";
+    start = "${toolchain}/bin/rust-analyzer";
 
     initializationOptions = {
-      cargo.sysroot = "${channel.toolchain}";
+      cargo.sysroot = "${toolchain}";
     };
   };
 
