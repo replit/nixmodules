@@ -16,11 +16,13 @@ with pkgs.lib; {
 
       extensions = mkOption {
         type = types.listOf (types.str);
+        description = "Extensions to use prettier for";
         default = [ ".js" ".jsx" ".ts" ".tsx" ".json" ".html" ];
       };
 
       nodejsVersion = mkOption {
         type = types.enum ["18" "20"];
+        description = "Node.js version for prettier";
         default = "20";
       };
     };

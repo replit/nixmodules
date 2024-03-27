@@ -12,6 +12,7 @@ with pkgs.lib; {
     languageServers.gopls.version = mkOption {
       type = types.enum [gopls.version];
       default = gopls.version;
+      description = "Gopls version";
     };
   };
 

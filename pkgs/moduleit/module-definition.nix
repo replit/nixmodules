@@ -588,7 +588,7 @@ let
     };
 
     env = mkOption {
-      type = types.attrsOf types.str;
+      type = types.attrsOf types.envVar;
       default = { };
       description = lib.mdDoc ''
         A set of environment variables to export.
@@ -673,7 +673,7 @@ in
         };
 
       in
-      pkgs.writeText "replit-module-${config.id}" (builtins.toJSON moduleJSON);
+      pkgs.writeText "replit-module" (builtins.toJSON moduleJSON);
 
     replit.buildDeploymentModule =
       let

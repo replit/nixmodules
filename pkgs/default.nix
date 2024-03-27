@@ -78,14 +78,7 @@ rec {
     diskName = "disk.sqsh";
   };
 
-  custom-bundle-squashfs = bundle-squashfs-fn {
-    # customize these IDs for dev. They can be like "python-3.10:v10-20230711-6807d41" or "python-3.10"
-    # publish your feature branch first and make sure modules.json is current, then
-    # in goval dir (next to nixmodules), run `make custom-nixmodules-disk` to use this disk in conman
-    # There is no need to check in changes to this.
-    moduleIds = [ "python-3.10" "nodejs-18" "nodejs-20" "docker" "replit" ];
-    diskName = "disk.sqsh";
-  };
+  custom-bundle-squashfs = bundle-squashfs-v2;
 
   all-historical-modules = mapAttrs
     (moduleId: module:
@@ -116,71 +109,6 @@ rec {
 
   deploymentModules = self.deploymentModules;
 
-  allModules = [
-    (import ./moduleit/module-definition.nix)
-    (import ./modules/bundles/go)
-    (import ./modules/compilers/go)
-    (import ./modules/languageServers/gopls)
-    (import ./modules/formatters/gofmt)
-    (import ./modules/bundles/ruby)
-    (import ./modules/interpreters/ruby)
-    (import ./modules/languageServers/solargraph)
-    (import ./modules/packagers/rubygems)
-    (import ./modules/bundles/nodejs)
-    (import ./modules/interpreters/nodejs)
-    (import ./modules/formatters/prettier)
-    (import ./modules/languageServers/typescript-language-server)
-    (import ./modules/packagers/nodejs-packager)
-    (import ./modules/debuggers/node-dap)
-    (import ./modules/bundles/bun)
-    (import ./modules/interpreters/bun)
-    (import ./modules/packagers/bun)
-    (import ./modules/bundles/web)
-    (import ./modules/languageServers/css-language-server)
-    (import ./modules/languageServers/html-language-server)
-  ];
-
-  myEvalModule = path:
-    (pkgs.lib.evalModules {
-      modules = [
-        (import path)
-      ] ++ allModules;
-      specialArgs = {
-        inherit pkgs pkgs-23_05;
-        pkgs-unstable = pkgs;
-        modulesPath = builtins.toString ./.;
-      };
-    });
-
-  v2BuildModule = path:
-    (myEvalModule path).config.replit.buildModule;
-
-  buildConfig = path:
-    builtins.removeAttrs (myEvalModule path).config ["description" "displayVersion" "id" "name" "replit"];
-
-  allModulesOptions =
-    let eval = (pkgs.lib.evalModules {
-      modules = allModules;
-      specialArgs = {
-        inherit pkgs pkgs-23_05;
-        pkgs-unstable = pkgs;
-        modulesPath = builtins.toString ./.;
-      };
-    });
-    lib = pkgs.lib;
-    options = eval.options;
-    filteredOptions = builtins.removeAttrs options ["_module" "description" "displayVersion" "id" "name" "replit"];
-    docsJson = (pkgs.nixosOptionsDoc {
-      options = filteredOptions;
-    }).optionsJSON;
-    in filteredOptions;
-
-  v2 = {
-    go = v2BuildModule ./v2/go.nix;
-    ruby = v2BuildModule ./v2/ruby.nix;
-    web = v2BuildModule ./v2/web.nix;
-    bun = v2BuildModule ./v2/bun.nix;
-    nodejs = v2BuildModule ./v2/nodejs.nix;
-  };
+  v2 = pkgs.callPackage ./v2 { };
 
 }
