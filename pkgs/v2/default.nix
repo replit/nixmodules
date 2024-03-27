@@ -43,6 +43,7 @@ let
       };
     });
 
+  # does this attrset have an enable option? ie is this a module?
   hasEnableOption = options: hasAttr "enable" options && options.enable._type == "option";
 
   # given an attrset of nested options, return a list of
