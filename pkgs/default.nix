@@ -148,7 +148,7 @@ rec {
       specialArgs = {
         inherit pkgs pkgs-23_05;
         pkgs-unstable = pkgs;
-        modulesPath = builtins.toString ./.;
+        modulesPath = ./modules;
       };
     });
 
@@ -164,7 +164,7 @@ rec {
       specialArgs = {
         inherit pkgs pkgs-23_05;
         pkgs-unstable = pkgs;
-        modulesPath = builtins.toString ./.;
+        modulesPath = ./modules;
       };
     });
     lib = pkgs.lib;
