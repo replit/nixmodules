@@ -1,4 +1,4 @@
-{ pkgs, self }:
+{ pkgs, pkgs-23_05, self }:
 
 with pkgs.lib;
 
@@ -116,4 +116,63 @@ rec {
 
   deploymentModules = self.deploymentModules;
 
-} // modules
+  allModules = [
+    (import ./moduleit/module-definition.nix)
+    # (import ./modules/bundles/go)
+    # (import ./modules/compilers/go)
+    # (import ./modules/languageServers/gopls)
+    # (import ./modules/formatters/gofmt)
+    # (import ./modules/bundles/ruby)
+    # (import ./modules/interpreters/ruby)
+    # (import ./modules/languageServers/solargraph)
+    # (import ./modules/packagers/rubygems)
+    # (import ./modules/bundles/nodejs)
+    # (import ./modules/interpreters/nodejs)
+    # (import ./modules/formatters/prettier)
+    # (import ./modules/languageServers/typescript-language-server)
+    # (import ./modules/packagers/nodejs-packager)
+    # (import ./modules/debuggers/js-debug)
+    # (import ./modules/bundles/bun)
+    # (import ./modules/interpreters/bun)
+    # (import ./modules/packagers/bun)
+    # (import ./modules/bundles/web)
+    # (import ./modules/languageServers/css-language-server)
+    # (import ./modules/languageServers/html-language-server)
+  ];
+
+  myEvalModule = path:
+    (pkgs.lib.evalModules {
+      modules = [
+        (import path)
+      ] ++ allModules;
+      specialArgs = {
+        inherit pkgs pkgs-23_05;
+        pkgs-unstable = pkgs;
+        modulesPath = ./modules;
+      };
+    });
+
+  v2BuildModule = path:
+    (myEvalModule path).config.replit.buildModule;
+
+  buildConfig = path:
+    builtins.removeAttrs (myEvalModule path).config ["description" "displayVersion" "id" "name" "replit"];
+
+  allModulesOptions =
+    let eval = (pkgs.lib.evalModules {
+      modules = allModules;
+      specialArgs = {
+        inherit pkgs pkgs-23_05;
+        pkgs-unstable = pkgs;
+        modulesPath = ./modules;
+      };
+    });
+    lib = pkgs.lib;
+    options = eval.options;
+    filteredOptions = builtins.removeAttrs options ["_module" "description" "displayVersion" "id" "name" "replit"];
+    docsJson = (pkgs.nixosOptionsDoc {
+      options = filteredOptions;
+    }).optionsJSON;
+    in filteredOptions;
+
+}

@@ -68,11 +68,22 @@
               done
             '';
           };
+
+          mkModuleEnableOption =
+            { name, description }: prev.lib.mkOption {
+              default = false;
+              example = true;
+              description = "Whether to enable ${name}.";
+              type = prev.lib.types.bool;
+            } // {
+              moduleName = name;
+              moduleDescription = description;
+            };
         };
       };
       formatter.x86_64-linux = pkgs.nixpkgs-fmt;
       packages.x86_64-linux = import ./pkgs {
-        inherit pkgs self;
+        inherit pkgs self pkgs-23_05;
       };
       devShells.x86_64-linux.default = pkgs.mkShell {
         packages = with pkgs; [
