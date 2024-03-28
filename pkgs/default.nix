@@ -126,12 +126,12 @@ rec {
     (import ./modules/interpreters/ruby)
     (import ./modules/languageServers/solargraph)
     (import ./modules/packagers/rubygems)
-    # (import ./modules/bundles/nodejs)
-    # (import ./modules/interpreters/nodejs)
-    # (import ./modules/formatters/prettier)
+    (import ./modules/bundles/nodejs)
+    (import ./modules/interpreters/nodejs)
+    (import ./modules/formatters/prettier)
     (import ./modules/languageServers/typescript-language-server)
-    # (import ./modules/packagers/nodejs-packager)
-    # (import ./modules/debuggers/js-debug)
+    (import ./modules/packagers/nodejs-packager)
+    (import ./modules/debuggers/node-dap)
     (import ./modules/bundles/bun)
     (import ./modules/interpreters/bun)
     (import ./modules/packagers/bun)
@@ -180,6 +180,7 @@ rec {
     ruby = v2BuildModule ./v2/ruby.nix;
     web = v2BuildModule ./v2/web.nix;
     bun = v2BuildModule ./v2/bun.nix;
+    nodejs = v2BuildModule ./v2/nodejs.nix;
   };
 
 }
