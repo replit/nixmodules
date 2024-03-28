@@ -1,0 +1,3 @@
+{
+  bundles.bun.enable = true;
+}
