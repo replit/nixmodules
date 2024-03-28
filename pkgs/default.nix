@@ -129,15 +129,15 @@ rec {
     # (import ./modules/bundles/nodejs)
     # (import ./modules/interpreters/nodejs)
     # (import ./modules/formatters/prettier)
-    # (import ./modules/languageServers/typescript-language-server)
+    (import ./modules/languageServers/typescript-language-server)
     # (import ./modules/packagers/nodejs-packager)
     # (import ./modules/debuggers/js-debug)
     # (import ./modules/bundles/bun)
     # (import ./modules/interpreters/bun)
     # (import ./modules/packagers/bun)
-    # (import ./modules/bundles/web)
-    # (import ./modules/languageServers/css-language-server)
-    # (import ./modules/languageServers/html-language-server)
+    (import ./modules/bundles/web)
+    (import ./modules/languageServers/css-language-server)
+    (import ./modules/languageServers/html-language-server)
   ];
 
   myEvalModule = path:
@@ -178,6 +178,7 @@ rec {
   v2 = {
     go = v2BuildModule ./v2/go.nix;
     ruby = v2BuildModule ./v2/ruby.nix;
+    web = v2BuildModule ./v2/web.nix;
   };
 
 }
