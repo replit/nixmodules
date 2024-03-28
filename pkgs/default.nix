@@ -118,10 +118,10 @@ rec {
 
   allModules = [
     (import ./moduleit/module-definition.nix)
-    # (import ./modules/bundles/go)
-    # (import ./modules/compilers/go)
-    # (import ./modules/languageServers/gopls)
-    # (import ./modules/formatters/gofmt)
+    (import ./modules/bundles/go)
+    (import ./modules/compilers/go)
+    (import ./modules/languageServers/gopls)
+    (import ./modules/formatters/gofmt)
     # (import ./modules/bundles/ruby)
     # (import ./modules/interpreters/ruby)
     # (import ./modules/languageServers/solargraph)
@@ -174,5 +174,9 @@ rec {
       options = filteredOptions;
     }).optionsJSON;
     in filteredOptions;
+
+  v2 = {
+    go = v2BuildModule ./v2/go.nix;
+  };
 
 }
