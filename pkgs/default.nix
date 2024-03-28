@@ -122,10 +122,10 @@ rec {
     (import ./modules/compilers/go)
     (import ./modules/languageServers/gopls)
     (import ./modules/formatters/gofmt)
-    # (import ./modules/bundles/ruby)
-    # (import ./modules/interpreters/ruby)
-    # (import ./modules/languageServers/solargraph)
-    # (import ./modules/packagers/rubygems)
+    (import ./modules/bundles/ruby)
+    (import ./modules/interpreters/ruby)
+    (import ./modules/languageServers/solargraph)
+    (import ./modules/packagers/rubygems)
     # (import ./modules/bundles/nodejs)
     # (import ./modules/interpreters/nodejs)
     # (import ./modules/formatters/prettier)
@@ -177,6 +177,7 @@ rec {
 
   v2 = {
     go = v2BuildModule ./v2/go.nix;
+    ruby = v2BuildModule ./v2/ruby.nix;
   };
 
 }
