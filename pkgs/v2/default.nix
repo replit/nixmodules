@@ -4,7 +4,7 @@ with pkgs.lib;
 
 let
 
-  # some are ignored because the are legacy from V1. 'replit' is ignored because it's used
+  # some are ignored because they are legacy from V1. 'replit' is ignored because it's used
   # as the "output" of the module, not the config
   ignoredConfigs = ["_module" "description" "displayVersion" "id" "name" "replit"];
 
@@ -87,7 +87,7 @@ let
             choices = option.definitions;
           };
         }
-      else if type == "listOf"
+      else if isListOfStr option
       then
         {
           stringListType = {
@@ -127,6 +127,13 @@ let
       } // typeField)]
     ) [] optionNames;
 
+  # given an option, returns whether it's a list of strings
+  isListOfStr = option:
+    let
+      type = option.type.functor.name;
+      nestedType = option.type.functor.wrapped.functor.name;
+    in type == "listOf" && nestedType == "str";
+
   # given an option, return an attrset containing the type-specific
   # `value` field for NixModuleConfigValue in the Replit protobuf protocol
   getTypeSpecificValue = option:
@@ -142,7 +149,7 @@ let
         {
           stringValue = option.value;
         }
-      else if type == "listOf"
+      else if isListOfStr option
       then
         {
           stringListValue = option.value;
