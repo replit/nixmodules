@@ -52,20 +52,21 @@ let
     foldl' (acc: attrName:
       let
         value = options.${attrName};
+        newPath = path ++ [attrName];
       in
         if hasEnableOption value
         then
           let
             enable = value.enable;
             module = {
-              id = concatStringsSep "." path;
+              id = concatStringsSep "." newPath;
               name = enable.moduleName;
               description = enable.moduleDescription;
               options = getModuleOptions value;
             };
           in acc ++ [module]
         else
-          acc ++ (getModulesFromOptions value (path ++ [attrName]))
+          acc ++ (getModulesFromOptions value newPath)
     ) [] (attrNames options);
 
   # given an option, return an attrset containing the type field to use for the
