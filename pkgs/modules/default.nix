@@ -71,10 +71,23 @@ let
       ruby = pkgs.ruby_3_1;
       rubyPackages = pkgs.rubyPackages_3_1;
     })
-    (import ./ruby {
-      ruby = pkgs.ruby_3_2;
-      rubyPackages = pkgs.rubyPackages_3_2;
-    })
+    (
+      # pinning ruby to specific version to avoid breaking gems with built .so's
+      # that are installed into the Rails template. TODO: have a way of detecting
+      # an upgrade and re-installing gems.
+      let
+        ruby_3_2_2 = pkgs.mkRuby {
+          version = pkgs.mkRubyVersion "3" "2" "2" "";
+          hash = "sha256-lsV1WIcaZ0jeW8nydOk/S1qtBs2PN776Do2U57ikI7w=";
+          cargoHash = "sha256-6du7RJo0DH+eYMOoh3L31F3aqfR5+iG1iKauSV1uNcQ=";
+        };
+        rubyPackages_3_2_2 = pkgs.lib.attrsets.recurseIntoAttrs ruby_3_2_2.gems;
+      in
+      (import ./ruby {
+        ruby = ruby_3_2_2;
+        rubyPackages = rubyPackages_3_2_2;
+      })
+    )
     (import ./swift)
     (import ./svelte-kit)
     (import ./vue)
