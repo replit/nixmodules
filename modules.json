@@ -471,6 +471,10 @@
     "commit": "787bc7deb9231b61fe65b63da126238620125705",
     "path": "/nix/store/zp3kzwd9748rsyilipzcj133nsxppaxf-replit-module-nodejs-18"
   },
+  "nodejs-18:v35-20240401-269b323": {
+    "commit": "269b32382cc6fdc0a16d065c63c10e965527cba4",
+    "path": "/nix/store/2zyllffdkaxsni14ifwps03hsay32dgq-replit-module-nodejs-18"
+  },
   "nodejs-19:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/qwhwjll9vns8vqcc6zjy5s4i3rzh05w3-replit-module-nodejs-19"
@@ -606,6 +610,10 @@
   "nodejs-20:v31-20240329-787bc7d": {
     "commit": "787bc7deb9231b61fe65b63da126238620125705",
     "path": "/nix/store/4gsly91775a1809jrqw3i3dfaksxfgcf-replit-module-nodejs-20"
+  },
+  "nodejs-20:v32-20240401-269b323": {
+    "commit": "269b32382cc6fdc0a16d065c63c10e965527cba4",
+    "path": "/nix/store/1sa4wmq19l8langdhsj6zk25brsqpn30-replit-module-nodejs-20"
   },
   "php-8.1:v2-20230623-0b7a606": {
     "commit": "0b7a60667d2c29f2686211e952924a9693916a20",
@@ -1891,6 +1899,10 @@
     "commit": "787bc7deb9231b61fe65b63da126238620125705",
     "path": "/nix/store/fp4rl90giv0qcry8y4an5mma3vzsj3ia-replit-module-nodejs-with-prybar-18"
   },
+  "nodejs-with-prybar-18:v26-20240401-269b323": {
+    "commit": "269b32382cc6fdc0a16d065c63c10e965527cba4",
+    "path": "/nix/store/yv3dg8cxva7inn2ixxqzmqm37scb7v4s-replit-module-nodejs-with-prybar-18"
+  },
   "zig-0.11:v1-20231014-15426ef": {
     "commit": "15426ef79793bf7c424eb40865d507eacfdd44e6",
     "path": "/nix/store/17ji0rxmrfz30sy2b60c65vjv5sh6ksz-replit-module-zig-0.11"
@@ -2374,5 +2386,9 @@
   "dart-3.3:v1-20240315-3def760": {
     "commit": "3def760d20d00f0ce1b24185e1c4b6ca5ed0fe9b",
     "path": "/nix/store/d2biqfc1cs4sqqklpflzhzi9yddng019-replit-module-dart-3.3"
+  },
+  "bun-1.1:v1-20240401-269b323": {
+    "commit": "269b32382cc6fdc0a16d065c63c10e965527cba4",
+    "path": "/nix/store/gx88wz4j8fkk28vbfjkkhdj1y5hlq8if-replit-module-bun-1.1"
   }
 }
