@@ -13,6 +13,9 @@ with pkgs.lib;
     };
   };
   config = mkIf cfg.enable {
+    replit.packages = [
+      rubyPackages.solargraph
+    ];
     replit.dev.languageServers.solargraph =  {
       name = "Solargraph: A Ruby Language Server";
       language = "ruby";

@@ -1,7 +1,11 @@
 { pkgs, lib, config, ... }:
 let
   cfg = config.interpreters.nodejs;
-  nodejs = pkgs.${"nodejs_${cfg.version}"};
+  availableVersions = {
+    ${pkgs.nodejs_18.version} = pkgs.nodejs_18;
+    ${pkgs.nodejs_20.version} = pkgs.nodejs_20;
+  };
+  nodejs = availableVersions.${cfg.version};
   nodepkgs = pkgs.nodePackages.override {
     inherit nodejs;
   };
@@ -28,14 +32,28 @@ with pkgs.lib; {
       };
 
       version = mkOption {
-        type = types.enum ["18" "20"];
-        default = "20";
+        type = types.enum (attrNames availableVersions);
         description = "Node.js version";
       };
+
+      _nodejs = mkOption {
+        type = types.package;
+        description = "Chose version of nodjs; internal use";
+      };
+
+      _nodePackages = mkOption {
+        type = types.anything;
+        description = "Chosen version of nodepkgs; internal use";
+        default = null;
+      };
     };
+
   };
 
   config = mkIf cfg.enable {
+    interpreters.nodejs._nodejs = mkForce nodejs;
+    interpreters.nodejs._nodePackages = nodepkgs;
+
     replit = {
       packages = [
         nodejs-wrapped

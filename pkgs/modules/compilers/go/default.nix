@@ -13,7 +13,6 @@ in with pkgs.lib; {
       version = mkOption {
         type = types.enum [go.version];
         description = "Go version";
-        default = go.version;
       };
     };
   };
