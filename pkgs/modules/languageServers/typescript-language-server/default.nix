@@ -1,7 +1,7 @@
 { pkgs, lib, config, ... }:
 let
   cfg = config.languageServers.typescript-language-server;
-  nodejs = pkgs.${"nodejs_${cfg.nodejsVersion}"};
+  nodejs = config.interpreters.nodejs._nodejs;
   nodepkgs = pkgs.nodePackages.override {
     inherit nodejs;
   };

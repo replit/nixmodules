@@ -1,10 +1,9 @@
 { pkgs, lib, config, ... }:
 let cfg = config.formatters.prettier;
   nodejs = config.interpreters.nodejs._nodejs;
-  nodepkgs = config.interpreters.nodejs._nodePackages;
-  # nodepkgs = pkgs.nodePackages.override {
-  #   inherit nodejs;
-  # };
+  nodepkgs = pkgs.nodePackages.override {
+    inherit nodejs;
+  };
 in
 with pkgs.lib; {
 

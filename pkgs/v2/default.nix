@@ -72,42 +72,37 @@ let
   # given an option, return an attrset containing the type field to use for the
   # NixModuleOption in the Replit protobuf protocol
   getTypeFieldForOption = option:
-    let type = option.type.functor.name;
+    let
+      type = option.type.functor.name;
+      maybeDefaultValue = if hasAttr "default" option
+        then { default = option.default; }
+        else { };
     in if type == "bool"
       then
         {
-          booleanType = {
-            default = option.default;
-          };
+          booleanType = maybeDefaultValue;
         }
       else if type == "enum"
       then
         {
           choiceStringType = {
-            default = option.default;
-            choices = option.definitions;
-          };
+            choices = option.type.functor.payload;
+          } // maybeDefaultValue;
         }
       else if isListOfStr option
       then
         {
-          stringListType = {
-            default = option.default;
-          };
+          stringListType = maybeDefaultValue;
         }
       else if type == "str"
       then
         {
-          stringType = {
-            default = option.default;
-          };
+          stringType = maybeDefaultValue;
         }
       else if type == "int"
       then
         {
-          integerType = {
-            default = option.default;
-          };
+          integerType = maybeDefaultValue;
         }
       else {};
 
@@ -174,12 +169,13 @@ let
         then
           let
             moduleId = concatStringsSep "." newPath;
+            publicOptionNames = filter (name: !(strings.hasPrefix "_" name)) (attrNames value);
             configValues = map (optionName:
               let option = value.${optionName};
               in {
                 inherit moduleId optionName;
               } // (getTypeSpecificValue option)
-            ) (attrNames value);
+            ) publicOptionNames;
           in
             acc ++ configValues
         else

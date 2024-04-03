@@ -38,21 +38,15 @@ with pkgs.lib; {
 
       _nodejs = mkOption {
         type = types.package;
-        description = "Chose version of nodjs; internal use";
+        description = "Choose version of nodejs; internal use";
       };
 
-      _nodePackages = mkOption {
-        type = types.anything;
-        description = "Chosen version of nodepkgs; internal use";
-        default = null;
-      };
     };
 
   };
 
   config = mkIf cfg.enable {
     interpreters.nodejs._nodejs = mkForce nodejs;
-    interpreters.nodejs._nodePackages = nodepkgs;
 
     replit = {
       packages = [
