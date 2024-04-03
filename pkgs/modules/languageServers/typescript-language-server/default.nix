@@ -1,10 +1,8 @@
 { pkgs, lib, config, ... }:
 let
   cfg = config.languageServers.typescript-language-server;
-  nodejs = config.interpreters.nodejs._nodejs;
-  nodepkgs = pkgs.nodePackages.override {
-    inherit nodejs;
-  };
+  nodejs = pkgs.nodejs;
+  nodepkgs = pkgs.nodePackages;
   typescript-language-server = nodepkgs.typescript-language-server.override {
     # TODO: we can get rid of this patch once >=4.2.0 is in the nixpkgs-unstable we use.
     # but we want this version because of https://github.com/typescript-language-server/typescript-language-server/pull/831
