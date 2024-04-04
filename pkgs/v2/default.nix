@@ -169,8 +169,8 @@ let
     else { };
 
   # given a nested attrset of options, return a list of
-  # NixModuleConfigValue objects in the Replit protobuf protocol
-  getConfigValuesFromOptions = options: path:
+  # NixModuleConfigModuleEntry objects in the Replit protobuf protocol
+  getConfigModuleEntriesFromOptions = options: path:
     foldl'
       (acc: attrName:
         let
@@ -180,20 +180,23 @@ let
         if hasEnableOption value
         then
           let
-            moduleId = concatStringsSep "." newPath;
             publicOptionNames = filter (name: !(strings.hasPrefix "_" name)) (attrNames value);
             configValues = map
               (optionName:
                 let option = value.${optionName};
                 in {
-                  inherit moduleId optionName;
+                  inherit optionName;
                 } // (getTypeSpecificValue option)
               )
               publicOptionNames;
+            moduleEntry = {
+              id = concatStringsSep "." newPath;
+              values = configValues;
+            };
           in
-          acc ++ configValues
+          acc ++ [ moduleEntry ]
         else
-          acc ++ (getConfigValuesFromOptions value newPath)
+          acc ++ (getConfigModuleEntriesFromOptions value newPath)
       ) [ ]
       (attrNames options);
 
@@ -217,7 +220,7 @@ let
         in
         filterAttrs (name: value: value != { }) mapped;
       enabledOptions = filterDisabled options;
-      moduleConfig = { values = getConfigValuesFromOptions enabledOptions [ ]; };
+      moduleConfig = { modules = getConfigModuleEntriesFromOptions enabledOptions [ ]; };
     in
     pkgs.writeText "replit-module-config" (builtins.toJSON moduleConfig);
 
