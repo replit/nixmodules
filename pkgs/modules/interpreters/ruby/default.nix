@@ -37,7 +37,6 @@ with pkgs.lib; {
 
       version = mkOption {
         type = types.enum [ "3.1" "3.2" ];
-        default = "3.2";
         description = "Ruby version";
       };
 

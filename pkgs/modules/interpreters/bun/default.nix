@@ -17,7 +17,6 @@ with pkgs.lib; {
 
       version = mkOption {
         type = types.enum [ bun.version ];
-        default = bun.version;
         description = "Bun version";
       };
     };
