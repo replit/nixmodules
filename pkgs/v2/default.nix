@@ -275,5 +275,14 @@ in
     nodejs = buildModule ./examples/nodejs.nix;
   };
 
+  debug = let
+    options = (myEvalModules allModules).options;
+    filteredOptions = removeAttrs options ignoredConfigs;
+    modules = getModulesFromOptions filteredOptions [ ];
+    getRegistryResponse = {
+      modulesV2 = modules;
+    };
+  in pkgs.writeText "registry.json" (builtins.toJSON getRegistryResponse);
+
   inherit buildDotReplit registry;
 }

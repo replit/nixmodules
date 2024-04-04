@@ -1,14 +1,14 @@
 { pkgs, lib, config, ... }:
 let
   cfg = config.interpreters.nodejs;
-  nodejs = pkgs.${"nodejs_${cfg.version}"};
+  # nodejs = pkgs.${"nodejs_${cfg.version}"};
   nodepkgs = pkgs.nodePackages.override {
-    inherit nodejs;
+    nodejs = cfg._package;
   };
 
-  nodejs-wrapped = pkgs.lib.mkWrapper-replit_ld_library_path nodejs;
+  nodejs-wrapped = pkgs.lib.mkWrapper-replit_ld_library_path cfg._package;
 
-  short-version = lib.versions.major nodejs.version;
+  short-version = lib.versions.major cfg.version;
 
   npx-wrapper = pkgs.writeShellApplication {
     name = "npx";
@@ -28,9 +28,16 @@ with pkgs.lib; {
       };
 
       version = mkOption {
-        type = types.enum [ "18" "20" ];
-        default = "20";
+        type = types.enum (builtins.attrNames pkgs.nodeVersions);
+        default = "21.7.1";
         description = "Node.js version";
+      };
+
+      _package = mkOption {
+        type = types.package;
+        default = pkgs.nodeVersions.${cfg.version};
+        readOnly = true;
+        description = "the final node version (internal use only)";
       };
     };
   };
@@ -45,7 +52,7 @@ with pkgs.lib; {
 
       runners.nodeJS = {
         name = "Node.js";
-        displayVersion = nodejs.version;
+        displayVersion = cfg.version;
         language = "javascript";
         start = "${nodejs-wrapped}/bin/node $file";
         fileParam = true;

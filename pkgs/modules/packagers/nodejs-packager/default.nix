@@ -1,7 +1,8 @@
 { pkgs, lib, config, ... }:
 let
   cfg = config.packagers.nodejs-packager;
-  nodejs = pkgs.${"nodejs_${config.interpreters.nodejs.version}"};
+  # nodejs = pkgs.${"nodejs_${config.interpreters.nodejs.version}"};
+  nodejs = config.interpreters.nodejs._package;
 in
 with pkgs.lib; {
   options = {

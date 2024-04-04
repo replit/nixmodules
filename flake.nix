@@ -1,6 +1,7 @@
 {
   description = "Nix expressions for defining Replit development environments";
-  inputs.nixpkgs-unstable.url = "github:nixos/nixpkgs/?rev=7c4c20509c4363195841faa6c911777a134acdf3";
+  inputs.nixpkgs-unstable.follows = "overlang/nixpkgs";
+  # inputs.nixpkgs-unstable.url = "github:nixos/nixpkgs/?rev=7c4c20509c4363195841faa6c911777a134acdf3";
   # inputs.fenix.url = "github:nix-community/fenix";
   # inputs.fenix.inputs.nixpkgs.follows = "nixpkgs-unstable";
   # inputs.nixd.url = "github:nix-community/nixd";
@@ -13,8 +14,9 @@
   # inputs.ztoc-rs.inputs.nixpkgs.follows = "nixpkgs-unstable";
   inputs.replit-rtld-loader.url = "github:replit/replit_rtld_loader";
   inputs.replit-rtld-loader.inputs.nixpkgs.follows = "nixpkgs-unstable";
+  inputs.overlang.url = "github:replit/overlang";
 
-  outputs = { self, nixpkgs-unstable, replit-rtld-loader, ... }:
+  outputs = inputs @ { self, nixpkgs-unstable, replit-rtld-loader, ... }:
     let
       nixpkgs = nixpkgs-unstable;
       mkPkgs = nixpkgs-spec: system: import nixpkgs-spec {
@@ -26,6 +28,7 @@
           # nixd.overlays.default
           # fenix.overlays.default
           replit-rtld-loader.overlays.default
+          inputs.overlang.overlays.nodejs
         ];
         # replbox has an unfree license
         config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
@@ -83,6 +86,11 @@
         };
       };
       formatter.x86_64-linux = pkgs.nixpkgs-fmt;
+      packages.aarch64-darwin = import ./pkgs {
+        inherit self;
+        pkgs = mkPkgs nixpkgs-unstable "aarch64-darwin";
+        pkgs-23_05 = mkPkgs nixpkgs "aarch64-darwin";
+      };
       packages.x86_64-linux = import ./pkgs {
         inherit pkgs self pkgs-23_05;
       };
