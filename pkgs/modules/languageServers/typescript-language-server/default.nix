@@ -31,12 +31,12 @@ with pkgs.lib; {
 
       extensions = mkOption {
         type = types.listOf (types.str);
-        default = [];
+        default = [ ];
         description = "List of file extensions to use TypeScript language server for";
       };
 
       nodejsVersion = mkOption {
-        type = types.enum ["18" "20"];
+        type = types.enum [ "18" "20" ];
         default = "20";
         description = "Node.js version to run TypeScript language server";
       };

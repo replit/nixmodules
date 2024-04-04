@@ -1,6 +1,7 @@
 { lib, config, pkgs, ... }:
-let cfg = config.languageServers.gopls;
-gopls = pkgs.gopls;
+let
+  cfg = config.languageServers.gopls;
+  gopls = pkgs.gopls;
 in
 with pkgs.lib; {
   options = {
@@ -10,7 +11,7 @@ with pkgs.lib; {
     };
 
     languageServers.gopls.version = mkOption {
-      type = types.enum [gopls.version];
+      type = types.enum [ gopls.version ];
       default = gopls.version;
       description = "Gopls version";
     };

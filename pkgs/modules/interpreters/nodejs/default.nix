@@ -28,7 +28,7 @@ with pkgs.lib; {
       };
 
       version = mkOption {
-        type = types.enum ["18" "20"];
+        type = types.enum [ "18" "20" ];
         default = "20";
         description = "Node.js version";
       };

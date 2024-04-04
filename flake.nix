@@ -70,12 +70,13 @@
           };
 
           mkModuleEnableOption =
-            { name, description }: prev.lib.mkOption {
-              default = false;
-              example = true;
-              description = "Whether to enable ${name}.";
-              type = prev.lib.types.bool;
-            } // {
+            { name, description }: prev.lib.mkOption
+              {
+                default = false;
+                example = true;
+                description = "Whether to enable ${name}.";
+                type = prev.lib.types.bool;
+              } // {
               moduleName = name;
               moduleDescription = description;
             };
