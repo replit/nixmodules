@@ -2,7 +2,7 @@
 let
   cfg = config.interpreters.ruby;
   ruby-version = cfg.version;
-  ruby-version-snakecased = builtins.replaceStrings ["."] ["_"] ruby-version;
+  ruby-version-snakecased = builtins.replaceStrings [ "." ] [ "_" ] ruby-version;
   ruby = pkgs.${"ruby_${ruby-version-snakecased}"};
   rubyPackages = pkgs.${"rubyPackages_${ruby-version-snakecased}"};
   initial-gem-file = pkgs.writeTextFile {
@@ -36,7 +36,7 @@ with pkgs.lib; {
       };
 
       version = mkOption {
-        type = types.enum ["3.1" "3.2"];
+        type = types.enum [ "3.1" "3.2" ];
         default = "3.2";
         description = "Ruby version";
       };

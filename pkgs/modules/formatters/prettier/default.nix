@@ -1,5 +1,6 @@
 { pkgs, lib, config, ... }:
-let cfg = config.formatters.prettier;
+let
+  cfg = config.formatters.prettier;
   nodejs = pkgs.${"nodejs_${cfg.nodejsVersion}"};
   nodepkgs = pkgs.nodePackages.override {
     inherit nodejs;
@@ -21,7 +22,7 @@ with pkgs.lib; {
       };
 
       nodejsVersion = mkOption {
-        type = types.enum ["18" "20"];
+        type = types.enum [ "18" "20" ];
         description = "Node.js version for prettier";
         default = "20";
       };

@@ -2,7 +2,8 @@
 let
   cfg = config.compilers.go;
   go = pkgs.go;
-in with pkgs.lib; {
+in
+with pkgs.lib; {
   options = {
     compilers.go = {
       enable = mkModuleEnableOption {
@@ -11,7 +12,7 @@ in with pkgs.lib; {
       };
 
       version = mkOption {
-        type = types.enum [go.version];
+        type = types.enum [ go.version ];
         description = "Go version";
         default = go.version;
       };
