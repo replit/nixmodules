@@ -1,32 +1,32 @@
 {
-/*
-This utility creates a module that implements a bundle, which has
-these features:
-1. if the bundle is enabled, it enables by default a list of submodules
-2. exposes its submodules as a list of module ID strings via the `submodules`
-  option
+  /*
+    This utility creates a module that implements a bundle, which has
+    these features:
+    1. if the bundle is enabled, it enables by default a list of submodules
+    2. exposes its submodules as a list of module ID strings via the `submodules`
+    option
 
-Example:
+    Example:
 
-pkgs/bundles/nodejs/default.nix
-```nix
-{ pkgs, config, ... }:
-pkgs.lib.mkBundleModule {
-  id = "nodejs";
-  name = "Node.js Tools Bundle";
-  description = "Development tools for the Node.js JavaScript runtime";
-  submodules = [
+    pkgs/bundles/nodejs/default.nix
+    ```nix
+    { pkgs, config, ... }:
+    pkgs.lib.mkBundleModule {
+    id = "nodejs";
+    name = "Node.js Tools Bundle";
+    description = "Development tools for the Node.js JavaScript runtime";
+    submodules = [
     "interpreters.nodejs"
     "languageServers.typescript-language-server"
     "debuggers.node-dap"
     "formatters.prettier"
     "packagers.nodejs-packager"
-  ];
-  inherit pkgs config;
-}
-```
+    ];
+    inherit pkgs config;
+    }
+    ```
   */
-  mkBundleModule = {id, name, description, submodules, pkgs, config}:
+  mkBundleModule = { id, name, description, submodules, pkgs, config }:
     with pkgs.lib;
     let
       cfg = config.bundles.${id};
@@ -44,17 +44,17 @@ pkgs.lib.mkBundleModule {
         }
       */
       addEnableConfig = elems: config:
-        if elems == []
+        if elems == [ ]
         then
           { enable = mkDefault true; }
         else
           let
             first = head elems;
-            nestedConfig = addEnableConfig (drop 1 elems) (config.${first} or {});
+            nestedConfig = addEnableConfig (drop 1 elems) (config.${first} or { });
           in
-            config // ({
-              ${first} = nestedConfig;
-            });
+          config // ({
+            ${first} = nestedConfig;
+          });
       /*
       mkBundleConfig - creates nested config of enable values defaulted to true
         from the passed in submodules list. e.g.
@@ -70,26 +70,29 @@ pkgs.lib.mkBundleModule {
         }
       */
       mkBundleConfig = submodules:
-        foldl' (config: moduleId:
-          let elems = strings.splitString "." moduleId;
-          in addEnableConfig elems config
-        ) { } submodules;
-      in
-      {
-        options = {
-          bundles.${id} = {
-            enable = mkModuleEnableOption {
-              inherit name description;
-            };
+        foldl'
+          (config: moduleId:
+            let elems = strings.splitString "." moduleId;
+            in addEnableConfig elems config
+          )
+          { }
+          submodules;
+    in
+    {
+      options = {
+        bundles.${id} = {
+          enable = mkModuleEnableOption {
+            inherit name description;
+          };
 
-            submodules = mkOption {
-              type = types.listOf types.str;
-              description = "Modules included with this bundle";
-              default = submodules;
-            };
+          submodules = mkOption {
+            type = types.listOf types.str;
+            description = "Modules included with this bundle";
+            default = submodules;
           };
         };
-
-        config = mkIf cfg.enable (mkBundleConfig submodules);
       };
+
+      config = mkIf cfg.enable (mkBundleConfig submodules);
+    };
 }
