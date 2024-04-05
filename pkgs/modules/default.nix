@@ -56,6 +56,7 @@ let
     (import ./dart)
     (import ./deno)
     (import ./docker)
+    (import ./elixir)
     (import ./gcloud)
     (import ./clojure)
     (import ./dotnet)
