@@ -2390,5 +2390,9 @@
   "bun-1.1:v1-20240401-269b323": {
     "commit": "269b32382cc6fdc0a16d065c63c10e965527cba4",
     "path": "/nix/store/gx88wz4j8fkk28vbfjkkhdj1y5hlq8if-replit-module-bun-1.1"
+  },
+  "elixir-1_15:v1-20240405-1a3465a": {
+    "commit": "1a3465a810464d932d1ea87a67d524bb99717288",
+    "path": "/nix/store/28gq95h262zxsq5ybk3kkf9m5598bmlz-replit-module-elixir-1_15"
   }
 }
