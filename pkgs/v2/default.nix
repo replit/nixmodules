@@ -265,6 +265,23 @@ let
     in
     pkgs.writeText "registry.json" (builtins.toJSON getRegistryResponse);
 
+  check = module:
+    pkgs.writeShellScript "modules-checks"
+      (pipe ([ module ] ++ allModules) [
+        myEvalModules
+        (getAttrFromPath [ "config" "checks" ])
+        (mapAttrsToList (suite-name: check: ''
+          printf 'Running test ${suite-name}...'
+          output=$(sh ${check})
+          case $? in
+            0) echo 'OK' ;;
+            *) echo 'FAILED'
+               echo $output
+               ;;
+          esac
+        ''))
+        concatLines
+      ]);
 in
 {
   examples = {
@@ -275,5 +292,5 @@ in
     nodejs = buildModule ./examples/nodejs.nix;
   };
 
-  inherit buildDotReplit registry;
+  inherit buildDotReplit check registry;
 }

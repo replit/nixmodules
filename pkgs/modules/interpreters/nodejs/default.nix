@@ -36,6 +36,14 @@ with pkgs.lib; {
   };
 
   config = mkIf cfg.enable {
+    checks.nodejs = pkgs.writeShellScript "nodejs-check" ''
+      output=$(${nodejs-wrapped}/bin/node --version)
+      if [ "$output" != "v${nodejs-wrapped.version}" ]; then
+        echo "Node.js version mismatch: expected v${nodejs-wrapped.version}, got $output"
+        exit 1
+      fi
+    '';
+
     replit = {
       packages = [
         nodejs-wrapped

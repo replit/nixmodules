@@ -637,6 +637,12 @@ in
       };
 
     };
+
+    checks = mkOption {
+      type = types.attrsOf types.package;
+      default = { };
+      description = "module tests";
+    };
   };
 
   config = {
