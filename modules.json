@@ -855,6 +855,10 @@
     "commit": "787bc7deb9231b61fe65b63da126238620125705",
     "path": "/nix/store/hsnw40xgc28vfxmkxib175iil1jbf4bz-replit-module-python-3.10"
   },
+  "python-3.10:v60-20240409-a3e9ece": {
+    "commit": "a3e9ece544688043e6e51bdc5831bd3b8551c2ae",
+    "path": "/nix/store/77y7whc4221y0wd2m97d5iyxia1lbb2x-replit-module-python-3.10"
+  },
   "qbasic:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/4n4raazspqy2zgawkkyaqc9xapl1f5sz-replit-module-qbasic"
@@ -1119,6 +1123,10 @@
     "commit": "787bc7deb9231b61fe65b63da126238620125705",
     "path": "/nix/store/xcsphyl6gnlf0fgjfw9n4naji899nxp7-replit-module-pyright-extended"
   },
+  "pyright-extended:v19-20240409-a3e9ece": {
+    "commit": "a3e9ece544688043e6e51bdc5831bd3b8551c2ae",
+    "path": "/nix/store/yy6a90dc76m9449lmbzl568wc30lh543-replit-module-pyright-extended"
+  },
   "svelte-kit-node-20:v1-20230724-46059dd": {
     "commit": "46059dda60c00cc603c38265f100f5236476ebc5",
     "path": "/nix/store/v1lrwh5r88hc56a6kkjyahahlg0wvqyb-replit-module-svelte-kit-node-20"
@@ -1355,6 +1363,10 @@
     "commit": "787bc7deb9231b61fe65b63da126238620125705",
     "path": "/nix/store/xwyff8ghwiv319m765svmvmndvxd12sy-replit-module-python-3.11"
   },
+  "python-3.11:v41-20240409-a3e9ece": {
+    "commit": "a3e9ece544688043e6e51bdc5831bd3b8551c2ae",
+    "path": "/nix/store/gs1jz928wra4kd9703q41508jgcsca72-replit-module-python-3.11"
+  },
   "python-3.8:v1-20230829-e1c0916": {
     "commit": "e1c0916e9629e64e596aa4730df2da68363ddeeb",
     "path": "/nix/store/rsycf8rjpznldnf51h83yl0mx3v3ddij-replit-module-python-3.8"
@@ -1514,6 +1526,10 @@
   "python-3.8:v40-20240329-787bc7d": {
     "commit": "787bc7deb9231b61fe65b63da126238620125705",
     "path": "/nix/store/zhyqxm7m9wpr97ci3kikc5h7n1y32dbw-replit-module-python-3.8"
+  },
+  "python-3.8:v41-20240409-a3e9ece": {
+    "commit": "a3e9ece544688043e6e51bdc5831bd3b8551c2ae",
+    "path": "/nix/store/52krhcd5xjgiklgyhac1a0dmgypck6vw-replit-module-python-3.8"
   },
   "bun-1.0:v1-20230911-f253fb1": {
     "commit": "f253fb1a97d9a1c950d90081ee1ccb290776cf8b",
@@ -1798,6 +1814,10 @@
   "python-with-prybar-3.10:v39-20240329-787bc7d": {
     "commit": "787bc7deb9231b61fe65b63da126238620125705",
     "path": "/nix/store/3kfjfj3pwv2xv69r5vm88mwd1fgihh50-replit-module-python-with-prybar-3.10"
+  },
+  "python-with-prybar-3.10:v40-20240409-a3e9ece": {
+    "commit": "a3e9ece544688043e6e51bdc5831bd3b8551c2ae",
+    "path": "/nix/store/3wl46vr1w6imyqxzgzbr331rzf0mxray-replit-module-python-with-prybar-3.10"
   },
   "nodejs-with-prybar-18:v1-20230928-1ea5ac0": {
     "commit": "1ea5ac0313085b2ac631b493c925d33489d58410",
