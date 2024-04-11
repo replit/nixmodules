@@ -95,7 +95,7 @@ rec {
     diskName = "disk.sqsh";
   };
 
-  custom-bundle-phony-ocis = mkPhonyOCIs { moduleIds = [ "nodejs-18" "nodejs-20" ]; };
+  custom-bundle-phony-ocis = mkPhonyOCIs { moduleIds = testModules; };
 
   all-phony-oci-bundles = mapAttrs
     (moduleId: module:
