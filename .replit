@@ -1,0 +1,5 @@
+entrypoint = "pkgs/default.nix"
+modules = []
+
+[nix]
+channel = "stable-23_11"
