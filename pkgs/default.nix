@@ -54,6 +54,9 @@ let
       inherit revstring diskName;
     };
 
+  # customize these IDs for dev. In goval dir (next to nixmodules),
+  # run `make custom-nixmodules-disk` to use this disk in conman
+  # There is no need to check in changes to this.
   testModules = ["python-3.10" "nodejs-20"];
 
 in
