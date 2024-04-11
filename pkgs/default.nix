@@ -87,15 +87,6 @@ rec {
     diskName = "disk.sqsh";
   };
 
-  all-historical-modules = mapAttrs
-    (moduleId: module:
-      let
-        flake = builtins.getFlake "github:replit/nixmodules/${module.commit}";
-        shortModuleId = elemAt (strings.splitString ":" moduleId) 0;
-      in
-      flake.modules.${shortModuleId})
-    all-modules;
-
   custom-bundle-phony-ocis = mkPhonyOCIs { moduleIds = [ "nodejs-18" "nodejs-20" ]; };
 
   all-phony-oci-bundles = mapAttrs
