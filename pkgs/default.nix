@@ -51,7 +51,7 @@ rec {
       path = drv.outPath;
     }) modules;
 
-  modulesLocksJSON = modules: pkgs.writeTextFile {
+  modulesMapJSON = modules: pkgs.writeTextFile {
     name = "modules.json";
     text = builtins.toJSON (modulesMap modules);
   };
@@ -59,7 +59,7 @@ rec {
   bundle-fn = modules: pkgs.linkFarm "nixmodules-bundle" ([
     {
       name = "etc/nixmodules/modules.json";
-      path = modulesLocksJSON modules;
+      path = modulesMapJSON modules;
     }
     {
       name = "etc/nixmodules/registry.json";
