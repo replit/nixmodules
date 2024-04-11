@@ -112,6 +112,11 @@ rec {
 
   bundle-phony-ocis = mkPhonyOCIs { };
 
+  test-oci = mkPhonyOCI {
+    moduleId = "python-3.10";
+    module = self.deploymentModules."python-3.10";
+  };
+
   inherit all-modules;
 
   deploymentModules = self.deploymentModules;
