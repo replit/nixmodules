@@ -46,30 +46,38 @@ rec {
     mapAttrsToList (name: value: { inherit name; path = value; }) modules
   );
 
-  # custom-bundle = pkgs.linkFarm "nixmodules-bundle-${revstring}" (
-  #   mapAttrsToList (name: value: { inherit name; path = value; }) (
-  #     filterAttrs (name: _: name == "python-3.10" || name == "nodejs-20") modules)
-  # );
+  modulesMap = modules: mapAttrs (name: drv: {
+      commit = revstring_long;
+      path = drv.outPath;
+    }) modules;
 
-  modulesLocks = (mapAttrs (name: drv: {
-    commit = revstring_long;
-    path = drv.outPath;
-  }) modules);
-  modulesLocksJSON = pkgs.writeTextFile "modules.json" (builtins.toJSON modulesLocks);
+  modulesLocksJSON = modules: pkgs.writeTextFile {
+    name = "modules.json";
+    text = builtins.toJSON (modulesMap modules);
+  };
 
   bundle-fn = modules: pkgs.linkFarm "nixmodules-bundle" ([
     {
       name = "etc/nixmodules/modules.json";
-      path = builtins.toFile "modules.json" (builtins.toJSON
-        (mapAttrs (name: drv: { path = drv.outPath; }) modules));
+      path = modulesLocksJSON modules;
     }
-    # {
-    #   name = "etc/nixmodules/registry.json";
-    #   path = registry;
-    # }
+    {
+      name = "etc/nixmodules/registry.json";
+      path = pkgs.callPackage ./registry {
+        modulesMap = (modulesMap modules);
+        inherit self;
+      };
+    }
   ] ++ (mapAttrsToList (name: value: { inherit name; path = value; }) modules));
 
-  custom-bundle = bundle-fn (filterAttrs (name: _: name == "python-3.10" || name == "nodejs-20") modules);
+  testModules = filterAttrs (name: _: name == "python-3.10" || name == "nodejs-20") modules;
+
+  custom-bundle = bundle-fn testModules;
+
+  test-registry = pkgs.callPackage ./registry {
+    modulesMap = (modulesMap testModules);
+    inherit self;
+  };
 
   rev = pkgs.writeText "rev" revstring;
 
