@@ -31,7 +31,7 @@
     let
       cfg = config.bundles.${id};
       /*
-      addEnableConfig - generates an enable config defaulted to true
+      enablePath - generates an enable config defaulted to true
         for a submodules identified as 'elems' and merges it with an existing config.
       elems - result of spliting a module ID on "." e.g. ["interpreters" "nodejs"]
       config - an existing nested config, e.g.
@@ -43,14 +43,14 @@
           };
         }
       */
-      addEnableConfig = elems: config:
+      enablePath = elems: config:
         if elems == [ ]
         then
           { enable = mkDefault true; }
         else
           let
             first = head elems;
-            nestedConfig = addEnableConfig (drop 1 elems) (config.${first} or { });
+            nestedConfig = enablePath (drop 1 elems) (config.${first} or { });
           in
           config // ({
             ${first} = nestedConfig;
@@ -73,7 +73,7 @@
         foldl'
           (config: moduleId:
             let elems = strings.splitString "." moduleId;
-            in addEnableConfig elems config
+            in enablePath elems config
           )
           { }
           submodules;
