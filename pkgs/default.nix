@@ -12,10 +12,6 @@ let
     inherit pkgs;
   };
 
-  bundle-locked-fn = { modulesLocks }: pkgs.callPackage ./bundle-locked {
-    inherit self modulesLocks upgrade-maps;
-  };
-
   mkPhonyOCI = pkgs.callPackage ./mk-phony-oci { ztoc-rs = self.inputs.ztoc-rs.packages.x86_64-linux.default; };
 
   mkPhonyOCIs = { moduleIds ? null }: pkgs.callPackage ./mk-phony-ocis {
@@ -53,19 +49,6 @@ rec {
   rev = pkgs.writeText "rev" revstring;
 
   rev_long = pkgs.writeText "rev_long" revstring_long;
-
-  bundle-locked = bundle-locked-fn {
-    modulesLocks = import ./filter-modules-locks {
-      inherit pkgs upgrade-maps;
-    };
-  };
-
-  custom-bundle-locked = bundle-locked-fn {
-    modulesLocks = import ./filter-modules-locks {
-      inherit pkgs upgrade-maps;
-      moduleIds = [ "python-3.10" "nodejs-20" ];
-    };
-  };
 
   inherit (bundle-locked) active-modules registry;
 
