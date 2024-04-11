@@ -23,6 +23,10 @@ let
       python = pkgs.python311Full;
       pypkgs = pkgs.python311Packages;
     })
+    (import ./python {
+      python = pkgs.python312Full;
+      pypkgs = pkgs.python312Packages;
+    })
     (import ./python-with-prybar)
 
     (import ./pyright-extended)

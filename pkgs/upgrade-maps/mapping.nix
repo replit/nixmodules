@@ -121,6 +121,7 @@ in
 // (fns.linearUpgrade "pyright-extended")
 // (fns.linearUpgrade "python-3.10")
 // (fns.linearUpgrade "python-3.11")
+// (fns.linearUpgrade "python-3.12")
 // (fns.linearUpgrade "python-3.8")
 // (fns.linearUpgrade "python-with-prybar-3.10")
 // (fns.linearUpgrade "qbasic")
