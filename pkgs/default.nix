@@ -52,7 +52,7 @@ rec {
   # );
 
   modulesLocks = (mapAttrs (name: drv: {
-    commit = revstring;
+    commit = revstring_long;
     path = drv.outPath;
   }) modules);
   modulesLocksJSON = pkgs.writeTextFile "modules.json" (builtins.toJSON modulesLocks);
