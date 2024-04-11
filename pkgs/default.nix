@@ -46,11 +46,34 @@ rec {
     mapAttrsToList (name: value: { inherit name; path = value; }) modules
   );
 
+  # custom-bundle = pkgs.linkFarm "nixmodules-bundle-${revstring}" (
+  #   mapAttrsToList (name: value: { inherit name; path = value; }) (
+  #     filterAttrs (name: _: name == "python-3.10" || name == "nodejs-20") modules)
+  # );
+
+  modulesLocks = (mapAttrs (name: drv: {
+    commit = revstring;
+    path = drv.outPath;
+  }) modules);
+  modulesLocksJSON = pkgs.writeTextFile "modules.json" (builtins.toJSON modulesLocks);
+
+  bundle-fn = modules: pkgs.linkFarm "nixmodules-bundle" ([
+    {
+      name = "etc/nixmodules/modules.json";
+      path = builtins.toFile "modules.json" (builtins.toJSON
+        (mapAttrs (name: drv: { path = drv.outPath; }) modules));
+    }
+    # {
+    #   name = "etc/nixmodules/registry.json";
+    #   path = registry;
+    # }
+  ] ++ (mapAttrsToList (name: value: { inherit name; path = value; }) modules));
+
+  custom-bundle = bundle-fn (filterAttrs (name: _: name == "python-3.10" || name == "nodejs-20") modules);
+
   rev = pkgs.writeText "rev" revstring;
 
   rev_long = pkgs.writeText "rev_long" revstring_long;
-
-  inherit (bundle-locked) active-modules registry;
 
   bundle-image = bundle-squashfs-fn { };
 
