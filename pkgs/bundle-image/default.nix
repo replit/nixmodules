@@ -1,7 +1,7 @@
 { system
 , bash
 , lib
-, bundle-locked
+, bundle
 , revstring
 , coreutils
 , findutils
@@ -24,12 +24,12 @@ derivation {
   __structuredAttrs = true;
   unsafeDiscardReferences.out = true;
   env = {
-    inherit label bundle-locked diskName;
+    inherit label bundle diskName;
     PATH = lib.makeBinPath [
       coreutils
       findutils
       squashfsTools
     ];
-    diskClosureInfo = closureInfo { rootPaths = [ bundle-locked ]; };
+    diskClosureInfo = closureInfo { rootPaths = [ bundle ]; };
   };
 }
