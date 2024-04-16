@@ -159,7 +159,9 @@ let
     else if isListOfStr option
     then
       {
-        stringListValue = option.value;
+        stringListValue = {
+          stringList = option.value;
+        };
       }
     else if type == "int"
     then
