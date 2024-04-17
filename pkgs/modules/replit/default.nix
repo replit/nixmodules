@@ -39,9 +39,6 @@ let
 in
 
 {
-  id = "replit";
-  name = "Base Replit Tools";
-
   replit.dev.languageServers.dotreplit-lsp = {
     name = ".replit LSP";
     language = "dotreplit";
