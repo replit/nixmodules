@@ -1,18 +1,12 @@
-{ pkgs, lib, config, ... }:
-let
-  cfg = config.bundles.ruby;
-in
-with pkgs.lib; {
-  options = {
-    bundles.ruby.enable = mkModuleEnableOption {
-      name = "Ruby Tools Bundle";
-      description = "Developer tools for the Ruby programming language";
-    };
-  };
-
-  config = mkIf cfg.enable {
-    interpreters.ruby.enable = mkDefault true;
-    languageServers.solargraph.enable = mkDefault true;
-    packagers.rubygems.enable = mkDefault true;
-  };
+{ pkgs, config, ... }:
+pkgs.lib.mkBundleModule {
+  id = "ruby";
+  name = "Ruby Tools Bundle";
+  description = "Developer tools for the Ruby programming language";
+  submodules = [
+    "interpreters.ruby"
+    "languageServers.solargraph"
+    "packagers.rubygems"
+  ];
+  inherit pkgs config;
 }

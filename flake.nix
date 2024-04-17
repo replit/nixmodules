@@ -80,6 +80,8 @@
               moduleName = name;
               moduleDescription = description;
             };
+
+          mkBundleModule = (import ./pkgs/bundle-util).mkBundleModule;
         };
       };
       formatter.x86_64-linux = pkgs.nixpkgs-fmt;
