@@ -24,6 +24,8 @@ let
     # Needed for pygame
   ] ++ (with pkgs.xorg; [ libXext libXinerama libXcursor libXrandr libXi libXxf86vm ]));
 
+  python-version = pkgs.lib.versions.majorMinor python.version;
+
   pythonWrapper = { bin, name, aliases ? [ ] }:
     let
       # Always include the python-ld-library-path paths, but give them
@@ -51,7 +53,7 @@ let
       };
     in
     pkgs.stdenvNoCC.mkDerivation {
-      name = "${name}-wrapper";
+      name = "${name}-${python-version}-wrapper";
       buildInputs = [ pkgs.makeWrapper ];
 
       buildCommand = ''
