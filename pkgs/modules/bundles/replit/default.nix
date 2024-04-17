@@ -6,5 +6,6 @@ pkgs.lib.mkBundleModule {
   submodules = [
     "languageServers.dotreplit-lsp"
   ];
+  enableDefault = true;
   inherit pkgs config;
 }

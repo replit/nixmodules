@@ -33,9 +33,9 @@ final: prev: {
     };
 
     mkModuleEnableOption =
-      { name, description }: prev.lib.mkOption
+      { name, description, default ? false }: prev.lib.mkOption
         {
-          default = false;
+          inherit default;
           example = true;
           description = "Whether to enable ${name}.";
           type = prev.lib.types.bool;

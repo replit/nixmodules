@@ -1,3 +1,3 @@
 {
-  bundles.replit.enable = true;
+  # bundles.replit.enable = false;
 }
