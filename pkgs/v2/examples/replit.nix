@@ -1,0 +1,3 @@
+{
+  bundles.replit.enable = true;
+}

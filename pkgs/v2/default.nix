@@ -35,6 +35,8 @@ let
     (import ../modules/languageServers/pyright-extended)
     (import ../modules/debuggers/debugpy)
     (import ../modules/packagers/python)
+    (import ../modules/bundles/replit)
+    (import ../modules/languageServers/dotreplit-lsp)
   ];
 
   # Evaluates a set of modules with our special args
@@ -279,6 +281,7 @@ in
     bun = buildModule ./examples/bun.nix;
     nodejs = buildModule ./examples/nodejs.nix;
     python = buildModule ./examples/python.nix;
+    replit = buildModule ./examples/replit.nix;
   };
 
   inherit buildDotReplit registry;
