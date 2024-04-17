@@ -124,11 +124,12 @@ let
           description = option.description;
           type = option.type.functor.name;
           typeField = getTypeFieldForOption option;
+          maybeRequired = if hasAttr "default" option then { } else { required = true; };
         in
         acc ++ [
           ({
             inherit name description;
-          } // typeField)
+          } // typeField // maybeRequired)
         ]
       ) [ ]
       optionNames;
@@ -278,4 +279,6 @@ in
   };
 
   inherit buildDotReplit registry;
+
+  debug = (myEvalModules allModules).options;
 }
