@@ -279,6 +279,4 @@ in
   };
 
   inherit buildDotReplit registry;
-
-  debug = (myEvalModules allModules).options;
 }
