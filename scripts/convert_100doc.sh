@@ -7,6 +7,7 @@ mkdir -p "${REPL_HOME}/.pythonlibs"
 
 cat << EOF > "${REPL_HOME}/.replit"
 entrypoint = "main.py"
+run = "python main.py"
 modules = ["python-3.10:v18-20230807-322e88b"]
 
 [nix]
