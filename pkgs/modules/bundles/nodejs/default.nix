@@ -3,7 +3,7 @@ pkgs.lib.mkBundleModule {
   id = "nodejs";
   name = "Node.js Tools Bundle";
   description = "Development tools for the Node.js JavaScript runtime";
-  submodules = [
+  dependencies = [
     "interpreters.nodejs"
     "languageServers.typescript-language-server"
     "debuggers.node-dap"

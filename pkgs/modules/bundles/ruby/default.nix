@@ -3,7 +3,7 @@ pkgs.lib.mkBundleModule {
   id = "ruby";
   name = "Ruby Tools Bundle";
   description = "Developer tools for the Ruby programming language";
-  submodules = [
+  dependencies = [
     "interpreters.ruby"
     "languageServers.solargraph"
     "packagers.rubygems"

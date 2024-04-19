@@ -3,7 +3,7 @@ pkgs.lib.mkBundleModule {
   id = "go";
   name = "Go Tools Bundle";
   description = "Development tools for the Go programming language";
-  submodules = [
+  dependencies = [
     "compilers.go"
     "languageServers.gopls"
     "formatters.gofmt"

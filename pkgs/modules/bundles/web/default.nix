@@ -3,7 +3,7 @@ pkgs.lib.mkBundleModule {
   id = "web";
   name = "Web Tools Bundle";
   description = "Tools for web development";
-  submodules = [
+  dependencies = [
     "languageServers.typescript-language-server"
     "languageServers.html-language-server"
     "languageServers.css-language-server"
