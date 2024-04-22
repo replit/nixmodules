@@ -30,6 +30,11 @@ let
     (import ../modules/bundles/web)
     (import ../modules/languageServers/css-language-server)
     (import ../modules/languageServers/html-language-server)
+    (import ../modules/bundles/python)
+    (import ../modules/interpreters/python)
+    (import ../modules/languageServers/pyright-extended)
+    (import ../modules/debuggers/debugpy)
+    (import ../modules/packagers/python)
   ];
 
   # Evaluates a set of modules with our special args
@@ -276,6 +281,7 @@ in
     web = buildModule ./examples/web.nix;
     bun = buildModule ./examples/bun.nix;
     nodejs = buildModule ./examples/nodejs.nix;
+    python = buildModule ./examples/python.nix;
   };
 
   inherit buildDotReplit registry;
