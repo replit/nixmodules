@@ -26,7 +26,7 @@
     }
     ```
   */
-  mkBundleModule = { id, name, description, submodules, pkgs, config }:
+  mkBundleModule = { id, name, description, submodules, pkgs, config, enableDefault ? false }:
     with pkgs.lib;
     let
       cfg = config.bundles.${id};
@@ -83,6 +83,7 @@
         bundles.${id} = {
           enable = mkModuleEnableOption {
             inherit name description;
+            default = enableDefault;
           };
 
           submodules = mkOption {

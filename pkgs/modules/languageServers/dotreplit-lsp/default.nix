@@ -1,6 +1,7 @@
-{ lib, pkgs, ... }:
-
+{ pkgs, config, ... }:
+with pkgs.lib;
 let
+  cfg = config.languageServers.dotreplit-lsp;
   # use changes from https://github.com/tamasfe/taplo/pull/510
   # the above PR adds the `-c` flag to the `taplo lsp` command, which is
   # necessary to support our schema. There are a couple of paths forward
@@ -37,12 +38,22 @@ let
     path = "/etc/replit/dotreplit.schema.json"
   '';
 in
-
 {
-  replit.dev.languageServers.dotreplit-lsp = {
-    name = ".replit LSP";
-    language = "dotreplit";
-    start = "${taplo}/bin/taplo lsp -c ${taplo-config} stdio";
+  options = {
+    languageServers.dotreplit-lsp = {
+      enable = mkModuleEnableOption {
+        name = ".replit Language Server";
+        description = "Autocompletion help and more for editing .replit";
+      };
+    };
+  };
+
+  config = mkIf cfg.enable {
+    replit.dev.languageServers.dotreplit-lsp = {
+      name = ".replit LSP";
+      language = "dotreplit";
+      start = "${taplo}/bin/taplo lsp -c ${taplo-config} stdio";
+    };
   };
 }
 
