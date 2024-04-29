@@ -54,6 +54,7 @@ def main():
     referenced_path = current_modules[module_registry_id]['path']
     assert actual_path == referenced_path, 'output path for %s does not match: %s vs %s' % (module_registry_id, actual_path, referenced_path)
     print('%s ok' % module_registry_id)
+    nix_collect_garbage()
 
 if __name__ == '__main__':
   main()
