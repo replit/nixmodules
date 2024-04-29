@@ -13,6 +13,12 @@ in
 {
   id = "cpp-clang${clang-version}";
   name = "C++ Tools (with Clang)";
+  description = ''
+  Tools for working with C++:
+  * Clang compiler
+  * GDB debugger
+  * ccls language server
+  '';
 
   replit.packages = [
     clang

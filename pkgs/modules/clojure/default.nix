@@ -4,6 +4,11 @@ in
 {
   id = "clojure-${clojure-version}";
   name = "Clojure Tools";
+  description = ''
+  Tools for working with Clojure. Includes:
+  * Clojure
+  * Clojure language server
+  '';
 
   replit.runners.clojure = {
     name = "Clojure";

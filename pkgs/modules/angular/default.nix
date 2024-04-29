@@ -12,6 +12,14 @@ in
 {
   id = "angular-node-20";
   name = "Angular with Node.js 20 Tools";
+  description = ''
+  Angular development tools including:
+  * Node.js
+  * Bun
+  * pnpm
+  * yarn
+  * Angular language server
+  '';
 
   imports = [
     (import ../typescript-language-server {

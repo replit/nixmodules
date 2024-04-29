@@ -3,6 +3,12 @@ let dart-version = lib.versions.majorMinor pkgs.dart.version;
 in {
   id = "dart-${dart-version}";
   name = "Dart Tools";
+  description = ''
+  Tools for working with Dart:
+  * Dart
+  * Dart language server
+  * Dart pub package manager
+  '';
 
   replit.packages = [
     pkgs.dart
