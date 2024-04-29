@@ -2,8 +2,8 @@
   id = "bash";
   name = "Bash Tools";
   description = ''
-  Tools for working with the Bash shell. Including:
-  * Bash language server
+    Tools for working with the Bash shell. Including:
+    * Bash language server
   '';
 
   replit.runners.bash = {

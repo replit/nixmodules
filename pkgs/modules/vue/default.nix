@@ -13,6 +13,14 @@ in
 {
   id = "vue-node-20";
   name = "Vue with Node.js 20 Tools";
+  description = ''
+    Vue.js development tools. Includes:
+    * Node.js
+    * Bun
+    * pnpm
+    * yarn
+    * Vue language tools
+  '';
 
   replit = {
     packages = [

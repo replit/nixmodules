@@ -15,6 +15,9 @@ in
 {
   id = "qbasic";
   name = "QBASIC Tools (with Replbox)";
+  description = ''
+    QBasic with Replbox.
+  '';
 
   replit.runners.replbox-qbasic = {
     name = "ReplBox QBASIC";

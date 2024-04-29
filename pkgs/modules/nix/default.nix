@@ -1,6 +1,9 @@
 { pkgs, ... }: {
   id = "nix";
   name = "Nix";
+  description = ''
+    Nixd: Nix language server
+  '';
 
   replit.dev.languageServers.nixd = {
     name = "nixd";

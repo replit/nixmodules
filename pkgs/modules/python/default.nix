@@ -105,6 +105,14 @@ in
   id = "python-${pythonVersion}";
   name = "Python Tools";
   displayVersion = python.version;
+  description = ''
+    Development tools for Python. Includes:
+    * Python interpreter
+    * Pip
+    * Poetry
+    * Pyright extended language server
+    * debugpy debugger
+  '';
 
   replit.packages = [
     python3-wrapper

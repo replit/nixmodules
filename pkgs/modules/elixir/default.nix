@@ -7,6 +7,11 @@ in
 {
   id = "elixir-${elixir-version}";
   name = "Elixir ${elixir-version} Tools";
+  description = ''
+    Development tools for Elixir:
+    * Elixir
+    * Elixir language server
+  '';
 
   replit.packages = [
     pkgs.elixir

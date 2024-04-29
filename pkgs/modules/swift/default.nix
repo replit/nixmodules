@@ -19,6 +19,11 @@ in
 {
   id = "swift-${swift-version}";
   name = "Swift Tools";
+  description = ''
+    Swift development tools. Includes:
+    * Swift compiler
+    * Sourcekit language server
+  '';
 
   replit.packages = with pkgs; [
     swiftc-wrapper

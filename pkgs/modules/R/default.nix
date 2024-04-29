@@ -4,6 +4,9 @@ in
 {
   id = "r-${r-version}";
   name = "R Tools";
+  description = ''
+    R project for statistical computing.
+  '';
 
   replit.runners.r = {
     name = "R";

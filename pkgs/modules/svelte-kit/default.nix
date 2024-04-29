@@ -3,6 +3,11 @@
 {
   id = "svelte-kit-node-20";
   name = "SvelteKit with Node.js 20 Tools";
+  description = ''
+    Svelte Kit development tools. Includes:
+    * Node.js
+    * Svelte language server
+  '';
 
   replit = {
     packages = with pkgs; [

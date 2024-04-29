@@ -18,6 +18,17 @@ in
   id = lib.mkForce "nodejs-with-prybar-${nodeVersion}";
 
   name = lib.mkForce "Node.js ${nodeVersion} Tools (with Prybar)";
+  description = lib.mkForce ''
+    Node.js development tools with Prybar. Includes:
+    * Node.js ${nodejs.version}
+    * Prybar for Node.js
+    * TypeScript language server
+    * pnpm
+    * yarn
+    * bun
+    * Prettier code formatter
+    * jsdebug
+  '';
 
   imports = [
     (import ../nodejs {

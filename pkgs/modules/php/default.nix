@@ -5,6 +5,12 @@ in
 {
   id = "php-${php-version}";
   name = "PHP Tools";
+  description = ''
+    PHP development tools. Includes:
+    * PHP: Hypertext Preprocessor
+    * Phpactor language server
+    * Composer package manager
+  '';
 
   replit.packages = with pkgs; [
     php

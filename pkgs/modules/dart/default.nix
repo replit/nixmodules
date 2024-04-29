@@ -4,10 +4,10 @@ in {
   id = "dart-${dart-version}";
   name = "Dart Tools";
   description = ''
-  Tools for working with Dart:
-  * Dart
-  * Dart language server
-  * Dart pub package manager
+    Tools for working with Dart:
+    * Dart
+    * Dart language server
+    * Dart pub package manager
   '';
 
   replit.packages = [

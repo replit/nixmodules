@@ -12,11 +12,11 @@ in
 {
   id = "bun-${community-version}";
   name = "Bun Tools";
-  descripion = ''
-  Development tools for the Bun JavaScript runtime. Includes:
-  * Bun runtime
-  * Bun packager
-  * TypeScript language server
+  description = ''
+    Development tools for the Bun JavaScript runtime. Includes:
+    * Bun runtime
+    * Bun packager
+    * TypeScript language server
   '';
   displayVersion = bun.version;
 

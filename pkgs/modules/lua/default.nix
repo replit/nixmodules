@@ -4,6 +4,11 @@ in
 {
   id = "lua-${lua-version}";
   name = "Lua Tools";
+  description = ''
+    Lua development tools. Includes:
+    * Lua
+    * Lua language server
+  '';
 
   replit.packages = with pkgs; [
     lua

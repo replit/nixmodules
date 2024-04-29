@@ -16,10 +16,10 @@ in
   id = "c-clang${clang-version}";
   name = "C Tools (with Clang)";
   description = ''
-  Tools for working with C programming language:
-  * Clang compiler
-  * GDB debugger
-  * ccls language server
+    Tools for working with C programming language:
+    * Clang compiler
+    * GDB debugger
+    * ccls language server
   '';
 
   replit.packages = [

@@ -32,6 +32,16 @@ in
 
   name = lib.mkForce "Python ${pythonVersion} Tools (with Prybar)";
 
+  description = lib.mkForce ''
+    Development tools for Python with Prybar. Includes:
+    * Python interpreter
+    * Prybar for Python
+    * Pip
+    * Poetry
+    * Pyright extended language server
+    * debugpy debugger
+  '';
+
   imports = [
     (import ../python {
       inherit python pypkgs;

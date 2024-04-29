@@ -11,10 +11,9 @@ in
   id = "deno-${version}";
   name = "Deno Tools";
   description = ''
-  Tools for working with Dart:
-  * Dart
-  * Dart language server
-  * Dart pub package manager
+    Tools for working with Deno:
+    * Deno
+    * Deno language server
   '';
 
   replit.packages = [

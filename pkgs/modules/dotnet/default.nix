@@ -11,6 +11,11 @@ in
 {
   id = "dotnet-${dotnet-version}";
   name = ".NET 7 Tools";
+  description = ''
+    .NET 7 development tools:
+    * .NET
+    * OmniSharp
+  '';
 
   replit.packages = [
     dotnet

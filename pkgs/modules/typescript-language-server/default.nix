@@ -20,6 +20,9 @@ in
 {
   id = lib.mkDefault "typescript-language-server";
   name = lib.mkDefault "TypeScript Language Server";
+  description = lib.mkDefault ''
+    TypeScript (& JavaScript) language server
+  '';
   replit.dev.languageServers.typescript-language-server = {
     name = "TypeScript Language Server";
     displayVersion = typescript-language-server.version;
