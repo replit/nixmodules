@@ -98,6 +98,9 @@ let
     (import ./vue)
     (import ./web)
     (import ./hermit)
+    (import ./typescript-language-server {
+      nodepkgs = pkgs.nodePackages;
+    })
   ];
 
   modules = builtins.listToAttrs (

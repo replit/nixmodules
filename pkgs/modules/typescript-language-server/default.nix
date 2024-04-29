@@ -1,5 +1,5 @@
 { nodepkgs }:
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   typescript-language-server = nodepkgs.typescript-language-server.override {
     # TODO: we can get rid of this patch once >=4.2.0 is in the nixpkgs-unstable we use.
@@ -18,6 +18,8 @@ let
   };
 in
 {
+  id = lib.mkDefault "typescript-language-server";
+  name = lib.mkDefault "TypeScript Language Server";
   replit.dev.languageServers.typescript-language-server = {
     name = "TypeScript Language Server";
     displayVersion = typescript-language-server.version;
@@ -27,5 +29,7 @@ in
     initializationOptions = {
       tsserver.fallbackPath = "${nodepkgs.typescript}/lib/node_modules/typescript/lib";
     };
+
+    extensions = [ ".js" ".jsx" ".ts" ".tsx" ".mjs" ".mts" ".cjs" ".cts" ".es6" ".json" ];
   };
 }

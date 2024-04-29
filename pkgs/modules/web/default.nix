@@ -8,9 +8,6 @@
     })
   ];
 
-
-  replit.dev.languageServers.typescript-language-server.extensions = [ ".js" ".jsx" ".ts" ".tsx" ".mjs" ".mts" ".cjs" ".cts" ".es6" ];
-
   replit.dev.languageServers.html = {
     name = "HTML Language Server";
     language = "html";
@@ -89,7 +86,7 @@
           # Configure linting
           # ignore = don't show any warning or error
           # warning = show yellow underline
-          # error = show red underline 
+          # error = show red underline
           lint = {
             # Invalid number of parameters
             argumentsInColorFunction = "error";
