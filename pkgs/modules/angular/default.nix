@@ -34,8 +34,6 @@ in
       PATH = "$XDG_CONFIG_HOME/npm/node_global/bin:$REPL_HOME/node_modules/.bin";
     };
 
-    dev.languageServers.typescript-language-server.extensions = [ ".js" ".jsx" ".ts" ".tsx" ".mjs" ".mts" ".cjs" ".cts" ".es6" ];
-
     dev.runners.dev-runner = {
       name = "package.json watch script";
       inherit language;

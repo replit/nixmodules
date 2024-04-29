@@ -28,8 +28,6 @@ in
     bun-wrapped
   ];
 
-  replit.dev.languageServers.typescript-language-server.extensions = extensions ++ [ ".json" ];
-
   replit.runners."package.json" = {
     language = "javascript";
     inherit extensions;
