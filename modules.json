@@ -2606,5 +2606,9 @@
   "typescript-language-server:v2-20240429-0325cbb": {
     "commit": "0325cbbddd2aae1706bed30d9cb67eafaba5d222",
     "path": "/nix/store/z9d6ii0lm0y797ilqkm529j3gxk8n6k9-replit-module-typescript-language-server"
+  },
+  "replit-rtld-loader:v1-20240430-a96eaf1": {
+    "commit": "a96eaf11ab76e8b71bae880bc7484c21745903bc",
+    "path": "/nix/store/j30nan72mgq5d3n4vn62y5yknfcz5qvl-replit-module-replit-rtld-loader"
   }
 }

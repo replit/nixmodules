@@ -101,6 +101,7 @@ let
     (import ./typescript-language-server {
       nodepkgs = pkgs.nodePackages;
     })
+    (import ./replit-rtld-loader)
   ];
 
   modules = builtins.listToAttrs (
