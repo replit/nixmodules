@@ -80,6 +80,7 @@ in
   # pid1 auto-loads the replit module by attempting to resolve `replit`. If this line is
   # removed, then the `replit` module will fail to resolve in pid1.
   "replit" = { to = "replit:v1-20231211-d5ddcff"; auto = true; };
+  "replit-rtld-loader" = { to = "replit-rtld-loader:v1-20240430-a96eaf1"; auto = true; };
 
   "rust" = { to = "rust-1.69:v1-20230525-c48c43c"; auto = true; };
   "rust-1.69:v1-20230525-c48c43c" = { to = "rust-1.69:v2-20230623-0b7a606"; auto = true; };
