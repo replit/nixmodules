@@ -34,6 +34,12 @@ in
 {
   id = "java-graalvm${short-graalvm-version}";
   name = "Java Tools (with Graal VM)";
+  description = ''
+    Development tools for Java programming language. Includes:
+    * GraalVM
+    * Maven
+    * Java language server
+  '';
   displayVersion = graalvm.version;
 
   replit.packages = [

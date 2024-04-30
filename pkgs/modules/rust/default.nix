@@ -25,6 +25,12 @@ in
 {
   id = "rust-${rust-channel-name}";
   name = "Rust Tools (${rust-channel-name})";
+  description = ''
+    Rust development tools. Includes:
+    * Rust compiler
+    * Cargo
+    * Rust analyzer
+  '';
 
   replit.packages = [
     stripped-toolchain

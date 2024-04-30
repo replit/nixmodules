@@ -29,6 +29,13 @@ in
 {
   id = "ruby-${ruby-version}";
   name = "Ruby ${ruby-version} Tools";
+  description = ''
+    Ruby development tools. Includes:
+    * Ruby interpreter
+    * Rubygems
+    * Bundler
+    * Solargraph language server
+  '';
 
   replit.packages = [
     ruby

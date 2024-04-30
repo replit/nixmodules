@@ -5,6 +5,9 @@ in
 {
   id = "pyright-extended";
   name = "pyright-extended LSP";
+  description = ''
+    Pyright with yapf and ruff
+  '';
   replit.languageServers.pyright-extended = {
     name = "pyright-extended";
     language = "python3";

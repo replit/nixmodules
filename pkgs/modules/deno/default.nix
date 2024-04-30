@@ -10,6 +10,11 @@ in
 {
   id = "deno-${version}";
   name = "Deno Tools";
+  description = ''
+    Tools for working with Deno:
+    * Deno
+    * Deno language server
+  '';
 
   replit.packages = [
     deno

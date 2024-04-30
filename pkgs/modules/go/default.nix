@@ -6,6 +6,12 @@ in
 {
   id = "go-${goversion}";
   name = "Go Tools";
+  description = ''
+    Go development tools. Includes:
+    * Go compiler
+    * Go fmt formatter
+    * Gopls - Go language server
+  '';
 
   replit.packages = [
     go

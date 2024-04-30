@@ -41,6 +41,10 @@ in
 {
   id = "replit";
   name = "Base Replit Tools";
+  description = ''
+    Replit tools. Includes:
+    * .replit language server
+  '';
 
   replit.dev.languageServers.dotreplit-lsp = {
     name = ".replit LSP";

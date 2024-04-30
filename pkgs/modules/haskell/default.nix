@@ -5,6 +5,11 @@ in
 {
   id = "haskell-ghc${ghc-version}";
   name = "Haskell Tools";
+  description = ''
+    Haskell development tools. Includes:
+    * GHCi - Glasgow Haskell Compiler
+    * Haskell language server
+  '';
 
   replit.packages = with pkgs; [
     ghc
