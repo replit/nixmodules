@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -xe
 
-rm -rf "${REPL_HOME}/replit.nix" "${REPL_HOME}/poetry.lock" "${REPL_HOME}/.upm" "${REPL_HOME}/venv" "${REPL_HOME}/.config" "${REPL_HOME}/.cache"
+rm -rf "${REPL_HOME}/replit.nix" "${REPL_HOME}/poetry.lock" "${REPL_HOME}/.upm" "${REPL_HOME}/venv" "${REPL_HOME}/.config"
 
 mkdir -p "${REPL_HOME}/.pythonlibs"
 
