@@ -2103,6 +2103,10 @@
     "commit": "0325cbbddd2aae1706bed30d9cb67eafaba5d222",
     "path": "/nix/store/i3h37g786y3h79gaifqa9l769qx123kw-replit-module-rust-stable"
   },
+  "rust-stable:v13-20240502-4c0bbb0": {
+    "commit": "4c0bbb07cf9a1649e85b4f20dfc49752cb238aab",
+    "path": "/nix/store/0ydvr08dsj1y89pc0dqmyvx7zffbl584-replit-module-rust-stable"
+  },
   "go-1.21:v1-20231024-b3ba53c": {
     "commit": "b3ba53c9295b9664fe1b4ea22b7cbaed35e23d86",
     "path": "/nix/store/zkbbhbrnarrnb914ynm47i40n0fc285x-replit-module-go-1.21"
@@ -2570,6 +2574,10 @@
   "rust-nightly:v8-20240429-0325cbb": {
     "commit": "0325cbbddd2aae1706bed30d9cb67eafaba5d222",
     "path": "/nix/store/0i9vx8k74wx9nbqdjqka9bk6s8z77x12-replit-module-rust-nightly"
+  },
+  "rust-nightly:v9-20240502-4c0bbb0": {
+    "commit": "4c0bbb07cf9a1649e85b4f20dfc49752cb238aab",
+    "path": "/nix/store/cxwik2l3qisxvjby7fjdwmfjdnq6fxym-replit-module-rust-nightly"
   },
   "hermit-0.38.2:v1-20240208-9bf7683": {
     "commit": "9bf76831508415761756fbb980dabe6d21b6394f",
