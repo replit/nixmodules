@@ -97,6 +97,7 @@ in
 }
 // (fns.linearUpgrade "angular-node-20")
 // (fns.linearUpgrade "bash")
+// (fns.linearUpgrade "bun-1.1")
 // (fns.linearUpgrade "c-clang14")
 // (fns.linearUpgrade "clojure-1.11")
 // (fns.linearUpgrade "cpp-clang14")

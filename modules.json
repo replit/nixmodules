@@ -507,6 +507,10 @@
     "commit": "0325cbbddd2aae1706bed30d9cb67eafaba5d222",
     "path": "/nix/store/n8di8inls9m7ixljdkvqhmlr1dk8hbfy-replit-module-nodejs-18"
   },
+  "nodejs-18:v38-20240502-5b9002a": {
+    "commit": "5b9002a74d16fa9d462dbc9ada6b8239ad06bed6",
+    "path": "/nix/store/l5agplpqf0zijrr128kcnnsiq6mqgkr6-replit-module-nodejs-18"
+  },
   "nodejs-19:v1-20230525-c48c43c": {
     "commit": "c48c43c6c698223ed3ce2abc5a2d708735a77d5b",
     "path": "/nix/store/qwhwjll9vns8vqcc6zjy5s4i3rzh05w3-replit-module-nodejs-19"
@@ -654,6 +658,10 @@
   "nodejs-20:v34-20240429-0325cbb": {
     "commit": "0325cbbddd2aae1706bed30d9cb67eafaba5d222",
     "path": "/nix/store/22ky9rb7q6ip55m3xlvmvr93ra2vmxq4-replit-module-nodejs-20"
+  },
+  "nodejs-20:v35-20240502-5b9002a": {
+    "commit": "5b9002a74d16fa9d462dbc9ada6b8239ad06bed6",
+    "path": "/nix/store/h8vb8cslw38cqpyrgp3z9aajb4a3jl01-replit-module-nodejs-20"
   },
   "php-8.1:v2-20230623-0b7a606": {
     "commit": "0b7a60667d2c29f2686211e952924a9693916a20",
@@ -2023,6 +2031,10 @@
     "commit": "0325cbbddd2aae1706bed30d9cb67eafaba5d222",
     "path": "/nix/store/w5vgmizvzgp9d3gvm33g6ayxca8l1qar-replit-module-nodejs-with-prybar-18"
   },
+  "nodejs-with-prybar-18:v29-20240502-5b9002a": {
+    "commit": "5b9002a74d16fa9d462dbc9ada6b8239ad06bed6",
+    "path": "/nix/store/nhxl5crkrxj391jrwvkn3xw2i84cz7zg-replit-module-nodejs-with-prybar-18"
+  },
   "zig-0.11:v1-20231014-15426ef": {
     "commit": "15426ef79793bf7c424eb40865d507eacfdd44e6",
     "path": "/nix/store/17ji0rxmrfz30sy2b60c65vjv5sh6ksz-replit-module-zig-0.11"
@@ -2582,6 +2594,10 @@
   "bun-1.1:v3-20240429-0325cbb": {
     "commit": "0325cbbddd2aae1706bed30d9cb67eafaba5d222",
     "path": "/nix/store/2n3dsinln501scm70nrqmlxx7ym3fbmm-replit-module-bun-1.1"
+  },
+  "bun-1.1:v4-20240502-5b9002a": {
+    "commit": "5b9002a74d16fa9d462dbc9ada6b8239ad06bed6",
+    "path": "/nix/store/k9qgb3wyw916p7sdja4miab3q1r89r8a-replit-module-bun-1.1"
   },
   "elixir-1_15:v1-20240405-1a3465a": {
     "commit": "1a3465a810464d932d1ea87a67d524bb99717288",
