@@ -1,4 +1,5 @@
 { pkgs, pkgs-23_05 }:
+with builtins;
 let
   mkModule = path: pkgs.callPackage ../moduleit/entrypoint.nix {
     configPath = path;
@@ -9,6 +10,8 @@ let
     inherit pkgs-23_05;
     deployment = true;
   };
+  apply-upgrade-map = import ../upgrade-map;
+  historical = import ../historical-modules;
 
   modulesList = [
     (import ./python {
@@ -104,7 +107,7 @@ let
     (import ./replit-rtld-loader)
   ];
 
-  modules = builtins.listToAttrs (
+  activeModules = listToAttrs (
     map
       (moduleInput:
         let
@@ -118,7 +121,9 @@ let
       modulesList
   );
 
-  deploymentModules = builtins.listToAttrs (
+  modules = apply-upgrade-map (activeModules // historical.modules);
+
+  activeDeploymentModules = listToAttrs (
     map
       (moduleInput:
         let
@@ -132,6 +137,8 @@ let
       modulesList
   );
 
+  deploymentModules = apply-upgrade-map (activeDeploymentModules // historical.deploymentModules);
+
   get-module-id = module:
     let
       match = builtins.match "^\/nix\/store\/([^-]+)-replit-module-(.+)$" module.outPath;
@@ -144,4 +151,4 @@ let
     in
     builtins.elemAt match 1;
 in
-{ inherit modules deploymentModules; }
+{ inherit modules activeModules deploymentModules activeDeploymentModules; }

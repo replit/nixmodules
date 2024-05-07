@@ -9,7 +9,7 @@ mkdir "$out"
 root="$PWD/root"
 mkdir -p "$root/nix/store" "$root/etc/nixmodules"
 
-cp --archive --reflink=auto "${env["bundle-locked"]}/etc/nixmodules/"* "$root/etc/nixmodules"
+cp --archive --reflink=auto "${env["bundle"]}/etc/nixmodules/"* "$root/etc/nixmodules"
 
 xargs -I % cp -a --reflink=auto % "$root/nix/store/" < "${env[diskClosureInfo]}"/store-paths
 
