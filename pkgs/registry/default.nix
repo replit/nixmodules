@@ -51,6 +51,7 @@ let
             (lsp-id: lsp: {
               id = lsp-id;
               inherit moduleId;
+              inherit (lsp) displayVersion;
             } // lsp)
             module.languageServers;
         formatters = acc.formatters ++
@@ -58,6 +59,7 @@ let
             (formatter-id: formatter: {
               id = formatter-id;
               inherit moduleId;
+              inherit (formatter) displayVersion;
             } // formatter)
             module.formatters;
         packagers = acc.packagers ++
@@ -65,6 +67,7 @@ let
             (packager-id: packager: {
               id = packager-id;
               inherit moduleId;
+              inherit (packager) displayVersion;
             } // packager)
             module.packagers;
         modules = acc.modules ++ [
