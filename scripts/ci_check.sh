@@ -13,3 +13,5 @@ echo "Evaluate modules derivations"
 nix eval $NIX_FLAGS .#modules --json
 
 nix develop $NIX_FLAGS
+
+python scripts/build_changed_modules.py main
