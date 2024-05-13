@@ -43,7 +43,10 @@ let
     (import ./nodejs-with-prybar)
 
     (import ./go {
-      inherit (pkgs) go gopls;
+      go = pkgs.go_1_21;
+      gopls = pkgs.gopls.override {
+        buildGoModule = pkgs.buildGo121Module;
+      };
     })
 
     (import ./rust "stable")
