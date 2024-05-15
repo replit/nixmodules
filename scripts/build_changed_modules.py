@@ -40,7 +40,7 @@ def get_upstream_module_versions(branch):
 def nix_collect_garbage():
   args = ['nix-collect-garbage']
   print(" ".join(args))
-  subprocess.run(args)
+  subprocess.run(args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 def verify_no_existing_modules_removed(upstream_module_versions, current_module_versions):
   upstream_modules = {version[0] for version in upstream_module_versions}
