@@ -9,7 +9,12 @@ let
     # with a sphinx-build error with a version of nixpkgs-unstable for 3.10 (worked for >3.11)
     # and we don't need the docs
     postBuild = "";
-    postInstall = "";
+    postInstall = ''
+      installShellCompletion --cmd pip \
+        --bash <($out/bin/pip completion --bash --no-cache-dir) \
+        --fish <($out/bin/pip completion --fish --no-cache-dir) \
+        --zsh <($out/bin/pip completion --zsh --no-cache-dir)
+    '';
   });
 
   config = pkgs.writeTextFile {
