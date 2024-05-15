@@ -17,7 +17,7 @@ in
   };
 
   replit.dev.packagers.r = {
-    name = "R";
+    name = "R packager";
     language = "r";
     features = {
       packageSearch = true;

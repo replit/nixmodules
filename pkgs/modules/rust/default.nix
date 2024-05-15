@@ -63,7 +63,7 @@ in
   };
 
   replit.dev.packagers.rust = {
-    name = "Rust";
+    name = "Cargo";
     language = "rust";
     features = {
       packageSearch = true;

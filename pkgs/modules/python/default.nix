@@ -138,7 +138,7 @@ in
   };
 
   replit.dev.packagers.upmPython = {
-    name = "Python";
+    name = "Python packager (poetry, pip)";
     language = "python3";
     ignoredPackages = [ "unit_tests" ];
     ignoredPaths = [ pylibs-dir ];
