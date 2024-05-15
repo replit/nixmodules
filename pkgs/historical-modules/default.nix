@@ -44,6 +44,14 @@ let
       commit = "4c6f2315da24b84bd5e9dfedb952e41677724aaa";
     }
     {
+      moduleId = "haskell-ghc9.4";
+      commit = "4d6f7cd9fd685a3319ac7b6e3fc0789b430d6289";
+    }
+    {
+      moduleId = "elixir-1_15";
+      commit = "4d6f7cd9fd685a3319ac7b6e3fc0789b430d6289";
+    }
+    {
       moduleId = "nodejs-14";
       commit = "f4cd419a646009297c049a2f1eec434381e08f13";
     }
