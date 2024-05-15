@@ -19,6 +19,7 @@ in
 {
   id = "swift-${swift-version}";
   name = "Swift Tools";
+  displayVersion = swift-version;
   description = ''
     Swift development tools. Includes:
     * Swift compiler

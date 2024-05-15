@@ -32,6 +32,8 @@ in
 
   name = lib.mkForce "Python ${pythonVersion} Tools (with Prybar)";
 
+  displayVersion = pythonVersion;
+
   description = lib.mkForce ''
     Development tools for Python with Prybar. Includes:
     * Python interpreter

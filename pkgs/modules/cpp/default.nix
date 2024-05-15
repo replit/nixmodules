@@ -13,6 +13,7 @@ in
 {
   id = "cpp-clang${clang-version}";
   name = "C++ Tools (with Clang)";
+  displayVersion = clang-version;
   description = ''
     Tools for working with C++:
     * Clang compiler

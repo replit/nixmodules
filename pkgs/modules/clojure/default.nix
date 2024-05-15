@@ -4,6 +4,7 @@ in
 {
   id = "clojure-${clojure-version}";
   name = "Clojure Tools";
+  displayVersion = clojure-version;
   description = ''
     Tools for working with Clojure. Includes:
     * Clojure
