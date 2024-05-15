@@ -37,7 +37,7 @@ in
   };
 
   replit.dev.packagers.bun = {
-    name = "bun";
+    name = "Bun packager";
     language = "bun";
     features = {
       packageSearch = true;

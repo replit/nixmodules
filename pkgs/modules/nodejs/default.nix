@@ -111,7 +111,7 @@ in
     };
 
     dev.packagers.upmNodejs = {
-      name = "UPM for Node.js";
+      name = "Node.js packager (npm, yarn, pnpm, bun)";
       language = "nodejs";
       features = {
         packageSearch = true;

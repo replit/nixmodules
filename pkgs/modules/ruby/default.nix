@@ -55,7 +55,7 @@ in
   };
 
   replit.packagers.ruby = {
-    name = "Ruby";
+    name = "Rubygems";
     language = "ruby";
     features = {
       packageSearch = true;

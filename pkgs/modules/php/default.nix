@@ -30,7 +30,7 @@ in
   };
 
   replit.dev.packagers.php = {
-    name = "PHP";
+    name = "PHP Composer";
     language = "php";
     features = {
       packageSearch = true;
