@@ -30,7 +30,7 @@ in {
   };
 
   replit.dev.packagers.dart-pub = {
-    name = "dart pub";
+    name = "Dart pub";
     language = "dart-pub";
     features = {
       packageSearch = true;

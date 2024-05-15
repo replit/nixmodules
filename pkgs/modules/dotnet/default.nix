@@ -39,7 +39,7 @@ in
   };
 
   replit.dev.packagers.dotnet = {
-    name = ".NET";
+    name = ".NET packager";
     language = "dotnet";
     features = {
       packageSearch = true;
