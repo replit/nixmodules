@@ -106,12 +106,7 @@ in
   name = "Python Tools";
   displayVersion = pythonVersion;
   description = ''
-    Development tools for Python. Includes:
-    * Python interpreter
-    * Pip
-    * Poetry
-    * Pyright extended language server
-    * debugpy debugger
+    Development tools for Python. Includes Python interpreter, Pip, Poetry, Pyright extended language server, debugpy debugger.
   '';
 
   replit.packages = [

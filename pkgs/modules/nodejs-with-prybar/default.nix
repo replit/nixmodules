@@ -20,15 +20,7 @@ in
   name = lib.mkForce "Node.js ${nodeVersion} Tools (with Prybar)";
   displayVersion = nodeVersion;
   description = lib.mkForce ''
-    Node.js development tools with Prybar. Includes:
-    * Node.js ${nodejs.version}
-    * Prybar for Node.js
-    * TypeScript language server
-    * pnpm
-    * yarn
-    * bun
-    * Prettier code formatter
-    * jsdebug
+    Node.js tools with the Prybar interpreter. Prybar is an interactive console that allows you to type and evaluate JavaScript code in a prompt after hitting "Run".
   '';
 
   imports = [

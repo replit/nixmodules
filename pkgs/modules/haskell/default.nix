@@ -7,9 +7,7 @@ in
   name = "Haskell Tools";
   displayVersion = ghc-version;
   description = ''
-    Haskell development tools. Includes:
-    * GHCi - Glasgow Haskell Compiler
-    * Haskell language server
+    Haskell development tools. Includes GHCi - Glasgow Haskell Compiler, and Haskell language server.
   '';
 
   replit.packages = with pkgs; [

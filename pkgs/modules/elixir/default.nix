@@ -9,9 +9,7 @@ in
   name = "Elixir ${elixir-version} Tools";
   displayVersion = elixir-version;
   description = ''
-    Development tools for Elixir:
-    * Elixir
-    * Elixir language server
+    Development tools for Elixir. Includes Elixir and Elixir language server.
   '';
 
   replit.packages = [

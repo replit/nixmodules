@@ -27,10 +27,7 @@ in
   name = "Rust Tools (${rust-channel-name})";
   displayVersion = rust-channel-name;
   description = ''
-    Rust development tools. Includes:
-    * Rust compiler
-    * Cargo
-    * Rust analyzer
+    Rust development tools. Includes Rust compiler, Cargo, Rust analyzer.
   '';
 
   replit.packages = [

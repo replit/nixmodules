@@ -6,9 +6,7 @@ in
   name = "Lua Tools";
   displayVersion = lua-version;
   description = ''
-    Lua development tools. Includes:
-    * Lua
-    * Lua language server
+    Lua development tools. Includes Lua and Lua language server.
   '';
 
   replit.packages = with pkgs; [
