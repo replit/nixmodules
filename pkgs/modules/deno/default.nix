@@ -10,6 +10,7 @@ in
 {
   id = "deno-${version}";
   name = "Deno Tools";
+  displayVersion = version;
   description = ''
     Tools for working with Deno:
     * Deno

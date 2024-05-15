@@ -5,6 +5,7 @@ in
 {
   id = "haskell-ghc${ghc-version}";
   name = "Haskell Tools";
+  displayVersion = ghc-version;
   description = ''
     Haskell development tools. Includes:
     * GHCi - Glasgow Haskell Compiler

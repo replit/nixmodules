@@ -5,6 +5,7 @@ in
 {
   id = "php-${php-version}";
   name = "PHP Tools";
+  displayVersion = php-version;
   description = ''
     PHP development tools. Includes:
     * PHP: Hypertext Preprocessor

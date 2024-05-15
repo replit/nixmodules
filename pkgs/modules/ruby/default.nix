@@ -29,6 +29,7 @@ in
 {
   id = "ruby-${ruby-version}";
   name = "Ruby ${ruby-version} Tools";
+  displayVersion = ruby-version;
   description = ''
     Ruby development tools. Includes:
     * Ruby interpreter

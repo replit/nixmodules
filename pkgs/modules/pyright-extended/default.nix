@@ -5,6 +5,7 @@ in
 {
   id = "pyright-extended";
   name = "pyright-extended LSP";
+  displayVersion = pyright-extended.version;
   description = ''
     Pyright with yapf and ruff
   '';

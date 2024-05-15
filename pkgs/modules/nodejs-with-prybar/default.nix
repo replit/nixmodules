@@ -18,6 +18,7 @@ in
   id = lib.mkForce "nodejs-with-prybar-${nodeVersion}";
 
   name = lib.mkForce "Node.js ${nodeVersion} Tools (with Prybar)";
+  displayVersion = nodeVersion;
   description = lib.mkForce ''
     Node.js development tools with Prybar. Includes:
     * Node.js ${nodejs.version}

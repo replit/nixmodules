@@ -6,6 +6,7 @@ in
 {
   id = lib.mkDefault "typescript-language-server";
   name = lib.mkDefault "TypeScript Language Server";
+  displayVersion = lib.mkDefault (lib.versions.majorMinor typescript-language-server.version);
   description = lib.mkDefault ''
     TypeScript (& JavaScript) language server
   '';

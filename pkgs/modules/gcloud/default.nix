@@ -2,6 +2,7 @@
 {
   id = "gcloud";
   name = "Google Cloud Tools";
+  displayVersion = pkgs.lib.versions.majorMinor pkgs.google-cloud-sdk.version;
   description = ''
     Google Cloud developer tools:
     All of the tools developers and development teams need to be productive
