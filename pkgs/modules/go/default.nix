@@ -6,6 +6,7 @@ in
 {
   id = "go-${goversion}";
   name = "Go Tools";
+  displayVersion = goversion;
   description = ''
     Go development tools. Includes:
     * Go compiler

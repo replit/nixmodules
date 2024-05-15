@@ -15,6 +15,7 @@ in
 {
   id = "c-clang${clang-version}";
   name = "C Tools (with Clang)";
+  displayVersion = clang-version;
   description = ''
     Tools for working with C programming language:
     * Clang compiler

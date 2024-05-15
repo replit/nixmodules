@@ -104,7 +104,7 @@ in
 {
   id = "python-${pythonVersion}";
   name = "Python Tools";
-  displayVersion = python.version;
+  displayVersion = pythonVersion;
   description = ''
     Development tools for Python. Includes:
     * Python interpreter

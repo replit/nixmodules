@@ -25,6 +25,7 @@ in
 {
   id = "rust-${rust-channel-name}";
   name = "Rust Tools (${rust-channel-name})";
+  displayVersion = rust-channel-name;
   description = ''
     Rust development tools. Includes:
     * Rust compiler

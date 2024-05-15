@@ -11,6 +11,7 @@ in
 {
   id = "dotnet-${dotnet-version}";
   name = ".NET 7 Tools";
+  displayVersion = dotnet-version;
   description = ''
     .NET 7 development tools:
     * .NET

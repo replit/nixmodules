@@ -34,7 +34,7 @@ in
     * Prettier code formatter
     * jsdebug
   '';
-  displayVersion = nodejs.version;
+  displayVersion = short-version;
   imports = [
     (import ../typescript-language-server {
       inherit nodepkgs;

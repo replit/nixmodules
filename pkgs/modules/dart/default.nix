@@ -3,6 +3,7 @@ let dart-version = lib.versions.majorMinor pkgs.dart.version;
 in {
   id = "dart-${dart-version}";
   name = "Dart Tools";
+  displayVersion = dart-version;
   description = ''
     Tools for working with Dart:
     * Dart

@@ -33,6 +33,7 @@ in
 {
   id = "hermit-${version}";
   name = "Hermit Environment Manager";
+  displayVersion = version;
   description = "Hermit manages isolated, self-bootstrapping sets of tools in software projects.";
 
   replit.dev.packages = [

@@ -4,6 +4,7 @@ in
 {
   id = "lua-${lua-version}";
   name = "Lua Tools";
+  displayVersion = lua-version;
   description = ''
     Lua development tools. Includes:
     * Lua

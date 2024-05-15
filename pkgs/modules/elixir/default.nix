@@ -7,6 +7,7 @@ in
 {
   id = "elixir-${elixir-version}";
   name = "Elixir ${elixir-version} Tools";
+  displayVersion = elixir-version;
   description = ''
     Development tools for Elixir:
     * Elixir

@@ -4,6 +4,7 @@ in
 {
   id = "r-${r-version}";
   name = "R Tools";
+  displayVersion = r-version;
   description = ''
     R project for statistical computing.
   '';
