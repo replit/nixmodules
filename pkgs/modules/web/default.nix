@@ -2,10 +2,7 @@
   id = "web";
   name = "Web Tools";
   description = ''
-    Web development tools. Includes:
-    * VS Code HTML language server
-    * VS Code CSS language server
-    * TypeScript language server
+    Web development tools. Includes VS Code HTML language server, VS Code CSS language server, TypeScript language server.
   '';
 
   imports = [

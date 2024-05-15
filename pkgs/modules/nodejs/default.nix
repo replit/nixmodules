@@ -25,14 +25,7 @@ in
   id = "nodejs-${short-version}";
   name = "Node.js Tools";
   description = ''
-    Node.js development tools. Includes:
-    * Node.js ${nodejs.version}
-    * TypeScript language server
-    * pnpm
-    * yarn
-    * bun
-    * Prettier code formatter
-    * jsdebug
+    Node.js development tools. Includes: Node.js ${nodejs.version}, TypeScript language server, pnpm, yarn, bun, Prettier code formatter, jsdebug.
   '';
   displayVersion = short-version;
   imports = [

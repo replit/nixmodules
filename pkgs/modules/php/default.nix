@@ -7,10 +7,7 @@ in
   name = "PHP Tools";
   displayVersion = php-version;
   description = ''
-    PHP development tools. Includes:
-    * PHP: Hypertext Preprocessor
-    * Phpactor language server
-    * Composer package manager
+    PHP development tools. Includes PHP: Hypertext Preprocessor, Phpactor language server, Composer package manager.
   '';
 
   replit.packages = with pkgs; [

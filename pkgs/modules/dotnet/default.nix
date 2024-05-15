@@ -13,9 +13,7 @@ in
   name = ".NET 7 Tools";
   displayVersion = dotnet-version;
   description = ''
-    .NET 7 development tools:
-    * .NET
-    * OmniSharp
+    .NET 7 development tools. Includes .NET and OmniSharp.
   '';
 
   replit.packages = [

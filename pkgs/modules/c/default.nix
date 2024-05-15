@@ -17,10 +17,7 @@ in
   name = "C Tools (with Clang)";
   displayVersion = clang-version;
   description = ''
-    Tools for working with C programming language:
-    * Clang compiler
-    * GDB debugger
-    * ccls language server
+    Tools for working with C programming language. Includes Clang compiler, GDB debugger, and ccls language server.
   '';
 
   replit.packages = [

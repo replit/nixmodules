@@ -5,10 +5,7 @@ in {
   name = "Dart Tools";
   displayVersion = dart-version;
   description = ''
-    Tools for working with Dart:
-    * Dart
-    * Dart language server
-    * Dart pub package manager
+    Tools for working with Dart. Includes Dart, Dart language server, Dart pub package manager.
   '';
 
   replit.packages = [

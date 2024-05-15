@@ -6,9 +6,7 @@ in
   name = "Clojure Tools";
   displayVersion = clojure-version;
   description = ''
-    Tools for working with Clojure. Includes:
-    * Clojure
-    * Clojure language server
+    Tools for working with Clojure. Includes Clojure and Clojure language server.
   '';
 
   replit.runners.clojure = {

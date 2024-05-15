@@ -7,7 +7,7 @@ in
   name = "pyright-extended LSP";
   displayVersion = pyright-extended.version;
   description = ''
-    Pyright with yapf and ruff
+    Pyright with yapf and ruff.
   '';
   replit.languageServers.pyright-extended = {
     name = "pyright-extended";

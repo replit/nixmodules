@@ -31,11 +31,7 @@ in
   name = "Ruby ${ruby-version} Tools";
   displayVersion = ruby-version;
   description = ''
-    Ruby development tools. Includes:
-    * Ruby interpreter
-    * Rubygems
-    * Bundler
-    * Solargraph language server
+    Ruby development tools. Includes Ruby interpreter, Rubygems, Bundler, Solargraph language server.
   '';
 
   replit.packages = [

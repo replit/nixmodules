@@ -21,9 +21,7 @@ in
   name = "Swift Tools";
   displayVersion = swift-version;
   description = ''
-    Swift development tools. Includes:
-    * Swift compiler
-    * Sourcekit language server
+    Swift development tools. Includes Swift compiler, Sourcekit language server.
   '';
 
   replit.packages = with pkgs; [

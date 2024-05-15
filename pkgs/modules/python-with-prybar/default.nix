@@ -35,13 +35,7 @@ in
   displayVersion = pythonVersion;
 
   description = lib.mkForce ''
-    Development tools for Python with Prybar. Includes:
-    * Python interpreter
-    * Prybar for Python
-    * Pip
-    * Poetry
-    * Pyright extended language server
-    * debugpy debugger
+    Python tools with the Prybar interpreter. Prybar is an interactive console that allows you to type and evaluate Python code in a prompt after hitting "Run".
   '';
 
   imports = [

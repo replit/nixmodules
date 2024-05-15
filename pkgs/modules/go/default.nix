@@ -8,10 +8,7 @@ in
   name = "Go Tools";
   displayVersion = goversion;
   description = ''
-    Go development tools. Includes:
-    * Go compiler
-    * Go fmt formatter
-    * Gopls - Go language server
+    Go development tools. Includes Go compiler, Go fmt formatter, Gopls - Go language server.
   '';
 
   replit.packages = [

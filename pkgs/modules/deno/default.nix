@@ -12,9 +12,7 @@ in
   name = "Deno Tools";
   displayVersion = version;
   description = ''
-    Tools for working with Deno:
-    * Deno
-    * Deno language server
+    Tools for working with Deno. Includes Deno and Deno language server.
   '';
 
   replit.packages = [
