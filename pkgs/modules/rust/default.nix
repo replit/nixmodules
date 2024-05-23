@@ -21,11 +21,14 @@ let
     pkgs.fenix.targets.wasm32-wasi.${fenix-channel-name}.rust-std
     pkgs.fenix.targets.wasm32-unknown-unknown.${fenix-channel-name}.rust-std
   ];
+
+  # TODO: fenix doesn't give the rustc stable version :(
+  displayVersion = if fenix-channel-name == "stable" then "stable" else channel.cargo.version;
 in
 {
   id = "rust-${rust-channel-name}";
   name = "Rust Tools (${rust-channel-name})";
-  displayVersion = rust-channel-name;
+  inherit displayVersion;
   description = ''
     Rust development tools. Includes Rust compiler, Cargo, Rust analyzer.
   '';
