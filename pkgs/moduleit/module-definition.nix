@@ -622,6 +622,23 @@ in
       default = "";
     };
 
+    internal = mkOption {
+      type = types.bool;
+      default = false;
+      description = lib.mdDoc ''
+        Whether this module is for Replit internal use.
+      '';
+    };
+
+    demoted = mkOption {
+      type = types.bool;
+      default = false;
+      description = lib.mdDoc ''
+        Whether this module demoted.
+      '';
+    };
+
+
     replit = replitOptions // {
       dev = replitOptions;
     } // {
@@ -672,6 +689,8 @@ in
           id = config.id;
           name = config.name;
           displayVersion = config.displayVersion;
+          internal = config.internal;
+          demoted = config.demoted;
           description = config.description;
           env = envWithMergedPath allEnv (lib.makeBinPath allPackages);
           initializers = allInitializers;
@@ -699,6 +718,8 @@ in
           name = config.name;
           displayVersion = config.displayVersion;
           description = config.description;
+          internal = config.internal;
+          demoted = config.demoted;
           env = envWithMergedPath config.replit.env (lib.makeBinPath config.replit.packages);
           initializers = config.replit.initializers;
           inherit runners;

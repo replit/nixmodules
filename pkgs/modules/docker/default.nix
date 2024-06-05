@@ -165,6 +165,7 @@ in
 {
   id = "docker";
   name = "Support for Docker containers";
+  internal = true;
   description = ''
     Docker support for Replit. Includes: Docker, Docker Compose, Moby, Containerd, runc, Buildkid.
   '';
