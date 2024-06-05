@@ -11,7 +11,7 @@ let
     deployment = true;
   };
   apply-upgrade-map = import ../upgrade-map;
-  historical = import ../historical-modules;
+  historical = pkgs.callPackage ../historical-modules { };
 
   modulesList = [
     (import ./python {

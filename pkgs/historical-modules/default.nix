@@ -1,3 +1,4 @@
+{ pkgs }:
 with builtins;
 let
   # This is a list of modules we no longer actively maintain
@@ -104,15 +105,24 @@ let
     }
   ];
 
-  moduleFromHistory = { moduleId, commit, deployment ? false }:
+  moduleFromHistory = { displayVersion, moduleId, commit, deployment ? false }:
     let
       flake = getFlake "github:replit/nixmodules/${commit}";
+      module =
+        if deployment then
+          (flake.deploymentModules or flake.modules).${moduleId}
+        else
+          flake.modules.${moduleId};
+      # Sneaky way of adding a displayVersion to a historical module:
+      # 1. build the output JSON file
+      # 2. parse the JSON file
+      # 3. add the displayVersion field
+      # 4. return a new derivation that builds the modified JSON contents
+      moduleJSON = fromJSON (builtins.unsafeDiscardStringContext (readFile module.outPath)) // {
+        inherit displayVersion;
+      };
     in
-    if deployment then
-      (flake.deploymentModules or flake.modules).${moduleId}
-    else
-      flake.modules.${moduleId};
-
+    pkgs.writeText "replit-module-${moduleId}" (toJSON moduleJSON);
 
   modules = foldl'
     (acc: module:
