@@ -113,16 +113,14 @@ let
           (flake.deploymentModules or flake.modules).${moduleId}
         else
           flake.modules.${moduleId};
-      # Sneaky way of adding a displayVersion to a historical module:
-      # 1. build the output JSON file
-      # 2. parse the JSON file
-      # 3. add the displayVersion field
-      # 4. return a new derivation that builds the modified JSON contents
-      moduleJSON = fromJSON (builtins.unsafeDiscardStringContext (readFile module.outPath)) // {
-        inherit displayVersion;
-      };
     in
-    pkgs.writeText "replit-module-${moduleId}" (toJSON moduleJSON);
+    pkgs.stdenvNoCC.mkDerivation {
+      name = "replit-module-${moduleId}";
+      buildCommand = ''
+        set -x
+        ${pkgs.jq}/bin/jq '."displayVersion" = "${displayVersion}"' < ${module} > $out
+      '';
+    };
 
   modules = foldl'
     (acc: module:
