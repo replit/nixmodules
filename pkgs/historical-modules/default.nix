@@ -118,15 +118,11 @@ let
       # 2. parse the JSON file
       # 3. add the displayVersion field
       # 4. return a new derivation that builds the modified JSON contents
+      moduleJSON = fromJSON (builtins.unsafeDiscardStringContext (readFile module.outPath)) // {
+        inherit displayVersion;
+      };
     in
-    pkgs.stdenv.mkDerivation {
-      name = "replit-module-debug-${moduleId}";
-      dontUnpack = true;
-      buildInputs = [ pkgs.jq ];
-      installPhase = ''
-        cat ${module} | ${pkgs.jq}/bin/jq '. += {"displayVersion": "${displayVersion}"}' > $out
-      '';
-    };
+    pkgs.writeText "replit-module-${moduleId}" (toJSON moduleJSON);
 
   modules = foldl'
     (acc: module:
