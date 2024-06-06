@@ -118,7 +118,7 @@ let
       name = "replit-module-${moduleId}";
       buildCommand = ''
         set -x
-        ${pkgs.jq}/bin/jq '."displayVersion" = "${displayVersion}"' < ${module} > $out
+        ${pkgs.jq}/bin/jq --arg displayVersion "${displayVersion}" '.displayVersion |= $displayVersion' < ${module} > $out
       '';
     };
 
