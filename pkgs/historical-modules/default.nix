@@ -36,6 +36,7 @@ let
     {
       moduleId = "dart-3.3";
       commit = "54ea6c58e71bf278c3ce8824de3dbbaa49662be4";
+      displayVersion = "3.3.4";
     }
     {
       moduleId = "go-1.19";
