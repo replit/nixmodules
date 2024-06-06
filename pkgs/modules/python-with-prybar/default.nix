@@ -34,6 +34,8 @@ in
 
   displayVersion = pythonVersion;
 
+  demoted = true;
+
   description = lib.mkForce ''
     Python tools with the Prybar interpreter. Prybar is an interactive console that allows you to type and evaluate Python code in a prompt after hitting "Run".
   '';

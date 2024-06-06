@@ -19,6 +19,7 @@ in
 
   name = lib.mkForce "Node.js ${nodeVersion} Tools (with Prybar)";
   displayVersion = nodeVersion;
+  demoted = true;
   description = lib.mkForce ''
     Node.js tools with the Prybar interpreter. Prybar is an interactive console that allows you to type and evaluate JavaScript code in a prompt after hitting "Run".
   '';
