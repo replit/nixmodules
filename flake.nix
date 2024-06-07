@@ -35,7 +35,16 @@
 
       pkgs-23_05 = mkPkgs nixpkgs "x86_64-linux";
 
-      pkgs = mkPkgs nixpkgs-unstable "x86_64-linux";
+      patched-unstable = nixpkgs-unstable.legacyPackages.x86_64-linux.applyPatches {
+        name = "nixpkgs-unstable-patched";
+        src = nixpkgs-unstable;
+        patches = [
+          # rexml breaks this version of nixpkgs
+          ./patches/rexml.patch
+        ];
+      };
+
+      pkgs = mkPkgs patched-unstable "x86_64-linux";
     in
     {
       overlays.default = final: prev: {
