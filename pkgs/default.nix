@@ -24,14 +24,6 @@ rec {
   default = moduleit;
   moduleit = pkgs.callPackage ./moduleit { };
 
-  activeRegistry = pkgs.callPackage ./registry {
-    modules = self.activeModules;
-  };
-
-  registry = pkgs.callPackage ./registry {
-    inherit modules;
-  };
-
   bundle = bundle-fn { };
 
   custom-bundle = bundle-fn {
