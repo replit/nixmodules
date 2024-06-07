@@ -19,6 +19,10 @@ let
       pypkgs = pkgs-23_05.python38Packages;
     })
     (import ./python {
+      python = pkgs.python39Full;
+      pypkgs = pkgs.python39Packages;
+    })
+    (import ./python {
       python = pkgs.python310Full;
       pypkgs = pkgs.python310Packages;
     })
