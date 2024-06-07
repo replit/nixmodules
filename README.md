@@ -65,15 +65,3 @@ or
 ```
 nix build .#custom-bundle-squashfs
 ```
-
-To build the registry used to present available modules to the UI (this will take a few minutes because historical modules are slow):
-
-```
-nix build .#registry
-```
-
-To build the registry only for active modules:
-
-```
-nix build .#activeRegistry
-```
