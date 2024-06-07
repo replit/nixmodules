@@ -140,7 +140,7 @@ let
     (acc: module:
       acc // ({
         ${module.moduleId} = moduleFromHistory {
-          inherit (module) moduleId commit;
+          inherit (module) moduleId commit displayVersion;
           deployment = true;
         };
       })
