@@ -2,13 +2,13 @@
   id = "nix";
   name = "Nix";
   description = ''
-    Nixd: Nix language server
+    Nil: Nix language server
   '';
 
-  replit.dev.languageServers.nixd = {
-    name = "nixd";
+  replit.dev.languageServers.nil = {
+    name = "nil";
     language = "nix";
-    start = "${pkgs.nixd}/bin/nixd";
+    start = "${pkgs.nil}/bin/nil";
     extensions = [ ".nix" ];
 
     configuration = {
