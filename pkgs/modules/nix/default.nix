@@ -11,8 +11,6 @@
     start = "${pkgs.nil}/bin/nil";
     extensions = [ ".nix" ];
 
-    configuration = {
-      options.enable = false;
-    };
+    configuration.nil.formatting.command = [ "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt" ];
   };
 }
