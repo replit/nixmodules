@@ -4,6 +4,8 @@
   inputs.nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
   inputs.fenix.url = "github:nix-community/fenix";
   inputs.fenix.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.nil.url = "github:oxalica/nil";
+  inputs.nil.inputs.nixpkgs.follows = "nixpkgs";
   inputs.prybar.url = "github:replit/prybar";
   inputs.prybar.inputs.nixpkgs.follows = "nixpkgs";
   inputs.java-language-server.url = "github:replit/java-language-server";
@@ -13,7 +15,7 @@
   inputs.replit-rtld-loader.url = "github:replit/replit_rtld_loader";
   inputs.replit-rtld-loader.inputs.nixpkgs.follows = "nixpkgs";
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, prybar, java-language-server, fenix, replit-rtld-loader, ... }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, prybar, java-language-server, nil, fenix, replit-rtld-loader, ... }:
     let
       mkPkgs = nixpkgs-spec: system: import nixpkgs-spec {
         inherit system;
@@ -21,6 +23,7 @@
           self.overlays.default
           prybar.overlays.default
           java-language-server.overlays.default
+          nil.overlays.default
           fenix.overlays.default
           replit-rtld-loader.overlays.default
         ];
