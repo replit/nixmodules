@@ -52,6 +52,7 @@ in
       language = "javascript";
       start = "${nodejs-wrapped}/bin/node $file";
       fileParam = true;
+      defaultEntrypoints = [ "index.js" "main.js" ];
     };
 
     dev.debuggers.nodeDAP = {
