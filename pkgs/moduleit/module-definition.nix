@@ -188,6 +188,14 @@ let
         '';
       };
 
+      defaultEntrypoints = mkOption {
+        type = types.listOf (types.str);
+        default = [ ];
+        description = lib.mdDoc ''
+          The default entrypoint files to check if no entrypoint is explicitly defined.
+        '';
+      };
+
     } // fileTypeAttrs;
 
   runnerModule = { name, config, ... }: { options = runnerOptions; };

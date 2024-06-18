@@ -121,6 +121,7 @@ in
     fileParam = true;
     language = "python3";
     start = "${python3-wrapper}/bin/python3 $file";
+    defaultEntrypoints = [ "main.py" "app.py" "run.py" ];
   };
 
   replit.dev.debuggers = debuggerConfig;
