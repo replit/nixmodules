@@ -69,7 +69,13 @@
                 cat >$out/bin/$binName <<-EOF
               #!${final.bash}/bin/bash
               if [ -n "\''${REPLIT_LD_LIBRARY_PATH-}" ]; then
-                export LD_LIBRARY_PATH="\$REPLIT_LD_LIBRARY_PATH:\$LD_LIBRARY_PATH"
+                if test "\''${REPLIT_RTLD_LOADER:-}" = "1" && test "\''${REPLIT_NIX_CHANNEL:-}" != "legacy"
+                then
+                  # activate RTLD loader!
+                  export LD_AUDIT="${pkgs.replit-rtld-loader}/rtld_loader.so"
+                else
+                  export LD_LIBRARY_PATH="\$REPLIT_LD_LIBRARY_PATH:\$LD_LIBRARY_PATH"
+                fi
               fi
               exec "$bin" "\$@"
               EOF
