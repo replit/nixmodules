@@ -8,7 +8,7 @@ let
   };
   run-gofmt = pkgs.writeShellApplication {
     name = "run-gofmt";
-    runtimeInputs = [ pkgs.bash ];
+    runtimeInputs = [ pkgs.bash go ];
     extraShellCheckFlags = [ "-x" ];
     text = ''
       #!/bin/bash
@@ -29,6 +29,22 @@ let
 
       # Execute the command
       gofmt "''${gofmt_args[@]}"
+    '';
+    checkPhase = ''
+    cat > main.go << EOF
+    package   main
+
+    func    main (  ){
+    fmt.Println(  "hello world"  )
+    }
+    EOF
+    $out/bin/run-gofmt -f main.go > output.go
+    printf 'package main\n\nfunc main() {\n\tfmt.Println("hello world")\n}\n'> expected.go
+    expected=$(cat expected.go)
+    if ! diff expected.go output.go; then
+      echo "format output doesn't match expectation:"
+      exit 1
+    fi
     '';
   };
 
