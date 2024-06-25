@@ -40,7 +40,6 @@ let
       EOF
       $out/bin/run-gofmt -f main.go > output.go
       printf 'package main\n\nfunc main() {\n\tfmt.Println("hello world")\n}\n'> expected.go
-      expected=$(cat expected.go)
       if ! diff expected.go output.go; then
         echo "format output doesn't match expectation:"
         exit 1
