@@ -70,6 +70,17 @@ let
       # Resolve to first prettier in path
       prettier "''${prettier_args[@]}"
     '';
+    checkPhase = ''
+      cat > index.ts << EOF
+      function foo() { return 10}
+      EOF
+      $out/bin/run-prettier -f index.ts > output.ts
+      printf 'function foo() {\n\treturn 10;\n}\n'> expected.ts
+      if ! diff expected.ts output.ts; then
+        echo "format output doesn't match expectation"
+        exit 1
+      fi
+    '';
   };
 
 
