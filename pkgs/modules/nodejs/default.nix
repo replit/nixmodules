@@ -162,6 +162,7 @@ in
         args = [ "${run-prettier}/bin/run-prettier" "--stdin-filepath" "-f" "$file" ];
       };
       stdin = true;
+      supportsRangeFormatting = true;
     };
 
     dev.packagers.upmNodejs = {
