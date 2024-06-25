@@ -305,6 +305,14 @@ let
           Whether to pass in file contents from stdin or from $file parameter.
         '';
       };
+
+      supportsRangeFormatting = mkOption {
+        type = types.bool;
+        default = false;
+        description = lib.mdDoc ''
+          Whether the formatter supports range formatting
+        '';
+      };
     } // fileTypeAttrs;
   };
 
