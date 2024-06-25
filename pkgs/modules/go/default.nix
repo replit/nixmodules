@@ -8,7 +8,7 @@ let
   };
   run-gofmt = pkgs.writeShellApplication {
     name = "run-gofmt";
-    runtimeInputs = [ pkgs.bash ];
+    runtimeInputs = [ pkgs.bash go ];
     extraShellCheckFlags = [ "-x" ];
     text = ''
       #!/bin/bash
