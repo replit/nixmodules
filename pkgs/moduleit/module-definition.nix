@@ -309,7 +309,7 @@ let
       supportsRangeFormatting = mkOption {
         type = types.bool;
         description = lib.mdDoc ''
-          Whether the formatter support
+          Whether the formatter supports range formatting
         '';
       };
     } // fileTypeAttrs;
