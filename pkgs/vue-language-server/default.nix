@@ -1,6 +1,7 @@
 # TODO: upstream this file into nixpkgs
 { buildNpmPackage
 , fetchurl
+, nodejs
 }:
 
 buildNpmPackage rec {
@@ -22,5 +23,7 @@ buildNpmPackage rec {
   meta = {
     mainProgram = "vue-language-server";
   };
+
+  inherit nodejs;
 }
 

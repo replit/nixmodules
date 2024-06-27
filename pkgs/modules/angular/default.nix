@@ -11,7 +11,8 @@ in
 
 {
   id = "angular-node-20";
-  name = "Angular with Node.js 20 Tools";
+  name = "Angular Tools with Node.js";
+  displayVersion = "20";
   description = ''
     Angular development tools including Node.js, Bun, pnpm, yarn, Angular language server.
   '';

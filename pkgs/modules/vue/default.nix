@@ -1,18 +1,22 @@
-{ pkgs, ... }:
+{ nodejs }:
+{ pkgs, lib, ... }:
 
 let
-  nodejs = pkgs.nodejs_20;
   nodepkgs = nodejs.pkgs;
+  node-version = lib.versions.major nodejs.version;
 
-  vue-language-server = pkgs.callPackage ../../vue-language-server { };
+  vue-language-server = pkgs.callPackage ../../vue-language-server {
+    inherit nodejs;
+  };
 
   language = "vue";
   extensions = [ ".vue" ".js" ".mjs" ".cjs" ".jsx" ".ts" ".tsx" ".json" ".html" ".css" ];
 in
 
 {
-  id = "vue-node-20";
-  name = "Vue with Node.js 20 Tools";
+  id = "vue-node-${node-version}";
+  name = "Vue Tools with Node.js";
+  displayVersion = node-version;
   description = ''
     Vue.js development tools. Includes Node.js, Bun, pnpm, yarn, Vue language tools.
   '';

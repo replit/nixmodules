@@ -118,6 +118,7 @@ let
       moduleId = "nodejs-14";
       commit = "f4cd419a646009297c049a2f1eec434381e08f13";
       overrides = {
+        name = "Node.js Tools";
         displayVersion = "14";
         runners = {
           nodeJS = {
@@ -130,6 +131,7 @@ let
       moduleId = "nodejs-16";
       commit = "f4cd419a646009297c049a2f1eec434381e08f13";
       overrides = {
+        name = "Node.js Tools";
         displayVersion = "16";
         runners = {
           nodeJS = {
@@ -142,6 +144,7 @@ let
       moduleId = "nodejs-19";
       commit = "f4cd419a646009297c049a2f1eec434381e08f13";
       overrides = {
+        name = "Node.js Tools";
         displayVersion = "19";
         runners = {
           nodeJS = {
@@ -175,15 +178,6 @@ let
         # /nix/store/f96l8blsvpx1dbgnxw2x611hhzbm199l-replit-module-swift-5.6
         # .runners.swift.displayVersion = "5.6.2";
         displayVersion = "5";
-      };
-    }
-    {
-      moduleId = "vue-node-18";
-      commit = "3ea4bcdbdc3c5e3c09b37b07edcd61781f9695f7";
-      overrides = {
-        # /nix/store/623sn0cy54r5csab3d9fmg55di6r4dd3-replit-module-vue-node-18
-        # .runners["dev-runner"].displayVersion = "18.18.2";
-        displayVersion = "18";
       };
     }
     {
