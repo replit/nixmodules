@@ -181,16 +181,6 @@ let
       };
     }
     {
-      moduleId = "vue-node-18";
-      commit = "3ea4bcdbdc3c5e3c09b37b07edcd61781f9695f7";
-      overrides = {
-        # /nix/store/623sn0cy54r5csab3d9fmg55di6r4dd3-replit-module-vue-node-18
-        # .runners["dev-runner"].displayVersion = "18.18.2";
-        name = "Vue Tools with Node.js";
-        displayVersion = "18";
-      };
-    }
-    {
       moduleId = "zig-0.11";
       commit = "15426ef79793bf7c424eb40865d507eacfdd44e6";
       overrides = {
