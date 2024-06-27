@@ -118,6 +118,7 @@ let
       moduleId = "nodejs-14";
       commit = "f4cd419a646009297c049a2f1eec434381e08f13";
       overrides = {
+        name = "Node.js Tools";
         displayVersion = "14";
         runners = {
           nodeJS = {
@@ -130,6 +131,7 @@ let
       moduleId = "nodejs-16";
       commit = "f4cd419a646009297c049a2f1eec434381e08f13";
       overrides = {
+        name = "Node.js Tools";
         displayVersion = "16";
         runners = {
           nodeJS = {
@@ -142,6 +144,7 @@ let
       moduleId = "nodejs-19";
       commit = "f4cd419a646009297c049a2f1eec434381e08f13";
       overrides = {
+        name = "Node.js Tools";
         displayVersion = "19";
         runners = {
           nodeJS = {
@@ -183,6 +186,7 @@ let
       overrides = {
         # /nix/store/623sn0cy54r5csab3d9fmg55di6r4dd3-replit-module-vue-node-18
         # .runners["dev-runner"].displayVersion = "18.18.2";
+        name = "Vue Tools with Node.js";
         displayVersion = "18";
       };
     }

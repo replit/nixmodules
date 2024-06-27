@@ -12,7 +12,8 @@ in
 
 {
   id = "vue-node-20";
-  name = "Vue with Node.js 20 Tools";
+  name = "Vue Tools with Node.js";
+  displayVersion = "20";
   description = ''
     Vue.js development tools. Includes Node.js, Bun, pnpm, yarn, Vue language tools.
   '';
