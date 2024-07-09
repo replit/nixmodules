@@ -1,7 +1,8 @@
 name: checks
 run-name: Check for errors
 on:
-  - push
+  pull_request:
+  push:
 jobs:
   checks:
     runs-on: ubuntu-latest
