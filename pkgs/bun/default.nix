@@ -3,9 +3,9 @@
 }:
 
 bun.overrideAttrs rec {
-  version = "1.1.13";
+  version = "1.1.18";
   src = fetchurl {
     url = "https://github.com/oven-sh/bun/releases/download/bun-v${version}/bun-linux-x64.zip";
-    hash = "sha256-QC6dsWjRYiuBIojxPvs8NFMSU6ZbXbZ9Q/+u+45NmPc=";
+    hash = "sha256-n/HcFSSNtnmzEa4nBuzn8LuJ/IQ3/QUlTt3OO5T/ACQ=";
   };
 }
