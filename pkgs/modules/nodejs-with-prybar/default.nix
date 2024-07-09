@@ -17,7 +17,7 @@ in
 
   id = lib.mkForce "nodejs-with-prybar-${nodeVersion}";
 
-  name = lib.mkForce "Node.js ${nodeVersion} Tools (with Prybar)";
+  name = lib.mkForce "Node.js Tools (with Prybar)";
   displayVersion = nodeVersion;
   demoted = true;
   description = lib.mkForce ''

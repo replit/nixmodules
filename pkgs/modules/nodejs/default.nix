@@ -19,6 +19,71 @@ let
       ${nodejs-wrapped}/bin/npx "$@"
     '';
   };
+
+  formatter = import ../../formatter {
+    inherit pkgs;
+  };
+  run-prettier = pkgs.writeShellApplication {
+    name = "run-prettier";
+    runtimeInputs = [ pkgs.bash nodepkgs.prettier ];
+    extraShellCheckFlags = [ "-x" ];
+    text = ''
+      #!/bin/bash
+
+      # Source the shared options parsing script
+      source ${formatter}/bin/parse-formatter-options "$@"
+
+      # Translate parsed arguments into prettier options
+      prettier_args=()
+
+      # Apply edit flag
+      if [[ "''${apply:=false}" == "true" ]]; then
+        prettier_args+=("--write")
+      fi
+
+      # Range options
+      if [[ -n "$rangeStart" && -n "$rangeEnd" ]]; then
+        prettier_args+=("--range-start" "$rangeStart" "--range-end" "$rangeEnd")
+      fi
+
+      # Tab size
+      if [[ -n "$tabSize" ]]; then
+        prettier_args+=("--tab-width" "$tabSize")
+      fi
+
+      # Insert spaces over tabs
+      if [[ "''${insertSpaces:=false}" == "true" ]]; then
+        prettier_args+=("--use-tabs" "false")
+      else
+        prettier_args+=("--use-tabs" "true")
+      fi
+
+      # Read file content from stdin if stdinMode is enabled
+      if [[ "''${stdinMode:=false}" == "true" ]]; then
+        prettier_args+=("--stdin-filepath")
+      fi
+
+      # Append the file path
+      prettier_args+=("$file")
+
+      # Execute the command
+      # Resolve to first prettier in path
+      prettier "''${prettier_args[@]}"
+    '';
+    checkPhase = ''
+      cat > index.ts << EOF
+      function foo() { return 10}
+      EOF
+      $out/bin/run-prettier -f index.ts > output.ts
+      printf 'function foo() {\n\treturn 10;\n}\n'> expected.ts
+      if ! diff expected.ts output.ts; then
+        echo "format output doesn't match expectation"
+        exit 1
+      fi
+    '';
+  };
+
+
 in
 
 {
@@ -105,10 +170,10 @@ in
       language = "javascript";
       extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ".html" ];
       start = {
-        # Resolve to first prettier in path
-        args = [ "prettier" "--stdin-filepath" "$file" ];
+        args = [ "${run-prettier}/bin/run-prettier" "--stdin-filepath" "-f" "$file" ];
       };
       stdin = true;
+      supportsRangeFormatting = true;
     };
 
     dev.packagers.upmNodejs = {

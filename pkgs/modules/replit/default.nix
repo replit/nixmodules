@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
 
 let
   # use changes from https://github.com/tamasfe/taplo/pull/510
@@ -15,17 +15,17 @@ let
   #   a custom bin that wraps taplo-lsp crate that *only* provides lsp for .replit
   #   files. this should reduce the amount of consumed memory by a good amount.
   # - use the above custom bin
-  taplo = pkgs.rustPlatform.buildRustPackage rec {
+  taplo = pkgs.rustPlatform.buildRustPackage {
     pname = "taplo";
     version = "0.patched";
     src = pkgs.fetchFromGitHub {
-      owner = "cdmistman";
+      owner = "tamasfe";
       repo = "taplo";
-      rev = "22eff1f7775e48eee8b50518c67f992b4595ab61";
-      hash = "sha256-63fm8pH03TJd4QBuhIxtttoEAaBnc9TuHGKCMK4YGP0=";
+      rev = "acec15f897cb57fc33999779f875db58fd89945d";
+      hash = "sha256-NjjRDvmZwYAcn0W5qnxS1Qr8DaOE93XNr6q57uvB2LE=";
     };
 
-    cargoHash = "sha256-4OSCN2zCrlBHihZn7TCNZp4mCREpvrpKsfMSNP95GNc=";
+    cargoHash = "sha256-6vT1/3gV0A6ActfRrkmtxhv8+Wq+EZ4q6Pgvb+CdJDs=";
     buildFeatures = [ "lsp" ];
   };
 

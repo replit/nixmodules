@@ -99,7 +99,12 @@ let
     )
     (import ./swift)
     (import ./svelte-kit)
-    (import ./vue)
+    (import ./vue {
+      nodejs = pkgs.nodejs_20;
+    })
+    (import ./vue {
+      nodejs = pkgs.nodejs_18;
+    })
     (import ./web)
     (import ./hermit)
     (import ./typescript-language-server {

@@ -2,7 +2,8 @@
 
 {
   id = "svelte-kit-node-20";
-  name = "SvelteKit with Node.js 20 Tools";
+  name = "SvelteKit Tools with Node.js";
+  displayVersion = "20";
   description = ''
     Svelte Kit development tools. Includes Node.js, Svelte language server.
   '';
