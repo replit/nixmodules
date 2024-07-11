@@ -1,4 +1,4 @@
-{ python, pypkgs }:
+{ python, pypkgs, modern ? true }:
 { pkgs-unstable, pkgs-23_05, lib, ... }:
 let
   pythonVersion = lib.versions.majorMinor python.version;
@@ -112,8 +112,7 @@ in
   replit.packages = [
     python3-wrapper
     pip-wrapper
-    poetry-wrapper
-  ];
+  ] ++ (lib.optional modern poetry-wrapper);
 
   replit.runners.python = {
     name = "Python ${pythonVersion}";
@@ -124,7 +123,7 @@ in
     defaultEntrypoints = [ "main.py" "app.py" "run.py" ];
   };
 
-  replit.dev.debuggers = debuggerConfig;
+  replit.dev.debuggers = lib.mkIf modern debuggerConfig;
 
   replit.dev.languageServers.pyright-extended = {
     name = "pyright-extended";
@@ -134,7 +133,7 @@ in
   };
 
   replit.dev.packagers.upmPython = {
-    name = "Python packager (poetry, pip)";
+    name = "Python packager (${if modern then "poetry, " else ""}pip)";
     language = "python3";
     ignoredPackages = [ "unit_tests" ];
     ignoredPaths = [ pylibs-dir ];
@@ -146,6 +145,16 @@ in
   };
 
   replit.env = {
+    PIP_CONFIG_FILE = pip.config.outPath;
+    PYTHONUSERBASE = userbase;
+    PYTHONPATH = "${sitecustomize}:${pip.pip}/${python.sitePackages}";
+    REPLIT_PYTHONPATH = "${userbase}/${python.sitePackages}:${pypkgs.setuptools}/${python.sitePackages}";
+    # Even though it is set-default in the wrapper, add it to the
+    # environment too, so that when someone wants to override it,
+    # they can keep the defaults if they want to.
+    PYTHON_LD_LIBRARY_PATH = python-ld-library-path;
+    PATH = "${userbase}/bin";
+  } // (lib.optionalAttrs modern {
     POETRY_CONFIG_DIR = poetry-config.outPath;
     POETRY_CACHE_DIR = "$REPL_HOME/.cache/pypoetry";
     POETRY_VIRTUALENVS_CREATE = "0";
@@ -156,14 +165,5 @@ in
     POETRY_PIP_NO_PREFIX = "1";
     POETRY_PIP_FROM_PATH = "1";
     POETRY_USE_USER_SITE = "1";
-    PIP_CONFIG_FILE = pip.config.outPath;
-    PYTHONUSERBASE = userbase;
-    PYTHONPATH = "${sitecustomize}:${pip.pip}/${python.sitePackages}";
-    REPLIT_PYTHONPATH = "${userbase}/${python.sitePackages}:${pypkgs.setuptools}/${python.sitePackages}";
-    # Even though it is set-default in the wrapper, add it to the
-    # environment too, so that when someone wants to override it,
-    # they can keep the defaults if they want to.
-    PYTHON_LD_LIBRARY_PATH = python-ld-library-path;
-    PATH = "${userbase}/bin";
-  };
+  });
 }
