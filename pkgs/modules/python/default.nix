@@ -3,7 +3,7 @@
 let
   pythonVersion = lib.versions.majorMinor python.version;
 
-  pkgs = if pythonVersion == "3.8" then pkgs-23_05 else pkgs-unstable;
+  pkgs = pkgs-unstable;
 
   pylibs-dir = ".pythonlibs";
 
