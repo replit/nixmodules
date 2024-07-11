@@ -1,4 +1,4 @@
-{ pkgs, pkgs-23_05 }:
+{ pkgs, pkgs-21_05, pkgs-23_05 }:
 with builtins;
 let
   mkModule = path: pkgs.callPackage ../moduleit/entrypoint.nix {
@@ -14,6 +14,11 @@ let
   historical = pkgs.callPackage ../historical-modules { };
 
   modulesList = [
+    (import ./python {
+      python = pkgs-21_05.python36Full;
+      pypkgs = pkgs-21_05.python36Packages;
+      modern = false;
+    })
     (import ./python {
       python = pkgs-23_05.python38Full;
       pypkgs = pkgs-23_05.python38Packages;

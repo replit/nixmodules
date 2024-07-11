@@ -198,6 +198,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-21_05": {
+      "locked": {
+        "lastModified": 1659914493,
+        "narHash": "sha256-lkA5X3VNMKirvA+SUzvEhfA7XquWLci+CGi505YFAIs=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "022caabb5f2265ad4006c1fa5b1ebe69fb0c3faf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "release-21.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-unstable": {
       "locked": {
         "lastModified": 1717399147,
@@ -261,6 +277,7 @@
         "java-language-server": "java-language-server",
         "nil": "nil",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-21_05": "nixpkgs-21_05",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "prybar": "prybar",
         "replit-rtld-loader": "replit-rtld-loader",

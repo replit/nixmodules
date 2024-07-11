@@ -2,6 +2,7 @@
   description = "Nix expressions for defining Replit development environments";
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
   inputs.nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+  inputs.nixpkgs-21_05.url = "github:nixos/nixpkgs/release-21.05";
   inputs.fenix.url = "github:nix-community/fenix";
   inputs.fenix.inputs.nixpkgs.follows = "nixpkgs";
   inputs.nil.url = "github:oxalica/nil";
@@ -15,7 +16,7 @@
   inputs.replit-rtld-loader.url = "github:replit/replit_rtld_loader";
   inputs.replit-rtld-loader.inputs.nixpkgs.follows = "nixpkgs";
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, prybar, java-language-server, nil, fenix, replit-rtld-loader, ... }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-21_05, prybar, java-language-server, nil, fenix, replit-rtld-loader, ... }:
     let
       mkPkgs = nixpkgs-spec: system: import nixpkgs-spec {
         inherit system;
@@ -33,6 +34,7 @@
         ];
       };
 
+      pkgs-21_05 = mkPkgs nixpkgs-21_05 "x86_64-linux";
       pkgs-23_05 = mkPkgs nixpkgs "x86_64-linux";
 
       patched-unstable = nixpkgs-unstable.legacyPackages.x86_64-linux.applyPatches {
@@ -104,6 +106,7 @@
       import ./pkgs/modules {
         inherit pkgs;
         inherit pkgs-23_05;
+        inherit pkgs-21_05;
       }
     );
 }
