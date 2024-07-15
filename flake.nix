@@ -84,6 +84,27 @@
             '';
           };
         };
+
+      } // rec {
+        python38 = pkgs.python310.override {
+          sourceVersion = {
+            major = "3";
+            minor = "8";
+            patch = "18";
+            suffix = "";
+          };
+          hash = "sha256-P/txzTSaMmunsvrcfn34a6V33ZxJF+UqhAGtvadAXj8=";
+        };
+        
+
+        python38Full = python38.override {
+          self = python38Full;
+          pythonAttr = "python38Full";
+          bluezSupport = true;
+          x11Support = true;
+        };
+
+        python38Packages = python38Full.pkgs;
       };
       formatter.x86_64-linux = pkgs.nixpkgs-fmt;
       packages.x86_64-linux = import ./pkgs {
