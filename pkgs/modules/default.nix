@@ -15,8 +15,8 @@ let
 
   modulesList = [
     (import ./python {
-      python = pkgs-23_05.python38Full;
-      pypkgs = pkgs-23_05.python38Packages;
+      python = pkgs.python38Full;
+      pypkgs = pkgs.python38Packages;
     })
     (import ./python {
       python = pkgs.python39Full;
