@@ -10,6 +10,12 @@ let
     # and we don't need the docs
     postBuild = "";
     postInstall = "";
+
+    nativeBuildInputs = [
+      pkgs.installShellFiles
+      pypkgs.setuptools
+      pypkgs.wheel
+    ];
   });
 
   config = pkgs.writeTextFile {
