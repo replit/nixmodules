@@ -1,5 +1,5 @@
 { python, pypkgs }:
-{ pkgs-unstable, pkgs-23_05, lib, ... }:
+{ pkgs-unstable, lib, ... }:
 let
   pythonVersion = lib.versions.majorMinor python.version;
 
@@ -90,7 +90,6 @@ let
     };
   };
 
-  python3-wrapper = pythonWrapper { bin = "${python}/bin/python3"; name = "python3"; aliases = [ "python" "python${pythonVersion}" ]; };
 
   poetry-wrapper = pythonWrapper { bin = "${poetry}/bin/poetry"; name = "poetry"; };
 
@@ -100,6 +99,14 @@ let
 
   sitecustomize = pkgs.callPackage ./sitecustomize.nix { };
 
+  sitecustomized-python = pkgs.runCommand "python-replit-sitecustomized" {} ''
+    ls -al ${python.outPath}
+    ${pkgs.rsync}/bin/rsync -av --chown=$USER --chmod=+w ${python.outPath}/ $out/
+    rm -f $out/${python.sitePackages}/sitecustomize.py
+    cp ${sitecustomize}/sitecustomize.py $out/${python.sitePackages}/sitecustomize.py
+  '';
+
+  python3-wrapper = pythonWrapper { bin = "${sitecustomized-python}/bin/python3"; name = "python3"; aliases = [ "python" "python${pythonVersion}" ]; };
 in
 {
   id = "python-${pythonVersion}";
@@ -158,7 +165,7 @@ in
     POETRY_USE_USER_SITE = "1";
     PIP_CONFIG_FILE = pip.config.outPath;
     PYTHONUSERBASE = userbase;
-    PYTHONPATH = "${sitecustomize}:${pip.pip}/${python.sitePackages}";
+    PYTHONPATH = "${pip.pip}/${python.sitePackages}";
     REPLIT_PYTHONPATH = "${userbase}/${python.sitePackages}:${pypkgs.setuptools}/${python.sitePackages}";
     # Even though it is set-default in the wrapper, add it to the
     # environment too, so that when someone wants to override it,
