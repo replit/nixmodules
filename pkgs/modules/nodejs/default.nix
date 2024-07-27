@@ -170,7 +170,7 @@ in
       language = "javascript";
       extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ".html" ];
       start = {
-        args = [ "${run-prettier}/bin/run-prettier" "--stdin-filepath" "-f" "$file" ];
+        args = [ "${run-prettier}/bin/run-prettier" ];
       };
       stdin = true;
       supportsRangeFormatting = true;
