@@ -44,6 +44,9 @@ let
     (import ./nodejs {
       nodejs = pkgs.nodejs_20;
     })
+    (import ./nodejs {
+      nodejs = pkgs.nodejs_22;
+    })
     (import ./nodejs-with-prybar)
 
     (import ./go {
