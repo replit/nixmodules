@@ -113,6 +113,7 @@ in
     python3-wrapper
     pip-wrapper
     poetry-wrapper
+    pkgs.uv
   ];
 
   replit.runners.python = {
