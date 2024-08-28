@@ -39,8 +39,15 @@
         name = "nixpkgs-unstable-patched";
         src = nixpkgs-unstable;
         patches = [
-          # rexml breaks this version of nixpkgs
-          ./patches/rexml.patch
+          # rexml broke solargraph at some point in the past.
+          # Attempting to run:
+          #   echo 'x = (5 + "hey")' > main.rb
+          #   /nix/store/.../ruby /nix/store/.../bin/solargraph typecheck main.rb
+          # curently emits a bunch of "Unrecognized RBS type:" warnings, followed by
+          # "0 problems found."
+          # This patch used to apply, but even when massaged to apply to the
+          # current unstable HEAD, still produces the same result:
+          # ./patches/rexml.patch
         ];
       };
 
