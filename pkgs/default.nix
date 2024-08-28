@@ -7,7 +7,7 @@ let
   revstring_long = self.rev or "dirty";
   revstring = builtins.substring 0 7 revstring_long;
 
-  dev-module-ids = [ "python-3.10" "python-3.12" "nodejs-18" "nodejs-20" "docker" "replit" "replit-rtld-loader" "ruby" ];
+  dev-module-ids = [ "python-3.10" "python-3.11" "nodejs-18" "nodejs-20" "docker" "replit" "replit-rtld-loader" "ruby" ];
 
   mkPhonyOCI = pkgs.callPackage ./mk-phony-oci { ztoc-rs = self.inputs.ztoc-rs.packages.x86_64-linux.default; };
 
