@@ -74,6 +74,6 @@ in
   };
 
   replit.env = {
-    CARGO_HOME = "$REPL_HOME/.cargo";
+    CARGO_HOME = "$XDG_DATA_HOME/.cargo";
   };
 }
