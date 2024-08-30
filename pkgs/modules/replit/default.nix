@@ -1,31 +1,20 @@
 { pkgs, ... }:
 
 let
-  # use changes from https://github.com/tamasfe/taplo/pull/510
-  # the above PR adds the `-c` flag to the `taplo lsp` command, which is
-  # necessary to support our schema. There are a couple of paths forward
-  # for replacing this derivation:
-  # option 1:
-  # - the above pr is merged
-  # - new taplo version is released https://github.com/tamasfe/taplo/pull/502 (with my change)
-  # - nixpkgs-unstable gets the updated version
-  # - we update to nixpkgs-unstable that contains the updated taplo version
-  # option 2:
-  # - given that taplo currently consumes >1 mb of memory, it'd be nice to have
-  #   a custom bin that wraps taplo-lsp crate that *only* provides lsp for .replit
-  #   files. this should reduce the amount of consumed memory by a good amount.
-  # - use the above custom bin
+  # use patched version of taplo to fix schema validation errors causing excessive lsp errors
+  # specifically, the patch addresses error span issues with unexpected properties in .replit files
+  # https://github.com/tamasfe/taplo/pull/664
   taplo = pkgs.rustPlatform.buildRustPackage {
     pname = "taplo";
     version = "0.patched";
     src = pkgs.fetchFromGitHub {
-      owner = "tamasfe";
+      owner = "cdmistman";
       repo = "taplo";
-      rev = "acec15f897cb57fc33999779f875db58fd89945d";
-      hash = "sha256-NjjRDvmZwYAcn0W5qnxS1Qr8DaOE93XNr6q57uvB2LE=";
+      rev = "only-share-spans-of-unexpected-properties";
+      hash = "sha256-1GYmZZlFaa1w3zFfSlM7o4PXwjfKH3YnZbGWzBnobM4=";
     };
 
-    cargoHash = "sha256-6vT1/3gV0A6ActfRrkmtxhv8+Wq+EZ4q6Pgvb+CdJDs=";
+    cargoHash = "sha256-WmMdWMfg68i/AuR1pezUHf5yA7h2oMoMJDTDjwfIvng=";
     buildFeatures = [ "lsp" ];
   };
 
