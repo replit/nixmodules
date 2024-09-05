@@ -16,6 +16,6 @@ NIX_FLAGS=(
 echo "Evaluate modules derivations"
 nix eval "${NIX_FLAGS[@]}" .#modules --json
 
-nix develop "${NIX_FLAGS[@]}"
+nix develop "${NIX_FLAGS[@]}" --command echo Hello, world
 
 python scripts/build_changed_modules.py main
