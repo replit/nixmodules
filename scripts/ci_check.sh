@@ -17,4 +17,4 @@ nix eval "${NIX_FLAGS[@]}" .#modules --json
 
 nix develop "${NIX_FLAGS[@]}" --command echo Hello, world
 
-python scripts/build_changed_modules.py main
+nix-shell -p python312 --command 'python scripts/build_changed_modules.py main'
