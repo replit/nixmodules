@@ -12,7 +12,12 @@ let
     "bun-0.7" = "bun-1.0";
     "dart-3.0" = "dart-3.1";
     "dart-3.1" = "dart-3.2";
+    "dart-3.2" = "dart-3.3";
+    "dart-3.3" = "dart-3.4";
+    "dart-3.4" = "dart-3.5";
+    "elixir-1_16" = "elixir-1_17";
     "go" = "go-1.19";
+    "r-4.3" = "r-4.4";
     "rust" = "rust-1.69";
     "rust-1.69" = "rust-1.70";
     "rust-1.70" = "rust-1.72";

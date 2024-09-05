@@ -9,6 +9,10 @@ in
     R project for statistical computing.
   '';
 
+  replit.packages = [
+    pkgs.R
+  ];
+
   replit.runners.r = {
     name = "R";
     language = "r";

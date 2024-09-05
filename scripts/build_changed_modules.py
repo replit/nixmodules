@@ -5,6 +5,7 @@ import os
 import subprocess
 import argparse
 import re
+from textwrap import dedent
 
 nix_store_path_pattern = re.compile(r'/nix/store/([0-9a-z]+)')
 
@@ -46,7 +47,10 @@ def verify_no_existing_modules_removed(upstream_module_versions, current_module_
   upstream_modules = {version[0] for version in upstream_module_versions}
   modules = {version[0] for version in current_module_versions}
   diff = upstream_modules - modules
-  assert len(diff) == 0, "module(s) deleted: %r" % diff
+  assert len(diff) == 0, dedent(f"""\
+    module(s) deleted: {repr(diff)}
+      You may want to add new entries to ./pkgs/upgrade-map
+    """)
 
 def main():
   parser = argparse.ArgumentParser(
