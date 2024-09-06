@@ -34,7 +34,7 @@ This will take a while.
 
 ## Building
 
-For each of the following examples, the build result will found be in a file or directory named `result`.
+For each of the following examples, the build result will be found in a file or directory named `result`.
 
 To build all active modules (this will take a while, and a lot of disk space):
 
