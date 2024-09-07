@@ -7,11 +7,14 @@ git grep writeShellScriptBin | grep -v "Please use writeShellApplication" && \
     (echo "Please use writeShellApplication instead of writeShellScriptBin" && \
          exit 1) || true
 
-NIX_FLAGS="--extra-experimental-features nix-command --extra-experimental-features flakes --extra-experimental-features discard-references"
+NIX_FLAGS=(
+    --extra-experimental-features nix-command
+    --extra-experimental-features flakes
+)
 
 echo "Evaluate modules derivations"
-nix eval $NIX_FLAGS .#modules --json
+nix eval "${NIX_FLAGS[@]}" .#modules --json
 
-nix develop $NIX_FLAGS
+nix develop "${NIX_FLAGS[@]}" --command echo Hello, world
 
-python scripts/build_changed_modules.py main
+nix eval .#bundle
