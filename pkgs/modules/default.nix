@@ -49,6 +49,8 @@ let
     (import ./python-with-prybar)
 
     (import ./pyright-extended)
+    (import ./pyright)
+    (import ./ruff)
 
     (import ./nodejs {
       nodejs = pkgs.nodejs-18_x;
