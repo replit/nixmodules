@@ -95,7 +95,7 @@ let
   poetry-wrapper = pythonWrapper { bin = "${poetry}/bin/poetry"; name = "poetry"; };
 
   python-wrapped = pkgs.callPackage ../../python-wrapped {
-    inherit pkgs python;
+    inherit pkgs python python-ld-library-path;
   };
 
   pyright-extended = pkgs.callPackage ../../pyright-extended {

@@ -1,4 +1,4 @@
-{ pkgs, python }:
+{ pkgs, python, python-ld-library-path }:
 pkgs.buildGoModule rec {
   pname = "python-wrapped";
   version = "0.1.0";
@@ -6,6 +6,7 @@ pkgs.buildGoModule rec {
   src = ./.;
 
   ldflags = [
+    "-X main.ReplitPythonLdLibraryPath=${python-ld-library-path}"
     "-X main.PythonExePath=${python}/bin/python"
   ];
 
