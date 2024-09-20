@@ -94,6 +94,10 @@ let
 
   poetry-wrapper = pythonWrapper { bin = "${poetry}/bin/poetry"; name = "poetry"; };
 
+  binary-wrapped-python = pkgs.callPackage ../../python-wrapped {
+    inherit pkgs python python-ld-library-path;
+  };
+
   pyright-extended = pkgs.callPackage ../../pyright-extended {
     yapf = pypkgs.yapf;
   };
@@ -110,7 +114,7 @@ in
   '';
 
   replit.packages = [
-    python3-wrapper
+    binary-wrapped-python
     pip-wrapper
     poetry-wrapper
     pkgs.uv
@@ -165,7 +169,7 @@ in
     # Even though it is set-default in the wrapper, add it to the
     # environment too, so that when someone wants to override it,
     # they can keep the defaults if they want to.
-    PYTHON_LD_LIBRARY_PATH = python-ld-library-path;
+    REPLIT_PYTHON_LD_LIBRARY_PATH = python-ld-library-path;
     PATH = "${userbase}/bin";
   };
 }
