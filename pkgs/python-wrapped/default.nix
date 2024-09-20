@@ -19,14 +19,14 @@ pkgs.buildGoModule rec {
     '';
     homepage = "https://replit.com";
     license = licenses.mit;
-    mainProgram = "python-wrapped";
+    mainProgram = "python";
   };
 
   postInstall = ''
     cd $out/bin
-    mv python-wrapper .python-wrapper
-    ln -s .python-wrapper python
-    ln -s .python-wrapper python${pkgs.lib.versions.major python.version}
-    ln -s .python-wrapper python${pkgs.lib.versions.majorMinor python.version}
+    mv python-wrapper .python-wrapped
+    ln -s .python-wrapped python
+    ln -s .python-wrapped python${pkgs.lib.versions.major python.version}
+    ln -s .python-wrapped python${pkgs.lib.versions.majorMinor python.version}
   '';
 }
