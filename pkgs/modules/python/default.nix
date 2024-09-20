@@ -94,6 +94,10 @@ let
 
   poetry-wrapper = pythonWrapper { bin = "${poetry}/bin/poetry"; name = "poetry"; };
 
+  python-wrapped = pkgs.callPackage ../../python-wrapped {
+    inherit pkgs python;
+  };
+
   pyright-extended = pkgs.callPackage ../../pyright-extended {
     yapf = pypkgs.yapf;
   };
@@ -110,7 +114,7 @@ in
   '';
 
   replit.packages = [
-    python3-wrapper
+    python-wrapped
     pip-wrapper
     poetry-wrapper
     pkgs.uv
