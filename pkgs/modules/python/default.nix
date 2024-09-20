@@ -165,7 +165,7 @@ in
     # Even though it is set-default in the wrapper, add it to the
     # environment too, so that when someone wants to override it,
     # they can keep the defaults if they want to.
-    PYTHON_LD_LIBRARY_PATH = python-ld-library-path;
+    REPLIT_PYTHON_LD_LIBRARY_PATH = python-ld-library-path;
     PATH = "${userbase}/bin";
   };
 }
