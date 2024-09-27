@@ -166,6 +166,8 @@ in
     PYTHONPATH = "${sitecustomize}:${pip.pip}/${python.sitePackages}";
     REPLIT_PYTHONPATH = "${userbase}/${python.sitePackages}:${pypkgs.setuptools}/${python.sitePackages}";
     UV_PROJECT_ENVIRONMENT = "$REPL_HOME/.pythonlibs";
+    UV_PYTHON_DOWNLOADS = "never";
+    UV_PYTHON_PREFERENCE = "only-system";
     # Even though it is set-default in the wrapper, add it to the
     # environment too, so that when someone wants to override it,
     # they can keep the defaults if they want to.
