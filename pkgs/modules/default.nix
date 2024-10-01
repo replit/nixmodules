@@ -34,9 +34,23 @@ let
       python = pkgs.python312Full;
       pypkgs = pkgs.python312Packages;
     })
+    (import ./python-base {
+      python = pkgs.python311Full;
+      pypkgs = pkgs.python311Packages;
+    })
+    (import ./python-base {
+      python = pkgs.python312Full;
+      pypkgs = pkgs.python312Packages;
+    })
+    (import ./python-base {
+      python = pkgs.python313Full;
+      pypkgs = pkgs.python313Packages;
+    })
     (import ./python-with-prybar)
 
     (import ./pyright-extended)
+    (import ./pyright)
+    (import ./ruff)
 
     (import ./nodejs {
       nodejs = pkgs.nodejs-18_x;
