@@ -34,10 +34,13 @@ in
     Replit tools. Includes .replit language server.
   '';
 
+  replit.env = {
+    REPLIT_LD_AUDIT = "${pkgs.replit-rtld-loader}/rtld_loader.so";
+  };
+
   replit.dev.languageServers.dotreplit-lsp = {
     name = ".replit LSP";
     language = "dotreplit";
     start = "${taplo}/bin/taplo lsp -c ${taplo-config} stdio";
   };
 }
-

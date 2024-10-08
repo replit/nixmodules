@@ -1,5 +1,8 @@
 entrypoint = "pkgs/default.nix"
 modules = []
 
+[env]
+HISTFILE = "$REPL_HOME/.cache/.bash_history"
+
 [nix]
 channel = "stable-23_11"
