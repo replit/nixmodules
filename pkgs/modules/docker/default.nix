@@ -99,10 +99,9 @@ let
     replitShimRunc = replit-containerd;
   };
 
-  mobyGoPackagePath = "github.com/docker/docker";
   mobyVersion = "24.0.7+replit";
 
-  replit-moby = pkgs.buildGoPackage {
+  replit-moby = pkgs.buildGoModule {
     pname = "replit-moby";
     version = mobyVersion;
 
@@ -113,7 +112,7 @@ let
       sha256 = "sha256-VUgsclXkoHHNT+GgYL7qiCV/4V3P9RZrT9BegMVYaRU=";
     };
 
-    goPackagePath = mobyGoPackagePath;
+    vendorHash = null;
 
     nativeBuildInputs = [ pkgs.makeWrapper pkgs.pkg-config pkgs.go pkgs.libtool ];
 
@@ -133,7 +132,7 @@ let
     buildPhase = ''
       export GOCACHE="$TMPDIR/go-cache"
       # build engine
-      cd ./go/src/${mobyGoPackagePath}
+      cd ./go/src
       export AUTO_GOPATH=1
       export DOCKER_GITCOMMIT="v${mobyVersion}"
       export VERSION="${mobyVersion}"
@@ -142,7 +141,7 @@ let
     '';
 
     postInstall = ''
-      cd ./go/src/${mobyGoPackagePath}
+      cd ./go/src
       install -Dm755 ./bundles/dynbinary-daemon/dockerd $out/libexec/docker/replit-dockerd
 
       makeWrapper $out/libexec/docker/replit-dockerd $out/bin/replit-dockerd \
