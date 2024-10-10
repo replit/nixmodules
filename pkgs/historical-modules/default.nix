@@ -203,11 +203,16 @@ let
   moduleFromHistory = { moduleId, commit, deployment ? false, overrides }:
     let
       flake = getFlake "github:replit/nixmodules/${commit}";
+      flakeMods =
+        if pkgs.lib.hasAttr "activeModules" flake then
+          flake.activeModules
+        else
+          flake.modules;
       module =
         if deployment then
-          (flake.deploymentModules or flake.modules).${moduleId}
+          (flake.deploymentModules or flakeMods).${moduleId}
         else
-          flake.modules.${moduleId};
+          flakeMods.${moduleId};
     in
     pkgs.stdenvNoCC.mkDerivation {
       name = "replit-module-${moduleId}";
