@@ -79,6 +79,15 @@ let
       };
     }
     {
+      moduleId = "go-1.21";
+      commit = "b5aa5df636c4cd8cd1aea251e8dea4fc0aa51781";
+      overrides = {
+        # /nix/store/q6j9za8smkdbnlybg63qq5lmj7zbambr-replit-module-go-1.20
+        # .runners["go-run"].displayVersion = "1.20.4";
+        displayVersion = "1.21";
+      };
+    }
+    {
       moduleId = "haskell-ghc9.0";
       commit = "c48c43c6c698223ed3ce2abc5a2d708735a77d5b";
       overrides = {
@@ -194,11 +203,16 @@ let
   moduleFromHistory = { moduleId, commit, deployment ? false, overrides }:
     let
       flake = getFlake "github:replit/nixmodules/${commit}";
+      flakeMods =
+        if pkgs.lib.hasAttr "activeModules" flake then
+          flake.activeModules
+        else
+          flake.modules;
       module =
         if deployment then
-          (flake.deploymentModules or flake.modules).${moduleId}
+          (flake.deploymentModules or flakeMods).${moduleId}
         else
-          flake.modules.${moduleId};
+          flakeMods.${moduleId};
     in
     pkgs.stdenvNoCC.mkDerivation {
       name = "replit-module-${moduleId}";
