@@ -80,10 +80,10 @@ let
     }
     {
       moduleId = "go-1.21";
-      commit = "b5aa5df636c4cd8cd1aea251e8dea4fc0aa51781";
+      commit = "00fa9ccbbd30ded08a8ab54259490102f21905b7";
       overrides = {
-        # /nix/store/q6j9za8smkdbnlybg63qq5lmj7zbambr-replit-module-go-1.20
-        # .runners["go-run"].displayVersion = "1.20.4";
+        # /nix/store/vjdwykj1l3hkr5hzjdr4m1m2mq8vxj0i-replit-module-go-1.21
+        # .runners["go-run"].displayVersion = "1.21.13";
         displayVersion = "1.21";
       };
     }
