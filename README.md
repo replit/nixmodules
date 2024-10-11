@@ -65,3 +65,9 @@ or
 ```
 nix build .#custom-bundle-squashfs
 ```
+
+## Adding modules to historical modules
+
+pkgs/historical-modules/default.nix provides a list of modules that are still active but we no longer maintain and build.
+
+To add a new historical module, you need to pick a commit of the nix modules repo that has that module in it. This commit's src code will be used to build this module.
