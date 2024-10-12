@@ -172,6 +172,13 @@ let
       };
     }
     {
+      moduleId = "python-with-prybar";
+      commit = "0c168a667c046710619cbb5a8d14abb91962ceb7";
+      overrides = {
+        displayVersion = "3.10";
+      };
+    }
+    {
       moduleId = "r-4.2";
       commit = "1e1bb663068482cdb7c04bf585daed00205c0140";
       overrides = {
