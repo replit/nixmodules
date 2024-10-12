@@ -4,7 +4,7 @@ let
 
   configFiles = pkgs.copyPathToStore ./etc;
 
-  replit-runc = pkgs.buildGo123Module {
+  replit-runc = pkgs.buildGo121Module {
     pname = "replit-runc";
     version = "1.1.9+replit";
 
@@ -30,7 +30,7 @@ let
     '';
   };
 
-  replit-containerd = pkgs.buildGo123Module {
+  replit-containerd = pkgs.buildGo121Module {
     pname = "replit-containerd";
     version = "1.7.5+replit";
 
@@ -65,7 +65,7 @@ let
     replitShimRunc = replit-containerd;
   };
 
-  replit-buildkit = pkgs.buildGo123Module {
+  replit-buildkit = pkgs.buildGo121Module {
     pname = "replit-buildkit";
     version = "v0.13.0-beta1+replit";
 
@@ -99,9 +99,10 @@ let
     replitShimRunc = replit-containerd;
   };
 
+  mobyGoPackagePath = "github.com/docker/docker";
   mobyVersion = "24.0.7+replit";
 
-  replit-moby = pkgs.buildGoModule {
+  replit-moby = pkgs.buildGoPackage {
     pname = "replit-moby";
     version = mobyVersion;
 
@@ -112,7 +113,7 @@ let
       sha256 = "sha256-VUgsclXkoHHNT+GgYL7qiCV/4V3P9RZrT9BegMVYaRU=";
     };
 
-    vendorHash = null;
+    goPackagePath = mobyGoPackagePath;
 
     nativeBuildInputs = [ pkgs.makeWrapper pkgs.pkg-config pkgs.go pkgs.libtool ];
 
@@ -132,7 +133,7 @@ let
     buildPhase = ''
       export GOCACHE="$TMPDIR/go-cache"
       # build engine
-      cd ./go/src
+      cd ./go/src/${mobyGoPackagePath}
       export AUTO_GOPATH=1
       export DOCKER_GITCOMMIT="v${mobyVersion}"
       export VERSION="${mobyVersion}"
@@ -141,7 +142,7 @@ let
     '';
 
     postInstall = ''
-      cd ./go/src
+      cd ./go/src/${mobyGoPackagePath}
       install -Dm755 ./bundles/dynbinary-daemon/dockerd $out/libexec/docker/replit-dockerd
 
       makeWrapper $out/libexec/docker/replit-dockerd $out/bin/replit-dockerd \

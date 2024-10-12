@@ -64,16 +64,9 @@ let
     (import ./nodejs-with-prybar)
 
     (import ./go {
-      go = pkgs.go_1_22;
+      go = pkgs.go_1_21;
       gopls = pkgs.gopls.override {
-        buildGoModule = pkgs.buildGo122Module;
-      };
-    })
-
-    (import ./go {
-      go = pkgs.go_1_23;
-      gopls = pkgs.gopls.override {
-        buildGoModule = pkgs.buildGo123Module;
+        buildGoModule = pkgs.buildGo121Module;
       };
     })
 
