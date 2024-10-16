@@ -32,7 +32,7 @@ let
       ldLibraryPathConvertWrapper = pkgs.writeShellApplication {
         inherit name;
         text = ''
-          if test "''${REPLIT_NIX_CHANNEL:-}" = "legacy"
+          if test "''${REPLIT_NIX_CHANNEL:-}" = "legacy" || test "''${REPLIT_NIX_CHANNEL:-}" = "stable-21_11"
           then
             export LD_LIBRARY_PATH=${python-ld-library-path}
             if [ -n "''${PYTHON_LD_LIBRARY_PATH-}" ]; then
