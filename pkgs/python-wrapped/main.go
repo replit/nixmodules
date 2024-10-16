@@ -38,13 +38,18 @@ func modern() {
 	}
 }
 
+// returns whether a Nix channel works with RTLD loader
+func channelWorksWithRtldLoader(channel string) bool {
+	return channel != "" && channel != "legacy" && channel != "stable-21_11"
+}
+
 func main() {
 	os.Unsetenv("PYTHONNOUSERSITE")
 
-	if val, ok := os.LookupEnv("REPLIT_NIX_CHANNEL"); !ok || val == "legacy" || val == "" {
-		legacy()
-	} else {
+	if val, ok := os.LookupEnv("REPLIT_NIX_CHANNEL"); ok && channelWorksWithRtldLoader(val) {
 		modern()
+	} else {
+		legacy()
 	}
 
 	if err := syscall.Exec(PythonExePath, os.Args, os.Environ()); err != nil {
