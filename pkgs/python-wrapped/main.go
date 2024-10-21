@@ -11,6 +11,17 @@ var ReplitPythonLdLibraryPath string
 
 // Set up environment for legacy nixpkgs
 func legacy() {
+	// Previous wrapper script semantics:
+	// export LD_LIBRARY_PATH=${python-ld-library-path}
+	// if [ -n "''${PYTHON_LD_LIBRARY_PATH-}" ]; then
+	// 	export LD_LIBRARY_PATH=''${PYTHON_LD_LIBRARY_PATH}:$LD_LIBRARY_PATH
+	// fi
+	// if [ -n "''${REPLIT_LD_LIBRARY_PATH-}" ]; then
+	// 	export LD_LIBRARY_PATH=''${REPLIT_LD_LIBRARY_PATH}:$LD_LIBRARY_PATH
+	// fi
+
+	// REPLIT_LD_LIBRARY_PATH:PYTHON_LD_LIBRARY_PATH:${python-ld-library-path}
+
 	ldLibraryPath := []string{}
 	for _, key := range []string{
 		"REPLIT_LD_LIBRARY_PATH",
@@ -33,9 +44,19 @@ func modern() {
 	if ldAudit := os.Getenv("REPLIT_LD_AUDIT"); ldAudit != "" {
 		os.Setenv("LD_AUDIT", ldAudit)
 	}
-	if val, ok := os.LookupEnv("REPLIT_LD_LIBRARY_PATH"); ok && val != "" {
-		os.Setenv("REPLIT_LD_LIBRARY_PATH", strings.Join([]string{ReplitPythonLdLibraryPath, val}, ":"))
+
+	// Previous wrapper script semantics:
+	// export REPLIT_LD_LIBRARY_PATH=${python-ld-library-path}:''${REPLIT_LD_LIBRARY_PATH:-}
+
+	// ${python-ld-library-path}:REPLIT_LD_LIBRARY_PATH
+
+	replitLdLibraryPath := []string{ReplitPythonLdLibraryPath}
+
+	if val, ok := os.LookupEnv("REPLIT_LD_LIBRARY_PATH"); ok {
+		replitLdLibraryPath = append(replitLdLibraryPath, val)
 	}
+
+	os.Setenv("REPLIT_LD_LIBRARY_PATH", strings.Join(replitLdLibraryPath, ":"))
 }
 
 // returns whether a Nix channel works with RTLD loader
