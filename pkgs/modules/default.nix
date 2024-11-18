@@ -90,6 +90,7 @@ let
     (import ./lua)
     (import ./nix)
     (import ./php)
+    (import ./postgresql)
     (import ./qbasic)
     (import ./R)
     (import ./replit)
