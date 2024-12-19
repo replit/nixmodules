@@ -102,18 +102,18 @@ let
   mobyGoPackagePath = "github.com/docker/docker";
   mobyVersion = "24.0.7+replit";
 
-  replit-moby = pkgs.buildGoPackage {
+  replit-moby = pkgs.buildGoModule {
     pname = "replit-moby";
-    version = mobyVersion;
+    version = "24.0.7+replit";
 
     src = pkgs.fetchFromGitHub {
       owner = "moby";
       repo = "moby";
       rev = "v24.0.7";
-      sha256 = "sha256-VUgsclXkoHHNT+GgYL7qiCV/4V3P9RZrT9BegMVYaRU=";
+      hash = "sha256-VUgsclXkoHHNT+GgYL7qiCV/4V3P9RZrT9BegMVYaRU=";
     };
 
-    goPackagePath = mobyGoPackagePath;
+    vendorHash = "";
 
     nativeBuildInputs = [ pkgs.makeWrapper pkgs.pkg-config pkgs.go pkgs.libtool ];
 
@@ -128,6 +128,7 @@ let
 
     postPatch = ''
       patchShebangs hack/make.sh hack/with-go-mod.sh hack/make/
+      go mod init ${mobyGoPackagePath}
     '';
 
     buildPhase = ''
