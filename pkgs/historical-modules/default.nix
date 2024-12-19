@@ -163,6 +163,13 @@ let
       };
     }
     {
+      moduleId = "python-3.8";
+      commit = "76ae6535d7d60e767fe9d54902400229ca0b9448";
+      overrides = {
+        displayVersion = "3.8";
+      };
+    }
+    {
       moduleId = "r-4.2";
       commit = "1e1bb663068482cdb7c04bf585daed00205c0140";
       overrides = {
