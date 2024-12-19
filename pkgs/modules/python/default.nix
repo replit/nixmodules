@@ -32,21 +32,8 @@ let
     destination = "/config.toml";
   };
 
-  debugpy = pypkgs.debugpy.overridePythonAttrs
-    (old: rec {
-      disabled = false;
-      version = "1.8.0";
-      src = pkgs.fetchFromGitHub {
-        owner = "microsoft";
-        repo = "debugpy";
-        rev = "refs/tags/v${version}";
-        hash = "sha256-FW1RDmj4sDBS0q08C82ErUd16ofxJxgVaxfykn/wVBA=";
-      };
-      doCheck = false;
-    });
-
   dapPython = pkgs.callPackage ../../dapPython {
-    inherit pkgs python pypkgs debugpy;
+    inherit pkgs python pypkgs;
   };
 
   debuggerConfig = {
