@@ -4,7 +4,7 @@ let
 
   configFiles = pkgs.copyPathToStore ./etc;
 
-  replit-runc = pkgs.buildGo121Module {
+  replit-runc = pkgs.buildGo123Module {
     pname = "replit-runc";
     version = "1.1.9+replit";
 
@@ -30,7 +30,7 @@ let
     '';
   };
 
-  replit-containerd = pkgs.buildGo121Module {
+  replit-containerd = pkgs.buildGo123Module {
     pname = "replit-containerd";
     version = "1.7.5+replit";
 
@@ -65,7 +65,7 @@ let
     replitShimRunc = replit-containerd;
   };
 
-  replit-buildkit = pkgs.buildGo121Module {
+  replit-buildkit = pkgs.buildGo123Module {
     pname = "replit-buildkit";
     version = "v0.13.0-beta1+replit";
 
@@ -102,18 +102,18 @@ let
   mobyGoPackagePath = "github.com/docker/docker";
   mobyVersion = "24.0.7+replit";
 
-  replit-moby = pkgs.buildGoPackage {
+  replit-moby = pkgs.buildGoModule {
     pname = "replit-moby";
-    version = mobyVersion;
+    version = "24.0.7+replit";
 
     src = pkgs.fetchFromGitHub {
       owner = "moby";
       repo = "moby";
       rev = "v24.0.7";
-      sha256 = "sha256-VUgsclXkoHHNT+GgYL7qiCV/4V3P9RZrT9BegMVYaRU=";
+      hash = "sha256-VUgsclXkoHHNT+GgYL7qiCV/4V3P9RZrT9BegMVYaRU=";
     };
 
-    goPackagePath = mobyGoPackagePath;
+    vendorHash = "";
 
     nativeBuildInputs = [ pkgs.makeWrapper pkgs.pkg-config pkgs.go pkgs.libtool ];
 
@@ -128,6 +128,7 @@ let
 
     postPatch = ''
       patchShebangs hack/make.sh hack/with-go-mod.sh hack/make/
+      go mod init ${mobyGoPackagePath}
     '';
 
     buildPhase = ''

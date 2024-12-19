@@ -79,6 +79,15 @@ let
       };
     }
     {
+      moduleId = "go-1.21";
+      commit = "76ae6535d7d60e767fe9d54902400229ca0b9448";
+      overrides = {
+        # /nix/store/...-replit-module-go-1.21
+        # .runners["go-run"].displayVersion = "1...";
+        displayVersion = "1.21";
+      };
+    }
+    {
       moduleId = "haskell-ghc9.0";
       commit = "c48c43c6c698223ed3ce2abc5a2d708735a77d5b";
       overrides = {
