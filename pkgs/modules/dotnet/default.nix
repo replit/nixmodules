@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 
 let
-  dotnet = pkgs.dotnet-sdk_7;
+  dotnet = pkgs.dotnet-sdk_8;
 
   extensions = [ ".cs" ".csproj" ".fs" ".fsproj" ];
 
@@ -10,10 +10,10 @@ in
 
 {
   id = "dotnet-${dotnet-version}";
-  name = ".NET 7 Tools";
+  name = ".NET 8 Tools";
   displayVersion = dotnet-version;
   description = ''
-    .NET 7 development tools. Includes .NET and OmniSharp.
+    .NET 8 development tools. Includes .NET and OmniSharp.
   '';
 
   replit.packages = [
