@@ -14,7 +14,7 @@ let
       overrides = {
         # /nix/store/cvz36f39793v9l361ibfxznjjmk4jpd6-replit-module-bun-1.0
         # .runners["package.json"].displayVersion = "1.0.23";
-        displayVersion = "1.0";
+        displayVersion = "1.0.23";
       };
     }
     {
