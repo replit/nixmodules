@@ -61,6 +61,14 @@ let
       };
     }
     {
+      moduleId = "docker";
+      commit = "185d7dc7645178f92fd891f9efa20b3343c0f20d";
+      overrides = {
+        displayVersion = "1";
+        internal = true;
+      };
+    }
+    {
       moduleId = "go-1.19";
       commit = "c48c43c6c698223ed3ce2abc5a2d708735a77d5b";
       overrides = {
