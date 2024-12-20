@@ -40,11 +40,3 @@ jobs:
             take care to ensure its contents are correct. This Workflow
             runs every week to ensure the rust-nightly module is regularly
             updated.
-
-      - name: lock modules
-        run: nix develop -c python scripts/lock_modules.py
-
-      - name: push locked modules
-        run: |
-          git commit -am 'lock modules'
-          git push actions/update-weekly
