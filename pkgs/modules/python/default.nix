@@ -91,6 +91,18 @@ let
 
   sitecustomize = pkgs.callPackage ./sitecustomize.nix { };
 
+  uv = pkgs.callPackage ./uv {
+    rustPlatform = (
+      let
+        toolchain = pkgs.fenix.latest.toolchain;
+      in
+      pkgs.makeRustPlatform {
+        cargo = toolchain;
+        rustc = toolchain;
+      }
+    );
+  };
+
 in
 {
   id = "python-${pythonVersion}";
@@ -104,7 +116,7 @@ in
     binary-wrapped-python
     pip-wrapper
     poetry-wrapper
-    pkgs.uv
+    uv
   ];
 
   replit.runners.python = {
