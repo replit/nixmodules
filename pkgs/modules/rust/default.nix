@@ -4,7 +4,7 @@ let
   rust-channel-name = if fenix-channel-name == "latest" then "nightly" else fenix-channel-name;
   channel = pkgs.fenix."${fenix-channel-name}";
 
-  stripped-toolchain = pkgs.fenix.combine [
+  stripped-toolchain = pkgs.fenix.combine ([
     (channel.withComponents [
       "cargo"
       "llvm-tools"
@@ -12,15 +12,21 @@ let
       "rust-std"
       "rustc"
     ])
-    pkgs.fenix.targets.wasm32-wasi.${fenix-channel-name}.rust-std
-    pkgs.fenix.targets.wasm32-unknown-unknown.${fenix-channel-name}.rust-std
-  ];
+  ] ++ (
+    if fenix-channel-name == "nightly" then [
+      pkgs.fenix.targets.wasm32-wasi.${fenix-channel-name}.rust-std
+      pkgs.fenix.targets.wasm32-unknown-unknown.${fenix-channel-name}.rust-std
+    ] else [ ]
+  ));
 
-  toolchain = pkgs.fenix.combine [
+  toolchain = pkgs.fenix.combine ([
     channel.toolchain
-    pkgs.fenix.targets.wasm32-wasi.${fenix-channel-name}.rust-std
-    pkgs.fenix.targets.wasm32-unknown-unknown.${fenix-channel-name}.rust-std
-  ];
+  ] ++ (
+    if fenix-channel-name == "nightly" then [
+      pkgs.fenix.targets.wasm32-wasi.${fenix-channel-name}.rust-std
+      pkgs.fenix.targets.wasm32-unknown-unknown.${fenix-channel-name}.rust-std
+    ] else [ ]
+  ));
 
   # TODO: fenix doesn't give the rustc stable version :(
   displayVersion = if fenix-channel-name == "stable" then "stable" else channel.cargo.version;
