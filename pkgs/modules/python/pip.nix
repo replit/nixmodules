@@ -25,7 +25,7 @@ let
   pip-wrapper = pkgs.writeShellApplication {
     name = "pip";
     text = ''
-      python_location=$(which python)
+      python_location="$(which python)"
       venv_pip_location="''${REPL_HOME}/.pythonlibs/bin/pip"
       venv_pip3_location="''${REPL_HOME}/.pythonlibs/bin/pip3"
 
