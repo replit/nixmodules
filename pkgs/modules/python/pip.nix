@@ -22,7 +22,7 @@ let
   # the virtualenv: `.pythonlibs/bin`. If so, it will install a shell script
   # called `pip` into the virtualenv so that if pip is called in the future
   # python will think it's in the virtualenv.
-  pip-wrapper = = pkgs.writeShellApplication {
+  pip-wrapper = pkgs.writeShellApplication {
     name = "pip-wrapper";
     text = ''
       python_location=$(which python)
