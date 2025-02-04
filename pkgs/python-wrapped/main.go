@@ -42,11 +42,11 @@ func legacy() {
 }
 
 // Unsets the PIP_CONFIG_FILE config if we are running in virtualenv mode,
-// because that config file - see pip.nix works only for --user mode pip installs
-// and that breaks virtualenv.
+// because that config file - see pip.nix - works only for `--user` mode pip installs
+// but pip cannot do `--user` inside virtualenv.
 func unsetPipConfigFileForVirtualEnvPython() {
     var exePath, err = filepath.Abs(os.Args[0])
-    if err != nil {
+    if err == nil {
         repl_home := os.Getenv("REPL_HOME")
         if repl_home != "" {
             dot_python_dir := fmt.Sprintf("%s/%s", repl_home, ".pythonlibs/bin/")
@@ -59,7 +59,6 @@ func unsetPipConfigFileForVirtualEnvPython() {
 
 // Set up environment for non-legacy nixpkgs
 func modern() {
-	unsetPipConfigFileForVirtualEnvPython()
 	if ldAudit := os.Getenv("REPLIT_LD_AUDIT"); ldAudit != "" {
 		os.Setenv("LD_AUDIT", ldAudit)
 	}
@@ -84,6 +83,7 @@ func channelWorksWithRtldLoader(channel string) bool {
 }
 
 func main() {
+	unsetPipConfigFileForVirtualEnvPython()
 	os.Unsetenv("PYTHONNOUSERSITE")
 
 	if val, ok := os.LookupEnv("REPLIT_NIX_CHANNEL"); ok && channelWorksWithRtldLoader(val) {
