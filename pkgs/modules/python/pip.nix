@@ -22,7 +22,7 @@ let
     name = "pip.conf";
     text = ''
       [global]
-      user = yes
+      user = no
       disable-pip-version-check = yes
       break-system-packages = yes
     '';
