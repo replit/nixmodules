@@ -1,4 +1,4 @@
-pkgs @ { pypkgs, ... }:
+pkgs @ { pypkgs, python, ... }:
 
 let
   pip = pypkgs.pip.overridePythonAttrs (old: rec {
@@ -66,5 +66,6 @@ let
 in
 {
   pip = pip-wrapper;
+  sitePackages = "${pip}/${python.sitePackages}";
   inherit config;
 }
