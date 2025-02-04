@@ -4,6 +4,8 @@ import (
 	"os"
 	"strings"
 	"syscall"
+	"fmt"
+	"path/filepath"
 )
 
 var PythonExePath string
@@ -39,8 +41,25 @@ func legacy() {
 	}
 }
 
+// Unsets the PIP_CONFIG_FILE config if we are running in virtualenv mode,
+// because that config file - see pip.nix works only for --user mode pip installs
+// and that breaks virtualenv.
+func unsetPipConfigFileForVirtualEnvPython() {
+    var exePath, err = filepath.Abs(os.Args[0])
+    if err != nil {
+        repl_home := os.Getenv("REPL_HOME")
+        if repl_home != "" {
+            dot_python_dir := fmt.Sprintf("%s/%s", repl_home, ".pythonlibs/bin/")
+            if strings.HasPrefix(exePath, dot_python_dir) {
+                os.Unsetenv("PIP_CONFIG_FILE")
+            }
+        }
+    }
+}
+
 // Set up environment for non-legacy nixpkgs
 func modern() {
+	unsetPipConfigFileForVirtualEnvPython()
 	if ldAudit := os.Getenv("REPLIT_LD_AUDIT"); ldAudit != "" {
 		os.Setenv("LD_AUDIT", ldAudit)
 	}
