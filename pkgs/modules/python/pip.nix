@@ -26,26 +26,9 @@ let
     name = "pip";
     text = ''
       python_location=$(which python)
-      venv_pip_location="''${REPL_HOME}/.pythonlibs/bin/pip"
-      venv_pip3_location="''${REPL_HOME}/.pythonlibs/bin/pip3"
-
-      function init_venv_pip {
-        cat <<EOF > "''${venv_pip_location}"
-      #! /bin/sh
-      export PIP_CONFIG_FILE=
-      python -m pip "\$@"
-      EOF
-        chmod u+x "''${venv_pip_location}"
-        if [ ! -f "''${venv_pip3_location}" ]; then
-          ln -s "''${venv_pip_location}" "''${venv_pip3_location}"
-        fi
-      }
 
       if [ "$python_location" = "''${REPL_HOME}/.pythonlibs/bin/python" ]; then
-        if [ ! -f "''${venv_pip_location}" ]; then
-          init_venv_pip
-        fi
-        exec "''${venv_pip_location}" "$@"
+        exec python -m pip "$@"
       else
         unset PYTHONNOUSERSITE
         exec "${pip}/bin/pip"  "$@" 

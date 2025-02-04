@@ -45,7 +45,7 @@ func legacy() {
 // because that config file - see pip.nix - works only for `--user` mode pip installs
 // but pip cannot do `--user` inside virtualenv.
 func unsetPipConfigFileForVirtualEnvPython() {
-    var exePath, err = filepath.Abs(os.Args[0])
+    exePath, err := os.Executable()
     if err == nil {
         repl_home := os.Getenv("REPL_HOME")
         if repl_home != "" {
