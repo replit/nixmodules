@@ -1,6 +1,6 @@
+{ postgresql }:
 { pkgs, lib, ... }:
 let
-  postgresql = pkgs.postgresql_16;
   postgresql-version = lib.versions.major postgresql.version;
 in
 {

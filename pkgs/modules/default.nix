@@ -89,7 +89,12 @@ let
     (import ./lua)
     (import ./nix)
     (import ./php)
-    (import ./postgresql)
+    (import ./postgresql {
+      postgresql = pkgs.postgresql_16;
+    })
+    (import ./postgresql {
+      postgresql = pkgs.postgresql_17;
+    })
     (import ./qbasic)
     (import ./R)
     (import ./replit)
