@@ -18,7 +18,7 @@ let
     ];
   });
 
-  # This wrapper for pip will detect if python is called from within
+  # This pip wrapper will detect if python is called from within
   # the virtualenv: `.pythonlibs/bin`. If so, it will install a shell script
   # called `pip` into the virtualenv so that if pip is called in the future
   # python will think it's in the virtualenv.
@@ -49,7 +49,7 @@ let
           exec "''${venv_pip_location}" "$@"
       else
           unset PYTHONNOUSERSITE
-          exec "${pip}"  "$@" 
+          exec "${pip}/bin/pip"  "$@" 
       fi
     '';
   };
