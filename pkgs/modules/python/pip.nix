@@ -23,7 +23,7 @@ let
   # called `pip` into the virtualenv so that if pip is called in the future
   # python will think it's in the virtualenv.
   pip-wrapper = pkgs.writeShellApplication {
-    name = "pip-wrapper";
+    name = "pip";
     text = ''
       python_location=$(which python)
       venv_pip_location="''${REPL_HOME}/.pythonlibs/bin/pip"
