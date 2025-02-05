@@ -1,4 +1,4 @@
-pkgs @ { pypkgs, python, ... }:
+pkgs @ { pypkgs, ... }:
 
 let
   pip = pypkgs.pip.overridePythonAttrs (old: rec {
