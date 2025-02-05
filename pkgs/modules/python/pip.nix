@@ -19,9 +19,7 @@ let
   });
 
   # This pip wrapper will detect if python is called from within
-  # the virtualenv: `.pythonlibs/bin`. If so, it will install a shell script
-  # called `pip` into the virtualenv so that if pip is called in the future
-  # python will think it's in the virtualenv.
+  # the virtualenv: `.pythonlibs`. If so, it will simply call `python -m pip ...`
   pip-wrapper = pkgs.writeShellApplication {
     name = "pip";
     text = ''
