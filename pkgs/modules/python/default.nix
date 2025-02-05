@@ -162,7 +162,7 @@ in
     POETRY_USE_USER_SITE = "1";
     PIP_CONFIG_FILE = pip.config.outPath;
     PYTHONUSERBASE = userbase;
-    PYTHONPATH = "${sitecustomize}:${pip.sitePackages}";
+    PYTHONPATH = "${sitecustomize}:${pip.pip}/${python.sitePackages}";
     REPLIT_PYTHONPATH = "${userbase}/${python.sitePackages}:${pypkgs.setuptools}/${python.sitePackages}";
     UV_PROJECT_ENVIRONMENT = "$REPL_HOME/.pythonlibs";
     UV_PYTHON_DOWNLOADS = "never";

@@ -18,22 +18,6 @@ let
     ];
   });
 
-  # This pip wrapper will detect if python is called from within
-  # the virtualenv: `.pythonlibs`. If so, it will simply call `python -m pip ...`
-  pip-wrapper = pkgs.writeShellApplication {
-    name = "pip";
-    text = ''
-      python_location=$(which python)
-
-      if [ "$python_location" = "''${REPL_HOME}/.pythonlibs/bin/python" ]; then
-        exec python -m pip "$@"
-      else
-        unset PYTHONNOUSERSITE
-        exec "${pip}/bin/pip"  "$@" 
-      fi
-    '';
-  };
-
   config = pkgs.writeTextFile {
     name = "pip.conf";
     text = ''
@@ -45,7 +29,5 @@ let
   };
 in
 {
-  pip = pip-wrapper;
-  sitePackages = "${pip}/${python.sitePackages}";
-  inherit config;
+  inherit pip config;
 }
