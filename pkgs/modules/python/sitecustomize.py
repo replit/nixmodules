@@ -21,6 +21,13 @@ def pip_build_shebang(self, executable, post_interp):
     return result
 
 import sys
+import os
+
+repl_home = os.getenv('REPL_HOME')
+if repl_home and sys.executable.startswith(repl_home + '/.pythonlibs/bin'):
+    if 'PIP_CONFIG_FILE' in os.environ:
+        os.environ.pop('PIP_CONFIG_FILE')
+
 exe = sys.argv[0]
 if exe.endswith('/pip') or exe.endswith('/pip3') or exe.endswith('/.pip-wrapped'):
     from pip._vendor.distlib.scripts import ScriptMaker
