@@ -25,6 +25,8 @@ import os
 
 repl_home = os.getenv('REPL_HOME')
 if repl_home and sys.executable.startswith(repl_home + '/.pythonlibs/bin'):
+    # unset the `PIP_CONFIG_FILE` (see pip.nix's pip.conf) if we are in
+    # a virtualenv because `--user` install mode doesn't in virtualenv.
     if 'PIP_CONFIG_FILE' in os.environ:
         os.environ.pop('PIP_CONFIG_FILE')
 
