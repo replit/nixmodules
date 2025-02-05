@@ -4,7 +4,6 @@ import (
 	"os"
 	"strings"
 	"syscall"
-	"fmt"
 )
 
 var PythonExePath string
