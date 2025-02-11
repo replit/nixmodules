@@ -52,6 +52,7 @@
       };
 
       pkgs = mkPkgs patched-unstable "x86_64-linux";
+      pkgs-aarch64-darwin = mkPkgs patched-unstable "aarch64-darwin";
     in
     {
       overlays.default = final: prev: {
@@ -94,6 +95,7 @@
 
       };
       formatter.x86_64-linux = pkgs.nixpkgs-fmt;
+      formatter.aarch64-darwin = pkgs-aarch64-darwin.nixpkgs-fmt;
       packages.x86_64-linux = import ./pkgs {
         inherit pkgs self;
       };
