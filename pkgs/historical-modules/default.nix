@@ -18,6 +18,13 @@ let
       };
     }
     {
+      moduleId = "bun-1.1";
+      commit = "1113faeb6840ba57bef3679b1f763782f5d3dd30";
+      overrides = {
+        displayVersion = "1.1.45";
+      };
+    }
+    {
       moduleId = "clojure-1.11";
       commit = "4327245815e8500233ed3af1cbb674bd147f673b";
       overrides = {
