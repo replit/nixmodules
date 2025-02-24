@@ -147,11 +147,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1697466147,
-        "narHash": "sha256-3AhaAwFYglnvtv4Cyeq3/cooQUIVTE+vID+TSZsFAfQ=",
+        "lastModified": 1740003396,
+        "narHash": "sha256-txIMmVTpMf1NEKuNuQguMd2lPIyWwT3k9AkKK9t4n1c=",
         "owner": "replit",
         "repo": "java-language-server",
-        "rev": "ba33f337ad1967f2b1b0990801701c2c531369f6",
+        "rev": "f61c12579d978ec9274b048519449f4c8510de4f",
         "type": "github"
       },
       "original": {
