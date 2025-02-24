@@ -5,13 +5,13 @@
 , callPackage
 }:
 let
-  version = "0.32.0";
+  version = "0.37.0";
 
   src = fetchFromGitHub {
     owner = "replit";
     repo = "java-debug";
-    rev = "debug-interface";
-    sha256 = "14ada9chynzycnfqc4w9c1w24gyx37by81fyb9y42izdrn46dj2z";
+    rev = "main";
+    sha256 = "RR3Atw2B5ttT+K10wGD+OsDOeMlcNVEqA/7ZTixCXCQ=";
   };
   repository = callPackage ./repo.nix {
     inherit src jdk patches;
