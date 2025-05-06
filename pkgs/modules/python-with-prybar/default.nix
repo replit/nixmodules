@@ -1,4 +1,8 @@
-{ pkgs, pkgs-23_05, lib, ... }:
+{ pkgs
+, pkgs-23_05
+, lib
+, ...
+}:
 let
   python = pkgs-23_05.python310Full;
 
@@ -15,16 +19,21 @@ let
 
   prybar-python-version = lib.strings.concatStrings (lib.strings.splitString "." pythonVersion);
 
-  stderred = pkgs-23_05.callPackage ../../stderred { };
+  stderred = pkgs.callPackage ../../stderred { };
 
   run-prybar-bin = pkgs-23_05.writeShellApplication {
     name = "run-prybar";
     text = ''
-      ${stderred}/bin/stderred -- ${pkgs.prybar."prybar-python${prybar-python-version}"}/bin/prybar-python${prybar-python-version} -q --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" -i "''$1"
+      ${stderred}/bin/stderred -- ${
+        pkgs.prybar."prybar-python${prybar-python-version}"
+      }/bin/prybar-python${prybar-python-version} -q --ps1 "''$(printf '\u0001\u001b[33m\u0002\u0001\u001b[00m\u0002 ')" -i "''$1"
     '';
   };
 
-  run-prybar = pythonWrapper { bin = "${run-prybar-bin}/bin/run-prybar"; name = "run-prybar"; };
+  run-prybar = pythonWrapper {
+    bin = "${run-prybar-bin}/bin/run-prybar";
+    name = "run-prybar";
+  };
 in
 {
 
