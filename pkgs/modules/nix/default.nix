@@ -6,7 +6,7 @@
   '';
 
   replit.dev.languageServers.nil = {
-    name = "nil";
+    name = "Nix Language Server (nil)";
     language = "nix";
     start = "${pkgs.nil}/bin/nil";
     extensions = [ ".nix" ];
