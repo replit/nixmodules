@@ -65,7 +65,10 @@ async function updateNixFile(version) {
 	const commitHash = await runGitCommand(['rev-parse', 'HEAD']);
 	console.log(`Committed changes to main branch: ${commitHash}`);
 	console.log('Switching back to bun-updater branch');
-	await runGitCommand(['switch', '-c', 'bun-updater']);
+	await runGitCommand(['switch', 'bun-updater']);
+	await runGitCommand(['cherry-pick', commitHash.trim()]);
+	await runGitCommand(['push', 'origin', 'bun-updater']);
+	console.log('Successfully updated Bun and pushed changes to bun-updater branch');
 }
 
 async function runGitCommand(args) {
