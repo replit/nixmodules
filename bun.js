@@ -42,8 +42,8 @@ async function updateNixFile(version) {
 	if (!res.ok) throw new Error(`Failed to fetch Bun: ${res.statusText}`);
 
 	const hash = crypto.createHash('sha256');
-	// BROkE nned buffer suddenly
-	hash.update(await res.arrayBuffer());
+	const data = await res.arrayBuffer();
+	hash.update(Buffer.from(data));
 	const base64Hash = hash.digest('base64');
 	const nixHash = `sha256-${base64Hash}`;
 
@@ -66,11 +66,17 @@ async function updateNixFile(version) {
 }
 
 async function runGitCommand(args) {
-	const process = Bun.$`git ${args.join(" ")}`;
-	const output = await process.text();
-	const { exitCode } = await process;
-	if (exitCode !== 0) {
-		throw new Error(`Git command failed: git ${args.join(" ")}\n${output}`);
+	const proc = Bun.spawn(['git', ...args], {
+		cwd: process.cwd(),
+		stdout: 'pipe',
+		stderr: 'pipe'
+	});
+
+	const result = await proc.exited;
+	if (result !== 0) {
+		const stderr = await new Response(proc.stderr).text();
+		throw new Error(`Git command failed: git ${args.join(' ')}\n${stderr}`);
 	}
-	return output.trim();
+
+	return await new Response(proc.stdout).text();
 }
