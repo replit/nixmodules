@@ -56,6 +56,9 @@ async function updateNixFile(version) {
 
 	await runGitCommand(['add', 'pkgs/bun/default.nix']);
 	await runGitCommand(['switch', 'main']);
+	// Identity of the committer
+	await runGitCommand(['config', 'user.email', '83923848+7heMech@users.noreply.github.com']);
+	await runGitCommand(['config', 'user.name', "7heMech's Bun Updater"]);
 	await runGitCommand(['commit', '-m', `Update Bun to version ${version}`]);
 	await runGitCommand(['push', 'origin', 'main']);
 
