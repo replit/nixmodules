@@ -42,8 +42,7 @@ async function updateNixFile(version) {
 	if (!res.ok) throw new Error(`Failed to fetch Bun: ${res.statusText}`);
 
 	const hash = crypto.createHash('sha256');
-	const data = await res.arrayBuffer();
-	hash.update(Buffer.from(data));
+	hash.update(await res.arrayBuffer());
 	const base64Hash = hash.digest('base64');
 	const nixHash = `sha256-${base64Hash}`;
 
