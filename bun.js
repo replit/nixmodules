@@ -39,10 +39,10 @@ async function updateNixFile(version) {
 	const bunUrl = `https://github.com/${repoOwner}/${repoName}/releases/download/bun-v${version}/bun-linux-x64.zip`;
 
 	const res = await fetch(bunUrl);
-	if (!res.ok) throw new Error(`Failed to fetch Bun: ${response.statusText}`);
+	if (!res.ok) throw new Error(`Failed to fetch Bun: ${res.statusText}`);
 
 	const hash = crypto.createHash('sha256');
-	// BROKE WHY?
+	// BROkE nned buffer suddenly
 	hash.update(await res.arrayBuffer());
 	const base64Hash = hash.digest('base64');
 	const nixHash = `sha256-${base64Hash}`;
@@ -53,4 +53,24 @@ async function updateNixFile(version) {
 
 	await Bun.write(nixFile, updatedNixFile);
 	console.log(`Updated default.nix with version ${version} and hash ${nixHash}`);
+
+	await runGitCommand(['add', 'pkgs/bun/default.nix']);
+	await runGitCommand(['switch', 'main']);
+	await runGitCommand(['commit', '-m', `Update Bun to version ${version}`]);
+	await runGitCommand(['push', 'origin', 'main']);
+
+	const commitHash = await runGitCommand(['rev-parse', 'HEAD']);
+	console.log(`Committed changes to main branch: ${commitHash}`);
+	console.log('Switching back to bun-updater branch');
+	await runGitCommand(['switch', '-c', 'bun-updater']);
+}
+
+async function runGitCommand(args) {
+	const process = Bun.$`git ${args.join(" ")}`;
+	const output = await process.text();
+	const { exitCode } = await process;
+	if (exitCode !== 0) {
+		throw new Error(`Git command failed: git ${args.join(" ")}\n${output}`);
+	}
+	return output.trim();
 }
