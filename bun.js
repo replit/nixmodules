@@ -41,10 +41,7 @@ async function updateNixFile(version) {
 	const res = await fetch(bunUrl);
 	if (!res.ok) throw new Error(`Failed to fetch Bun: ${res.statusText}`);
 
-	const hash = crypto.createHash('sha256');
-	hash.update(await res.arrayBuffer());
-	const base64Hash = hash.digest('base64');
-	const nixHash = `sha256-${base64Hash}`;
+	const nixHash = hash(await res.bytes());
 
 	const updatedNixFile = nixFileText
 		.replace(/version = "\d+\.\d+\.\d+"/, `version = "${version}"`)
@@ -84,4 +81,8 @@ async function runGitCommand(args) {
 	}
 
 	return await new Response(proc.stdout).text();
+}
+
+async function hash(data, alg = 'sha256') {
+	return `${alg}-${crypto.createHash(alg).update(data).disgest('base64')}`;
 }
