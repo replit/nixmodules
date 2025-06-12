@@ -1,5 +1,6 @@
 entrypoint = "pkgs/default.nix"
-modules = []
+modules = ["bun-1.2"]
+run = "bun bun.js"
 
 [env]
 HISTFILE = "$REPL_HOME/.cache/.bash_history"
