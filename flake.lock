@@ -242,11 +242,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1750276858,
-        "narHash": "sha256-rOqpm3ii/k1eJF8FApmz65kNiwfXDmWTyHST2HclwqU=",
+        "lastModified": 1750433947,
+        "narHash": "sha256-NY+xr/Gp50JSAAeCCwIuXt+y6O1CxfWAXkqyvyDqHLI=",
         "owner": "replit",
         "repo": "replit_rtld_loader",
-        "rev": "dffff3d40cf95bcc3dc4302ce3a0f6790139190d",
+        "rev": "e6072785dfb6c1248792c7fa5b8fa8f1a77c894f",
         "type": "github"
       },
       "original": {
