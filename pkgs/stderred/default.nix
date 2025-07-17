@@ -13,7 +13,7 @@ rustPlatform.buildRustPackage {
     name = "stderred";
   };
 
-  cargoSha256 = "sha256-Fc5ZP/ARqcNdwU5t/xarhsEglbYCNo2XVsJjdHT+/DA=";
+  cargoHash = "sha256-Fc5ZP/ARqcNdwU5t/xarhsEglbYCNo2XVsJjdHT+/DA=";
 
   nativeBuildInputs = [ makeWrapper ];
 

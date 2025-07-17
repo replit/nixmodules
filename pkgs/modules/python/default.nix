@@ -1,5 +1,5 @@
 { python, pypkgs }:
-{ pkgs-unstable, pkgs-23_05, lib, ... }:
+{ pkgs-unstable, pkgs-24_11, pkgs-23_05, lib, ... }:
 let
   pythonVersion = lib.versions.majorMinor python.version;
 
@@ -86,6 +86,7 @@ let
   };
 
   pyright-extended = pkgs.callPackage ../../pyright-extended {
+    nodejs = pkgs-24_11.nodejs-18_x;
     yapf = pypkgs.yapf;
   };
 

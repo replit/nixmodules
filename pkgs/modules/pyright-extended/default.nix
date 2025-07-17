@@ -1,6 +1,9 @@
+{ nodejs }:
 { pkgs, lib, ... }:
 let
-  pyright-extended = pkgs.callPackage ../../pyright-extended { };
+  pyright-extended = pkgs.callPackage ../../pyright-extended {
+    nodejs = nodejs;
+  };
 in
 {
   id = "pyright-extended";
