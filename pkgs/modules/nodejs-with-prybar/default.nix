@@ -1,7 +1,6 @@
+{ nodejs }:
 { pkgs, lib, ... }:
 let
-  nodejs = pkgs.nodejs-18_x;
-
   nodeVersion = lib.versions.major nodejs.version;
 
   prybar = pkgs.prybar.prybar-nodejs;

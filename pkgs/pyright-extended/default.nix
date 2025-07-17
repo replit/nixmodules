@@ -1,4 +1,4 @@
-{ pkgs, lib, yapf, ... }:
+{ pkgs, lib, yapf, nodejs, ... }:
 let
   version = "2.0.13";
 in
@@ -14,7 +14,7 @@ pkgs.stdenvNoCC.mkDerivation rec {
   binPath = lib.makeBinPath [
     pkgs.ruff
     yapf
-    pkgs.nodejs_18
+    nodejs
   ];
 
   nativeBuildInputs = [

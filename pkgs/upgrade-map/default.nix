@@ -15,9 +15,12 @@ let
     "dart-3.2" = "dart-3.3";
     "dart-3.3" = "dart-3.4";
     "dart-3.4" = "dart-3.5";
+    "dart-3.5" = "dart-3.8";
     "elixir-1_16" = "elixir-1_17";
+    "elixir-1_17" = "elixir-1_18";
     "go" = "go-1.19";
     "r-4.3" = "r-4.4";
+    "r-4.4" = "r-4.5";
     "rust" = "rust-1.69";
     "rust-1.69" = "rust-1.70";
     "rust-1.70" = "rust-1.72";

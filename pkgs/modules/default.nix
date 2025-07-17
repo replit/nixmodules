@@ -1,13 +1,13 @@
-{ pkgs, pkgs-23_05 }:
+{ pkgs, pkgs-23_05, pkgs-24_11 }:
 with builtins;
 let
   mkModule = path: pkgs.callPackage ../moduleit/entrypoint.nix {
     configPath = path;
-    inherit pkgs-23_05;
+    inherit pkgs-23_05 pkgs-24_11;
   };
   mkDeploymentModule = path: pkgs.callPackage ../moduleit/entrypoint.nix {
     configPath = path;
-    inherit pkgs-23_05;
+    inherit pkgs-23_05 pkgs-24_11;
     deployment = true;
   };
   apply-upgrade-map = import ../upgrade-map;
@@ -15,8 +15,8 @@ let
 
   modulesList = [
     (import ./python {
-      python = pkgs.python39Full;
-      pypkgs = pkgs.python39Packages;
+      python = pkgs-24_11.python39Full;
+      pypkgs = pkgs-24_11.python39Packages;
     })
     (import ./python {
       python = pkgs.python310Full;
@@ -42,14 +42,20 @@ let
       python = pkgs.python313Full;
       pypkgs = pkgs.python313Packages;
     })
+    (import ./python-base {
+      python = pkgs.python314Full;
+      pypkgs = pkgs.python314Packages;
+    })
     (import ./python-with-prybar)
 
-    (import ./pyright-extended)
+    (import ./pyright-extended {
+      nodejs = pkgs-24_11.nodejs-18_x;
+    })
     (import ./pyright)
     (import ./ruff)
 
     (import ./nodejs {
-      nodejs = pkgs.nodejs-18_x;
+      nodejs = pkgs-24_11.nodejs-18_x;
     })
     (import ./nodejs {
       nodejs = pkgs.nodejs_20;
@@ -58,14 +64,25 @@ let
       nodejs = pkgs.nodejs_22;
     })
     (import ./nodejs {
-      nodejs = pkgs.nodejs_23;
+      nodejs = pkgs-24_11.nodejs_23;
     })
-    (import ./nodejs-with-prybar)
+    (import ./nodejs {
+      nodejs = pkgs.nodejs_24;
+    })
+    (import ./nodejs-with-prybar {
+      nodejs = pkgs-24_11.nodejs-18_x;
+    })
 
     (import ./go {
       go = pkgs.go_1_23;
       gopls = pkgs.gopls.override {
-        buildGoModule = pkgs.buildGo123Module;
+        buildGoLatestModule = pkgs.buildGo123Module;
+      };
+    })
+    (import ./go {
+      go = pkgs.go_1_24;
+      gopls = pkgs.gopls.override {
+        buildGoLatestModule = pkgs.buildGo124Module;
       };
     })
 
@@ -125,7 +142,7 @@ let
       nodejs = pkgs.nodejs_20;
     })
     (import ./vue {
-      nodejs = pkgs.nodejs_18;
+      nodejs = pkgs-24_11.nodejs-18_x;
     })
     (import ./web)
     (import ./hermit)

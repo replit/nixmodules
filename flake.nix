@@ -1,7 +1,8 @@
 {
   description = "Nix expressions for defining Replit development environments";
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
-  inputs.nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+  inputs.nixpkgs-23_05.url = "github:nixos/nixpkgs/nixos-23.05";
+  inputs.nixpkgs-24_11.url = "github:nixos/nixpkgs/nixos-24.11";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
   inputs.fenix.url = "github:nix-community/fenix";
   inputs.fenix.inputs.nixpkgs.follows = "nixpkgs";
   inputs.nil.url = "github:oxalica/nil";
@@ -9,13 +10,13 @@
   inputs.prybar.url = "github:replit/prybar";
   inputs.prybar.inputs.nixpkgs.follows = "nixpkgs";
   inputs.java-language-server.url = "github:replit/java-language-server";
-  inputs.java-language-server.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.java-language-server.inputs.nixpkgs.follows = "nixpkgs-23_05";
   inputs.ztoc-rs.url = "github:replit/ztoc-rs";
   inputs.ztoc-rs.inputs.nixpkgs.follows = "nixpkgs";
   inputs.replit-rtld-loader.url = "github:replit/replit_rtld_loader";
   inputs.replit-rtld-loader.inputs.nixpkgs.follows = "nixpkgs";
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, prybar, java-language-server, nil, fenix, replit-rtld-loader, ... }:
+  outputs = { self, nixpkgs, nixpkgs-23_05, nixpkgs-24_11, prybar, java-language-server, nil, fenix, replit-rtld-loader, ... }:
     let
       mkPkgs = nixpkgs-spec: system: import nixpkgs-spec {
         inherit system;
@@ -33,11 +34,12 @@
         ];
       };
 
-      pkgs-23_05 = mkPkgs nixpkgs "x86_64-linux";
+      pkgs-23_05 = mkPkgs nixpkgs-23_05 "x86_64-linux";
+      pkgs-24_11 = mkPkgs nixpkgs-24_11 "x86_64-linux";
 
-      patched-unstable = nixpkgs-unstable.legacyPackages.x86_64-linux.applyPatches {
+      patched-unstable = nixpkgs.legacyPackages.x86_64-linux.applyPatches {
         name = "nixpkgs-unstable-patched";
-        src = nixpkgs-unstable;
+        src = nixpkgs;
         patches = [
           # rexml broke solargraph at some point in the past.
           # Attempting to run:
@@ -114,6 +116,7 @@
       import ./pkgs/modules {
         inherit pkgs;
         inherit pkgs-23_05;
+        inherit pkgs-24_11;
       }
     );
 }
