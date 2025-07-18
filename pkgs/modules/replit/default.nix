@@ -14,7 +14,7 @@ let
       hash = "sha256-1GYmZZlFaa1w3zFfSlM7o4PXwjfKH3YnZbGWzBnobM4=";
     };
 
-    cargoHash = "sha256-WmMdWMfg68i/AuR1pezUHf5yA7h2oMoMJDTDjwfIvng=";
+    cargoHash = "sha256-ejqrzSam1kuMRYQKV6O/LYTkik3XoO0HDth9N9YqrSI=";
     buildFeatures = [ "lsp" ];
   };
 
