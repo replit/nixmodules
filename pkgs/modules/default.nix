@@ -42,10 +42,6 @@ let
       python = pkgs.python313Full;
       pypkgs = pkgs.python313Packages;
     })
-    (import ./python-base {
-      python = pkgs.python314Full;
-      pypkgs = pkgs.python314Packages;
-    })
     (import ./python-with-prybar)
 
     (import ./pyright-extended {
@@ -73,12 +69,6 @@ let
       nodejs = pkgs-24_11.nodejs-18_x;
     })
 
-    (import ./go {
-      go = pkgs.go_1_23;
-      gopls = pkgs.gopls.override {
-        buildGoLatestModule = pkgs.buildGo123Module;
-      };
-    })
     (import ./go {
       go = pkgs.go_1_24;
       gopls = pkgs.gopls.override {
@@ -127,7 +117,7 @@ let
         ruby_3_2_2 = pkgs.mkRuby {
           version = pkgs.mkRubyVersion "3" "2" "2" "";
           hash = "sha256-lsV1WIcaZ0jeW8nydOk/S1qtBs2PN776Do2U57ikI7w=";
-          cargoHash = "sha256-6du7RJo0DH+eYMOoh3L31F3aqfR5+iG1iKauSV1uNcQ=";
+          cargoHash = "sha256-CMVx5/+ugDNEuLAvyPN0nGHwQw6RXyfRsMO9I+kyZpk=";
         };
         rubyPackages_3_2_2 = pkgs.lib.attrsets.recurseIntoAttrs ruby_3_2_2.gems;
       in
