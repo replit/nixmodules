@@ -8,7 +8,7 @@
 
   replit.env = {
     LD_AUDIT = "${pkgs.replit-rtld-loader}/rtld_loader.so";
-    GLIBC_TUNABLES = "glibc.rtld.optional_static_tls=2500";
+    GLIBC_TUNABLES = "glibc.rtld.optional_static_tls=10000";
   };
 }
 
