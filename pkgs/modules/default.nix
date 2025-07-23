@@ -79,7 +79,12 @@ let
     (import ./rust "stable")
     (import ./rust "latest")
 
-    (import ./angular)
+    (import ./angular {
+      nodejs = pkgs.nodejs_20;
+    })
+    (import ./angular {
+      nodejs = pkgs.nodejs_24;
+    })
     (import ./bash)
     (import ./bun)
     (import ./c)
@@ -90,7 +95,15 @@ let
     (import ./elixir)
     (import ./gcloud)
     (import ./clojure)
-    (import ./dotnet)
+    (import ./dotnet {
+      dotnet = pkgs.dotnet-sdk_8;
+    })
+    (import ./dotnet {
+      dotnet = pkgs.dotnet-sdk_9;
+    })
+    (import ./dotnet {
+      dotnet = pkgs.dotnet-sdk_10;
+    })
     (import ./haskell)
     (import ./java)
     (import ./lua)

@@ -1,7 +1,9 @@
-{ pkgs, ... }:
+{ nodejs }:
+{ pkgs, lib, ... }:
 
 let
-  nodejs = pkgs.nodejs_20;
+  nodeVersion = lib.versions.major nodejs.version;
+
   nodepkgs = nodejs.pkgs;
 
   angular-language-server = pkgs.callPackage ../../angular-language-server { };
@@ -10,9 +12,9 @@ let
 in
 
 {
-  id = "angular-node-20";
+  id = "angular-node-${nodeVersion}";
   name = "Angular Tools with Node.js";
-  displayVersion = "20";
+  displayVersion = nodeVersion;
   description = ''
     Angular development tools including Node.js, Bun, pnpm, yarn, Angular language server.
   '';
