@@ -83,6 +83,6 @@ async function runGitCommand(args) {
 	return await new Response(proc.stdout).text();
 }
 
-async function hash(data, alg = 'sha256') {
+function hash(data, alg = 'sha256') {
 	return `${alg}-${crypto.createHash(alg).update(data).digest('base64')}`;
 }
