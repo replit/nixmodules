@@ -55,7 +55,7 @@ async function updateNixFile(version) {
 	// Identity of the committer
 	await runGitCommand(['config', 'user.email', '83923848+7heMech@users.noreply.github.com']);
 	await runGitCommand(['config', 'user.name', "7heMech's Bun Updater"]);
-	await runGitCommand(['commit', '-m', `Update Bun to version ${version}`]);
+	await runGitCommand(['commit', '-m', `Update Bun to version ${version}!`]);
 	await runGitCommand(['push', 'origin', 'main']);
 
 	const commitHash = await runGitCommand(['rev-parse', 'HEAD']);
