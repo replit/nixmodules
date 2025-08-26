@@ -37,7 +37,7 @@ cat <<EOF > ${out}/manifest.json
   "mediaType": "application/vnd.oci.image.manifest.v1+json",
   "artifactType": "application/vnd.example+type",
   "config": {
-    "mediaType": "application/vnd.oci.empty.v1+json",
+    "mediaType": "application/vnd.oci.image.config.v1+json",
     "digest": "sha256:${CONFIG_DIGEST}",
     "size": ${CONFIG_SIZE}
   },
