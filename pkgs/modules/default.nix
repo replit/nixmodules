@@ -1,4 +1,4 @@
-{ pkgs, pkgs-23_05, pkgs-24_11 }:
+{ pkgs, pkgs-23_05, pkgs-24_11, pkgs-25_05 }:
 with builtins;
 let
   mkModule = path: pkgs.callPackage ../moduleit/entrypoint.nix {
@@ -110,10 +110,10 @@ let
     (import ./nix)
     (import ./php)
     (import ./postgresql {
-      postgresql = pkgs.postgresql_16;
+      postgresql = pkgs-25_05.postgresql_16;
     })
     (import ./postgresql {
-      postgresql = pkgs.postgresql_17;
+      postgresql = pkgs-25_05.postgresql_17;
     })
     (import ./qbasic)
     (import ./R)
