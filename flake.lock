@@ -230,6 +230,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-25_05": {
+      "locked": {
+        "lastModified": 1763334038,
+        "narHash": "sha256-LBVOyaH6NFzQ3X/c6vfMZ9k4SV2ofhpxeL9YnhHNJQQ=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "4c8cdd5b1a630e8f72c9dd9bf582b1afb3127d2c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-25.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "prybar": {
       "inputs": {
         "flake-utils": "flake-utils_2",
@@ -279,6 +295,7 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-23_05": "nixpkgs-23_05",
         "nixpkgs-24_11": "nixpkgs-24_11",
+        "nixpkgs-25_05": "nixpkgs-25_05",
         "prybar": "prybar",
         "replit-rtld-loader": "replit-rtld-loader",
         "ztoc-rs": "ztoc-rs"
