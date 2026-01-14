@@ -1,6 +1,6 @@
 { pkgs, lib, ... }:
 let
-  clang = pkgs.clang_14;
+  clang = pkgs.clang_20;
   clang-compile = import ../../clang-compile {
     inherit pkgs;
     inherit clang;
@@ -15,7 +15,7 @@ in
   name = "C++ Tools (with Clang)";
   displayVersion = clang-version;
   description = ''
-    Tools for working with C++. Includes Clang compiler, GDB debugger, ccls language server.
+    Tools for working with C++. Includes Clang compiler, ccls language server.
   '';
 
   replit.packages = [
@@ -39,14 +39,4 @@ in
     start = "${pkgs.ccls}/bin/ccls";
   };
 
-  replit.dev.debuggers.gdb-project = {
-    name = "GDB C++: Project";
-    language = "cpp";
-    start = "${dap-cpp}/bin/dap-cpp";
-    fileParam = false;
-    compile = "${clang-compile}/bin/clang-compile main.cpp cpp all debug";
-    transport = "stdio";
-    initializeMessage = dap-cpp-messages.dapInitializeMessage;
-    launchMessage = dap-cpp-messages.dapLaunchMessage "./main.cpp.bin";
-  };
 }
