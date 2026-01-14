@@ -16,6 +16,7 @@ let
     "dart-3.3" = "dart-3.4";
     "dart-3.4" = "dart-3.5";
     "dart-3.5" = "dart-3.8";
+    "dart-3.8" = "dart-3.10";
     "elixir-1_16" = "elixir-1_17";
     "elixir-1_17" = "elixir-1_18";
     "go" = "go-1.19";
@@ -26,24 +27,24 @@ let
     "rust-1.69" = "rust-1.70";
     "rust-1.70" = "rust-1.72";
     "rust-1.72" = "rust-stable";
+    "ruby-3.1" = "ruby-3.2";
     "swift" = "swift-5.6";
   };
 
-  upgrade-module = moduleId:
-    if hasAttr moduleId upgrade-map then
-      upgrade-module upgrade-map.${moduleId}
-    else
-      moduleId;
+  upgrade-module =
+    moduleId: if hasAttr moduleId upgrade-map then upgrade-module upgrade-map.${moduleId} else moduleId;
 
-  apply-upgrade-map = modules:
-    foldl'
-      (acc: moduleId:
-        let upgraded = upgrade-module moduleId;
-        in acc // {
-          ${moduleId} = modules.${upgraded};
-        }
-      )
-      modules
-      (attrNames upgrade-map);
+  apply-upgrade-map =
+    modules:
+    foldl' (
+      acc: moduleId:
+      let
+        upgraded = upgrade-module moduleId;
+      in
+      acc
+      // {
+        ${moduleId} = modules.${upgraded};
+      }
+    ) modules (attrNames upgrade-map);
 in
 apply-upgrade-map

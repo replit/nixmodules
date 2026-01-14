@@ -262,6 +262,20 @@ let
         displayVersion = "3.10";
       };
     }
+    {
+      moduleId = "dart-3.8";
+      commit = "ae6ed05c623804560afd1cf3d80d13b6170d5c24";
+      overrides = {
+        displayVersion = "3.8";
+      };
+    }
+    {
+      moduleId = "ruby-3.1";
+      commit = "ae6ed05c623804560afd1cf3d80d13b6170d5c24";
+      overrides = {
+        displayVersion = "3.1";
+      };
+    }
   ];
 
   moduleFromHistory =
