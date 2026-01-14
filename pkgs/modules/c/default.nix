@@ -1,6 +1,6 @@
 { pkgs, lib, ... }:
 let
-  clang = pkgs.clang_14;
+  clang = pkgs.clang_20;
   run-extensions = [ ".c" ]; # use this list for file-param runners because
   # we don't want .h files to be runnable
   clang-compile = import ../../clang-compile {

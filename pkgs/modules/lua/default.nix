@@ -1,5 +1,6 @@
 { pkgs, lib, ... }:
-let lua-version = lib.versions.majorMinor pkgs.lua.version;
+let
+  lua-version = lib.versions.majorMinor pkgs.lua.version;
 in
 {
   id = "lua-${lua-version}";
@@ -25,6 +26,6 @@ in
     name = "lua-language-server";
     language = "lua";
 
-    start = "${pkgs.sumneko-lua-language-server}/bin/lua-language-server";
+    start = "${pkgs.lua-language-server}/bin/lua-language-server";
   };
 }

@@ -222,6 +222,13 @@ let
       };
     }
     {
+      moduleId = "python-3.9";
+      commit = "ae6ed05c623804560afd1cf3d80d13b6170d5c24";
+      overrides = {
+        displayVersion = "3.9";
+      };
+    }
+    {
       moduleId = "r-4.2";
       commit = "1e1bb663068482cdb7c04bf585daed00205c0140";
       overrides = {
@@ -248,9 +255,22 @@ let
         displayVersion = "0";
       };
     }
+    {
+      moduleId = "python-with-prybar-3.10";
+      commit = "ae6ed05c623804560afd1cf3d80d13b6170d5c24";
+      overrides = {
+        displayVersion = "3.10";
+      };
+    }
   ];
 
-  moduleFromHistory = { moduleId, commit, deployment ? false, overrides }:
+  moduleFromHistory =
+    {
+      moduleId,
+      commit,
+      deployment ? false,
+      overrides,
+    }:
     let
       flake = getFlake "github:replit/nixmodules/${commit}";
       module =
@@ -263,30 +283,28 @@ let
       name = "replit-module-${moduleId}";
       buildCommand = ''
         set -x
-        ${pkgs.jq}/bin/jq --argjson overrides '${builtins.toJSON(overrides)}' '. * $overrides' < ${module} > $out
+        ${pkgs.jq}/bin/jq --argjson overrides '${builtins.toJSON (overrides)}' '. * $overrides' < ${module} > $out
       '';
     };
 
-  modules = foldl'
-    (acc: module:
-      acc // ({
-        ${module.moduleId} = moduleFromHistory module;
-      })
-    )
-    { }
-    historicalModulesList;
+  modules = foldl' (
+    acc: module:
+    acc
+    // ({
+      ${module.moduleId} = moduleFromHistory module;
+    })
+  ) { } historicalModulesList;
 
-  deploymentModules = foldl'
-    (acc: module:
-      acc // ({
-        ${module.moduleId} = moduleFromHistory {
-          inherit (module) moduleId commit overrides;
-          deployment = true;
-        };
-      })
-    )
-    { }
-    historicalModulesList;
+  deploymentModules = foldl' (
+    acc: module:
+    acc
+    // ({
+      ${module.moduleId} = moduleFromHistory {
+        inherit (module) moduleId commit overrides;
+        deployment = true;
+      };
+    })
+  ) { } historicalModulesList;
 
 in
 {
