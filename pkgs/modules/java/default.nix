@@ -13,11 +13,6 @@ let
 
   java-language-server = pkgs.java-language-server;
 
-  java-debug = pkgs.callPackage ../../java-debug {
-    inherit jdt-language-server;
-    jdk = pkgs.graalvm11-ce;
-  };
-
   run-lsp = pkgs.writeShellApplication {
     name = "run-lsp";
     text = ''
@@ -60,43 +55,6 @@ in
       enabledForHosting = false;
       packageSearch = true;
       guessImports = false;
-    };
-  };
-
-  replit.dev.debuggers.java-debug = {
-    name = "Jave Debug";
-    displayVersion = java-debug.version;
-    language = "java";
-    extensions = [ ".java" ];
-
-    transport = "localhost:0";
-    compile = graal-compile-command;
-    start = "${java-debug}/bin/java-debug";
-
-    initializeMessage = {
-      command = "initialize";
-      arguments = {
-        adapterID = "cppdbg";
-        clientID = "replit";
-        clientName = "replit.com";
-        columnsStartAt1 = true;
-        linesStartAt1 = true;
-        locale = "en-us";
-        pathFormat = "path";
-        supportsInvalidatedEvent = true;
-        supportsProgressReporting = true;
-        supportsRunInTerminalRequest = true;
-        supportsVariablePaging = true;
-        supportsVariableType = true;
-      };
-    };
-
-    launchMessage = {
-      command = "launch";
-      arguments = {
-        classPaths = [ "." ];
-        mainClass = "Main";
-      };
     };
   };
 

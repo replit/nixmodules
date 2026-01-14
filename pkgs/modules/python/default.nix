@@ -1,5 +1,10 @@
 { python, pypkgs }:
-{ pkgs-unstable, pkgs-24_11, pkgs-23_05, lib, ... }:
+{ pkgs-unstable
+, pkgs-24_11
+, pkgs-23_05
+, lib
+, ...
+}:
 let
   pythonVersion = lib.versions.majorMinor python.version;
 
@@ -15,10 +20,16 @@ let
   pythonWrapper = pythonUtils.pythonWrapper;
   python-ld-library-path = pythonUtils.python-ld-library-path;
 
-  pip = import ./pip.nix (pkgs // {
-    inherit python pypkgs;
-  });
-  pip-wrapper = pythonWrapper { bin = "${pip.pip}/bin/pip"; name = "pip"; };
+  pip = import ./pip.nix (
+    pkgs
+    // {
+      inherit python pypkgs;
+    }
+  );
+  pip-wrapper = pythonWrapper {
+    bin = "${pip.pip}/bin/pip";
+    name = "pip";
+  };
 
   poetry = pkgs.callPackage (../../poetry/poetry-py + "${pythonVersion}.nix") {
     inherit python;
@@ -27,59 +38,23 @@ let
 
   poetry-config = pkgs.writeTextFile {
     name = "poetry-config";
-    text = ''
-    '';
+    text = "";
     destination = "/config.toml";
   };
 
-  dapPython = pkgs.callPackage ../../dapPython {
-    inherit pkgs python pypkgs;
+  python3-wrapper = pythonWrapper {
+    bin = "${python}/bin/python3";
+    name = "python3";
+    aliases = [
+      "python"
+      "python${pythonVersion}"
+    ];
   };
 
-  debuggerConfig = {
-    dapPython = {
-      name = "debugpy";
-      displayVersion = dapPython.version;
-      language = "python3";
-      start = {
-        args = [ "${dapPython}/bin/dap-python" "$file" ];
-      };
-      fileParam = true;
-      transport = "localhost:0";
-      integratedAdapter = {
-        dapTcpAddress = "localhost:0";
-      };
-      initializeMessage = {
-        command = "initialize";
-        type = "request";
-        arguments = {
-          adapterID = "debugpy";
-          clientID = "replit";
-          clientName = "replit.com";
-          columnsStartAt1 = true;
-          linesStartAt1 = true;
-          locale = "en-us";
-          pathFormat = "path";
-          supportsInvalidatedEvent = true;
-          supportsProgressReporting = true;
-          supportsRunInTerminalRequest = true;
-          supportsVariablePaging = true;
-          supportsVariableType = true;
-        };
-      };
-      launchMessage = {
-        command = "attach";
-        type = "request";
-        arguments = {
-          logging = { };
-        };
-      };
-    };
+  poetry-wrapper = pythonWrapper {
+    bin = "${poetry}/bin/poetry";
+    name = "poetry";
   };
-
-  python3-wrapper = pythonWrapper { bin = "${python}/bin/python3"; name = "python3"; aliases = [ "python" "python${pythonVersion}" ]; };
-
-  poetry-wrapper = pythonWrapper { bin = "${poetry}/bin/poetry"; name = "poetry"; };
 
   binary-wrapped-python = pkgs.callPackage ../../python-wrapped {
     inherit pkgs python python-ld-library-path;
@@ -110,7 +85,7 @@ in
   name = "Python Tools";
   displayVersion = pythonVersion;
   description = ''
-    Development tools for Python. Includes Python interpreter, Pip, Poetry, Pyright extended language server, debugpy debugger.
+    Development tools for Python. Includes Python interpreter, Pip, Poetry, Pyright extended language server.
   '';
 
   replit.packages = [
@@ -126,10 +101,12 @@ in
     fileParam = true;
     language = "python3";
     start = "${python3-wrapper}/bin/python3 $file";
-    defaultEntrypoints = [ "main.py" "app.py" "run.py" ];
+    defaultEntrypoints = [
+      "main.py"
+      "app.py"
+      "run.py"
+    ];
   };
-
-  replit.dev.debuggers = debuggerConfig;
 
   replit.dev.languageServers.pyright-extended = {
     name = "pyright-extended";

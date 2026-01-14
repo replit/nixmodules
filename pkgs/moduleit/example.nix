@@ -32,10 +32,18 @@ in
     runners.nodeJS = {
       name = "Node.js";
       language = "javascript";
-      extensions = [ ".js" ".ts" ".jsx" ".tsx" ];
+      extensions = [
+        ".js"
+        ".ts"
+        ".jsx"
+        ".tsx"
+      ];
       start = "${pkgs.nodejs_20}/bin/node $file";
       compile = {
-        args = [ "tsc" "$file" ];
+        args = [
+          "tsc"
+          "$file"
+        ];
         env = {
           FOO = "BAR";
         };
@@ -49,53 +57,15 @@ in
       };
     };
 
-    debuggers.nodeDAP = {
-      name = "Node DAP";
-      language = "javascript";
-      filePattern = "*.{js,jsx,ts,tsx}";
-      transport = "localhost:0";
-      fileParam = true;
-      start = "dap-node";
-      initializeMessage = {
-        command = "initialize";
-        type = "request";
-        arguments = {
-          clientID = "replit";
-          clientName = "replit.com";
-          adapterID = "dap-node";
-          columnsStartAt1 = true;
-          linesStartAt1 = true;
-          locale = "en-us";
-          pathFormat = "path";
-          supportsInvalidatedEvent = true;
-          supportsProgressReporting = true;
-          supportsRunInTerminalRequest = true;
-          supportsVariablePaging = true;
-          supportsVariableType = true;
-        };
-      };
-      launchMessage = {
-        command = "launch";
-        type = "request";
-        arguments = {
-          args = [ ];
-          console = "externalTerminal";
-          cwd = ".";
-          environment = [ ];
-          pauseForSourceMap = false;
-          program = "$file";
-          request = "launch";
-          sourceMaps = true;
-          stopOnEntry = false;
-          type = "pwa-node";
-        };
-      };
-    };
-
     languageServers.tsServer = {
       name = "TypeScript Language Server";
       language = "javascript";
-      extensions = [ ".js" ".ts" ".jsx" ".tsx" ];
+      extensions = [
+        ".js"
+        ".ts"
+        ".jsx"
+        ".tsx"
+      ];
       start = "${typescript-language-server}/bin/typescript-language-server --stdio";
     };
 
@@ -108,7 +78,10 @@ in
         enabledForHosting = false;
       };
       afterInstall = {
-        args = [ "echo" "installed" ];
+        args = [
+          "echo"
+          "installed"
+        ];
       };
     };
 

@@ -75,6 +75,13 @@ let
       };
     }
     {
+      moduleId = "dart-3.8";
+      commit = "ae6ed05c623804560afd1cf3d80d13b6170d5c24";
+      overrides = {
+        displayVersion = "3.8";
+      };
+    }
+    {
       moduleId = "deno-1";
       commit = "4327245815e8500233ed3af1cbb674bd147f673b";
       overrides = {
@@ -263,10 +270,12 @@ let
       };
     }
     {
-      moduleId = "dart-3.8";
+      moduleId = "go-1.24";
       commit = "ae6ed05c623804560afd1cf3d80d13b6170d5c24";
       overrides = {
-        displayVersion = "3.8";
+        # /nix/store/...-replit-module-go-1.21
+        # .runners["go-run"].displayVersion = "1...";
+        displayVersion = "1.24";
       };
     }
     {
@@ -279,11 +288,11 @@ let
   ];
 
   moduleFromHistory =
-    {
-      moduleId,
-      commit,
-      deployment ? false,
-      overrides,
+    { moduleId
+    , commit
+    , deployment ? false
+    , overrides
+    ,
     }:
     let
       flake = getFlake "github:replit/nixmodules/${commit}";
@@ -301,24 +310,30 @@ let
       '';
     };
 
-  modules = foldl' (
-    acc: module:
-    acc
-    // ({
-      ${module.moduleId} = moduleFromHistory module;
-    })
-  ) { } historicalModulesList;
+  modules = foldl'
+    (
+      acc: module:
+        acc
+        // ({
+          ${module.moduleId} = moduleFromHistory module;
+        })
+    )
+    { }
+    historicalModulesList;
 
-  deploymentModules = foldl' (
-    acc: module:
-    acc
-    // ({
-      ${module.moduleId} = moduleFromHistory {
-        inherit (module) moduleId commit overrides;
-        deployment = true;
-      };
-    })
-  ) { } historicalModulesList;
+  deploymentModules = foldl'
+    (
+      acc: module:
+        acc
+        // ({
+          ${module.moduleId} = moduleFromHistory {
+            inherit (module) moduleId commit overrides;
+            deployment = true;
+          };
+        })
+    )
+    { }
+    historicalModulesList;
 
 in
 {

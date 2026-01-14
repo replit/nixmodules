@@ -21,6 +21,7 @@ let
     "elixir-1_17" = "elixir-1_18";
     "go" = "go-1.19";
     "go-1.23" = "go-1.24";
+    "go-1.24" = "go-1.25";
     "r-4.3" = "r-4.4";
     "r-4.4" = "r-4.5";
     "rust" = "rust-1.69";
@@ -36,15 +37,18 @@ let
 
   apply-upgrade-map =
     modules:
-    foldl' (
-      acc: moduleId:
-      let
-        upgraded = upgrade-module moduleId;
-      in
-      acc
-      // {
-        ${moduleId} = modules.${upgraded};
-      }
-    ) modules (attrNames upgrade-map);
+    foldl'
+      (
+        acc: moduleId:
+        let
+          upgraded = upgrade-module moduleId;
+        in
+        acc
+        // {
+          ${moduleId} = modules.${upgraded};
+        }
+      )
+      modules
+      (attrNames upgrade-map);
 in
 apply-upgrade-map

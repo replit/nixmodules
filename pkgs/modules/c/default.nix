@@ -17,7 +17,7 @@ in
   name = "C Tools (with Clang)";
   displayVersion = clang-version;
   description = ''
-    Tools for working with C programming language. Includes Clang compiler, GDB debugger, and ccls language server.
+    Tools for working with C programming language. Includes Clang compiler, and ccls language server.
   '';
 
   replit.packages = [
@@ -51,27 +51,4 @@ in
     language = "c";
     start = "${pkgs.ccls}/bin/ccls";
   };
-
-  replit.dev.debuggers.gdb-project = {
-    name = "GDB: Project";
-    language = "c";
-    start = "${dap-cpp}/bin/dap-cpp";
-    fileParam = false;
-    compile = "${clang-compile}/bin/clang-compile main.c c all debug";
-    transport = "stdio";
-    initializeMessage = dap-cpp-messages.dapInitializeMessage;
-    launchMessage = dap-cpp-messages.dapLaunchMessage "./main.c.bin";
-  };
-
-  # replit.debuggers.gdb-single = {
-  #   name = "GDB: Single File";
-  #   language = "c";
-  #   extensions = run-extensions;
-  #   start = "${dap-cpp}/bin/dap-cpp";
-  #   fileParam = true;
-  #   compile = "${clang-compile}/bin/clang-compile $file c single debug";
-  #   transport = "stdio";
-  #   initializeMessage = dapInitializeMessage;
-  #   launchMessage = dapLaunchMessage "./$file.bin";
-  # };
 }

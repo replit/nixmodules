@@ -1,11 +1,10 @@
-{
-  pkgs,
-  pkgs-23_05,
-  pkgs-24_11,
-  pkgs-25_05,
-  pkgs-master,
-  pkgs-staging,
-  ...
+{ pkgs
+, pkgs-23_05
+, pkgs-24_11
+, pkgs-25_05
+, pkgs-master
+, pkgs-staging
+, ...
 }:
 with builtins;
 let
@@ -80,9 +79,9 @@ let
     })
 
     (import ./go {
-      go = pkgs.go_1_24;
+      go = pkgs.go_1_25;
       gopls = pkgs.gopls.override {
-        buildGoLatestModule = pkgs.buildGo124Module;
+        buildGoLatestModule = pkgs.buildGo125Module;
       };
     })
 
@@ -166,31 +165,35 @@ let
   ];
 
   activeModules = listToAttrs (
-    map (
-      moduleInput:
-      let
-        module = mkModule moduleInput;
-      in
-      {
-        name = get-module-id module;
-        value = module;
-      }
-    ) modulesList
+    map
+      (
+        moduleInput:
+        let
+          module = mkModule moduleInput;
+        in
+        {
+          name = get-module-id module;
+          value = module;
+        }
+      )
+      modulesList
   );
 
   modules = apply-upgrade-map (activeModules // historical.modules);
 
   activeDeploymentModules = listToAttrs (
-    map (
-      moduleInput:
-      let
-        module = mkDeploymentModule moduleInput;
-      in
-      {
-        name = get-deployment-module-id module;
-        value = module;
-      }
-    ) modulesList
+    map
+      (
+        moduleInput:
+        let
+          module = mkDeploymentModule moduleInput;
+        in
+        {
+          name = get-deployment-module-id module;
+          value = module;
+        }
+      )
+      modulesList
   );
 
   deploymentModules = apply-upgrade-map (activeDeploymentModules // historical.deploymentModules);

@@ -25,7 +25,10 @@ let
   };
   run-prettier = pkgs.writeShellApplication {
     name = "run-prettier";
-    runtimeInputs = [ pkgs.bash nodepkgs.prettier ];
+    runtimeInputs = [
+      pkgs.bash
+      nodepkgs.prettier
+    ];
     extraShellCheckFlags = [ "-x" ];
     text = ''
       #!/bin/bash
@@ -83,7 +86,6 @@ let
     '';
   };
 
-
 in
 
 {
@@ -117,58 +119,24 @@ in
       language = "javascript";
       start = "${nodejs-wrapped}/bin/node $file";
       fileParam = true;
-      defaultEntrypoints = [ "index.js" "main.js" ];
-    };
-
-    dev.debuggers.nodeDAP = {
-      name = "Node DAP";
-      language = "javascript";
-      transport = "localhost:0";
-      fileParam = true;
-      start = {
-        args = [ "dap-node" ];
-      };
-      initializeMessage = {
-        command = "initialize";
-        type = "request";
-        arguments = {
-          clientID = "replit";
-          clientName = "replit.com";
-          adapterID = "dap-node";
-          columnsStartAt1 = true;
-          linesStartAt1 = true;
-          locale = "en-us";
-          pathFormat = "path";
-          supportsInvalidatedEvent = true;
-          supportsProgressReporting = true;
-          supportsRunInTerminalRequest = true;
-          supportsVariablePaging = true;
-          supportsVariableType = true;
-        };
-      };
-      launchMessage = {
-        command = "launch";
-        type = "request";
-        arguments = {
-          args = [ ];
-          console = "externalTerminal";
-          cwd = ".";
-          environment = [ ];
-          pauseForSourceMap = false;
-          program = "./$file";
-          request = "launch";
-          sourceMaps = true;
-          stopOnEntry = false;
-          type = "pwa-node";
-        };
-      };
+      defaultEntrypoints = [
+        "index.js"
+        "main.js"
+      ];
     };
 
     dev.formatters.prettier = {
       name = "Prettier";
       displayVersion = nodepkgs.prettier.version;
       language = "javascript";
-      extensions = [ ".js" ".jsx" ".ts" ".tsx" ".json" ".html" ];
+      extensions = [
+        ".js"
+        ".jsx"
+        ".ts"
+        ".tsx"
+        ".json"
+        ".html"
+      ];
       start = {
         args = [ "${run-prettier}/bin/run-prettier" ];
       };
