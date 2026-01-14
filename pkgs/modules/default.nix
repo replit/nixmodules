@@ -1,4 +1,4 @@
-{ pkgs, pkgs-23_05, pkgs-24_11, pkgs-25_05 }:
+{ pkgs, pkgs-23_05, pkgs-24_11, pkgs-25_05, pkgs-master, pkgs-staging, ... }:
 with builtins;
 let
   mkModule = path: pkgs.callPackage ../moduleit/entrypoint.nix {
@@ -54,16 +54,16 @@ let
       nodejs = pkgs-24_11.nodejs-18_x;
     })
     (import ./nodejs {
-      nodejs = pkgs.nodejs_20;
+      nodejs = pkgs-master.nodejs_20;
     })
     (import ./nodejs {
-      nodejs = pkgs.nodejs_22;
+      nodejs = pkgs-master.nodejs_22;
     })
     (import ./nodejs {
       nodejs = pkgs-24_11.nodejs_23;
     })
     (import ./nodejs {
-      nodejs = pkgs.nodejs_24;
+      nodejs = pkgs-staging.nodejs_24;
     })
     (import ./nodejs-with-prybar {
       nodejs = pkgs-24_11.nodejs-18_x;

@@ -246,6 +246,38 @@
         "type": "github"
       }
     },
+    "nixpkgs-master": {
+      "locked": {
+        "lastModified": 1768419155,
+        "narHash": "sha256-08rsy5sGOfqChOJsbQ6+nQJCeqDwgXjhjCsO90FQWso=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "916fcf012a19603720d6b7f55d9fa01aa2225308",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "master",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-staging": {
+      "locked": {
+        "lastModified": 1768413969,
+        "narHash": "sha256-Gw8zMGG6MvQ/uB2Dfl5CEDuhbSJQKY9iTefZNsXsa4U=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "d93c437c6a042be9f8b43c162a8bc29b3de851a3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "staging-next",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "prybar": {
       "inputs": {
         "flake-utils": "flake-utils_2",
@@ -296,6 +328,8 @@
         "nixpkgs-23_05": "nixpkgs-23_05",
         "nixpkgs-24_11": "nixpkgs-24_11",
         "nixpkgs-25_05": "nixpkgs-25_05",
+        "nixpkgs-master": "nixpkgs-master",
+        "nixpkgs-staging": "nixpkgs-staging",
         "prybar": "prybar",
         "replit-rtld-loader": "replit-rtld-loader",
         "ztoc-rs": "ztoc-rs"
