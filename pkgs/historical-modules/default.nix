@@ -285,6 +285,13 @@ let
         displayVersion = "3.1";
       };
     }
+    {
+      moduleId = "nodejs-with-prybar-18";
+      commit = "ae6ed05c623804560afd1cf3d80d13b6170d5c24";
+      overrides = {
+        displayVersion = "18";
+      };
+    }
   ];
 
   moduleFromHistory =

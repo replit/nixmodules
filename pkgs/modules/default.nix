@@ -74,10 +74,6 @@ let
     (import ./nodejs {
       nodejs = pkgs-staging.nodejs_24;
     })
-    (import ./nodejs-with-prybar {
-      nodejs = pkgs-24_11.nodejs-18_x;
-    })
-
     (import ./go {
       go = pkgs.go_1_25;
       gopls = pkgs.gopls.override {
