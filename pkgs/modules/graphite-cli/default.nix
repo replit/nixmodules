@@ -24,7 +24,7 @@ let
   };
 in
 {
-  id = "graphite-cli-${version}";
+  id = "graphite-cli";
   name = "Graphite CLI";
   description = ''
     Graphite CLI is a command-line tool that helps developers manage stacked pull requests 
@@ -32,9 +32,6 @@ in
     reviewable pieces that can be submitted and merged incrementally.
   '';
   displayVersion = version;
-
-  imports = [
-  ];
 
   replit.packages = [
     graphite-cli
