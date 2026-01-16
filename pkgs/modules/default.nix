@@ -158,7 +158,7 @@ let
       nodepkgs = pkgs.nodePackages;
     })
     (import ./replit-rtld-loader)
-    (import ./graphite)
+    (import ./graphite-cli)
   ];
 
   activeModules = listToAttrs (
