@@ -32,7 +32,7 @@ writeShellApplication {
     root="$TMP_DIR/root"
     # gcp requires that disks end in "disk.raw"
     diskImage="$TMP_DIR/disk.raw"
-    tarball="$TMP_DIR/disk.sqsh.tar.gz"
+    tarball="$TMP_DIR/disk.raw.tar.gz"
 
     (
         mkdir -p "$root/nix/store" "$root/etc/nixmodules"
@@ -49,7 +49,7 @@ writeShellApplication {
         echo "mksquashfs took $SECONDS seconds" >&2
 
         SECONDS=0
-        tar --use-compress-program="pigz --best --recursive | pv" -Scf "$tarball" "$diskImage"
+        tar --use-compress-program="pigz --best --recursive | pv" -Scf "$tarball" disk.raw
         echo "tar took $SECONDS seconds" >&2
 
         echo Tarball created at "$tarball" >&2
