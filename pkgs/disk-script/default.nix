@@ -6,6 +6,7 @@
 , coreutils
 , findutils
 , closureInfo
+, pv
 ,
 }:
 
@@ -20,6 +21,7 @@ writeShellApplication {
     gnutar
     squashfsTools
     pigz
+    pv
   ];
   text = ''
     set -x
