@@ -38,14 +38,6 @@ let
       inherit revstring diskName;
     };
 
-  disk-script-fn =
-    { moduleIds ? null
-    ,
-    }:
-    pkgs.callPackage ./disk-script {
-      bundle = bundle-fn { inherit moduleIds; };
-    };
-
 in
 rec {
   default = moduleit;
@@ -66,11 +58,15 @@ rec {
   # For prod use: builds the Nixmodules disk image
   bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle-image revstring; };
 
-  disk-script-dev = disk-script-fn {
-    moduleIds = dev-module-ids;
+  disk-script = pkgs.callPackage ./disk-script {
+    bundle = bundle-fn { };
   };
 
-  disk-script = disk-script-fn { };
+  disk-script-dev = pkgs.callPackage ./disk-script-dev {
+    bundle = bundle-fn {
+      moduleIds = dev-module-ids;
+    };
+  };
 
   # For dev use: builds the shared Nixmodules disk
   bundle-squashfs = bundle-squashfs-fn {

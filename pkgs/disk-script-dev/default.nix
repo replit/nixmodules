@@ -1,12 +1,9 @@
 { writeShellApplication
 , bundle
 , squashfsTools
-, gnutar
-, pigz
 , coreutils
 , findutils
 , closureInfo
-, pv
 ,
 }:
 
@@ -18,10 +15,7 @@ writeShellApplication {
   runtimeInputs = [
     coreutils
     findutils
-    gnutar
     squashfsTools
-    pigz
-    pv
   ];
   text = ''
     set -x
@@ -30,9 +24,7 @@ writeShellApplication {
     cd "$TMP_DIR"
 
     root="$TMP_DIR/root"
-    # gcp requires that disks end in "disk.raw"
-    diskImage="$TMP_DIR/disk.raw"
-    tarball="$TMP_DIR/disk.sqsh.tar.gz"
+    diskImage="$TMP_DIR/disk.sqsh"
 
     (
         mkdir -p "$root/nix/store" "$root/etc/nixmodules"
@@ -48,13 +40,8 @@ writeShellApplication {
         mksquashfs "$root" "$diskImage" -force-uid 11000 -force-gid 11000 -comp lz4 -b 1M
         echo "mksquashfs took $SECONDS seconds" >&2
 
-        SECONDS=0
-        tar --use-compress-program="pigz --best --recursive | pv" -Scf "$tarball" "$diskImage"
-        echo "tar took $SECONDS seconds" >&2
-
-        echo Tarball created at "$tarball" >&2
     ) 1>&2
 
-    echo "$tarball"
+    echo "$diskImage"
   '';
 }
