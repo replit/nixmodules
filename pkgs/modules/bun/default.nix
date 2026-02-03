@@ -1,7 +1,7 @@
+{ bun }:
 { pkgs, lib, ... }:
 
 let
-  bun = pkgs.callPackage ../../bun { };
   bun-wrapped = pkgs.lib.mkWrapper-replit_ld_library_path bun;
 
   extensions = [ ".js" ".jsx" ".cjs" ".mjs" ".ts" ".tsx" ".mts" ];
