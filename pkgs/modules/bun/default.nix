@@ -1,7 +1,14 @@
+# NOTE: Unlike Node.js, nixpkgs doesn't provide versioned bun attributes (e.g., bun_1_3).
+# This module uses pkgs.bun which tracks the latest version.
+#
+# When nixpkgs updates bun to a new major.minor version:
+# 1. Add the previous version to pkgs/historical-modules/default.nix, pinned to the
+#    commit before the nixpkgs update
+# 2. Update pkgs/upgrade-map/default.nix to chain the old version to the new one
+{ bun }:
 { pkgs, lib, ... }:
 
 let
-  bun = pkgs.callPackage ../../bun { };
   bun-wrapped = pkgs.lib.mkWrapper-replit_ld_library_path bun;
 
   extensions = [ ".js" ".jsx" ".cjs" ".mjs" ".ts" ".tsx" ".mts" ];

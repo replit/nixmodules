@@ -10,6 +10,9 @@ let
     "bun-0.5" = "bun-0.6";
     "bun-0.6" = "bun-0.7";
     "bun-0.7" = "bun-1.0";
+    "bun-1.0" = "bun-1.1";
+    "bun-1.1" = "bun-1.2";
+    "bun-1.2" = "bun-1.3";
     "dart-3.0" = "dart-3.1";
     "dart-3.1" = "dart-3.2";
     "dart-3.2" = "dart-3.3";

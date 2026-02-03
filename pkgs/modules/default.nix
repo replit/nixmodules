@@ -91,7 +91,9 @@ let
       nodejs = pkgs.nodejs_24;
     })
     (import ./bash)
-    (import ./bun)
+    (import ./bun {
+      bun = pkgs.bun;
+    })
     (import ./c)
     (import ./cpp)
     (import ./dart)
