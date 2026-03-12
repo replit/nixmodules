@@ -28,7 +28,7 @@ in
   description = ''
     Basic module for Python. Includes the interpreter and basic Replit
     configuration but nothing else. This may be combined with the
-    pyright-extended module.
+    ty module.
   '';
 
   replit.packages = [

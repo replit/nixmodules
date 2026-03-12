@@ -53,10 +53,7 @@ let
       python = pkgs.python313;
       pypkgs = pkgs.python313Packages;
     })
-    (import ./pyright-extended {
-      nodejs = pkgs-24_11.nodejs-18_x;
-    })
-    (import ./pyright)
+    (import ./ty)
     (import ./ruff)
 
     (import ./nodejs {

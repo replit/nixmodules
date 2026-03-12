@@ -25,6 +25,8 @@ let
     "go" = "go-1.19";
     "go-1.23" = "go-1.24";
     "go-1.24" = "go-1.25";
+    "pyright" = "ty";
+    "pyright-extended" = "ty";
     "r-4.3" = "r-4.4";
     "r-4.4" = "r-4.5";
     "rust" = "rust-1.69";
