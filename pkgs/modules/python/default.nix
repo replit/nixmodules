@@ -58,6 +58,8 @@ let
     inherit pkgs python python-ld-library-path;
   };
 
+  ty = pkgs.callPackage ../../ty { };
+
   sitecustomize = pkgs.callPackage ./sitecustomize.nix { };
 
   uv = pkgs.callPackage ./uv {
@@ -103,9 +105,9 @@ in
 
   replit.dev.languageServers.ty = {
     name = "ty";
-    displayVersion = pkgs.ty.version;
+    displayVersion = ty.version;
     language = "python3";
-    start = "${pkgs.ty}/bin/ty server";
+    start = "${ty}/bin/ty server";
   };
 
   replit.dev.packagers.upmPython = {
