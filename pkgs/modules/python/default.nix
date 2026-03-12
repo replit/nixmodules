@@ -1,7 +1,5 @@
 { python, pypkgs }:
 { pkgs-unstable
-, pkgs-24_11
-, pkgs-23_05
 , lib
 , ...
 }:
@@ -60,10 +58,7 @@ let
     inherit pkgs python python-ld-library-path;
   };
 
-  pyright-extended = pkgs.callPackage ../../pyright-extended {
-    nodejs = pkgs-24_11.nodejs-18_x;
-    yapf = pypkgs.yapf;
-  };
+  ty = pkgs.callPackage ../../ty { };
 
   sitecustomize = pkgs.callPackage ./sitecustomize.nix { };
 
@@ -85,7 +80,7 @@ in
   name = "Python Tools";
   displayVersion = pythonVersion;
   description = ''
-    Development tools for Python. Includes Python interpreter, Pip, Poetry, Pyright extended language server.
+    Development tools for Python. Includes Python interpreter, Pip, Poetry, and the ty language server.
   '';
 
   replit.packages = [
@@ -108,11 +103,11 @@ in
     ];
   };
 
-  replit.dev.languageServers.pyright-extended = {
-    name = "pyright-extended";
-    displayVersion = pyright-extended.version;
+  replit.dev.languageServers.ty = {
+    name = "ty";
+    displayVersion = ty.version;
     language = "python3";
-    start = "${pyright-extended}/bin/langserver.index.js --stdio";
+    start = "${ty}/bin/ty server";
   };
 
   replit.dev.packagers.upmPython = {
