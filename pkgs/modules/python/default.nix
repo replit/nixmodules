@@ -58,8 +58,6 @@ let
     inherit pkgs python python-ld-library-path;
   };
 
-  ty = pkgs.callPackage ../../ty { };
-
   sitecustomize = pkgs.callPackage ./sitecustomize.nix { };
 
   uv = pkgs.callPackage ./uv {
@@ -79,8 +77,9 @@ in
   id = "python-${pythonVersion}";
   name = "Python Tools";
   displayVersion = pythonVersion;
+  imports = [ (import ../ty) ];
   description = ''
-    Development tools for Python. Includes Python interpreter, Pip, Poetry, and the ty language server.
+    Development tools for Python. Includes Python interpreter, Pip, Poetry, the ty language server, and Ruff formatting.
   '';
 
   replit.packages = [
@@ -101,13 +100,6 @@ in
       "app.py"
       "run.py"
     ];
-  };
-
-  replit.dev.languageServers.ty = {
-    name = "ty";
-    displayVersion = ty.version;
-    language = "python3";
-    start = "${ty}/bin/ty server";
   };
 
   replit.dev.packagers.upmPython = {
