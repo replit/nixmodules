@@ -17,7 +17,7 @@
   inputs.ztoc-rs.url = "github:replit/ztoc-rs";
   inputs.ztoc-rs.inputs.nixpkgs.follows = "nixpkgs";
   inputs.replit-rtld-loader.url = "github:replit/replit_rtld_loader";
-  inputs.replit-rtld-loader.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.replit-rtld-loader.inputs.nixpkgs.follows = "nixpkgs-25_05";
 
   outputs = { self, nixpkgs, nixpkgs-23_05, nixpkgs-24_11, nixpkgs-25_05, nixpkgs-master, nixpkgs-staging, prybar, java-language-server, nil, fenix, replit-rtld-loader, ... }:
     let

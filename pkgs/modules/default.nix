@@ -30,20 +30,20 @@ let
       pypkgs = pkgs-24_11.python39Packages;
     })
     (import ./python {
-      python = pkgs.python310;
-      pypkgs = pkgs.python310Packages;
+      python = pkgs-25_05.python310;
+      pypkgs = pkgs-25_05.python310Packages;
     })
     (import ./python {
-      python = pkgs.python311;
-      pypkgs = pkgs.python311Packages;
+      python = pkgs-25_05.python311;
+      pypkgs = pkgs-25_05.python311Packages;
     })
     (import ./python {
       python = pkgs.python312;
       pypkgs = pkgs.python312Packages;
     })
     (import ./python-base {
-      python = pkgs.python311;
-      pypkgs = pkgs.python311Packages;
+      python = pkgs-25_05.python311;
+      pypkgs = pkgs-25_05.python311Packages;
     })
     (import ./python-base {
       python = pkgs.python312;

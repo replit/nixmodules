@@ -20,6 +20,7 @@ let
     "dart-3.4" = "dart-3.5";
     "dart-3.5" = "dart-3.8";
     "dart-3.8" = "dart-3.10";
+    "dart-3.10" = "dart-3.11";
     "elixir-1_16" = "elixir-1_17";
     "elixir-1_17" = "elixir-1_18";
     "go" = "go-1.19";
