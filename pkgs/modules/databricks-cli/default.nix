@@ -2,30 +2,85 @@
 
 let
   version = "0.286.0";
-  databricks-cli = pkgs.stdenvNoCC.mkDerivation {
+  databricks-cli = pkgs.buildGoModule {
     pname = "databricks-cli";
     inherit version;
 
-    src = pkgs.fetchurl {
-      url = "https://github.com/databricks/cli/releases/download/v${version}/databricks_cli_${version}_linux_amd64.tar.gz";
-      hash = "sha256-lf6q0c9iZVNvIzLVrptTe0YudpFDVDdZXMWR8lOObw8=";
+    src = pkgs.fetchFromGitHub {
+      owner = "databricks";
+      repo = "cli";
+      rev = "v${version}";
+      hash = "sha256-iCmxHjIYznqed6BMQKtuYHJNFPy+3XrNzSXfhtyzPJk=";
     };
 
-    sourceRoot = ".";
+    vendorHash = "sha256-TNUI2VQVKnxTiKQg9Bj3qDK2w3oOjO0rdrtTlFIhTzA=";
 
-    dontConfigure = true;
-    dontBuild = true;
+    excludedPackages = [
+      "bundle/internal"
+      "acceptance"
+      "integration"
+      "tools/testrunner"
+      "tools/testmask"
+    ];
 
-    unpackPhase = ''
-      tar -xzf $src
+    postPatch = ''
+      substituteInPlace bundle/deploy/terraform/init_test.go \
+        --replace-fail "cli/0.0.0-dev" "cli/${version}"
     '';
 
-    installPhase = ''
-      runHook preInstall
-      mkdir -p $out/bin
-      install -m755 databricks $out/bin/databricks
-      runHook postInstall
+    ldflags = [
+      "-X github.com/databricks/cli/internal/build.buildVersion=${version}"
+    ];
+
+    postBuild = ''
+      mv "$GOPATH/bin/cli" "$GOPATH/bin/databricks"
     '';
+
+    checkFlags =
+      "-skip="
+      + (lib.concatStringsSep "|" [
+        # Need network
+        "TestConsistentDatabricksSdkVersion"
+        "TestTerraformArchiveChecksums"
+        "TestExpandPipelineGlobPaths"
+        "TestRelativePathTranslationDefault"
+        "TestRelativePathTranslationOverride"
+        "TestWorkspaceVerifyProfileForHost"
+        "TestWorkspaceVerifyProfileForHost/default_config_file_with_match"
+        "TestWorkspaceResolveProfileFromHost"
+        "TestWorkspaceResolveProfileFromHost/no_config_file"
+        "TestBundleConfigureDefault"
+        # Use uv venv which doesn't work with nix
+        # https://github.com/astral-sh/uv/issues/4450
+        "TestVenvSuccess"
+        "TestPatchWheel"
+        # Fails in nix sandbox due to missing home/cache directory
+        "TestCacheDirEnvVar"
+      ]);
+
+    nativeCheckInputs = [
+      pkgs.gitMinimal
+      (pkgs.python3.withPackages (
+        ps: with ps; [
+          setuptools
+          wheel
+        ]
+      ))
+    ];
+
+    preCheck = ''
+      # Some tests depend on git and remote url
+      git init
+      git remote add origin https://github.com/databricks/cli.git
+    '';
+
+    meta = {
+      description = "Databricks CLI";
+      mainProgram = "databricks";
+      homepage = "https://github.com/databricks/cli";
+      changelog = "https://github.com/databricks/cli/releases/tag/v${version}";
+      license = lib.licenses.databricks;
+    };
   };
 in
 {
