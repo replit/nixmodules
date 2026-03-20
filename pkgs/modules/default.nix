@@ -2,6 +2,7 @@
 , pkgs-23_05
 , pkgs-24_11
 , pkgs-25_05
+, pkgs-25_11
 , pkgs-master
 , pkgs-staging
 , ...
@@ -30,8 +31,8 @@ let
       pypkgs = pkgs-24_11.python39Packages;
     })
     (import ./python {
-      python = pkgs.python310;
-      pypkgs = pkgs.python310Packages;
+      python = pkgs-25_11.python310;
+      pypkgs = pkgs-25_11.python310Packages;
     })
     (import ./python {
       python = pkgs.python311;
