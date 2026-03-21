@@ -158,6 +158,7 @@ let
     })
     (import ./replit-rtld-loader)
     (import ./graphite-cli)
+    (import ./databricks-cli)
   ];
 
   activeModules = listToAttrs (

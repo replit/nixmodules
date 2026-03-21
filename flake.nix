@@ -31,9 +31,10 @@
           fenix.overlays.default
           replit-rtld-loader.overlays.default
         ];
-        # replbox has an unfree license
+        # replbox and databricks-cli have unfree licenses
         config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
           "@replit/replbox"
+          "databricks-cli"
         ];
       };
 
