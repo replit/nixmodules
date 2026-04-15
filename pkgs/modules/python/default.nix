@@ -29,9 +29,8 @@ let
     name = "pip";
   };
 
-  poetry = pkgs.callPackage (../../poetry/poetry-py + "${pythonVersion}.nix") {
+  poetry = pkgs.callPackage ../../poetry {
     inherit python;
-    inherit pypkgs;
   };
 
   poetry-config = pkgs.writeTextFile {
@@ -118,13 +117,6 @@ in
     POETRY_CONFIG_DIR = poetry-config.outPath;
     POETRY_CACHE_DIR = "$REPL_HOME/.cache/pypoetry";
     POETRY_VIRTUALENVS_CREATE = "0";
-    POETRY_INSTALLER_MODERN_INSTALLATION = "1";
-    POETRY_DOWNLOAD_WITH_CURL = "1";
-    POETRY_PIP_USE_PIP_CACHE = "1";
-    POETRY_PIP_NO_ISOLATE = "1";
-    POETRY_PIP_NO_PREFIX = "1";
-    POETRY_PIP_FROM_PATH = "1";
-    POETRY_USE_USER_SITE = "1";
     PIP_CONFIG_FILE = pip.config.outPath;
     PYTHONUSERBASE = userbase;
     PYTHONPATH = "${sitecustomize}:${pip.pip}/${python.sitePackages}";
