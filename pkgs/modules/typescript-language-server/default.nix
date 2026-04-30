@@ -17,6 +17,8 @@ in
     start = "${typescript-language-server}/bin/typescript-language-server --stdio";
 
     initializationOptions = {
+      disableAutomaticTypingAcquisition = true;
+      maxTsServerMemory = 1536;
       tsserver.fallbackPath = "${nodepkgs.typescript}/lib/node_modules/typescript/lib";
     };
 
