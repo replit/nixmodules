@@ -1,19 +1,25 @@
 { pkgs, lib, ... }:
 
 let
-  version = "0.286.0";
+  # Replit fork of databricks/cli. Adds --concurrency and --retry-timeout
+  # flags to `databricks sync`. Based on upstream v0.290.2, the same release
+  # nixpkgs is on, so the test skip list below stays in sync with nixpkgs'.
+  # Source: https://github.com/replit/databricks-cli (replit-main branch)
+  upstreamVersion = "0.290.2";
+  rev = "4928653c0620fb73b20d57dda4a26a233c2546f1";
+  version = "${upstreamVersion}-replit-${builtins.substring 0 8 rev}";
   databricks-cli = pkgs.buildGoModule {
     pname = "databricks-cli";
     inherit version;
 
     src = pkgs.fetchFromGitHub {
-      owner = "databricks";
-      repo = "cli";
-      rev = "v${version}";
-      hash = "sha256-iCmxHjIYznqed6BMQKtuYHJNFPy+3XrNzSXfhtyzPJk=";
+      owner = "replit";
+      repo = "databricks-cli";
+      inherit rev;
+      hash = "sha256-wTceEtlE2EnOe2noUWTsN0DzMIJxV8yLvyQu2M3Ts8E=";
     };
 
-    vendorHash = "sha256-TNUI2VQVKnxTiKQg9Bj3qDK2w3oOjO0rdrtTlFIhTzA=";
+    vendorHash = "sha256-8PJ2M5L8DkL4ydtUQbw0wKvt+5rVYbOAAGvURkSMm/o=";
 
     excludedPackages = [
       "bundle/internal"
@@ -77,8 +83,8 @@ let
     meta = {
       description = "Databricks CLI";
       mainProgram = "databricks";
-      homepage = "https://github.com/databricks/cli";
-      changelog = "https://github.com/databricks/cli/releases/tag/v${version}";
+      homepage = "https://github.com/replit/databricks-cli";
+      changelog = "https://github.com/databricks/cli/releases/tag/v${upstreamVersion}";
       license = lib.licenses.databricks;
     };
   };
