@@ -10,9 +10,9 @@ let
   dev-module-ids = [
     "python-3.10"
     "python-3.11"
-    "nodejs-18"
     "nodejs-20"
     "nodejs-22"
+    "nodejs-24"
     "go-1.21"
     "docker"
     "replit"
