@@ -1,24 +1,7 @@
-{ pkgs, python, pypkgs, version, url, sha256 }:
+{ pkgs, python }:
 let
-  poetry = pkgs.stdenv.mkDerivation {
-    name = "poetry-in-venv";
-    inherit version;
-
-    src = builtins.fetchTarball {
-      inherit url sha256;
-    };
-
-    installPhase = ''
-      mkdir -p $out/bin
-      ${python}/bin/python3 -m venv $out/env
-      touch $out/env/poetry_env # This allows poetry to recognize it
-                                # https://github.com/replit/poetry/blob/replit-1.5/src/poetry/utils/env.py#L1154
-                                # invoking the workaround so that poetry
-                                # does not use its own venv for the project
-                                # env
-      $out/env/bin/pip install poetry --find-links ./ --no-index
-      ln -s $out/env/bin/poetry $out/bin/poetry
-    '';
+  upstreamPoetry = pkgs.poetry.override {
+    python3 = python;
   };
 in
 pkgs.writeShellApplication {
@@ -26,7 +9,7 @@ pkgs.writeShellApplication {
   text = ''
     # Determine how many vcpus we have, first in the standard location, with a fallback
     # to the cgroup info, since resources.json does not exist during Deployments.
-    if [ -e /repl/stats/resources.json ]; then  # Common resources location
+    if [ -e /repl/stats/resources.json ]; then
       numVCpu="$(${pkgs.jq}/bin/jq .numVCpu </repl/stats/resources.json)"
     else
       cgroup_path="$(cut -f 3 -d : < /proc/1/cgroup)"
@@ -44,9 +27,9 @@ pkgs.writeShellApplication {
     # Don't run multiple install workers in parallel if we have fewer than 0.5
     # CPUs, which helps with speed in free accounts.
     if [ "$(echo "$numVCpu" | ${pkgs.jq}/bin/jq '. <= 0.5')" = true ]; then
-    export POETRY_INSTALLER_PARALLEL="0"
+      export POETRY_INSTALLER_PARALLEL="0"
     fi
 
-    ${poetry}/bin/poetry "$@"
+    exec ${upstreamPoetry}/bin/poetry "$@"
   '';
 }
