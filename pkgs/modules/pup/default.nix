@@ -3,6 +3,14 @@
 let
   version = "0.64.0";
 
+  # The wrapper and its tests share one store path so the test file can import
+  # the module it exercises by relative path.
+  wrapperSource = pkgs.runCommand "pup-wrapper-source" { } ''
+    mkdir -p "$out"
+    cp ${./pup-wrapper.mjs} "$out/pup-wrapper.mjs"
+    cp ${./pup-wrapper.test.mjs} "$out/pup-wrapper.test.mjs"
+  '';
+
   pup = pkgs.stdenv.mkDerivation (finalAttrs: {
     pname = "pup";
     inherit version;
@@ -15,6 +23,7 @@ let
     nativeBuildInputs = [
       pkgs.autoPatchelfHook
       pkgs.makeWrapper
+      pkgs.nodejs_22
     ];
 
     buildInputs = [ pkgs.stdenv.cc.cc.lib ];
@@ -28,7 +37,7 @@ let
       runHook preInstall
 
       install -Dm755 pup "$out/libexec/pup"
-      install -Dm644 ${./pup-wrapper.mjs} "$out/libexec/pup-wrapper.mjs"
+      install -Dm644 ${wrapperSource}/pup-wrapper.mjs "$out/libexec/pup-wrapper.mjs"
 
       makeWrapper "${pkgs.nodejs_22}/bin/node" "$out/bin/pup" \
         --add-flags "$out/libexec/pup-wrapper.mjs" \
@@ -42,6 +51,7 @@ let
     installCheckPhase = ''
       runHook preInstallCheck
 
+      HOME="$TMPDIR" node --test ${wrapperSource}/pup-wrapper.test.mjs
       HOME="$TMPDIR" "$out/bin/pup" --help >/dev/null
 
       runHook postInstallCheck
