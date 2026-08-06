@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
-import {access, mkdtemp, mkdir, readFile, writeFile} from 'node:fs/promises'
+import {spawn} from 'node:child_process'
+import {access, mkdtemp, mkdir, readFile, readdir, writeFile} from 'node:fs/promises'
 import {tmpdir} from 'node:os'
 import {dirname, join} from 'node:path'
 import {pathToFileURL} from 'node:url'
@@ -65,6 +66,14 @@ async function makeFakePup(root, {exitCode = 0} = {}) {
   )
 
   return {binary, readLog: () => readFile(log, 'utf8')}
+}
+
+function runChild(command, args, env) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, args, {env, stdio: 'ignore'})
+    child.once('error', reject)
+    child.once('close', (code, signal) => resolve({code, signal}))
+  })
 }
 
 test('rejects a cache entry whose timestamp is not a number', () => {
@@ -405,6 +414,42 @@ test('runs authless commands without touching OpenInt', async () => {
 
   assert.equal(exitCode, 0)
   assert.match(await pup.readLog(), /PUP_MOCK_SERVER=<unset>/)
+})
+
+test('does not treat a value after -- as an authless flag', () => {
+  const args = ['dashboards', 'get', '--', '--help']
+  assert.ok(!skipsOpenIntAuth(args))
+  assert.doesNotThrow(() => assertSupportedCommand(args))
+})
+
+test('does not run an extension through an authless flag', () => {
+  const args = ['untrusted-extension', '--version']
+  assert.ok(!skipsOpenIntAuth(args))
+  assert.throws(() => assertSupportedCommand(args), /Unsupported pup command/)
+})
+
+test('removes the temporary config before forwarding a child signal', async () => {
+  const {root, env} = await makeSandbox()
+  const signalPup = join(root, 'signal-pup')
+  const wrapper = new URL('./pup-wrapper.mjs', import.meta.url).pathname
+  await writeFile(signalPup, '#!/bin/sh\nkill -TERM $$\n', {mode: 0o755})
+  await seedCache(env, {
+    connectionId: CONNECTION_ID,
+    proxyUrl: PROXY_URL,
+    cachedAt: Date.now(),
+  })
+
+  const result = await runChild(process.execPath, [wrapper, 'monitors', 'list'], {
+    ...process.env,
+    ...env,
+    PUP_REAL_BINARY: signalPup,
+    REPL_IDENTITY: 'identity-material',
+    TMPDIR: root,
+  })
+
+  assert.equal(result.signal, 'SIGTERM')
+  const entries = await readdir(root)
+  assert.ok(!entries.some((entry) => entry.startsWith('pup-openint-')))
 })
 
 test('fails when the real pup binary is not configured or missing', async () => {

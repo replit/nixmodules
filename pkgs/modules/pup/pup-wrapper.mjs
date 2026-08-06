@@ -23,6 +23,13 @@ const CONNECTION_ID_PATTERN = new RegExp(
 
 const AUTHLESS_FLAGS = new Set(['--help', '-h', '--version'])
 const AUTHLESS_COMMANDS = new Set(['help', 'version'])
+const SUPPORTED_COMMAND_ROOTS = new Set([
+  'dashboards',
+  'logs',
+  'metrics',
+  'monitors',
+  'traces',
+])
 const GLOBAL_FLAGS = new Set(['--no-agent', '--read-only'])
 const GLOBAL_FLAGS_WITH_VALUE = new Set(['-o', '--output'])
 const SUPPORTED_COMMANDS = new Set([
@@ -247,21 +254,7 @@ export function buildChildEnv(env, {proxyUrl, token, configDir}) {
   return childEnv
 }
 
-export function skipsOpenIntAuth(args) {
-  if (args.length === 0) {
-    return true
-  }
-  if (AUTHLESS_COMMANDS.has(args[0])) {
-    return true
-  }
-  return args.some((arg) => AUTHLESS_FLAGS.has(arg))
-}
-
-export function assertSupportedCommand(args) {
-  if (skipsOpenIntAuth(args)) {
-    return
-  }
-
+function commandIndex(args) {
   let index = 0
   while (true) {
     if (GLOBAL_FLAGS.has(args[index] ?? '')) {
@@ -275,6 +268,38 @@ export function assertSupportedCommand(args) {
     break
   }
 
+  return index
+}
+
+export function skipsOpenIntAuth(args) {
+  if (args.length === 0) {
+    return true
+  }
+
+  const endOfOptions = args.indexOf('--')
+  const options = endOfOptions === -1 ? args : args.slice(0, endOfOptions)
+  const root = options[commandIndex(options)] ?? ''
+  const hasAuthlessFlag = options.some((arg) => AUTHLESS_FLAGS.has(arg))
+
+  if (AUTHLESS_COMMANDS.has(root)) {
+    return true
+  }
+
+  return (
+    options.length === 1 &&
+    AUTHLESS_FLAGS.has(root)
+  ) || (
+    SUPPORTED_COMMAND_ROOTS.has(root) &&
+    hasAuthlessFlag
+  )
+}
+
+export function assertSupportedCommand(args) {
+  if (skipsOpenIntAuth(args)) {
+    return
+  }
+
+  const index = commandIndex(args)
   const command = `${args[index] ?? ''} ${args[index + 1] ?? ''}`
   if (!SUPPORTED_COMMANDS.has(command)) {
     throw new Error(
@@ -292,13 +317,16 @@ function runPup(binary, args, env) {
     })
 
     child.once('close', (code, signal) => {
-      if (signal) {
-        process.kill(process.pid, signal)
-        return
-      }
-      resolveExit(code ?? 1)
+      resolveExit({code: code ?? 1, signal})
     })
   })
+}
+
+function exitFromPup({code, signal}) {
+  if (signal) {
+    process.kill(process.pid, signal)
+  }
+  return code
 }
 
 export async function main({env = process.env, args = process.argv.slice(2)} = {}) {
@@ -308,22 +336,28 @@ export async function main({env = process.env, args = process.argv.slice(2)} = {
   }
 
   if (skipsOpenIntAuth(args)) {
-    return runPup(realPup, args, env)
+    return exitFromPup(await runPup(realPup, args, env))
   }
 
   assertSupportedCommand(args)
 
   const {proxyUrl, token, cachePath} = await resolveRuntimeConfig({env})
   const configDir = await mkdtemp(join(tmpdir(), 'pup-openint-'))
+  let signal
 
   try {
-    return await runPup(
+    const result = await runPup(
       realPup,
       args,
       buildChildEnv(env, {proxyUrl, token, configDir}),
     )
+    signal = result.signal
+    return result.code
   } finally {
     await rm(configDir, {recursive: true, force: true})
+    if (signal) {
+      process.kill(process.pid, signal)
+    }
   }
 }
 
