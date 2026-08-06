@@ -69,7 +69,9 @@ let
     installCheckPhase = ''
       runHook preInstallCheck
 
-      HOME="$TMPDIR" node --test ${wrapperSource}/pup-wrapper.test.mjs
+      PUP_INSTALLED_WRAPPER="$out/libexec/pup-wrapper.mjs" \
+        HOME="$TMPDIR" \
+        node --test ${wrapperSource}/pup-wrapper.test.mjs
       HOME="$TMPDIR" "$out/bin/pup" --help >/dev/null
 
       runHook postInstallCheck

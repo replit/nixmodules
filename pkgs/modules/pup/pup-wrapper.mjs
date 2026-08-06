@@ -1,7 +1,7 @@
 import {execFile, spawn} from 'node:child_process'
-import {mkdir, readFile, rename, rm, writeFile} from 'node:fs/promises'
+import {mkdtemp, mkdir, readFile, rename, rm, writeFile} from 'node:fs/promises'
 import {createRequire} from 'node:module'
-import {homedir} from 'node:os'
+import {homedir, tmpdir} from 'node:os'
 import {dirname, join, resolve} from 'node:path'
 import {pathToFileURL} from 'node:url'
 import {promisify} from 'node:util'
@@ -11,6 +11,7 @@ const require = createRequire(import.meta.url)
 
 const CONNECTOR_NAME = 'datadog'
 const DEFAULT_CONNECTORS_HOST = 'connectors.replit.com'
+const CONNECTORS_BASE_URL = `https://${DEFAULT_CONNECTORS_HOST}`
 const CACHE_TTL_MS = 5 * 60 * 1000
 
 // OpenInt caps CLI proxy path parameters at 128 characters, so bound the id
@@ -22,38 +23,34 @@ const CONNECTION_ID_PATTERN = new RegExp(
 
 const AUTHLESS_FLAGS = new Set(['--help', '-h', '--version'])
 const AUTHLESS_COMMANDS = new Set(['help', 'version'])
+const GLOBAL_FLAGS = new Set(['--no-agent', '--read-only'])
+const GLOBAL_FLAGS_WITH_VALUE = new Set(['-o', '--output'])
+const SUPPORTED_COMMANDS = new Set([
+  'logs search',
+  'logs aggregate',
+  'metrics query',
+  'traces search',
+  'traces aggregate',
+  'monitors list',
+  'monitors get',
+  'dashboards list',
+  'dashboards get',
+  'dashboards create',
+  'dashboards update',
+])
 
-// resolveBaseUrl, resolveAudience, and resolveIdentityToken mirror private
-// helpers in @replit/connectors-sdk, which exports only ReplitConnectors. Keep
-// them identical: a warm-cache command mints its token here and a cold-cache
-// command gets one from the SDK, so the two must be interchangeable.
-function resolveBaseUrl(env) {
-  const hostname = env.REPLIT_CONNECTORS_HOSTNAME
-  if (hostname) {
-    if (hostname.startsWith('http://') || hostname.startsWith('https://')) {
-      return hostname
-    }
-    return `https://${hostname}`
-  }
-  return `https://${DEFAULT_CONNECTORS_HOST}`
-}
-
-export function resolveAudience(env) {
-  const audience = env.REPLIT_CONNECTORS_AUDIENCE
-  if (audience) {
-    if (audience.startsWith('http://') || audience.startsWith('https://')) {
-      return audience
-    }
-    return `https://${audience}`
-  }
-  return `https://${DEFAULT_CONNECTORS_HOST}`
+// The SDK has equivalent helpers, but normal pup commands must always reach
+// the production connectors host. Honoring a caller-controlled host here could
+// send a freshly minted Replit identity to an arbitrary server.
+export function resolveAudience() {
+  return CONNECTORS_BASE_URL
 }
 
 export async function resolveIdentityToken(env, execFn = execFileAsync) {
   try {
     const {stdout} = await execFn(
       env.REPLIT_CLI || 'replit',
-      ['identity', 'create', '--audience', resolveAudience(env)],
+      ['identity', 'create', '--audience', resolveAudience()],
       {encoding: 'utf8', env},
     )
     const token = stdout.trim()
@@ -172,7 +169,20 @@ async function discoverCliConfig() {
     )
   }
 
-  return new sdk.ReplitConnectors().getCliConfig(CONNECTOR_NAME)
+  const previousAudience = process.env.REPLIT_CONNECTORS_AUDIENCE
+  process.env.REPLIT_CONNECTORS_AUDIENCE = CONNECTORS_BASE_URL
+
+  try {
+    return await new sdk.ReplitConnectors({
+      baseUrl: CONNECTORS_BASE_URL,
+    }).getCliConfig(CONNECTOR_NAME)
+  } finally {
+    if (previousAudience === undefined) {
+      delete process.env.REPLIT_CONNECTORS_AUDIENCE
+    } else {
+      process.env.REPLIT_CONNECTORS_AUDIENCE = previousAudience
+    }
+  }
 }
 
 /**
@@ -186,16 +196,15 @@ export async function resolveRuntimeConfig({
   discover = discoverCliConfig,
   mint = resolveIdentityToken,
 }) {
-  const baseUrl = resolveBaseUrl(env)
   const cachePath = resolveCachePath(env)
 
-  const cached = await loadCacheEntry(cachePath, baseUrl, now)
+  const cached = await loadCacheEntry(cachePath, CONNECTORS_BASE_URL, now)
   if (cached) {
     return {proxyUrl: cached.proxyUrl, token: await mint(env), cachePath}
   }
 
   const config = await discover()
-  const connectionId = parseConnectionId(config?.host, baseUrl)
+  const connectionId = parseConnectionId(config?.host, CONNECTORS_BASE_URL)
   if (!connectionId || typeof config.token !== 'string' || !config.token) {
     throw new Error(
       `The Connectors SDK returned an unusable ${CONNECTOR_NAME} CLI configuration.`,
@@ -230,18 +239,48 @@ export function buildChildEnv(env, {proxyUrl, token, configDir}) {
   // caller's real Datadog keys in place would forward them through the proxy.
   delete childEnv.DD_API_KEY
   delete childEnv.DD_APP_KEY
+  delete childEnv.DD_ORG
+  delete childEnv.DD_SITE
+  delete childEnv.PUP_DOCS_AI_URL
+  delete childEnv.PUP_SKIP_OPENINT
 
   return childEnv
 }
 
-export function skipsOpenIntAuth(args, env) {
-  if (env.PUP_SKIP_OPENINT === '1' || args.length === 0) {
+export function skipsOpenIntAuth(args) {
+  if (args.length === 0) {
     return true
   }
   if (AUTHLESS_COMMANDS.has(args[0])) {
     return true
   }
   return args.some((arg) => AUTHLESS_FLAGS.has(arg))
+}
+
+export function assertSupportedCommand(args) {
+  if (skipsOpenIntAuth(args)) {
+    return
+  }
+
+  let index = 0
+  while (true) {
+    if (GLOBAL_FLAGS.has(args[index] ?? '')) {
+      index += 1
+      continue
+    }
+    if (GLOBAL_FLAGS_WITH_VALUE.has(args[index] ?? '')) {
+      index += 2
+      continue
+    }
+    break
+  }
+
+  const command = `${args[index] ?? ''} ${args[index + 1] ?? ''}`
+  if (!SUPPORTED_COMMANDS.has(command)) {
+    throw new Error(
+      `Unsupported pup command: ${command.trim()}. This workspace supports logs, metrics, traces, monitor reads, and dashboard read/write operations.`,
+    )
+  }
 }
 
 function runPup(binary, args, env) {
@@ -268,15 +307,24 @@ export async function main({env = process.env, args = process.argv.slice(2)} = {
     throw new Error('PUP_REAL_BINARY is not set')
   }
 
-  if (skipsOpenIntAuth(args, env)) {
+  if (skipsOpenIntAuth(args)) {
     return runPup(realPup, args, env)
   }
 
-  const {proxyUrl, token, cachePath} = await resolveRuntimeConfig({env})
-  const configDir = join(dirname(cachePath), 'pup-config')
-  await mkdir(configDir, {recursive: true, mode: 0o700})
+  assertSupportedCommand(args)
 
-  return runPup(realPup, args, buildChildEnv(env, {proxyUrl, token, configDir}))
+  const {proxyUrl, token, cachePath} = await resolveRuntimeConfig({env})
+  const configDir = await mkdtemp(join(tmpdir(), 'pup-openint-'))
+
+  try {
+    return await runPup(
+      realPup,
+      args,
+      buildChildEnv(env, {proxyUrl, token, configDir}),
+    )
+  } finally {
+    await rm(configDir, {recursive: true, force: true})
+  }
 }
 
 const isDirectInvocation =

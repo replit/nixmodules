@@ -1,10 +1,12 @@
 import assert from 'node:assert/strict'
-import {mkdtemp, mkdir, readFile, writeFile} from 'node:fs/promises'
+import {access, mkdtemp, mkdir, readFile, writeFile} from 'node:fs/promises'
 import {tmpdir} from 'node:os'
 import {dirname, join} from 'node:path'
+import {pathToFileURL} from 'node:url'
 import {test} from 'node:test'
 
 import {
+  assertSupportedCommand,
   buildChildEnv,
   main,
   parseConnectionId,
@@ -126,25 +128,8 @@ test('bounds the connection id to the length OpenInt accepts', () => {
   assert.equal(parseConnectionId(beyond, BASE_URL), null)
 })
 
-test('honours a connectors base URL that carries a path', () => {
-  const baseUrl = 'https://connectors.example.com/base'
-  const proxyUrl = `${baseUrl}/api/v2/cli-proxy/datadog/${CONNECTION_ID}`
-
-  assert.equal(parseConnectionId(proxyUrl, baseUrl), CONNECTION_ID)
-  assert.equal(parseConnectionId(PROXY_URL, baseUrl), null)
-})
-
-test('formats the identity audience exactly like the SDK', () => {
-  assert.equal(resolveAudience({}), 'https://connectors.replit.com')
-  assert.equal(
-    resolveAudience({REPLIT_CONNECTORS_AUDIENCE: 'connectors.example.com'}),
-    'https://connectors.example.com',
-  )
-  // The SDK returns an explicit URL untouched, so any path must survive.
-  assert.equal(
-    resolveAudience({REPLIT_CONNECTORS_AUDIENCE: 'https://connectors.example.com/base'}),
-    'https://connectors.example.com/base',
-  )
+test('uses the fixed production connectors audience', () => {
+  assert.equal(resolveAudience(), 'https://connectors.replit.com')
 })
 
 test('falls back to the identity environment variables when the CLI fails', async () => {
@@ -178,7 +163,7 @@ test('passes the resolved audience to the identity CLI', async () => {
   assert.deepEqual(calls, [
     {
       binary: '/custom/replit',
-      args: ['identity', 'create', '--audience', 'https://a.example.com/base'],
+      args: ['identity', 'create', '--audience', 'https://connectors.replit.com'],
     },
   ])
 })
@@ -264,6 +249,32 @@ test('rediscovers when the cached entry is expired or corrupt', async () => {
   }
 })
 
+test('does not trust a caller-provided connectors host', async () => {
+  const {env} = await makeSandbox()
+  const untrustedEnv = {
+    ...env,
+    REPLIT_CONNECTORS_HOSTNAME: 'https://evil.example.com',
+  }
+  await seedCache(untrustedEnv, {
+    connectionId: CONNECTION_ID,
+    proxyUrl: 'https://evil.example.com/api/v2/cli-proxy/datadog/conn_datadog_abc123',
+    cachedAt: NOW,
+  })
+
+  let discoverCalls = 0
+  await resolveRuntimeConfig({
+    env: untrustedEnv,
+    now: NOW,
+    discover: async () => {
+      discoverCalls += 1
+      return {host: PROXY_URL, token: 'sdk-token', connectorName: 'datadog'}
+    },
+    mint: async () => assert.fail('an untrusted cache must not take the warm path'),
+  })
+
+  assert.equal(discoverCalls, 1)
+})
+
 test('rejects an unusable SDK configuration', async () => {
   const {env} = await makeSandbox()
 
@@ -281,7 +292,15 @@ test('rejects an unusable SDK configuration', async () => {
 
 test('replaces Datadog credentials in the child environment', () => {
   const childEnv = buildChildEnv(
-    {PATH: '/usr/bin', DD_API_KEY: 'real-key', DD_APP_KEY: 'real-app-key'},
+    {
+      PATH: '/usr/bin',
+      DD_API_KEY: 'real-key',
+      DD_APP_KEY: 'real-app-key',
+      DD_ORG: 'customer-org',
+      DD_SITE: 'evil.example.com',
+      PUP_DOCS_AI_URL: 'https://evil.example.com',
+      PUP_SKIP_OPENINT: '1',
+    },
     {proxyUrl: PROXY_URL, token: 'identity-token', configDir: '/tmp/pup-config'},
   )
 
@@ -291,6 +310,10 @@ test('replaces Datadog credentials in the child environment', () => {
   assert.equal(childEnv.PATH, '/usr/bin')
   assert.ok(!('DD_API_KEY' in childEnv))
   assert.ok(!('DD_APP_KEY' in childEnv))
+  assert.ok(!('DD_ORG' in childEnv))
+  assert.ok(!('DD_SITE' in childEnv))
+  assert.ok(!('PUP_DOCS_AI_URL' in childEnv))
+  assert.ok(!('PUP_SKIP_OPENINT' in childEnv))
 })
 
 test('skips OpenInt setup only for commands that need no credentials', () => {
@@ -298,10 +321,46 @@ test('skips OpenInt setup only for commands that need no credentials', () => {
   assert.ok(skipsOpenIntAuth(['--help'], {}))
   assert.ok(skipsOpenIntAuth(['logs', 'search', '--help'], {}))
   assert.ok(skipsOpenIntAuth(['version'], {}))
-  assert.ok(skipsOpenIntAuth(['monitors', 'list'], {PUP_SKIP_OPENINT: '1'}))
 
   assert.ok(!skipsOpenIntAuth(['monitors', 'list'], {}))
   assert.ok(!skipsOpenIntAuth(['logs', 'search', '--query', 'status:error'], {}))
+  assert.ok(!skipsOpenIntAuth(['monitors', 'list'], {PUP_SKIP_OPENINT: '1'}))
+})
+
+test('allows only the approved first-release command surface', () => {
+  const allowed = [
+    ['logs', 'search'],
+    ['logs', 'aggregate'],
+    ['metrics', 'query'],
+    ['traces', 'search'],
+    ['traces', 'aggregate'],
+    ['monitors', 'list'],
+    ['monitors', 'get', '123'],
+    ['dashboards', 'list'],
+    ['dashboards', 'get', 'abc'],
+    ['dashboards', 'create', '--file', 'dashboard.json'],
+    ['dashboards', 'update', 'abc', '--file', 'dashboard.json'],
+  ]
+  const rejected = [
+    ['api', 'https://evil.example.com'],
+    ['bits', 'ask', 'hello'],
+    ['acp', 'serve'],
+    ['auth', 'login'],
+    ['extensions', 'run'],
+    ['metrics', 'submit'],
+    ['monitors', 'delete', '123'],
+    ['dashboards', 'delete', 'abc'],
+  ]
+
+  for (const args of allowed) {
+    assert.doesNotThrow(() => assertSupportedCommand(args))
+  }
+  assert.doesNotThrow(() =>
+    assertSupportedCommand(['--no-agent', '-o', 'json', 'monitors', 'list']),
+  )
+  for (const args of rejected) {
+    assert.throws(() => assertSupportedCommand(args), /Unsupported pup command/)
+  }
 })
 
 test('forwards arguments, exit code, and environment to the real binary', async () => {
@@ -329,6 +388,10 @@ test('forwards arguments, exit code, and environment to the real binary', async 
   assert.match(log, /DD_API_KEY=<unset>/)
   assert.match(log, /DD_APP_KEY=<unset>/)
   assert.match(log, /PUP_CONFIG_DIR=\S+/)
+
+  const configDir = log.match(/PUP_CONFIG_DIR=(\S+)/)?.[1]
+  assert.ok(configDir)
+  await assert.rejects(() => access(configDir))
 })
 
 test('runs authless commands without touching OpenInt', async () => {
@@ -353,3 +416,85 @@ test('fails when the real pup binary is not configured or missing', async () => 
     /Failed to start pup:/,
   )
 })
+
+test('rejects unsupported commands before resolving OpenInt configuration', async () => {
+  const {root, env} = await makeSandbox()
+  const pup = await makeFakePup(root)
+
+  await assert.rejects(
+    () =>
+      main({
+        env: {
+          ...env,
+          PUP_REAL_BINARY: pup.binary,
+          PUP_SKIP_OPENINT: '1',
+        },
+        args: ['api', 'https://evil.example.com'],
+      }),
+    /Unsupported pup command/,
+  )
+})
+
+test(
+  'installed wrapper loads the bundled SDK for cold-cache discovery',
+  {skip: !process.env.PUP_INSTALLED_WRAPPER},
+  async (t) => {
+    const {root, env} = await makeSandbox()
+    const replit = join(root, 'replit')
+    const pup = await makeFakePup(root)
+    const requests = []
+    const originalFetch = global.fetch
+    const originalReplitCli = process.env.REPLIT_CLI
+
+    await writeFile(replit, '#!/bin/sh\nprintf "test-identity-token\\n"\n', {
+      mode: 0o755,
+    })
+    process.env.REPLIT_CLI = replit
+    global.fetch = async (url, init) => {
+      const requestUrl = new URL(String(url))
+      requests.push({
+        url: requestUrl,
+        authorization: new Headers(init?.headers).get('Replit-Authentication'),
+      })
+
+      if (
+        requestUrl.origin === 'https://connectors.replit.com' &&
+        requestUrl.pathname === '/api/v2/connection'
+      ) {
+        return new Response(
+          JSON.stringify({
+            items: [{id: CONNECTION_ID, connector_name: 'datadog'}],
+          }),
+          {status: 200, headers: {'Content-Type': 'application/json'}},
+        )
+      }
+
+      return new Response('unexpected request', {status: 404})
+    }
+    t.after(() => {
+      global.fetch = originalFetch
+      if (originalReplitCli === undefined) {
+        delete process.env.REPLIT_CLI
+      } else {
+        process.env.REPLIT_CLI = originalReplitCli
+      }
+    })
+
+    const installed = await import(
+      pathToFileURL(process.env.PUP_INSTALLED_WRAPPER).href,
+    )
+    const exitCode = await installed.main({
+      env: {...env, PUP_REAL_BINARY: pup.binary},
+      args: ['monitors', 'list'],
+    })
+
+    assert.equal(exitCode, 0)
+    assert.equal(requests.length, 1)
+    assert.equal(requests[0].url.pathname, '/api/v2/connection')
+    assert.equal(
+      requests[0].authorization,
+      'Bearer test-identity-token',
+    )
+    assert.match(await pup.readLog(), new RegExp(`PUP_MOCK_SERVER=${PROXY_URL}`))
+  },
+)
