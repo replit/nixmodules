@@ -3,6 +3,15 @@
 let
   version = "0.64.0";
 
+  # First release whose getCliConfig() supports Datadog. The wrapper resolves it
+  # from $out/libexec/node_modules, so the module has to ship it.
+  sdkVersion = "0.4.2";
+
+  connectorsSdk = pkgs.fetchurl {
+    url = "https://registry.npmjs.org/@replit/connectors-sdk/-/connectors-sdk-${sdkVersion}.tgz";
+    hash = "sha512-1FZsc7IWsvtogvTiWJod58cWmdebk5O7Qu5cbe3xp1CVSErmZxKmti5AIgMtKTcuCaFiGQ4JkKWDcPed69PRDg==";
+  };
+
   # The wrapper and its tests share one store path so the test file can import
   # the module it exercises by relative path.
   wrapperSource = pkgs.runCommand "pup-wrapper-source" { } ''
@@ -38,6 +47,15 @@ let
 
       install -Dm755 pup "$out/libexec/pup"
       install -Dm644 ${wrapperSource}/pup-wrapper.mjs "$out/libexec/pup-wrapper.mjs"
+
+      sdkDir="$out/libexec/node_modules/@replit/connectors-sdk"
+      mkdir -p "$sdkDir"
+      tar \
+        --extract \
+        --gzip \
+        --file ${connectorsSdk} \
+        --strip-components=1 \
+        --directory "$sdkDir"
 
       makeWrapper "${pkgs.nodejs_22}/bin/node" "$out/bin/pup" \
         --add-flags "$out/libexec/pup-wrapper.mjs" \
