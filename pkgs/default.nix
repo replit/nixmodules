@@ -28,13 +28,23 @@ let
 
   bundle-fn = pkgs.callPackage ./bundle { inherit self; };
 
+  store-registration-fn = pkgs.callPackage ./store-registration { };
+
+  store-registration = bundle: store-registration-fn {
+    rootPaths = [ bundle ];
+  };
+
   bundle-squashfs-fn =
     { moduleIds ? null
     , diskName ? "disk.raw"
     ,
     }:
-    pkgs.callPackage ./bundle-image {
+    let
       bundle = bundle-fn { inherit moduleIds; };
+    in
+    pkgs.callPackage ./bundle-image {
+      inherit bundle;
+      storeRegistration = store-registration bundle;
       inherit revstring diskName;
     };
 
@@ -60,12 +70,16 @@ rec {
 
   disk-script = pkgs.callPackage ./disk-script {
     bundle = bundle-fn { };
+    storeRegistration = store-registration (bundle-fn { });
   };
 
   disk-script-dev = pkgs.callPackage ./disk-script-dev {
     bundle = bundle-fn {
       moduleIds = dev-module-ids;
     };
+    storeRegistration = store-registration (bundle-fn {
+      moduleIds = dev-module-ids;
+    });
   };
 
   # For dev use: builds the shared Nixmodules disk

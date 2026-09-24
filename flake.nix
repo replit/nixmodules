@@ -109,6 +109,12 @@
       packages.x86_64-linux = import ./pkgs {
         inherit pkgs self;
       };
+      checks.x86_64-linux.disk-image-registration = pkgs.callPackage ./pkgs/disk-image-registration-check {
+        productionImage = self.packages.x86_64-linux.bundle-image;
+        productionBundle = self.packages.x86_64-linux.bundle;
+        developmentImage = self.packages.x86_64-linux.bundle-squashfs;
+        developmentBundle = self.packages.x86_64-linux.custom-bundle;
+      };
       devShells.x86_64-linux.default = pkgs.mkShell {
         packages = with pkgs; [
           python310

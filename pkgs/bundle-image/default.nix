@@ -2,10 +2,10 @@
 , bash
 , lib
 , bundle
+, storeRegistration
 , revstring
 , coreutils
 , findutils
-, closureInfo
 , squashfsTools
 , fetchFromGitHub
 , pkgs
@@ -30,6 +30,6 @@ derivation {
       findutils
       squashfsTools
     ];
-    diskClosureInfo = closureInfo { rootPaths = [ bundle ]; };
+    inherit storeRegistration;
   };
 }
