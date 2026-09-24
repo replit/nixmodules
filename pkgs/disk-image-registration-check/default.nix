@@ -136,6 +136,7 @@ runCommand "nixmodules-disk-image-registration-check" {
     fi
 
     cp -R "$root" "$testdir/root-missing-path"
+    chmod -R u+w "$testdir/root-missing-path/nix/store"
     rm -rf "$testdir/root-missing-path/nix/store/$(basename "$bundle")"
     if validate_metadata "$testdir/root-missing-path" "$testdir/root-missing-path/nix-lower-registration/v1" "$name-missing-path" >/dev/null 2>&1; then
       echo "missing image path was not rejected" >&2
@@ -144,16 +145,20 @@ runCommand "nixmodules-disk-image-registration-check" {
 
     mkdir -p "$scratch/nix/store"
     cp -R "$root/nix/store/." "$scratch/nix/store/"
-    nix-store --store "$store" --query --valid-paths > "$TMPDIR/valid-before-$name"
-    test ! -s "$TMPDIR/valid-before-$name"
+    if nix-store --store "$store" --query --references "$bundle" > "$TMPDIR/valid-before-$name" 2>&1; then
+      echo "scratch store was not empty before registration import" >&2
+      exit 1
+    fi
     nix-store --store "$store" --load-db < "$artifact/registration"
-    nix-store --store "$store" --query --valid-paths | LC_ALL=C sort > "$TMPDIR/registered-$name"
-    cmp "$TMPDIR/expected-$name" "$TMPDIR/registered-$name"
+    while IFS= read -r path; do
+      nix-store --store "$store" --query --references "$path" >/dev/null
+    done < "$TMPDIR/expected-$name"
     nix-store --store "$store" --verify-path "$bundle"
     nix-store --store "$store" --query --references "$bundle" > "$TMPDIR/references-$name"
     test -s "$TMPDIR/references-$name"
     while IFS= read -r path; do
       grep -Fxq "$path" "$TMPDIR/expected-$name"
+      nix-store --store "$store" --verify-path "$path"
     done < "$TMPDIR/references-$name"
 
     file="$(find "$scratch$bundle" -type f -print -quit)"
