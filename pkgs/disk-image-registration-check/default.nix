@@ -11,7 +11,8 @@
 , developmentBundle
 }:
 
-runCommand "nixmodules-disk-image-registration-check" {
+runCommand "nixmodules-disk-image-registration-check"
+{
   nativeBuildInputs = [
     coreutils
     diffutils

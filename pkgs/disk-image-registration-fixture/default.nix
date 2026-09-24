@@ -2,9 +2,10 @@
 
 let
   referencedPath = pkgs.writeText "nixmodules-registration-fixture-reference" "fixture reference\n";
-  bundle = pkgs.runCommand "nixmodules-registration-fixture-bundle" {
-    inherit referencedPath;
-  } ''
+  bundle = pkgs.runCommand "nixmodules-registration-fixture-bundle"
+    {
+      inherit referencedPath;
+    } ''
     mkdir -p "$out/etc/nixmodules"
     printf '%s\n' "$referencedPath" > "$out/etc/nixmodules/reference"
   '';

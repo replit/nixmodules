@@ -7,7 +7,8 @@
 let
   closure = closureInfo { inherit rootPaths; };
 in
-runCommand "nixmodules-store-registration-v1" {
+runCommand "nixmodules-store-registration-v1"
+{
   nativeBuildInputs = [ coreutils ];
 } ''
   mkdir -p "$out"
