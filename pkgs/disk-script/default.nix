@@ -5,14 +5,11 @@
 , pigz
 , coreutils
 , findutils
-, closureInfo
 , pv
+, storeRegistration
 ,
 }:
 
-let
-  diskClosureInfo = closureInfo { rootPaths = [ bundle ]; };
-in
 writeShellApplication {
   name = "disk-script";
   runtimeInputs = [
@@ -35,12 +32,13 @@ writeShellApplication {
     tarball="$TMP_DIR/disk.raw.tar.gz"
 
     (
-        mkdir -p "$root/nix/store" "$root/etc/nixmodules"
+        mkdir -p "$root/nix/store" "$root/etc/nixmodules" "$root/nix-lower-registration/v1"
 
         cp --archive --reflink=auto "${bundle}/etc/nixmodules/"* "$root/etc/nixmodules"
+        cp --archive --reflink=auto "${storeRegistration}/." "$root/nix-lower-registration/v1/"
 
         SECONDS=0
-        xargs -P "$(nproc)" cp -a --reflink=auto -t "$root/nix/store/" < "${diskClosureInfo}/store-paths"
+        xargs -P "$(nproc)" cp -a --reflink=auto -t "$root/nix/store/" < "${storeRegistration}/store-paths"
         echo "xargs copy took $SECONDS seconds" >&2
 
         echo "making squashfs..."

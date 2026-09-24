@@ -106,9 +106,17 @@
       };
       formatter.x86_64-linux = pkgs.nixpkgs-fmt;
       formatter.aarch64-darwin = pkgs-aarch64-darwin.nixpkgs-fmt;
-      packages.x86_64-linux = import ./pkgs {
+      packages.x86_64-linux = (import ./pkgs {
         inherit pkgs self;
+      }) // {
+        disk-image-registration-full = pkgs.callPackage ./pkgs/disk-image-registration-check {
+          productionImage = self.packages.x86_64-linux.bundle-image;
+          productionBundle = self.packages.x86_64-linux.bundle;
+          developmentImage = self.packages.x86_64-linux.bundle-squashfs;
+          developmentBundle = self.packages.x86_64-linux.custom-bundle;
+        };
       };
+      checks.x86_64-linux.disk-image-registration-fixture = pkgs.callPackage ./pkgs/disk-image-registration-fixture { };
       devShells.x86_64-linux.default = pkgs.mkShell {
         packages = with pkgs; [
           python310
