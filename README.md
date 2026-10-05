@@ -65,3 +65,30 @@ or
 ```
 nix build .#custom-bundle-squashfs
 ```
+
+To build the full bundle (including historical modules) as a native EROFS OCI image:
+
+```
+nix build .#bundle-oci
+```
+
+The result is an OCI image layout directory with the reference `bundle`, suitable
+for copying with an OCI-layout-aware tool such as
+`skopeo copy oci:./result:bundle docker://REGISTRY/REPOSITORY:TAG`.
+It contains one uncompressed `application/vnd.oci.image.layer.v1.erofs` layer,
+not a tar layer. The consumer must support native EROFS layers; ordinary
+tar-only image unpackers cannot use it. Its diffID equals the layer blob digest.
+
+The filesystem is generated directly from the same pinned full bundle used by
+`disk-script`: its complete store closure and `/etc/nixmodules` metadata, with
+unchanged store paths, file contents, modes and symlink targets. All guest
+UIDs/GIDs are 11000, matching the legacy disk builders. Existing disk and
+per-module OCI outputs are unchanged. There is no disk conversion or dependency
+update. Uncompressed EROFS does not by itself guarantee DAX sharing; that also
+depends on the consumer's backing storage and mount configuration.
+
+A small fixture exercises the producer without building the full bundle:
+
+```
+nix build .#bundle-oci-check
+```
