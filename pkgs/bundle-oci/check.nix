@@ -24,7 +24,7 @@ pkgs.runCommand "bundle-oci-check"
 {
   nativeBuildInputs = [ pkgs.erofs-utils pkgs.python3 ];
 }
-''
-  python3 ${./check.py} ${image} ${bundle} ${closure}/store-paths ${dependency}
-  touch "$out"
-''
+  ''
+    python3 ${./check.py} ${image} ${bundle} ${closure}/store-paths ${dependency}
+    touch "$out"
+  ''

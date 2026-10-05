@@ -48,8 +48,8 @@ def compare(source, target):
     info = subprocess.check_output(
         ["dump.erofs", f"--path={guest}", str(erofs)], text=True
     )
-    assert re.search(r"UID:\s*11000", info), info
-    assert re.search(r"GID:\s*11000", info), info
+    assert re.search(r"Uid:\s*11000\b", info), info
+    assert re.search(r"Gid:\s*11000\b", info), info
     if source.is_symlink():
         assert os.readlink(source) == os.readlink(target), target
     elif source.is_dir():
