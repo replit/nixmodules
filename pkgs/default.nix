@@ -45,6 +45,14 @@ rec {
 
   bundle = bundle-fn { };
 
+  bundle-oci = pkgs.callPackage ./bundle-oci {
+    inherit bundle;
+    revision = self.rev or null;
+    sourceTimestamp = self.lastModified or null;
+  };
+
+  bundle-oci-check = pkgs.callPackage ./bundle-oci/check.nix { };
+
   custom-bundle = bundle-fn {
     moduleIds = dev-module-ids;
   };
@@ -59,7 +67,7 @@ rec {
   bundle-image-tarball = pkgs.callPackage ./bundle-image-tarball { inherit bundle-image revstring; };
 
   disk-script = pkgs.callPackage ./disk-script {
-    bundle = bundle-fn { };
+    inherit bundle;
   };
 
   disk-script-dev = pkgs.callPackage ./disk-script-dev {
