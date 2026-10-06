@@ -1,13 +1,15 @@
 import hashlib
+import importlib.util
 import json
 import os
 import pathlib
 import re
 import stat
+import shutil
 import subprocess
 import sys
 
-image, bundle, closure, dependency = map(pathlib.Path, sys.argv[1:])
+image, bundle, closure, dependency, layout_script = map(pathlib.Path, sys.argv[1:])
 assert json.loads((image / "oci-layout").read_text()) == {"imageLayoutVersion": "1.0.0"}
 
 
@@ -26,11 +28,47 @@ assert manifest["mediaType"] == "application/vnd.oci.image.manifest.v1+json"
 assert manifest["config"]["mediaType"] == "application/vnd.oci.image.config.v1+json"
 config = json.loads(blob(manifest["config"]).read_text())
 assert config["architecture"] == "amd64" and config["os"] == "linux"
+assert config["created"] == "2023-11-14T22:13:20Z"
+assert manifest["annotations"] == {
+    "org.opencontainers.image.source": "https://github.com/replit/nixmodules",
+    "org.opencontainers.image.revision": "0123456789abcdef0123456789abcdef01234567",
+    "org.opencontainers.image.created": config["created"],
+    "dev.replit.nixmodules.flake-output": "bundle-oci",
+}
 assert len(manifest["layers"]) == 1
 layer = manifest["layers"][0]
 assert layer["mediaType"] == "application/vnd.oci.image.layer.v1.erofs"
 assert config["rootfs"] == {"type": "layers", "diff_ids": [layer["digest"]]}
 erofs = blob(layer)
+spec = importlib.util.spec_from_file_location("layout", layout_script)
+layout = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(layout)
+repeated = pathlib.Path("repeated")
+(repeated / "blobs/sha256").mkdir(parents=True)
+shutil.copyfile(erofs, "repeated.erofs")
+layout.write_layout(pathlib.Path("repeated.erofs"), repeated, "x86_64", {
+    "revision": "0123456789abcdef0123456789abcdef01234567",
+    "sourceTimestamp": 1700000000,
+})
+for path in image.rglob("*"):
+    if path.is_file():
+        assert path.read_bytes() == (repeated / path.relative_to(image)).read_bytes()
+local = pathlib.Path("local")
+(local / "blobs/sha256").mkdir(parents=True)
+shutil.copyfile(erofs, "local.erofs")
+layout.write_layout(pathlib.Path("local.erofs"), local, "x86_64", {
+    "revision": None, "sourceTimestamp": None,
+})
+local_descriptor = json.loads((local / "index.json").read_text())["manifests"][0]
+local_manifest = json.loads(
+    (local / "blobs/sha256" / local_descriptor["digest"].split(":")[1]).read_text()
+)
+assert "org.opencontainers.image.revision" not in local_manifest["annotations"]
+assert "org.opencontainers.image.created" not in local_manifest["annotations"]
+local_config = json.loads(
+    (local / "blobs/sha256" / local_manifest["config"]["digest"].split(":")[1]).read_text()
+)
+assert "created" not in local_config
 subprocess.run(["fsck.erofs", "--extract=extracted", str(erofs)], check=True)
 root = pathlib.Path("extracted")
 paths = closure.read_text().splitlines()

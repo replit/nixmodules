@@ -45,7 +45,11 @@ rec {
 
   bundle = bundle-fn { };
 
-  bundle-oci = pkgs.callPackage ./bundle-oci { inherit bundle; };
+  bundle-oci = pkgs.callPackage ./bundle-oci {
+    inherit bundle;
+    revision = self.rev or null;
+    sourceTimestamp = self.lastModified or null;
+  };
 
   bundle-oci-check = pkgs.callPackage ./bundle-oci/check.nix { };
 

@@ -1,14 +1,31 @@
 import hashlib
+import datetime
 import json
 import pathlib
 import shutil
 import sys
 
 
-def write_layout(layer, output, architecture):
+def write_layout(layer, output, architecture, metadata):
     architectures = {"x86_64": "amd64", "aarch64": "arm64"}
     architecture = architectures[architecture]
     blobs = output / "blobs" / "sha256"
+    annotations = {
+        "org.opencontainers.image.source": "https://github.com/replit/nixmodules",
+        "dev.replit.nixmodules.flake-output": "bundle-oci",
+    }
+    revision = metadata["revision"]
+    if revision is not None:
+        if len(revision) != 40 or any(c not in "0123456789abcdef" for c in revision):
+            raise ValueError("source revision must be a full lowercase Git SHA")
+        annotations["org.opencontainers.image.revision"] = revision
+    created = {}
+    if metadata["sourceTimestamp"] is not None:
+        timestamp = datetime.datetime.fromtimestamp(
+            metadata["sourceTimestamp"], datetime.timezone.utc
+        ).strftime("%Y-%m-%dT%H:%M:%SZ")
+        annotations["org.opencontainers.image.created"] = timestamp
+        created["created"] = timestamp
 
     def descriptor(path, media_type):
         digest = hashlib.sha256()
@@ -31,6 +48,7 @@ def write_layout(layer, output, architecture):
     shutil.move(layer, blobs / layer_descriptor["digest"].split(":")[1])
     config = store_json(
         {
+            **created,
             "architecture": architecture,
             "os": "linux",
             "config": {},
@@ -44,6 +62,7 @@ def write_layout(layer, output, architecture):
             "mediaType": "application/vnd.oci.image.manifest.v1+json",
             "config": config,
             "layers": [layer_descriptor],
+            "annotations": annotations,
         },
         "application/vnd.oci.image.manifest.v1+json",
     )
@@ -55,4 +74,7 @@ def write_layout(layer, output, architecture):
 
 
 if __name__ == "__main__":
-    write_layout(pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2]), sys.argv[3])
+    write_layout(
+        pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2]),
+        sys.argv[3], json.loads(sys.argv[4]),
+    )
