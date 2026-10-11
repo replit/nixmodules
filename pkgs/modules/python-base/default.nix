@@ -16,6 +16,10 @@ let
 
   sitecustomize = pkgs.callPackage ../python/sitecustomize.nix { };
 
+  poetry = pkgs.callPackage ../../poetry {
+    inherit python;
+  };
+
   binary-wrapped-python = pkgs.callPackage ../../python-wrapped {
     inherit pkgs python python-ld-library-path;
   };
@@ -34,7 +38,7 @@ in
   replit.packages = [
     binary-wrapped-python
     pypkgs.pip
-    pkgs.poetry
+    poetry
     pkgs.uv
   ];
 
