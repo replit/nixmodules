@@ -17,7 +17,6 @@ let
     "docker"
     "replit"
     "replit-rtld-loader"
-    "ruby"
     "ruby-3.2"
     "postgresql-16"
   ];
@@ -46,7 +45,8 @@ rec {
   bundle = bundle-fn { };
 
   bundle-oci = pkgs.callPackage ./bundle-oci {
-    inherit bundle;
+    inherit bundle modules;
+    hotModuleIds = dev-module-ids;
     revision = self.rev or null;
     sourceTimestamp = self.lastModified or null;
   };

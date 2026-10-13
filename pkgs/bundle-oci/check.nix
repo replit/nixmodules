@@ -4,6 +4,7 @@ let
   dependency = pkgs.runCommand "bundle-oci-dependency" { } ''
     mkdir -p "$out"
     printf 'dependency\n' > "$out/data"
+    head -c 131072 /dev/zero >> "$out/data"
     ln "$out/data" "$out/hardlink"
   '';
   module = pkgs.runCommand "bundle-oci-module" { } ''
@@ -14,22 +15,30 @@ let
     ln -s ../module.json "$out/bin/relative"
     ln -s '${dependency}/data' "$out/absolute"
   '';
+  coldModule = pkgs.runCommand "bundle-oci-cold.+module" { } ''
+    mkdir -p "$out"
+    printf 'cold module\n' > "$out/data"
+    head -c 131072 /dev/zero >> "$out/data"
+  '';
+  modules = { fixture = module; cold = coldModule; };
   bundle = (pkgs.callPackage ../bundle {
-    self = { modules.fixture = module; };
+    self = { inherit modules; };
   }) { };
   image = pkgs.callPackage ./. {
-    inherit bundle;
+    inherit bundle modules;
+    hotModuleIds = [ "fixture" ];
     revision = "0123456789abcdef0123456789abcdef01234567";
     sourceTimestamp = 1700000000;
   };
   closure = pkgs.closureInfo { rootPaths = [ bundle ]; };
+  hotClosure = pkgs.closureInfo { rootPaths = [ module ]; };
 in
 pkgs.runCommand "bundle-oci-check"
 {
   nativeBuildInputs = [ pkgs.erofs-utils pkgs.python3 ];
 }
   ''
-    python3 ${./check.py} ${image} ${bundle} ${closure}/store-paths ${dependency} ${./layout.py}
+    python3 ${./check.py} ${image} ${bundle} ${closure}/store-paths ${dependency} ${coldModule} ${hotClosure}/store-paths ${./layout.py}
     ${image.copyTo}/bin/copy-nixmodules-bundle-oci "oci:$PWD/copied:bundle" \
       --authfile ${pkgs.writeText "empty-auth.json" ''{"auths":{}}''} \
       --digestfile "$PWD/copied.digest"

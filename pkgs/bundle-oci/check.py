@@ -9,7 +9,9 @@ import shutil
 import subprocess
 import sys
 
-image, bundle, closure, dependency, layout_script = map(pathlib.Path, sys.argv[1:])
+image, bundle, closure, dependency, cold_module, hot_closure, layout_script = map(
+    pathlib.Path, sys.argv[1:]
+)
 assert json.loads((image / "oci-layout").read_text()) == {"imageLayoutVersion": "1.0.0"}
 
 
@@ -71,6 +73,41 @@ local_config = json.loads(
 assert "created" not in local_config
 subprocess.run(["fsck.erofs", "--extract=extracted", str(erofs)], check=True)
 root = pathlib.Path("extracted")
+
+
+def assert_layout(path, expected):
+    info = subprocess.check_output(
+        ["dump.erofs", f"--path={path}", str(erofs)], text=True
+    )
+    assert re.search(rf"Layout:\s*{expected}\b", info), info
+
+
+assert_layout(f"{(bundle / 'fixture').resolve()}/bin/tool", 4)
+assert_layout(f"{dependency}/data", 4)
+assert_layout(f"{cold_module}/data", 3)
+metadata_path = (bundle / "etc/nixmodules/modules.json").resolve()
+assert_layout(str(metadata_path), 4)
+
+hints = pathlib.Path("compress-hints")
+hints.write_text(
+    "0 ^etc/nixmodules/\n"
+    + f"0 ^nix/store/{metadata_path.name[:32]}-\n"
+    + "".join(
+        f"0 ^nix/store/{pathlib.Path(path).name[:32]}-\n"
+        for path in hot_closure.read_text().splitlines()
+    )
+)
+for workers in (1, 2):
+    rebuilt = pathlib.Path(f"workers-{workers}.erofs")
+    subprocess.run([
+        "mkfs.erofs", "-T", "1", "-U", "00000000-0000-0000-0000-000000000000",
+        "--force-uid=11000", "--force-gid=11000",
+        "-zzstd,level=15", "-C65536", "-Eztailpacking", "--chunksize=4096",
+        f"--compress-hints={hints}", f"--workers={workers}", str(rebuilt), str(root),
+    ], check=True)
+    assert "sha256:" + hashlib.sha256(rebuilt.read_bytes()).hexdigest() == layer["digest"]
+print("Hot chunk-based and cold compressed layouts verified; layer digest identical with 1 and 2 workers")
+
 paths = closure.read_text().splitlines()
 assert str(dependency) in paths
 assert {p.name for p in (root / "nix/store").iterdir()} == {
