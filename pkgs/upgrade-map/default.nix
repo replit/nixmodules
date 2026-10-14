@@ -13,6 +13,8 @@ let
     "bun-1.0" = "bun-1.1";
     "bun-1.1" = "bun-1.2";
     "bun-1.2" = "bun-1.3";
+    "clojure-1.11" = "clojure-1.12";
+    "dart-2.18" = "dart-3.8";
     "dart-3.0" = "dart-3.1";
     "dart-3.1" = "dart-3.2";
     "dart-3.2" = "dart-3.3";
@@ -20,16 +22,33 @@ let
     "dart-3.4" = "dart-3.5";
     "dart-3.5" = "dart-3.8";
     "dart-3.8" = "dart-3.10";
+    "deno-1" = "deno-2";
+    "dotnet-7.0" = "dotnet-8.0";
+    "elixir-1_15" = "elixir-1_17";
     "elixir-1_16" = "elixir-1_17";
     "elixir-1_17" = "elixir-1_18";
-    "go" = "go-1.19";
+    "go" = "go-1.25";
+    "go-1.19" = "go-1.24";
+    "go-1.20" = "go-1.24";
+    "go-1.21" = "go-1.24";
     "go-1.23" = "go-1.24";
     "go-1.24" = "go-1.25";
     "haskell-ghc9.0" = "haskell-ghc9.10";
     "haskell-ghc9.2" = "haskell-ghc9.10";
     "haskell-ghc9.4" = "haskell-ghc9.10";
+    "nodejs-14" = "nodejs-20";
+    "nodejs-16" = "nodejs-20";
+    "nodejs-18" = "nodejs-20";
+    "nodejs-19" = "nodejs-20";
+    "nodejs-23" = "nodejs-24";
+    "nodejs-with-prybar-18" = "nodejs-20";
+    "php-8.1" = "php-8.2";
     "pyright" = "ty";
     "pyright-extended" = "ty";
+    "python-3.8" = "python-3.10";
+    "python-3.9" = "python-3.10";
+    "python-with-prybar-3.10" = "python-3.10";
+    "r-4.2" = "r-4.4";
     "r-4.3" = "r-4.4";
     "r-4.4" = "r-4.5";
     "rust" = "rust-1.69";
@@ -37,7 +56,9 @@ let
     "rust-1.70" = "rust-1.72";
     "rust-1.72" = "rust-stable";
     "ruby-3.1" = "ruby-3.2";
-    "swift" = "swift-5.6";
+    "swift" = "swift-5.8";
+    "swift-5.6" = "swift-5.8";
+    "vue-node-18" = "vue-node-20";
   };
 
   upgrade-module =
