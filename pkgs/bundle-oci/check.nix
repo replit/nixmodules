@@ -28,10 +28,10 @@ let
 in
 pkgs.runCommand "bundle-oci-check"
 {
-  nativeBuildInputs = [ pkgs.erofs-utils pkgs.python3 ];
+  nativeBuildInputs = [ pkgs.gnutar pkgs.gzip pkgs.python3 ];
 }
   ''
-    python3 ${./check.py} ${image} ${bundle} ${closure}/store-paths ${dependency} ${./layout.py}
+    python3 ${./check.py} ${image} ${bundle} ${closure}/store-paths ${dependency} ${./layout.py} ${./layer.sh}
     ${image.copyTo}/bin/copy-nixmodules-bundle-oci "oci:$PWD/copied:bundle" \
       --authfile ${pkgs.writeText "empty-auth.json" ''{"auths":{}}''} \
       --digestfile "$PWD/copied.digest"

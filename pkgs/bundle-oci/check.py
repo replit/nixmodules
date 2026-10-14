@@ -1,15 +1,16 @@
 import hashlib
+import gzip
 import importlib.util
 import json
 import os
 import pathlib
-import re
 import stat
 import shutil
 import subprocess
 import sys
+import tarfile
 
-image, bundle, closure, dependency, layout_script = map(pathlib.Path, sys.argv[1:])
+image, bundle, closure, dependency, layout_script, layer_script = map(pathlib.Path, sys.argv[1:])
 assert json.loads((image / "oci-layout").read_text()) == {"imageLayoutVersion": "1.0.0"}
 
 
@@ -37,16 +38,20 @@ assert manifest["annotations"] == {
 }
 assert len(manifest["layers"]) == 1
 layer = manifest["layers"][0]
-assert layer["mediaType"] == "application/vnd.oci.image.layer.v1.erofs"
-assert config["rootfs"] == {"type": "layers", "diff_ids": [layer["digest"]]}
-erofs = blob(layer)
+assert layer["mediaType"] == "application/vnd.oci.image.layer.v1.tar+gzip"
+archive = blob(layer)
+tar_data = gzip.decompress(archive.read_bytes())
+diff_id = "sha256:" + hashlib.sha256(tar_data).hexdigest()
+assert config["rootfs"] == {"type": "layers", "diff_ids": [diff_id]}
+assert diff_id != layer["digest"]
+assert archive.read_bytes()[3:8] == b"\x00" * 5
 spec = importlib.util.spec_from_file_location("layout", layout_script)
 layout = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(layout)
 repeated = pathlib.Path("repeated")
 (repeated / "blobs/sha256").mkdir(parents=True)
-shutil.copyfile(erofs, "repeated.erofs")
-layout.write_layout(pathlib.Path("repeated.erofs"), repeated, "x86_64", {
+shutil.copyfile(archive, "repeated.tar.gz")
+layout.write_layout(pathlib.Path("repeated.tar.gz"), repeated, "x86_64", {
     "revision": "0123456789abcdef0123456789abcdef01234567",
     "sourceTimestamp": 1700000000,
 })
@@ -55,8 +60,8 @@ for path in image.rglob("*"):
         assert path.read_bytes() == (repeated / path.relative_to(image)).read_bytes()
 local = pathlib.Path("local")
 (local / "blobs/sha256").mkdir(parents=True)
-shutil.copyfile(erofs, "local.erofs")
-layout.write_layout(pathlib.Path("local.erofs"), local, "x86_64", {
+shutil.copyfile(archive, "local.tar.gz")
+layout.write_layout(pathlib.Path("local.tar.gz"), local, "x86_64", {
     "revision": None, "sourceTimestamp": None,
 })
 local_descriptor = json.loads((local / "index.json").read_text())["manifests"][0]
@@ -69,29 +74,24 @@ local_config = json.loads(
     (local / "blobs/sha256" / local_manifest["config"]["digest"].split(":")[1]).read_text()
 )
 assert "created" not in local_config
-subprocess.run(["fsck.erofs", "--extract=extracted", str(erofs)], check=True)
 root = pathlib.Path("extracted")
+root.mkdir()
+subprocess.run([
+    "tar", "--extract", "--gzip", "--file", str(archive),
+    "--directory", str(root), "--no-same-owner", "--same-permissions",
+    "--xattrs", "--xattrs-include=*",
+], check=True)
+with tarfile.open(archive, "r:gz") as source:
+    members = source.getmembers()
+    assert all(m.uid == 11000 and m.gid == 11000 and m.mtime == 1 for m in members)
+    assert all(not m.uname and not m.gname for m in members)
+    assert all("atime" not in m.pax_headers and "ctime" not in m.pax_headers for m in members)
+    assert [m.name for m in members] == sorted(m.name for m in members)
 
-
-def assert_layout(path, expected):
-    info = subprocess.check_output(
-        ["dump.erofs", f"--path={path}", str(erofs)], text=True
-    )
-    assert re.search(rf"Layout:\s*{expected}\b", info), info
-
-
-assert_layout(f"{(bundle / 'fixture').resolve()}/bin/tool", 3)
-assert_layout(f"{dependency}/data", 3)
-for workers in (1, 2):
-    rebuilt = pathlib.Path(f"workers-{workers}.erofs")
-    subprocess.run([
-        "mkfs.erofs", "-T", "1", "-U", "00000000-0000-0000-0000-000000000000",
-        "--force-uid=11000", "--force-gid=11000",
-        "-zzstd,level=15", "-C65536", "-Eztailpacking",
-        f"--workers={workers}", str(rebuilt), str(root),
-    ], check=True)
-    assert "sha256:" + hashlib.sha256(rebuilt.read_bytes()).hexdigest() == layer["digest"]
-print("Compressed file layouts verified; layer digest identical with 1 and 2 workers")
+rebuilt = pathlib.Path("rebuilt.tar.gz")
+subprocess.run(["bash", str(layer_script), str(root), str(rebuilt)], check=True)
+assert rebuilt.read_bytes() == archive.read_bytes()
+print("Tar metadata and reproducible gzip layer verified")
 
 paths = closure.read_text().splitlines()
 assert str(dependency) in paths
@@ -104,12 +104,6 @@ def compare(source, target):
     before, after = source.lstat(), target.lstat()
     assert stat.S_IFMT(before.st_mode) == stat.S_IFMT(after.st_mode), target
     assert stat.S_IMODE(before.st_mode) == stat.S_IMODE(after.st_mode), target
-    guest = "/" + str(target.relative_to(root))
-    info = subprocess.check_output(
-        ["dump.erofs", f"--path={guest}", str(erofs)], text=True
-    )
-    assert re.search(r"Uid:\s*11000\b", info), info
-    assert re.search(r"Gid:\s*11000\b", info), info
     if source.is_symlink():
         assert os.readlink(source) == os.readlink(target), target
     elif source.is_dir():
@@ -129,3 +123,17 @@ assert (packed_dependency / "data").stat().st_ino == (
     packed_dependency / "hardlink"
 ).stat().st_ino
 print("OCI descriptors, complete closure, metadata, content, modes, symlinks, ownership and hardlinks verified")
+
+xattr_root = pathlib.Path("xattrs")
+xattr_root.mkdir()
+xattr_file = xattr_root / ("long-name-" * 20)
+xattr_file.write_bytes(b"xattrs\n")
+os.setxattr(xattr_file, "user.fixture", b"preserved")
+subprocess.run(["bash", str(layer_script), str(xattr_root), "xattrs.tar.gz"], check=True)
+with tarfile.open("xattrs.tar.gz", "r:gz") as source:
+    member = source.getmember("./" + xattr_file.name)
+    assert member.pax_headers["SCHILY.xattr.user.fixture"] == "preserved"
+os.utime(xattr_file, (12345, 67890))
+subprocess.run(["bash", str(layer_script), str(xattr_root), "xattrs-again.tar.gz"], check=True)
+assert pathlib.Path("xattrs.tar.gz").read_bytes() == pathlib.Path("xattrs-again.tar.gz").read_bytes()
+print("Long paths and extended attributes preserved; source timestamps do not change the layer")

@@ -73,7 +73,7 @@ or
 nix build .#custom-bundle-squashfs
 ```
 
-To build the full bundle (including historical modules) as a native EROFS OCI image:
+To build the full bundle as a gzip-compressed tar OCI image:
 
 ```
 nix build .#bundle-oci
@@ -100,20 +100,21 @@ Local sources without a clean revision omit the revision annotation; sources
 without a last-modified timestamp omit creation metadata. Publish from a
 revision-pinned Git flake when complete provenance is required.
 
-It contains one `application/vnd.oci.image.layer.v1.erofs` layer, not a tar layer.
-The whole filesystem uses zstd level 15 with 64 KiB clusters and tail packing,
-without an uncompressed hot set. The consumer must support native EROFS layers
-and guest-kernel zstd decompression; ordinary tar-only image unpackers cannot
-use it. Its diffID equals the layer blob digest.
+It contains one `application/vnd.oci.image.layer.v1.tar+gzip` layer. Gzip is
+transport compression: the consumer decompresses it when unpacking the image.
+The manifest describes the compressed blob's digest and size; the config's
+diffID is the digest of the uncompressed tar stream. Tar entry order,
+timestamps, ownership, extended headers and gzip headers are deterministic.
 
 The filesystem is generated directly from the same pinned full bundle used by
 `disk-script`: its complete store closure and `/etc/nixmodules` metadata, with
 unchanged store paths, file contents, modes and symlink targets. All guest
 UIDs/GIDs are 11000, matching the legacy disk builders. Existing disk and
 per-module OCI builders are unchanged. There is no disk conversion or dependency
-update. Compressed files are not DAX-eligible: each guest decompresses into its
-own page cache, paying decompression CPU and memory rather than sharing pages
-through DAX.
+update. The tar archive preserves hardlinks and extended attributes. A consumer
+that converts the tar to EROFS must leave filesystem compression disabled for
+files to remain DAX-eligible. This uses more unpacked disk space than compressed
+EROFS; it does not automatically share all guest memory.
 
 A small fixture exercises the producer without building the full bundle:
 
