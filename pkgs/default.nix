@@ -45,8 +45,7 @@ rec {
   bundle = bundle-fn { };
 
   bundle-oci = pkgs.callPackage ./bundle-oci {
-    inherit bundle modules;
-    hotModuleIds = dev-module-ids;
+    inherit bundle;
     revision = self.rev or null;
     sourceTimestamp = self.lastModified or null;
   };

@@ -131,33 +131,6 @@ let
       };
     }
     {
-      moduleId = "haskell-ghc9.0";
-      commit = "c48c43c6c698223ed3ce2abc5a2d708735a77d5b";
-      overrides = {
-        # /nix/store/h6hp6fd07dr8q9dhlz45nrs17wp2kmp4-replit-module-haskell-ghc9.0
-        # .runners.runghc.displayVersion = "9.0.2";
-        displayVersion = "9";
-      };
-    }
-    {
-      moduleId = "haskell-ghc9.2";
-      commit = "4c6f2315da24b84bd5e9dfedb952e41677724aaa";
-      overrides = {
-        # /nix/store/1r94iizf604jasg72f239fw0if4ldmd5-replit-module-haskell-ghc9.2
-        # .runners.runghc.displayVersion = "9.2.8";
-        displayVersion = "9";
-      };
-    }
-    {
-      moduleId = "haskell-ghc9.4";
-      commit = "4d6f7cd9fd685a3319ac7b6e3fc0789b430d6289";
-      overrides = {
-        # /nix/store/kkaxlri9s0bb7jydb1kpqzi2sjkf4rmj-replit-module-haskell-ghc9.4
-        # .runners.runghc.displayVersion = "9.4.8";
-        displayVersion = "9";
-      };
-    }
-    {
       moduleId = "elixir-1_15";
       commit = "4d6f7cd9fd685a3319ac7b6e3fc0789b430d6289";
       overrides = {

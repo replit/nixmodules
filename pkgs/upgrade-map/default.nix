@@ -25,6 +25,9 @@ let
     "go" = "go-1.19";
     "go-1.23" = "go-1.24";
     "go-1.24" = "go-1.25";
+    "haskell-ghc9.0" = "haskell-ghc9.10";
+    "haskell-ghc9.2" = "haskell-ghc9.10";
+    "haskell-ghc9.4" = "haskell-ghc9.10";
     "pyright" = "ty";
     "pyright-extended" = "ty";
     "r-4.3" = "r-4.4";

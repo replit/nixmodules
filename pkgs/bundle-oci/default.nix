@@ -2,8 +2,6 @@
 , lib
 , stdenv
 , bundle
-, modules
-, hotModuleIds
 , closureInfo
 , erofs-utils
 , python3
@@ -15,16 +13,11 @@
 
 let
   bundleClosure = closureInfo { rootPaths = [ bundle ]; };
-  hotClosure = closureInfo {
-    rootPaths = map
-      (id: modules.${id} or (throw "bundle-oci: hot module id '${id}' is missing from modules"))
-      hotModuleIds;
-  };
   metadata = builtins.toJSON { inherit revision sourceTimestamp; };
   image = runCommand "nixmodules-bundle-oci"
     {
       nativeBuildInputs = [ erofs-utils python3 ];
-      inherit bundle bundleClosure hotClosure;
+      inherit bundle bundleClosure;
       architecture = lib.toLower stdenv.hostPlatform.parsed.cpu.name;
       __structuredAttrs = true;
       # The embedded closure must not retain references to the builder's store.
@@ -52,22 +45,11 @@ let
       done < "$bundleClosure/store-paths"
       chmod 755 root root/nix root/nix/store root/etc root/etc/nixmodules
 
-      printf '0 ^etc/nixmodules/\n' > compress-hints
-      metadataPath=$(readlink -f "$bundle/etc/nixmodules/modules.json")
-      printf '0 ^nix/store/%.32s-\n' "''${metadataPath#/nix/store/}" >> compress-hints
-      while IFS= read -r path; do
-        hash="''${path#/nix/store/}"
-        printf '0 ^nix/store/%.32s-\n' "$hash" >> compress-hints
-      done < "$hotClosure/store-paths"
-
-      # Hot files are uncompressed, deduplicated 4 KiB chunks, DAX-eligible
-      # (Linux EROFS sets S_DAX only for FLAT_PLAIN and CHUNK_BASED).
-      # Cold files use zstd and each guest's page cache, not DAX sharing.
-      # Actual DAX sharing still depends on the backing storage and mount.
+      # Compress the whole layer instead of preserving DAX-eligible files:
+      # each guest decompresses into its own page cache, without DAX sharing.
       mkfs.erofs -T 1 -U 00000000-0000-0000-0000-000000000000 \
         --force-uid=11000 --force-gid=11000 \
-        -zzstd,level=15 -C65536 -Eztailpacking --chunksize=4096 \
-        --compress-hints=compress-hints layer.erofs root
+        -zzstd,level=15 -C65536 -Eztailpacking layer.erofs root
       python3 ${./layout.py} layer.erofs "$out" "$architecture" ${lib.escapeShellArg metadata}
     '';
 in

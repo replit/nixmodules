@@ -31,6 +31,10 @@ nix eval .#modules --json | jq
 ```
 This will take a while.
 
+Retired Haskell module IDs `haskell-ghc9.0`, `haskell-ghc9.2`, and
+`haskell-ghc9.4` resolve to `haskell-ghc9.10` through the upgrade map.
+Projects using those IDs get the newer compiler and language server when they
+use this bundle; the retired compiler versions are no longer included.
 
 ## Building
 
@@ -93,22 +97,20 @@ Local sources without a clean revision omit the revision annotation; sources
 without a last-modified timestamp omit creation metadata. Publish from a
 revision-pinned Git flake when complete provenance is required.
 
-It contains one hybrid `application/vnd.oci.image.layer.v1.erofs` layer, not a
-tar layer. The runtime closure of `dev-module-ids` and `/etc/nixmodules` stay
-uncompressed in deduplicated 4 KiB chunks; other files use zstd level 15 with
-64 KiB clusters and tail packing. Override `bundle-oci`'s `hotModuleIds` to change
-the hot set; missing module IDs fail evaluation. The consumer must support native
-EROFS layers and guest-kernel zstd decompression; ordinary tar-only image
-unpackers cannot use it. Its diffID equals the layer blob digest.
+It contains one `application/vnd.oci.image.layer.v1.erofs` layer, not a tar layer.
+The whole filesystem uses zstd level 15 with 64 KiB clusters and tail packing,
+without an uncompressed hot set. The consumer must support native EROFS layers
+and guest-kernel zstd decompression; ordinary tar-only image unpackers cannot
+use it. Its diffID equals the layer blob digest.
 
 The filesystem is generated directly from the same pinned full bundle used by
 `disk-script`: its complete store closure and `/etc/nixmodules` metadata, with
 unchanged store paths, file contents, modes and symlink targets. All guest
 UIDs/GIDs are 11000, matching the legacy disk builders. Existing disk and
-per-module OCI outputs are unchanged. There is no disk conversion or dependency
-update. Hot chunk-based files remain DAX-eligible, but sharing also depends on
-the consumer's backing storage and mount configuration. Cold compressed files
-use each guest's page cache instead of DAX sharing.
+per-module OCI builders are unchanged. There is no disk conversion or dependency
+update. Compressed files are not DAX-eligible: each guest decompresses into its
+own page cache, paying decompression CPU and memory rather than sharing pages
+through DAX.
 
 A small fixture exercises the producer without building the full bundle:
 
