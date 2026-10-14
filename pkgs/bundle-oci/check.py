@@ -1,5 +1,6 @@
 import hashlib
 import gzip
+import errno
 import importlib.util
 import json
 import os
@@ -128,12 +129,31 @@ xattr_root = pathlib.Path("xattrs")
 xattr_root.mkdir()
 xattr_file = xattr_root / ("long-name-" * 20)
 xattr_file.write_bytes(b"xattrs\n")
-os.setxattr(xattr_file, "user.fixture", b"preserved")
+try:
+    os.setxattr(xattr_file, "user.fixture", b"preserved")
+    xattrs_supported = True
+except OSError as error:
+    if error.errno != errno.ENOTSUP:
+        raise
+    xattrs_supported = False
+    print("Skipping xattr round-trip: build filesystem does not support xattrs")
 subprocess.run(["bash", str(layer_script), str(xattr_root), "xattrs.tar.gz"], check=True)
 with tarfile.open("xattrs.tar.gz", "r:gz") as source:
     member = source.getmember("./" + xattr_file.name)
-    assert member.pax_headers["SCHILY.xattr.user.fixture"] == "preserved"
+    assert member.isfile() and source.extractfile(member).read() == b"xattrs\n"
+    if xattrs_supported:
+        assert member.pax_headers["SCHILY.xattr.user.fixture"] == "preserved"
+if xattrs_supported:
+    restored = pathlib.Path("xattrs-restored")
+    restored.mkdir()
+    subprocess.run([
+        "tar", "--extract", "--gzip", "--file=xattrs.tar.gz",
+        "--directory", str(restored), "--no-same-owner",
+        "--xattrs", "--xattrs-include=*",
+    ], check=True)
+    assert os.getxattr(restored / xattr_file.name, "user.fixture") == b"preserved"
+    print("Extended attributes preserved in archive and extraction")
 os.utime(xattr_file, (12345, 67890))
 subprocess.run(["bash", str(layer_script), str(xattr_root), "xattrs-again.tar.gz"], check=True)
 assert pathlib.Path("xattrs.tar.gz").read_bytes() == pathlib.Path("xattrs-again.tar.gz").read_bytes()
-print("Long paths and extended attributes preserved; source timestamps do not change the layer")
+print("Long paths preserved; source timestamps do not change the layer")
