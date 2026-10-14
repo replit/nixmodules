@@ -4,12 +4,14 @@ let
   dependency = pkgs.runCommand "bundle-oci-dependency" { } ''
     mkdir -p "$out"
     printf 'dependency\n' > "$out/data"
+    head -c 131072 /dev/zero >> "$out/data"
     ln "$out/data" "$out/hardlink"
   '';
   module = pkgs.runCommand "bundle-oci-module" { } ''
     mkdir -p "$out/bin"
     printf '%s\n' '${dependency}' > "$out/module.json"
     printf '#!/bin/sh\nexit 0\n' > "$out/bin/tool"
+    head -c 131072 /dev/zero >> "$out/bin/tool"
     chmod 755 "$out/bin/tool"
     ln -s ../module.json "$out/bin/relative"
     ln -s '${dependency}/data' "$out/absolute"

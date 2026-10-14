@@ -45,10 +45,11 @@ let
       done < "$bundleClosure/store-paths"
       chmod 755 root root/nix root/nix/store root/etc root/etc/nixmodules
 
-      # Match the legacy disk's guest ownership. No compression: consumers may
-      # mount this blob directly; compression must not imply DAX page sharing.
+      # Compress the whole layer instead of preserving DAX-eligible files:
+      # each guest decompresses into its own page cache, without DAX sharing.
       mkfs.erofs -T 1 -U 00000000-0000-0000-0000-000000000000 \
-        --force-uid=11000 --force-gid=11000 layer.erofs root
+        --force-uid=11000 --force-gid=11000 \
+        -zzstd,level=15 -C65536 -Eztailpacking layer.erofs root
       python3 ${./layout.py} layer.erofs "$out" "$architecture" ${lib.escapeShellArg metadata}
     '';
 in

@@ -13,11 +13,10 @@ let
     "nodejs-20"
     "nodejs-22"
     "nodejs-24"
-    "go-1.21"
+    "go-1.25"
     "docker"
     "replit"
     "replit-rtld-loader"
-    "ruby"
     "ruby-3.2"
     "postgresql-16"
   ];

@@ -26,10 +26,6 @@ let
 
   modulesList = [
     (import ./python {
-      python = pkgs-24_11.python39Full;
-      pypkgs = pkgs-24_11.python39Packages;
-    })
-    (import ./python {
       python = pkgs.python310;
       pypkgs = pkgs.python310Packages;
     })
@@ -57,16 +53,10 @@ let
     (import ./ruff)
 
     (import ./nodejs {
-      nodejs = pkgs-24_11.nodejs-18_x;
-    })
-    (import ./nodejs {
       nodejs = pkgs-master.nodejs_20;
     })
     (import ./nodejs {
       nodejs = pkgs-master.nodejs_22;
-    })
-    (import ./nodejs {
-      nodejs = pkgs-24_11.nodejs_23;
     })
     (import ./nodejs {
       nodejs = pkgs-staging.nodejs_24;
@@ -147,9 +137,6 @@ let
     (import ./svelte-kit)
     (import ./vue {
       nodejs = pkgs.nodejs_20;
-    })
-    (import ./vue {
-      nodejs = pkgs-24_11.nodejs-18_x;
     })
     (import ./web)
     (import ./hermit)

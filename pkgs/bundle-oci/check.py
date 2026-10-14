@@ -71,6 +71,28 @@ local_config = json.loads(
 assert "created" not in local_config
 subprocess.run(["fsck.erofs", "--extract=extracted", str(erofs)], check=True)
 root = pathlib.Path("extracted")
+
+
+def assert_layout(path, expected):
+    info = subprocess.check_output(
+        ["dump.erofs", f"--path={path}", str(erofs)], text=True
+    )
+    assert re.search(rf"Layout:\s*{expected}\b", info), info
+
+
+assert_layout(f"{(bundle / 'fixture').resolve()}/bin/tool", 3)
+assert_layout(f"{dependency}/data", 3)
+for workers in (1, 2):
+    rebuilt = pathlib.Path(f"workers-{workers}.erofs")
+    subprocess.run([
+        "mkfs.erofs", "-T", "1", "-U", "00000000-0000-0000-0000-000000000000",
+        "--force-uid=11000", "--force-gid=11000",
+        "-zzstd,level=15", "-C65536", "-Eztailpacking",
+        f"--workers={workers}", str(rebuilt), str(root),
+    ], check=True)
+    assert "sha256:" + hashlib.sha256(rebuilt.read_bytes()).hexdigest() == layer["digest"]
+print("Compressed file layouts verified; layer digest identical with 1 and 2 workers")
+
 paths = closure.read_text().splitlines()
 assert str(dependency) in paths
 assert {p.name for p in (root / "nix/store").iterdir()} == {
