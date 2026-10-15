@@ -1,15 +1,47 @@
 import hashlib
 import datetime
-import gzip
 import json
 import pathlib
 import shutil
+import subprocess
 import sys
 
 
-def write_layout(layer, output, architecture, metadata):
+def verify_layer(raw_image, compressed_layer):
+    raw_image = pathlib.Path(raw_image)
+    compressed_layer = pathlib.Path(compressed_layer)
+    raw_digest = hashlib.sha256()
+    raw_size = 0
+    with raw_image.open("rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            raw_digest.update(chunk)
+            raw_size += len(chunk)
+
+    process = subprocess.Popen(
+        ["zstd", "-d", "-c", "--", str(compressed_layer)],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+    )
+    decompressed_digest = hashlib.sha256()
+    decompressed_size = 0
+    assert process.stdout is not None
+    for chunk in iter(lambda: process.stdout.read(1024 * 1024), b""):
+        decompressed_digest.update(chunk)
+        decompressed_size += len(chunk)
+    if process.wait() != 0:
+        raise ValueError("compressed EROFS layer failed zstd verification")
+    if decompressed_size != raw_size or decompressed_digest.digest() != raw_digest.digest():
+        raise ValueError("compressed layer does not match the raw EROFS image")
+
+
+def write_layout(raw_image, compressed_layer, output, architecture, metadata):
     architectures = {"x86_64": "amd64", "aarch64": "arm64"}
+    if architecture not in architectures:
+        raise ValueError(f"unsupported architecture: {architecture}")
     architecture = architectures[architecture]
+    raw_image = pathlib.Path(raw_image)
+    compressed_layer = pathlib.Path(compressed_layer)
+    output = pathlib.Path(output)
     blobs = output / "blobs" / "sha256"
     annotations = {
         "org.opencontainers.image.source": "https://github.com/replit/nixmodules",
@@ -28,14 +60,22 @@ def write_layout(layer, output, architecture, metadata):
         annotations["org.opencontainers.image.created"] = timestamp
         created["created"] = timestamp
 
-    def descriptor(path, media_type):
-        digest = hashlib.sha256()
-        with path.open("rb") as source:
-            for chunk in iter(lambda: source.read(1024 * 1024), b""):
-                digest.update(chunk)
+    raw_digest = hashlib.sha256()
+    raw_size = 0
+    with raw_image.open("rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            raw_digest.update(chunk)
+            raw_size += len(chunk)
+
+    compressed_digest = hashlib.sha256()
+    with compressed_layer.open("rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            compressed_digest.update(chunk)
+
+    def descriptor(path, media_type, digest=None):
         return {
             "mediaType": media_type,
-            "digest": "sha256:" + digest.hexdigest(),
+            "digest": "sha256:" + (digest or hashlib.sha256(path.read_bytes()).hexdigest()),
             "size": path.stat().st_size,
         }
 
@@ -45,19 +85,22 @@ def write_layout(layer, output, architecture, metadata):
         path.write_bytes(data)
         return descriptor(path, media_type)
 
-    diff_digest = hashlib.sha256()
-    with gzip.open(layer, "rb") as source:
-        for chunk in iter(lambda: source.read(1024 * 1024), b""):
-            diff_digest.update(chunk)
-    layer_descriptor = descriptor(layer, "application/vnd.oci.image.layer.v1.tar+gzip")
-    shutil.move(layer, blobs / layer_descriptor["digest"].split(":")[1])
+    layer_descriptor = {
+        **descriptor(
+            compressed_layer,
+            "application/vnd.oci.image.layer.v1.erofs+zstd",
+            compressed_digest.hexdigest(),
+        ),
+        "annotations": {"dev.replit.erofs.uncompressed-size": str(raw_size)},
+    }
+    shutil.move(compressed_layer, blobs / compressed_digest.hexdigest())
     config = store_json(
         {
             **created,
             "architecture": architecture,
             "os": "linux",
             "config": {},
-            "rootfs": {"type": "layers", "diff_ids": ["sha256:" + diff_digest.hexdigest()]},
+            "rootfs": {"type": "layers", "diff_ids": ["sha256:" + raw_digest.hexdigest()]},
         },
         "application/vnd.oci.image.config.v1+json",
     )
@@ -80,6 +123,9 @@ def write_layout(layer, output, architecture, metadata):
 
 if __name__ == "__main__":
     write_layout(
-        pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2]),
-        sys.argv[3], json.loads(sys.argv[4]),
+        pathlib.Path(sys.argv[1]),
+        pathlib.Path(sys.argv[2]),
+        pathlib.Path(sys.argv[3]),
+        sys.argv[4],
+        json.loads(sys.argv[5]),
     )

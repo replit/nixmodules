@@ -73,48 +73,38 @@ or
 nix build .#custom-bundle-squashfs
 ```
 
-To build the full bundle as a gzip-compressed tar OCI image:
+To build the full bundle as an OCI image:
 
 ```
 nix build .#bundle-oci
 ```
 
-The result is an OCI image layout directory with the reference `bundle`, suitable
-for copying with an OCI-layout-aware tool such as
-`skopeo copy oci:./result:bundle docker://REGISTRY/REPOSITORY:TAG`.
-The output also provides a copy helper that keeps the exact image in its Nix
-closure and preserves the manifest digest:
+The result is an OCI image layout directory with the reference `bundle`. Copy
+it with the helper, which keeps the image in its Nix closure and preserves its
+manifest digest:
 
 ```
 nix run .#bundle-oci.copyTo -- docker://REGISTRY/REPOSITORY:TAG --authfile ./auth.json --digestfile ./digest
 ```
 
-The destination can use any Skopeo-supported transport, including `oci:`.
-Additional arguments are passed to `skopeo copy`. The helper trusts the locally
-built source (`--insecure-policy`); registry TLS verification remains enabled.
-For a clean Git source, the manifest records the full flake revision, source URL
+The destination can use any Skopeo-supported transport. Additional arguments
+are passed to `skopeo copy`. The helper trusts the locally built source
+(`--insecure-policy`); registry TLS verification remains enabled. For a clean
+Git source, the manifest records the full flake revision, source URL
 `https://github.com/replit/nixmodules`, and output name `bundle-oci` in OCI
-annotations. The manifest creation annotation and config `created` field use
-the flake's last-modified timestamp in UTC, never the build's wall clock.
-Local sources without a clean revision omit the revision annotation; sources
-without a last-modified timestamp omit creation metadata. Publish from a
-revision-pinned Git flake when complete provenance is required.
+annotations. Creation metadata uses the flake's last-modified timestamp in UTC.
+Local sources without revision or timestamp metadata omit those annotations.
 
-It contains one `application/vnd.oci.image.layer.v1.tar+gzip` layer. Gzip is
-transport compression: the consumer decompresses it when unpacking the image.
-The manifest describes the compressed blob's digest and size; the config's
-diffID is the digest of the uncompressed tar stream. Tar entry order,
-timestamps, ownership, extended headers and gzip headers are deterministic.
+The image contains one `application/vnd.oci.image.layer.v1.erofs+zstd` layer.
+The layer descriptor's digest and size cover the zstd-compressed data; its
+`dev.replit.erofs.uncompressed-size` annotation records the raw EROFS image
+size. The config diffID is the SHA-256 digest of that raw image. The EROFS
+filesystem has internal compression and inline data disabled, with the complete
+bundle closure and `/etc/nixmodules` metadata.
 
-The filesystem is generated directly from the same pinned full bundle used by
-`disk-script`: its complete store closure and `/etc/nixmodules` metadata, with
-unchanged store paths, file contents, modes and symlink targets. All guest
-UIDs/GIDs are 11000, matching the legacy disk builders. Existing disk and
-per-module OCI builders are unchanged. There is no disk conversion or dependency
-update. The tar archive preserves hardlinks and extended attributes. A consumer
-that converts the tar to EROFS must leave filesystem compression disabled for
-files to remain DAX-eligible. This uses more unpacked disk space than compressed
-EROFS; it does not automatically share all guest memory.
+This changes the existing `bundle-oci` format and is not backward-compatible
+with consumers expecting a tar+gzip layer. Consumers must support this OCI
+layer media type and EROFS; deploy that support before publishing images.
 
 A small fixture exercises the producer without building the full bundle:
 
