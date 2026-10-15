@@ -1,5 +1,6 @@
 import hashlib
 import datetime
+import gzip
 import json
 import pathlib
 import shutil
@@ -44,7 +45,11 @@ def write_layout(layer, output, architecture, metadata):
         path.write_bytes(data)
         return descriptor(path, media_type)
 
-    layer_descriptor = descriptor(layer, "application/vnd.oci.image.layer.v1.erofs")
+    diff_digest = hashlib.sha256()
+    with gzip.open(layer, "rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            diff_digest.update(chunk)
+    layer_descriptor = descriptor(layer, "application/vnd.oci.image.layer.v1.tar+gzip")
     shutil.move(layer, blobs / layer_descriptor["digest"].split(":")[1])
     config = store_json(
         {
@@ -52,7 +57,7 @@ def write_layout(layer, output, architecture, metadata):
             "architecture": architecture,
             "os": "linux",
             "config": {},
-            "rootfs": {"type": "layers", "diff_ids": [layer_descriptor["digest"]]},
+            "rootfs": {"type": "layers", "diff_ids": ["sha256:" + diff_digest.hexdigest()]},
         },
         "application/vnd.oci.image.config.v1+json",
     )
