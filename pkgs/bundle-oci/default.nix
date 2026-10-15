@@ -3,8 +3,8 @@
 , stdenv
 , bundle
 , closureInfo
-, gnutar
-, gzip
+, erofs-utils
+, zstd
 , python3
 , writeShellApplication
 , skopeo
@@ -17,7 +17,7 @@ let
   metadata = builtins.toJSON { inherit revision sourceTimestamp; };
   image = runCommand "nixmodules-bundle-oci"
     {
-      nativeBuildInputs = [ gnutar gzip python3 ];
+      nativeBuildInputs = [ erofs-utils zstd python3 ];
       inherit bundle bundleClosure;
       architecture = lib.toLower stdenv.hostPlatform.parsed.cpu.name;
       __structuredAttrs = true;
@@ -39,15 +39,7 @@ let
       };
     }
     ''
-      mkdir -p root/nix/store root/etc/nixmodules "$out/blobs/sha256"
-      cp -a --reflink=auto "$bundle/etc/nixmodules/." root/etc/nixmodules/
-      while IFS= read -r path; do
-        cp -a --reflink=auto "$path" root/nix/store/
-      done < "$bundleClosure/store-paths"
-      chmod 755 root root/nix root/nix/store root/etc root/etc/nixmodules
-
-      bash ${./layer.sh} root layer.tar.gz
-      python3 ${./layout.py} layer.tar.gz "$out" "$architecture" ${lib.escapeShellArg metadata}
+      bash ${./build.sh} "$bundle" "$bundleClosure/store-paths" "$out" "$architecture" ${lib.escapeShellArg metadata} ${./layout.py}
     '';
 in
 image

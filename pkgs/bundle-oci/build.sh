@@ -15,7 +15,7 @@ while IFS= read -r path; do
 done < "$store_paths"
 chmod 755 root root/nix root/nix/store root/etc root/etc/nixmodules
 
-mkfs.erofs -U 00000000-0000-0000-0000-000000000001 -T 1 \
+env -u SOURCE_DATE_EPOCH mkfs.erofs -U 00000000-0000-0000-0000-000000000001 -T 1 --all-time \
   --force-uid=11000 --force-gid=11000 -E noinline_data raw.erofs root
 zstd -15 --long=27 -T8 --check --no-progress --quiet raw.erofs -o layer.erofs.zst
 python3 "$layout_script" raw.erofs layer.erofs.zst "$output" "$architecture" "$metadata"
