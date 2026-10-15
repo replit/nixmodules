@@ -52,6 +52,14 @@ rec {
 
   bundle-oci-check = pkgs.callPackage ./bundle-oci/check.nix { };
 
+  bundle-oci-erofs-zstd = pkgs.callPackage ./bundle-oci-erofs-zstd {
+    inherit bundle;
+    revision = self.rev or null;
+    sourceTimestamp = self.lastModified or null;
+  };
+
+  bundle-oci-erofs-zstd-check = pkgs.callPackage ./bundle-oci-erofs-zstd/check.nix { };
+
   custom-bundle = bundle-fn {
     moduleIds = dev-module-ids;
   };

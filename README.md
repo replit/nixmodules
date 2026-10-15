@@ -121,3 +121,30 @@ A small fixture exercises the producer without building the full bundle:
 ```
 nix build .#bundle-oci-check
 ```
+
+## Optional EROFS OCI image
+
+An opt-in image is available as `bundle-oci-erofs-zstd`; the existing
+`bundle-oci` output remains the default and is unchanged. Build and copy it with:
+
+```
+nix build .#bundle-oci-erofs-zstd
+nix run .#bundle-oci-erofs-zstd.copyTo -- docker://REGISTRY/REPOSITORY:TAG
+```
+
+This image has one `application/vnd.oci.image.layer.v1.erofs+zstd` layer.
+Consumers must explicitly support this OCI layer media type and the EROFS
+filesystem before using this output; generic OCI consumers may reject it. The
+descriptor digest and size cover the zstd-compressed layer, while the config
+diffID covers the raw EROFS image. The layer descriptor's
+`dev.replit.erofs.uncompressed-size` annotation reports the raw image size in
+bytes.
+The filesystem is built without EROFS internal compression and with inline
+data disabled.
+
+The small fixture checks the image format and copy helper without building the
+full bundle:
+
+```
+nix build .#bundle-oci-erofs-zstd-check
+```
