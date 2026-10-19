@@ -79,7 +79,7 @@ let
     })
     (import ./bash)
     (import ./bun {
-      bun = pkgs.bun;
+      bun = pkgs.callPackage ../bun { };
     })
     (import ./c)
     (import ./cpp)

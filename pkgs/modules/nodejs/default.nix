@@ -6,7 +6,7 @@ let
 
   short-version = lib.versions.major nodejs.version;
 
-  bun = pkgs.bun;
+  bun = pkgs.callPackage ../../bun { };
 
   nodepkgs = pkgs.nodePackages.override {
     inherit nodejs;

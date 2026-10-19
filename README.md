@@ -39,6 +39,10 @@ The old Python and Node.js Prybar IDs now use the standard Python 3.10 and
 Node.js 20 file runners, not Prybar. Projects using retired IDs get the newer
 runtime and tools with this bundle and may need code or dependency changes.
 
+Node.js modules include the shared Bun 1.4.3 toolchain, including `bun check`.
+The standalone module is `bun-1.4`; earlier Bun IDs resolve to it through the
+upgrade map. Node.js projects do not need a second Bun module.
+
 ## Building
 
 For each of the following examples, the build result will be found in a file or directory named `result`.
