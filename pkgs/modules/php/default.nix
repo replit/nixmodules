@@ -1,6 +1,8 @@
+{ php }:
 { pkgs, lib, ... }:
 let
-  php-version = lib.versions.majorMinor pkgs.php.version;
+  php-version = lib.versions.majorMinor php.version;
+  phpactor = pkgs.phpactor.override { inherit php; };
 in
 {
   id = "php-${php-version}";
@@ -10,15 +12,15 @@ in
     PHP development tools. Includes PHP: Hypertext Preprocessor, Phpactor language server, Composer package manager.
   '';
 
-  replit.packages = with pkgs; [
+  replit.packages = [
     php
-    pkgs.phpPackages.composer
+    php.packages.composer
   ];
 
   replit.runners.php = {
     name = "php run";
     language = "php";
-    start = "${pkgs.php}/bin/php $file";
+    start = "${php}/bin/php $file";
     fileParam = true;
   };
 
@@ -26,7 +28,7 @@ in
     name = "phpactor";
     language = "php";
 
-    start = "${pkgs.phpactor}/bin/phpactor language-server";
+    start = "${phpactor}/bin/phpactor language-server";
   };
 
   replit.dev.packagers.php = {

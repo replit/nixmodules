@@ -40,13 +40,6 @@ let
       };
     }
     {
-      moduleId = "php-8.2";
-      commit = "4327245815e8500233ed3af1cbb674bd147f673b";
-      overrides = {
-        displayVersion = "8.2";
-      };
-    }
-    {
       moduleId = "zig-0.11";
       commit = "15426ef79793bf7c424eb40865d507eacfdd44e6";
       overrides = {
