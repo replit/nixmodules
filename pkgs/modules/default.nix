@@ -4,6 +4,7 @@
 , pkgs-25_05
 , pkgs-master
 , pkgs-staging
+, pkgs-php
 , ...
 }:
 with builtins;
@@ -102,7 +103,12 @@ let
     (import ./java)
     (import ./lua)
     (import ./nix)
-    (import ./php)
+    (import ./php {
+      php = pkgs-php.php82;
+    })
+    (import ./php {
+      php = pkgs-php.php84;
+    })
     (import ./postgresql {
       postgresql = pkgs-25_05.postgresql_16;
     })

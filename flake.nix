@@ -6,6 +6,7 @@
   inputs.nixpkgs-master.url = "github:nixos/nixpkgs/master";
   inputs.nixpkgs-staging.url = "github:nixos/nixpkgs/staging-next";
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+  inputs.nixpkgs-php.url = "github:nixos/nixpkgs/8c259fc0dd1f3ccc1aaf4f9156ab16b7328b5a4f";
   inputs.fenix.url = "github:nix-community/fenix";
   inputs.fenix.inputs.nixpkgs.follows = "nixpkgs";
   inputs.nil.url = "github:oxalica/nil";
@@ -19,7 +20,7 @@
   inputs.replit-rtld-loader.url = "github:replit/replit_rtld_loader";
   inputs.replit-rtld-loader.inputs.nixpkgs.follows = "nixpkgs";
 
-  outputs = { self, nixpkgs, nixpkgs-23_05, nixpkgs-24_11, nixpkgs-25_05, nixpkgs-master, nixpkgs-staging, prybar, java-language-server, nil, fenix, replit-rtld-loader, ... }:
+  outputs = { self, nixpkgs, nixpkgs-23_05, nixpkgs-24_11, nixpkgs-25_05, nixpkgs-master, nixpkgs-staging, nixpkgs-php, prybar, java-language-server, nil, fenix, replit-rtld-loader, ... }:
     let
       mkPkgs = nixpkgs-spec: system: import nixpkgs-spec {
         inherit system;
@@ -44,6 +45,7 @@
       # TODO: once nodejs update lands in unstable, switch to that
       pkgs-master = mkPkgs nixpkgs-master "x86_64-linux";
       pkgs-staging = mkPkgs nixpkgs-staging "x86_64-linux";
+      pkgs-php = import nixpkgs-php { system = "x86_64-linux"; };
 
       patched-unstable = nixpkgs.legacyPackages.x86_64-linux.applyPatches {
         name = "nixpkgs-unstable-patched";
@@ -128,6 +130,7 @@
         inherit pkgs-25_05;
         inherit pkgs-master;
         inherit pkgs-staging;
+        inherit pkgs-php;
       }
     );
 }
