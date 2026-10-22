@@ -177,6 +177,22 @@
       packages.x86_64-linux = import ./pkgs {
         inherit pkgs self;
       };
+      checks.x86_64-linux = {
+        format = pkgs.runCommand "nixmodules-format"
+          { nativeBuildInputs = [ pkgs.nixpkgs-fmt ]; }
+          ''
+            nixpkgs-fmt --check ${self}
+            touch "$out"
+          '';
+        # Match evaluation-only coverage without making every module a build dependency.
+        evaluation = pkgs.writeText "nixmodules-evaluation.json" (
+          builtins.unsafeDiscardStringContext (builtins.toJSON {
+            modules = self.modules;
+            bundle = self.packages.x86_64-linux.bundle.drvPath;
+          })
+        );
+        bundle-oci = self.packages.x86_64-linux.bundle-oci-check;
+      };
       devShells.x86_64-linux.default = pkgs.mkShell {
         packages = with pkgs; [
           python310

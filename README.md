@@ -2,6 +2,24 @@
 
 This repository holds Replit's Nix modules.
 
+## CI
+
+NixCI runs the checks selected in `nix-ci.nix` on `x86_64-linux`: Nix
+formatting, evaluation of all modules and the bundle, the OCI fixture test,
+and the default development shell. The explicit build list avoids building
+every module and full disk image on each pull request. Evaluation checks
+force the expressions without building the module closures.
+
+Run `scripts/ci_check.sh` locally for the corresponding checks.
+The weekly Fenix update remains a GitHub Actions workflow.
+
+Before merging the CI migration, enable NixCI for this repository and verify
+a successful suite on the pull request. Update any required `checks` status
+to the check reported by NixCI before removing the old requirement. If
+reverting the migration, restore the old required check as well.
+
+## Modules
+
 * Each module is located as a folder under `pkgs/modules`
 * `pkgs/modules/default.nix` specifies a list of the active modules, some of which are parameterized with the version of the runtime or compiler
 
