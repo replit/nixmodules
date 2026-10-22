@@ -1,12 +1,11 @@
-{ pip, fetchurl }:
-let
-  ca-bundle = fetchurl {
-    url = "https://raw.githubusercontent.com/certifi/python-certifi/2026.10.19/certifi/cacert.pem";
-    hash = "sha256-UPefmNrBkrINv3PzXFbwsMVXqyZ/9RmdERfMEYC3B4U=";
+{ pip, fetchFromGitHub, flit-core }:
+pip.overridePythonAttrs (old: rec {
+  version = "26.2.2";
+  src = fetchFromGitHub {
+    owner = "pypa";
+    repo = "pip";
+    tag = version;
+    hash = "sha256-iH5O1kneYzoHpzbfgrJc/8gVr57CNX3/xpwel4ueNqE=";
   };
-in
-pip.overridePythonAttrs (old: {
-  postPatch = (old.postPatch or "") + ''
-    cp ${ca-bundle} src/pip/_vendor/certifi/cacert.pem
-  '';
+  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ flit-core ];
 })

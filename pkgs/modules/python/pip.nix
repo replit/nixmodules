@@ -1,10 +1,8 @@
 pkgs @ { pypkgs, ... }:
 
 let
-  patched-pip = pkgs.callPackage ../../pip {
-    pip = pypkgs.pip;
-  };
-  pip = patched-pip.overridePythonAttrs (old: rec {
+  upgraded-pip = pypkgs.callPackage ../../pip { };
+  pip = upgraded-pip.overridePythonAttrs (old: rec {
     outputs = [
       "out"
     ];
@@ -18,6 +16,7 @@ let
       pkgs.installShellFiles
       pypkgs.setuptools
       pypkgs.wheel
+      pypkgs.flit-core
     ];
   });
 
