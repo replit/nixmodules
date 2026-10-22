@@ -3,14 +3,13 @@
 let
   php-version = lib.versions.majorMinor php.version;
   phpactor = pkgs.phpactor.override { inherit php; };
-  composer-ca-bundle = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/composer/ca-bundle/1.6.0/res/cacert.pem";
-    hash = "sha256-eW8Tib/qE8DtePZjt2W6r/VKUI5Ug3hr1uznPF4+PL4=";
-  };
   composer = php.packages.composer.overrideAttrs (old: {
-    postInstall = (old.postInstall or "") + ''
-      cp ${composer-ca-bundle} $out/share/php/composer/vendor/composer/ca-bundle/res/cacert.pem
-    '';
+    src = pkgs.applyPatches {
+      name = "composer-${old.version}-ca-bundle-1.6.0-source";
+      src = old.src;
+      patches = [ ../../composer/ca-bundle-1.6.0.patch ];
+    };
+    vendorHash = "sha256-OWut8wZ9nq/7EiZecdhc4RsDhFJ2xlx1iTCXuHk7x14=";
   });
 in
 {
