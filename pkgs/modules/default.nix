@@ -6,6 +6,8 @@
 , pkgs-staging
 , nodejs-22
 , nodejs-24
+, deno
+, uv
 , pkgs-php
 , ...
 }:
@@ -31,26 +33,32 @@ let
     (import ./python {
       python = pkgs.python310;
       pypkgs = pkgs.python310Packages;
+      inherit uv;
     })
     (import ./python {
       python = pkgs.python311;
       pypkgs = pkgs.python311Packages;
+      inherit uv;
     })
     (import ./python {
       python = pkgs.python312;
       pypkgs = pkgs.python312Packages;
+      inherit uv;
     })
     (import ./python-base {
       python = pkgs.python311;
       pypkgs = pkgs.python311Packages;
+      inherit uv;
     })
     (import ./python-base {
       python = pkgs.python312;
       pypkgs = pkgs.python312Packages;
+      inherit uv;
     })
     (import ./python-base {
       python = pkgs.python313;
       pypkgs = pkgs.python313Packages;
+      inherit uv;
     })
     (import ./ty)
     (import ./ruff)
@@ -87,7 +95,7 @@ let
     (import ./c)
     (import ./cpp)
     (import ./dart)
-    (import ./deno)
+    (import ./deno { inherit deno; })
     # (import ./docker)
     (import ./elixir)
     (import ./gcloud)
