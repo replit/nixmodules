@@ -13,7 +13,16 @@ NIX_FLAGS=(
 )
 
 echo "Evaluate modules derivations"
+nix eval "${NIX_FLAGS[@]}" --file scripts/module-registry-test.nix
 nix eval "${NIX_FLAGS[@]}" .#modules --json
+nix eval "${NIX_FLAGS[@]}" .#deploymentModules --json
+nix build "${NIX_FLAGS[@]}" .#checks.x86_64-linux.module-registry --no-link
+
+# The standalone lockfile OCI helper reconstructs old bundles, not current implementations.
+if git grep -n -E 'builtins[.]getFlake|(^|[^[:alnum:]_])getFlake[[:space:]]|github:replit/nixmodules/' -- '*.nix' ':!pkgs/mk-phony-ocis/default.nix'; then
+    echo "Module implementations must be defined in-tree, not imported from old nixmodules flakes"
+    exit 1
+fi
 
 nix develop "${NIX_FLAGS[@]}" --command echo Hello, world
 

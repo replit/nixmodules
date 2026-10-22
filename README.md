@@ -3,7 +3,8 @@
 This repository holds Replit's Nix modules.
 
 * Each module is located as a folder under `pkgs/modules`
-* `pkgs/modules/default.nix` specifies a list of the active modules, some of which are parameterized with the version of the runtime or compiler
+* `pkgs/modules/default.nix` registers every shipped implementation, some of which are parameterized with the version of the runtime or compiler
+* Docker and Zig 0.11 remain compatibility-only implementations: included in the bundle but excluded from `activeModules` and `activeDeploymentModules`, as before
 
 To list all active modules, you can do:
 
@@ -24,12 +25,29 @@ Output might look like:
 }
 ```
 
-To list all modules (including historical modules):
+To list all modules (including compatibility implementations and retired-ID aliases):
 
 ```
 nix eval .#modules --json | jq
 ```
-This will take a while.
+### Supporting and retiring versions
+
+Every shipped module implementation lives in this checkout. Module definitions
+must not import outputs from an older nixmodules flake. Runtime packages can use
+explicit, locked upstream inputs: Docker and Zig retain their previous toolchain
+pins through `nixpkgs-docker`, `nixpkgs-zig`, and `zig-overlay`. Their definitions
+use the current module schema; moving them here does not upgrade their runtimes.
+
+When adding a version, prefer another registration of a parameterized module.
+To keep an older version supported, retain its package pin and registration.
+To retire an implementation, remove its registration and unused definition and
+package inputs, then optionally add an upgrade alias for its old ID. An alias is
+not a supported version of the old runtime. Removing the alias stops accepting
+that ID in new bundles; neither operation changes previously published bundles.
+
+Implementation IDs must be unique. Aliases must resolve to an implementation,
+must not form cycles, and must not shadow an implementation. CI checks these
+invariants and evaluates both development and deployment module maps.
 
 Retired module IDs remain available through `pkgs/upgrade-map`: they resolve to
 newer modules without keeping the retired implementations in the bundle.
@@ -43,7 +61,7 @@ runtime and tools with this bundle and may need code or dependency changes.
 
 For each of the following examples, the build result will be found in a file or directory named `result`.
 
-To build all active modules (this will take a while, and a lot of disk space):
+To build the full bundle, including compatibility modules (this will take a while, and a lot of disk space):
 
 ```
 nix build .#bundle

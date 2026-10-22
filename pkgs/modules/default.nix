@@ -9,6 +9,8 @@
 , deno
 , uv
 , pkgs-php
+, pkgs-docker
+, pkgs-zig
 , ...
 }:
 with builtins;
@@ -27,7 +29,16 @@ let
       deployment = true;
     };
   apply-upgrade-map = import ../upgrade-map;
-  historical = pkgs.callPackage ../historical-modules { };
+  moduleSet = import ./module-set.nix;
+
+  # Keep these out of activeModules, as before, without hiding their implementations.
+  compatibilityModulesList = [
+    (import ./docker { pkgs = pkgs-docker; })
+    (import ./zig {
+      zig = pkgs-zig.zigpkgs.default;
+      zls = pkgs-zig.zls;
+    })
+  ];
 
   modulesList = [
     (import ./python {
@@ -96,7 +107,6 @@ let
     (import ./cpp)
     (import ./dart)
     (import ./deno { inherit deno; })
-    # (import ./docker)
     (import ./elixir)
     (import ./gcloud)
     (import ./clojure)
@@ -164,39 +174,21 @@ let
     (import ./databricks-cli)
   ];
 
-  activeModules = listToAttrs (
-    map
-      (
-        moduleInput:
-        let
-          module = mkModule moduleInput;
-        in
-        {
-          name = get-module-id module;
-          value = module;
-        }
-      )
-      modulesList
-  );
+  mkModuleSet = buildModule: getId: inputs:
+    moduleSet (map
+      (input:
+        let module = buildModule input;
+        in { name = getId module; value = module; })
+      inputs);
 
-  modules = apply-upgrade-map (activeModules // historical.modules);
+  developmentModuleSet = mkModuleSet mkModule get-module-id;
+  deploymentModuleSet = mkModuleSet mkDeploymentModule get-deployment-module-id;
+  allModulesList = modulesList ++ compatibilityModulesList;
 
-  activeDeploymentModules = listToAttrs (
-    map
-      (
-        moduleInput:
-        let
-          module = mkDeploymentModule moduleInput;
-        in
-        {
-          name = get-deployment-module-id module;
-          value = module;
-        }
-      )
-      modulesList
-  );
-
-  deploymentModules = apply-upgrade-map (activeDeploymentModules // historical.deploymentModules);
+  activeModules = developmentModuleSet modulesList;
+  activeDeploymentModules = deploymentModuleSet modulesList;
+  modules = apply-upgrade-map (developmentModuleSet allModulesList);
+  deploymentModules = apply-upgrade-map (deploymentModuleSet allModulesList);
 
   get-module-id =
     module:
