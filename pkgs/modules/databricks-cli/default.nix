@@ -49,8 +49,7 @@ let
     # nix sandbox does not provide. Each upstream bump tends to add new
     # offenders; rather than maintain an ever-growing -skip= regex (and
     # debug new entries on every rebase), we trust upstream's CI and skip
-    # the whole checkPhase. Same pattern as `pkgs/modules/python/uv` and
-    # the docker stack.
+    # the whole checkPhase.
     doCheck = false;
 
     meta = {

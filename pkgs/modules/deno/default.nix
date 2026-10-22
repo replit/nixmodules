@@ -1,7 +1,7 @@
-{ pkgs, lib, ... }:
+{ deno }:
+{ lib, ... }:
 
 let
-  inherit (pkgs) deno;
   version = lib.versions.major deno.version;
 
   extensions = [ ".json" ".jsonc" ".js" ".jsx" ".ts" ".tsx" ];
