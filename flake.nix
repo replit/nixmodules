@@ -7,6 +7,7 @@
   inputs.nixpkgs-staging.url = "github:nixos/nixpkgs/staging-next";
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
   inputs.nixpkgs-nodejs.url = "github:nixos/nixpkgs/5873d3da531a3a8320c9e639e2147eccbe7f2d0d";
+  inputs.nixpkgs-node24.url = "github:nixos/nixpkgs/dc0146be65ada0333393ac87b6ff45a4a8e9b722";
   inputs.nixpkgs-php.url = "github:nixos/nixpkgs/8c259fc0dd1f3ccc1aaf4f9156ab16b7328b5a4f";
   inputs.fenix.url = "github:nix-community/fenix";
   inputs.fenix.inputs.nixpkgs.follows = "nixpkgs";
@@ -21,7 +22,7 @@
   inputs.replit-rtld-loader.url = "github:replit/replit_rtld_loader";
   inputs.replit-rtld-loader.inputs.nixpkgs.follows = "nixpkgs";
 
-  outputs = { self, nixpkgs, nixpkgs-23_05, nixpkgs-24_11, nixpkgs-25_05, nixpkgs-master, nixpkgs-staging, nixpkgs-nodejs, nixpkgs-php, prybar, java-language-server, nil, fenix, replit-rtld-loader, ... }:
+  outputs = { self, nixpkgs, nixpkgs-23_05, nixpkgs-24_11, nixpkgs-25_05, nixpkgs-master, nixpkgs-staging, nixpkgs-nodejs, nixpkgs-node24, nixpkgs-php, prybar, java-language-server, nil, fenix, replit-rtld-loader, ... }:
     let
       nssCertdataOverlay =
         useNssOverride:
@@ -89,17 +90,9 @@
         overlays = [ (nssCertdataOverlay false) ];
       };
       pkgs-nodejs = import nixpkgs-nodejs { system = "x86_64-linux"; };
+      pkgs-node24 = import nixpkgs-node24 { system = "x86_64-linux"; };
       nodejs-22 = pkgs-nodejs.nodejs_22;
-      nodejs-24-slim = pkgs-nodejs.nodejs-slim_24.overrideAttrs (_: {
-        version = "24.22.1";
-        src = pkgs-nodejs.fetchurl {
-          url = "https://nodejs.org/dist/v24.22.1/node-v24.22.1.tar.xz";
-          hash = "sha256-T1N5eWKAza6wwvNY/QS2oWzE+336g7WoyRqdljtDUjE=";
-        };
-      });
-      nodejs-24 = pkgs-nodejs.nodejs_24.override {
-        nodejs-slim = nodejs-24-slim;
-      };
+      nodejs-24 = pkgs-node24.nodejs_24;
       deno-src = pkgs-nodejs.fetchFromGitHub {
         owner = "denoland";
         repo = "deno";
