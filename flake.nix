@@ -59,6 +59,25 @@
       nodejs-24 = pkgs-nodejs.nodejs_24.override {
         nodejs-slim = nodejs-24-slim;
       };
+      deno-src = pkgs-nodejs.fetchFromGitHub {
+        owner = "denoland";
+        repo = "deno";
+        tag = "v2.9.8";
+        fetchSubmodules = true;
+        hash = "sha256-piJetMgFpg8xzEveqRQEq4kJINaLRDOrHp7Nd0z8wok=";
+      };
+      deno-cargoDeps = pkgs-nodejs.rustPlatform.fetchCargoVendor {
+        pname = "deno";
+        version = "2.9.8";
+        src = deno-src;
+        hash = "sha256-LNYXzS0oespQMeT/1fGcOvaDy5ErVeY7jUPL19OgeZ4=";
+      };
+      deno = pkgs-nodejs.deno.overrideAttrs (_: {
+        version = "2.9.8";
+        src = deno-src;
+        cargoDeps = deno-cargoDeps;
+      });
+      uv = pkgs-nodejs.uv;
 
       patched-unstable = nixpkgs.legacyPackages.x86_64-linux.applyPatches {
         name = "nixpkgs-unstable-patched";
@@ -143,6 +162,7 @@
         inherit pkgs-25_05;
         inherit pkgs-master;
         inherit pkgs-staging;
+        inherit deno uv;
         inherit nodejs-22 nodejs-24;
         inherit pkgs-php;
       }

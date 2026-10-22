@@ -1,4 +1,4 @@
-{ python, pypkgs }:
+{ python, pypkgs, uv }:
 { pkgs-unstable, pkgs-23_05, lib, ... }:
 let
   pythonVersion = lib.versions.majorMinor python.version;
@@ -35,7 +35,7 @@ in
     binary-wrapped-python
     pypkgs.pip
     pkgs.poetry
-    pkgs.uv
+    uv
   ];
 
   replit.runners.python = {

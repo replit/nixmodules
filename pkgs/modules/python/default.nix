@@ -1,4 +1,4 @@
-{ python, pypkgs }:
+{ python, pypkgs, uv }:
 { pkgs-unstable
 , lib
 , ...
@@ -59,18 +59,6 @@ let
   };
 
   sitecustomize = pkgs.callPackage ./sitecustomize.nix { };
-
-  uv = pkgs.callPackage ./uv {
-    rustPlatform = (
-      let
-        toolchain = pkgs.fenix.latest.toolchain;
-      in
-      pkgs.makeRustPlatform {
-        cargo = toolchain;
-        rustc = toolchain;
-      }
-    );
-  };
 
 in
 {
