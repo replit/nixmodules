@@ -59,6 +59,13 @@ runtime and tools with this bundle and may need code or dependency changes.
 
 ## Building
 
+NixCI builds all Linux package outputs and keeps running after failures so that
+one broken dependency does not hide failures in other modules. Every
+`packages.x86_64-linux` entry is a derivation, including the literal dotted keys
+`"deploymentModules.<id>"` and `"phony-oci-bundles.<id>"`; these are not nested
+package sets. The top-level `deploymentModules` and `phony-oci-bundles` maps
+preserve shorthand access such as `nix build .#deploymentModules.nodejs-22`.
+
 For each of the following examples, the build result will be found in a file or directory named `result`.
 
 To build the full bundle, including compatibility modules (this will take a while, and a lot of disk space):
