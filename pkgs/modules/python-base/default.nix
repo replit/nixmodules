@@ -33,7 +33,7 @@ in
 
   replit.packages = [
     binary-wrapped-python
-    pypkgs.pip
+    (pypkgs.callPackage ../../pip { })
     pkgs.poetry
     uv
   ];

@@ -1,7 +1,8 @@
 pkgs @ { pypkgs, ... }:
 
 let
-  pip = pypkgs.pip.overridePythonAttrs (old: rec {
+  upgraded-pip = pypkgs.callPackage ../../pip { };
+  pip = upgraded-pip.overridePythonAttrs (old: rec {
     outputs = [
       "out"
     ];
@@ -15,6 +16,7 @@ let
       pkgs.installShellFiles
       pypkgs.setuptools
       pypkgs.wheel
+      pypkgs.flit-core
     ];
   });
 
