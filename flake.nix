@@ -7,7 +7,6 @@
   inputs.nixpkgs-staging.url = "github:nixos/nixpkgs/staging-next";
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
   inputs.nixpkgs-nodejs.url = "github:nixos/nixpkgs/5873d3da531a3a8320c9e639e2147eccbe7f2d0d";
-  inputs.nixpkgs-node24.url = "github:nixos/nixpkgs/dc0146be65ada0333393ac87b6ff45a4a8e9b722";
   inputs.nixpkgs-php.url = "github:nixos/nixpkgs/8c259fc0dd1f3ccc1aaf4f9156ab16b7328b5a4f";
   inputs.nixpkgs-docker.url = "github:nixos/nixpkgs/fcb54ddcc974cff59bdfb7c1ac9e080299763d2d";
   inputs.nixpkgs-zig.url = "github:nixos/nixpkgs/ecb441f22067ba1d6312f4932a7c64efa8d19a7b";
@@ -26,7 +25,7 @@
   inputs.replit-rtld-loader.url = "github:replit/replit_rtld_loader";
   inputs.replit-rtld-loader.inputs.nixpkgs.follows = "nixpkgs";
 
-  outputs = { self, nixpkgs, nixpkgs-23_05, nixpkgs-24_11, nixpkgs-25_05, nixpkgs-master, nixpkgs-staging, nixpkgs-nodejs, nixpkgs-node24, nixpkgs-php, nixpkgs-docker, nixpkgs-zig, zig-overlay, prybar, java-language-server, nil, fenix, replit-rtld-loader, ... }:
+  outputs = { self, nixpkgs, nixpkgs-23_05, nixpkgs-24_11, nixpkgs-25_05, nixpkgs-master, nixpkgs-staging, nixpkgs-nodejs, nixpkgs-php, nixpkgs-docker, nixpkgs-zig, zig-overlay, prybar, java-language-server, nil, fenix, replit-rtld-loader, ... }:
     let
       mkPkgs = nixpkgs-spec: system: import nixpkgs-spec {
         inherit system;
@@ -53,7 +52,6 @@
       pkgs-staging = mkPkgs nixpkgs-staging "x86_64-linux";
       pkgs-php = import nixpkgs-php { system = "x86_64-linux"; };
       pkgs-nodejs = import nixpkgs-nodejs { system = "x86_64-linux"; };
-      pkgs-node24 = import nixpkgs-node24 { system = "x86_64-linux"; };
       # Keep the shipped toolchains pinned while moving their module definitions in-tree.
       pkgs-docker = import
         (nixpkgs-docker.legacyPackages.x86_64-linux.applyPatches {
@@ -67,7 +65,27 @@
         overlays = [ zig-overlay.overlays.default ];
       };
       nodejs-22 = pkgs-nodejs.nodejs_22;
-      nodejs-24 = pkgs-node24.nodejs_24;
+      # Same brotli CVE patch nixpkgs applies to non-24 Node majors at this pin.
+      brotli-patched = pkgs-nodejs.brotli.overrideAttrs (old: {
+        patches = old.patches ++ [
+          (pkgs-nodejs.fetchurl {
+            url = "https://github.com/google/brotli/commit/0ed4268a4401abcb4472096340477cf4af7d1a2b.patch?full_index=1";
+            hash = "sha256-1vliUJAAIj3vcGKVgim9CEV+XgMuftDR2U+3kLBUsfw=";
+          })
+        ];
+      });
+      nodejs-24-slim = (pkgs-nodejs.nodejs-slim_24.override {
+        callPackage = fn: args: pkgs-nodejs.callPackage fn (args // { brotli = brotli-patched; });
+      }).overrideAttrs (_: {
+        version = "24.22.1";
+        src = pkgs-nodejs.fetchurl {
+          url = "https://nodejs.org/dist/v24.22.1/node-v24.22.1.tar.xz";
+          hash = "sha256-T1N5eWKAza6wwvNY/QS2oWzE+336g7WoyRqdljtDUjE=";
+        };
+      });
+      nodejs-24 = pkgs-nodejs.nodejs_24.override {
+        nodejs-slim = nodejs-24-slim;
+      };
       deno-src = pkgs-nodejs.fetchFromGitHub {
         owner = "denoland";
         repo = "deno";

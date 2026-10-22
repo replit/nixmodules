@@ -309,22 +309,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-node24": {
-      "locked": {
-        "lastModified": 1792586979,
-        "narHash": "sha256-vZgWlEd08JRv+UYLaFNjmVINOz7fGQwtW+7fmxVzDGw=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "dc0146be65ada0333393ac87b6ff45a4a8e9b722",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "dc0146be65ada0333393ac87b6ff45a4a8e9b722",
-        "type": "github"
-      }
-    },
     "nixpkgs-nodejs": {
       "locked": {
         "lastModified": 1792641000,
@@ -441,7 +425,6 @@
         "nixpkgs-25_05": "nixpkgs-25_05",
         "nixpkgs-docker": "nixpkgs-docker",
         "nixpkgs-master": "nixpkgs-master",
-        "nixpkgs-node24": "nixpkgs-node24",
         "nixpkgs-nodejs": "nixpkgs-nodejs",
         "nixpkgs-php": "nixpkgs-php",
         "nixpkgs-staging": "nixpkgs-staging",
