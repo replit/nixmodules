@@ -23,9 +23,47 @@
 
   outputs = { self, nixpkgs, nixpkgs-23_05, nixpkgs-24_11, nixpkgs-25_05, nixpkgs-master, nixpkgs-staging, nixpkgs-nodejs, nixpkgs-php, prybar, java-language-server, nil, fenix, replit-rtld-loader, ... }:
     let
-      mkPkgs = nixpkgs-spec: system: import nixpkgs-spec {
+      nssCertdataOverlay =
+        useNssOverride:
+        final: prev:
+        let
+          certdata = prev.fetchurl {
+            urls = [
+              "https://hg-edge.mozilla.org/projects/nss/raw-file/NSS_3_131_1_RTM/lib/ckfw/builtins/certdata.txt"
+              "https://raw.githubusercontent.com/nss-dev/nss/refs/tags/NSS_3_131_1_RTM/lib/ckfw/builtins/certdata.txt"
+            ];
+            hash = "sha256-PsK00kDcEsdH6vRQBh24SvdXxIO72jAvninOtdcL5RA=";
+          };
+          certdataTree = prev.runCommand "nss-certdata-3.131.1" { } ''
+            mkdir -p $out/lib/ckfw/builtins
+            cp ${certdata} $out/lib/ckfw/builtins/certdata.txt
+          '';
+        in
+        {
+          cacert =
+            if useNssOverride then
+              prev.cacert.override
+                {
+                  nssOverride = {
+                    version = "3.131.1";
+                    src = certdataTree;
+                  };
+                }
+            else
+              prev.cacert.overrideAttrs (oldAttrs: {
+                version = "3.131.1";
+                src = certdata;
+                unpackPhase = ''
+                  runHook preUnpack
+                  cp "$src" certdata.txt
+                  runHook postUnpack
+                '';
+              });
+        };
+      mkPkgs = nixpkgs-spec: system: useNssOverride: import nixpkgs-spec {
         inherit system;
         overlays = [
+          (nssCertdataOverlay useNssOverride)
           self.overlays.default
           prybar.overlays.default
           java-language-server.overlays.default
@@ -40,13 +78,16 @@
         ];
       };
 
-      pkgs-23_05 = mkPkgs nixpkgs-23_05 "x86_64-linux";
-      pkgs-24_11 = mkPkgs nixpkgs-24_11 "x86_64-linux";
-      pkgs-25_05 = mkPkgs nixpkgs-25_05 "x86_64-linux";
+      pkgs-23_05 = mkPkgs nixpkgs-23_05 "x86_64-linux" true;
+      pkgs-24_11 = mkPkgs nixpkgs-24_11 "x86_64-linux" true;
+      pkgs-25_05 = mkPkgs nixpkgs-25_05 "x86_64-linux" true;
       # TODO: once nodejs update lands in unstable, switch to that
-      pkgs-master = mkPkgs nixpkgs-master "x86_64-linux";
-      pkgs-staging = mkPkgs nixpkgs-staging "x86_64-linux";
-      pkgs-php = import nixpkgs-php { system = "x86_64-linux"; };
+      pkgs-master = mkPkgs nixpkgs-master "x86_64-linux" false;
+      pkgs-staging = mkPkgs nixpkgs-staging "x86_64-linux" false;
+      pkgs-php = import nixpkgs-php {
+        system = "x86_64-linux";
+        overlays = [ (nssCertdataOverlay false) ];
+      };
       pkgs-nodejs = import nixpkgs-nodejs { system = "x86_64-linux"; };
       nodejs-22 = pkgs-nodejs.nodejs_22;
       nodejs-24-slim = pkgs-nodejs.nodejs-slim_24.overrideAttrs (_: {
@@ -95,8 +136,8 @@
         ];
       };
 
-      pkgs = mkPkgs patched-unstable "x86_64-linux";
-      pkgs-aarch64-darwin = mkPkgs patched-unstable "aarch64-darwin";
+      pkgs = mkPkgs patched-unstable "x86_64-linux" true;
+      pkgs-aarch64-darwin = mkPkgs patched-unstable "aarch64-darwin" true;
     in
     {
       overlays.default = final: prev: {
