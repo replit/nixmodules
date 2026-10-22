@@ -4,7 +4,7 @@ let
 
   configFiles = pkgs.copyPathToStore ./etc;
 
-  replit-runc = pkgs.buildGo123Module {
+  replit-runc = pkgs.buildGo121Module {
     pname = "replit-runc";
     version = "1.1.9+replit";
 
@@ -30,7 +30,7 @@ let
     '';
   };
 
-  replit-containerd = pkgs.buildGo123Module {
+  replit-containerd = pkgs.buildGo121Module {
     pname = "replit-containerd";
     version = "1.7.5+replit";
 
@@ -65,7 +65,7 @@ let
     replitShimRunc = replit-containerd;
   };
 
-  replit-buildkit = pkgs.buildGo123Module {
+  replit-buildkit = pkgs.buildGo121Module {
     pname = "replit-buildkit";
     version = "v0.13.0-beta1+replit";
 
@@ -164,6 +164,7 @@ in
 
 {
   id = "docker";
+  displayVersion = "1";
   name = "Support for Docker containers";
   internal = true;
   description = ''

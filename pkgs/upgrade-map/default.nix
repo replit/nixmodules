@@ -1,9 +1,3 @@
-/*
-  This implements auto-upgrading from one module ID to another at build time, based on the
-  mapping below. This is here for historical purposes, and we don't expect to use it much, although
-  there are valid use cases.
-*/
-with builtins;
 let
   upgrade-map = {
     "bun" = "bun-0.5";
@@ -61,23 +55,5 @@ let
     "vue-node-18" = "vue-node-20";
   };
 
-  upgrade-module =
-    moduleId: if hasAttr moduleId upgrade-map then upgrade-module upgrade-map.${moduleId} else moduleId;
-
-  apply-upgrade-map =
-    modules:
-    foldl'
-      (
-        acc: moduleId:
-        let
-          upgraded = upgrade-module moduleId;
-        in
-        acc
-        // {
-          ${moduleId} = modules.${upgraded};
-        }
-      )
-      modules
-      (attrNames upgrade-map);
 in
-apply-upgrade-map
+import ./apply.nix upgrade-map
