@@ -1,8 +1,9 @@
-{ runCommand
+{ pkgs
 , lib
 , stdenv
 , bundle
 , closureInfo
+, coreutils
 , gnutar
 , gzip
 , python3
@@ -11,43 +12,37 @@
 , revision ? null
 , sourceTimestamp ? null
 }:
-
 let
-  bundleClosure = closureInfo { rootPaths = [ bundle ]; };
-  metadata = builtins.toJSON { inherit revision sourceTimestamp; };
-  image = runCommand "nixmodules-bundle-oci"
-    {
-      nativeBuildInputs = [ gnutar gzip python3 ];
-      inherit bundle bundleClosure;
+  tools = [ coreutils gnutar gzip python3 pkgs.bash ];
+  script = pkgs.callPackage ../image-script.nix { } {
+    name = "build-nixmodules-bundle-oci";
+    runtimeInputs = tools;
+    builder = ./builder.sh;
+    env = {
+      inherit bundle;
+      bundleClosure = closureInfo { rootPaths = [ bundle ]; };
+      PATH = lib.makeBinPath tools;
       architecture = lib.toLower stdenv.hostPlatform.parsed.cpu.name;
-      __structuredAttrs = true;
-      # The embedded closure must not retain references to the builder's store.
-      unsafeDiscardReferences.out = true;
-      passthru.copyTo = writeShellApplication {
-        name = "copy-nixmodules-bundle-oci";
-        runtimeInputs = [ skopeo ];
-        text = ''
-          if [ "$#" -lt 1 ]; then
-            echo "usage: copy-nixmodules-bundle-oci <transport:destination> [skopeo copy options]" >&2
-            exit 1
-          fi
-          destination="$1"
-          shift
-          exec skopeo --insecure-policy copy --preserve-digests \
-            "oci:${image}:bundle" "$destination" "$@"
-        '';
-      };
-    }
-    ''
-      mkdir -p root/nix/store root/etc/nixmodules "$out/blobs/sha256"
-      cp -a --reflink=auto "$bundle/etc/nixmodules/." root/etc/nixmodules/
-      while IFS= read -r path; do
-        cp -a --reflink=auto "$path" root/nix/store/
-      done < "$bundleClosure/store-paths"
-      chmod 755 root root/nix root/nix/store root/etc root/etc/nixmodules
-
-      bash ${./layer.sh} root layer.tar.gz
-      python3 ${./layout.py} layer.tar.gz "$out" "$architecture" ${lib.escapeShellArg metadata}
-    '';
+      metadata = builtins.toJSON { inherit revision sourceTimestamp; };
+      layerScript = ./layer.sh;
+      layoutScript = ./layout.py;
+    };
+  };
 in
-image
+script.overrideAttrs (_: {
+  passthru.copyTo = writeShellApplication {
+    name = "copy-nixmodules-bundle-oci";
+    runtimeInputs = [ skopeo coreutils ];
+    text = ''
+      if [ "$#" -lt 2 ]; then
+        echo "usage: copy-nixmodules-bundle-oci <local-image-directory> <transport:destination> [skopeo copy options]" >&2
+        exit 2
+      fi
+      image=$(realpath -- "$1")
+      destination="$2"
+      shift 2
+      exec skopeo --insecure-policy copy --preserve-digests \
+        "oci:$image:bundle" "$destination" "$@"
+    '';
+  };
+})

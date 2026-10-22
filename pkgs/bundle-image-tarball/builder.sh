@@ -2,8 +2,9 @@
 
 PATH="${env[PATH]}"
 out="${outputs[out]}"
-bundleImage="${env[bundle-image]}"
+bundleImage="$PWD/disk"
+"${env[imageBuilder]}" "$bundleImage"
 
 echo "making tarball..."
 mkdir -p "$out"
-tar --use-compress-program=pigz -Scf $out/disk.raw.tar.gz -C ${bundleImage} disk.raw
+tar --use-compress-program=pigz -Scf "$out/disk.raw.tar.gz" -C "$bundleImage" disk.raw

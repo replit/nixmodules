@@ -1,18 +1,13 @@
-{ system, bash, lib, bundle-image, revstring, coreutils, gnutar, pigz }:
-
-derivation {
-  name = "nixmodules-${revstring}";
-  builder = "${bash}/bin/bash";
-  args = [ ./builder.sh ];
-  inherit system;
-  __structuredAttrs = true;
-  unsafeDiscardReferences.out = true;
+{ pkgs, lib, bundle-image, revstring, coreutils, gnutar, pigz }:
+let
+  tools = [ coreutils gnutar pigz ];
+in
+pkgs.callPackage ../image-script.nix { } {
+  name = "build-nixmodules-image-tarball";
+  runtimeInputs = tools;
+  builder = ./builder.sh;
   env = {
-    PATH = lib.makeBinPath [
-      coreutils
-      gnutar
-      pigz
-    ];
-    inherit bundle-image;
+    PATH = lib.makeBinPath tools;
+    imageBuilder = lib.getExe bundle-image;
   };
 }

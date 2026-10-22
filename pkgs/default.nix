@@ -59,7 +59,9 @@ rec {
     sourceTimestamp = self.lastModified or null;
   };
 
-  bundle-oci-check = pkgs.callPackage ./bundle-oci/check.nix { };
+  bundle-oci-check = pkgs.callPackage ./bundle-oci/check.nix {
+    ztoc-rs = self.inputs.ztoc-rs.packages.x86_64-linux.default;
+  };
 
   custom-bundle = bundle-fn {
     moduleIds = dev-module-ids;

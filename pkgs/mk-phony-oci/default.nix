@@ -1,34 +1,16 @@
-{ system
-, bash
-, lib
-, coreutils
-, closureInfo
-, gnutar
-, pigz
-, ztoc-rs
-}:
-
+{ pkgs, lib, coreutils, closureInfo, gnutar, pigz, ztoc-rs }:
 { module, moduleId }:
 let
   sanitizedModuleId = builtins.replaceStrings [ ":" ] [ "_" ] moduleId;
+  tools = [ coreutils gnutar pigz ztoc-rs ];
 in
-derivation {
-  name = "oci-image-${sanitizedModuleId}";
-  builder = "${bash}/bin/bash";
-  args = [ ./builder.sh ];
-  inherit system;
-  __structuredAttrs = true;
-  unsafeDiscardReferences.out = true;
-  outputs = [ "out" ];
+pkgs.callPackage ../image-script.nix { } {
+  name = "build-oci-image-${sanitizedModuleId}";
+  runtimeInputs = tools;
+  builder = ./builder.sh;
   env = {
     MODULE_ID = moduleId;
-    PATH = lib.makeBinPath [
-      coreutils
-      coreutils
-      gnutar
-      pigz
-      ztoc-rs
-    ];
+    PATH = lib.makeBinPath tools;
     diskClosureInfo = closureInfo { rootPaths = [ module ]; };
   };
 }
