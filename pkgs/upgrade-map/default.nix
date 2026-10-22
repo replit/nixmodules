@@ -13,6 +13,7 @@ let
     "bun-1.0" = "bun-1.1";
     "bun-1.1" = "bun-1.2";
     "bun-1.2" = "bun-1.3";
+    "bun-1.3" = "bun-1.4";
     "clojure-1.11" = "clojure-1.12";
     "dart-2.18" = "dart-3.8";
     "dart-3.0" = "dart-3.1";
