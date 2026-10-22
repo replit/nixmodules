@@ -3,6 +3,14 @@
 let
   php-version = lib.versions.majorMinor php.version;
   phpactor = pkgs.phpactor.override { inherit php; };
+  composer = php.packages.composer.overrideAttrs (old: {
+    src = pkgs.applyPatches {
+      name = "composer-${old.version}-ca-bundle-1.6.0-source";
+      src = old.src;
+      patches = [ ../../composer/ca-bundle-1.6.0.patch ];
+    };
+    vendorHash = "sha256-OWut8wZ9nq/7EiZecdhc4RsDhFJ2xlx1iTCXuHk7x14=";
+  });
 in
 {
   id = "php-${php-version}";
@@ -14,7 +22,7 @@ in
 
   replit.packages = [
     php
-    php.packages.composer
+    composer
   ];
 
   replit.runners.php = {
