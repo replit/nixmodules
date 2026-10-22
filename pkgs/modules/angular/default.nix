@@ -4,7 +4,7 @@
 let
   nodeVersion = lib.versions.major nodejs.version;
 
-  nodepkgs = nodejs.pkgs;
+  nodepkgs = pkgs.nodePackages.override { inherit nodejs; };
 
   angular-language-server = pkgs.callPackage ../../angular-language-server { };
 

@@ -4,6 +4,8 @@
 , pkgs-25_05
 , pkgs-master
 , pkgs-staging
+, nodejs-22
+, nodejs-24
 , pkgs-php
 , ...
 }:
@@ -57,10 +59,10 @@ let
       nodejs = pkgs-master.nodejs_20;
     })
     (import ./nodejs {
-      nodejs = pkgs-master.nodejs_22;
+      nodejs = nodejs-22;
     })
     (import ./nodejs {
-      nodejs = pkgs-staging.nodejs_24;
+      nodejs = nodejs-24;
     })
     (import ./go {
       go = pkgs.go_1_25;
@@ -76,7 +78,7 @@ let
       nodejs = pkgs.nodejs_20;
     })
     (import ./angular {
-      nodejs = pkgs.nodejs_24;
+      nodejs = nodejs-24;
     })
     (import ./bash)
     (import ./bun {
