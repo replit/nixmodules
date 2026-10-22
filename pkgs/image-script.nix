@@ -1,9 +1,10 @@
 { lib, writeShellApplication, coreutils, bash, writeText }:
 { name, runtimeInputs, env, builder }:
 let
+  runtimeValue = value: if builtins.isPath value then "${value}" else toString value;
   attributes = writeText "${name}-attributes" ''
     declare -A env=(
-      ${lib.concatStringsSep "\n" (lib.mapAttrsToList (key: value: "[${lib.escapeShellArg key}]=${lib.escapeShellArg (toString value)}") env)}
+      ${lib.concatStringsSep "\n" (lib.mapAttrsToList (key: value: "[${lib.escapeShellArg key}]=${lib.escapeShellArg (runtimeValue value)}") env)}
     )
     declare -A outputs=([out]="$IMAGE_WORK/output")
   '';
