@@ -182,6 +182,9 @@
             && !(builtins.hasAttr id self.activeDeploymentModules))
           [ "docker" "zig-0.11" ];
         pkgs.writeText "module-registry-check" "ok";
+      checks.x86_64-linux.pip-user-site = pkgs.linkFarm "pip-user-site-check"
+        (pkgs.lib.mapAttrsToList (name: path: { inherit name path; })
+          (import ./pkgs/pip/tests.nix { inherit pkgs; }));
       devShells.x86_64-linux.default = pkgs.mkShell {
         packages = with pkgs; [
           python310
