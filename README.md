@@ -59,7 +59,15 @@ runtime and tools with this bundle and may need code or dependency changes.
 
 ## Building
 
-For each of the following examples, the build result will be found in a file or directory named `result`.
+NixCI builds all Linux package outputs and keeps running after failures so that
+one broken dependency does not hide failures in other modules. Every
+`packages.x86_64-linux` entry is a derivation, including the literal dotted keys
+`"deploymentModules.<id>"` and `"phony-oci-bundles.<id>"`; these are not nested
+package sets. The top-level `deploymentModules` and `phony-oci-bundles` maps
+preserve shorthand access such as `nix build .#deploymentModules.nodejs-22`.
+
+The `nix build` commands below create a `result` symlink. Image builders instead
+take an explicit local output directory.
 
 To build the full bundle, including compatibility modules (this will take a while, and a lot of disk space):
 
@@ -79,32 +87,48 @@ To build a specific module, for example `python-3.10`, you can do:
 nix build .#'"python-3.10"'
 ```
 
+Image outputs are executable builders, not image derivations. NixCI builds the
+scripts and their pinned runtime closures; it never stores full images in the
+Nix store or uploads them to the binary cache. Run a builder with a new output
+directory on the local machine. Existing directories and paths under
+`/nix/store` are rejected. Temporary files and partial output are cleaned up on
+failure. The parent directory must exist and have room for both the working
+tree and the finished artifact.
+
 To build a disk with only a few modules for development purposes:
 
 ```
-nix build .#bundle-squashfs
+nix run .#bundle-squashfs -- ./development-disk
 ```
 
 or
 
 ```
-nix build .#custom-bundle-squashfs
+nix run .#custom-bundle-squashfs -- ./custom-disk
+```
+
+These directories contain `disk.sqsh`. To build the full disk or its compressed
+tarball (containing `disk.raw`):
+
+```
+nix run .#bundle-image -- ./full-disk
+nix run .#bundle-image-tarball -- ./full-disk-tarball
 ```
 
 To build the full bundle as a gzip-compressed tar OCI image:
 
 ```
-nix build .#bundle-oci
+nix run .#bundle-oci -- ./bundle-oci
 ```
 
 The result is an OCI image layout directory with the reference `bundle`, suitable
 for copying with an OCI-layout-aware tool such as
-`skopeo copy oci:./result:bundle docker://REGISTRY/REPOSITORY:TAG`.
-The output also provides a copy helper that keeps the exact image in its Nix
-closure and preserves the manifest digest:
+`skopeo copy oci:./bundle-oci:bundle docker://REGISTRY/REPOSITORY:TAG`.
+The copy helper takes the local image directory explicitly and preserves the
+manifest digest:
 
 ```
-nix run .#bundle-oci.copyTo -- docker://REGISTRY/REPOSITORY:TAG --authfile ./auth.json --digestfile ./digest
+nix run .#bundle-oci.copyTo -- ./bundle-oci docker://REGISTRY/REPOSITORY:TAG --authfile ./auth.json --digestfile ./digest
 ```
 
 The destination can use any Skopeo-supported transport, including `oci:`.
@@ -127,9 +151,11 @@ timestamps, ownership, extended headers and gzip headers are deterministic.
 The filesystem is generated directly from the same pinned full bundle used by
 `disk-script`: its complete store closure and `/etc/nixmodules` metadata, with
 unchanged store paths, file contents, modes and symlink targets. All guest
-UIDs/GIDs are 11000, matching the legacy disk builders. Existing disk and
-per-module OCI builders are unchanged. There is no disk conversion or dependency
-update. The tar archive preserves hardlinks and extended attributes. A consumer
+UIDs/GIDs are 11000, matching the disk builders. Per-module OCI outputs are also
+scripts: for example, `nix run .#phony-oci-bundles.nodejs-22 -- ./node-oci`.
+Automation that previously copied images from `nix build` results must invoke
+these scripts instead. There is no disk conversion or dependency update.
+The tar archive preserves hardlinks and extended attributes. A consumer
 that converts the tar to EROFS must leave filesystem compression disabled for
 files to remain DAX-eligible. This uses more unpacked disk space than compressed
 EROFS; it does not automatically share all guest memory.
