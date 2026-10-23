@@ -120,15 +120,18 @@ for path in paths:
 for metadata in (bundle / "etc/nixmodules").iterdir():
     compare(metadata, root / "etc/nixmodules" / metadata.name)
 packed_dependency = root / str(dependency).lstrip("/")
-assert (packed_dependency / "data").stat().st_ino == (
-    packed_dependency / "hardlink"
-).stat().st_ino
+if (dependency / "data").stat().st_ino == (dependency / "hardlink").stat().st_ino:
+    assert (packed_dependency / "data").stat().st_ino == (
+        packed_dependency / "hardlink"
+    ).stat().st_ino
 print("OCI descriptors, complete closure, metadata, content, modes, symlinks, ownership and hardlinks verified")
 
 xattr_root = pathlib.Path("xattrs")
 xattr_root.mkdir()
 xattr_file = xattr_root / ("long-name-" * 20)
 xattr_file.write_bytes(b"xattrs\n")
+# NAR substitution does not retain hardlink identity, so create this fixture at runtime.
+os.link(xattr_file, xattr_root / "zz-hardlink")
 try:
     os.setxattr(xattr_file, "user.fixture", b"preserved")
     xattrs_supported = True
@@ -143,14 +146,16 @@ with tarfile.open("xattrs.tar.gz", "r:gz") as source:
     assert member.isfile() and source.extractfile(member).read() == b"xattrs\n"
     if xattrs_supported:
         assert member.pax_headers["SCHILY.xattr.user.fixture"] == "preserved"
+restored = pathlib.Path("xattrs-restored")
+restored.mkdir()
+subprocess.run([
+    "tar", "--extract", "--gzip", "--file=xattrs.tar.gz",
+    "--directory", str(restored), "--no-same-owner",
+    "--xattrs", "--xattrs-include=*",
+], check=True)
+assert (restored / xattr_file.name).stat().st_ino == (restored / "zz-hardlink").stat().st_ino
+print("Runtime hardlink fixture preserved in archive and extraction")
 if xattrs_supported:
-    restored = pathlib.Path("xattrs-restored")
-    restored.mkdir()
-    subprocess.run([
-        "tar", "--extract", "--gzip", "--file=xattrs.tar.gz",
-        "--directory", str(restored), "--no-same-owner",
-        "--xattrs", "--xattrs-include=*",
-    ], check=True)
     assert os.getxattr(restored / xattr_file.name, "user.fixture") == b"preserved"
     print("Extended attributes preserved in archive and extraction")
 os.utime(xattr_file, (12345, 67890))
