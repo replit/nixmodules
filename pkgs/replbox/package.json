@@ -15,7 +15,7 @@
   "dependencies": {
     "argparse": "^2.0.1",
     "biwascheme": "^0.7.5",
-    "underscore": "1.2.2"
+    "underscore": "1.13.8"
   },
   "prettier": {
     "trailingComma": "all",
