@@ -4,9 +4,11 @@
 let
   nodeVersion = lib.versions.major nodejs.version;
 
-  nodepkgs = pkgs.nodePackages.override { inherit nodejs; };
+  nodepkgs = import ../nodejs/node-packages.nix { inherit pkgs nodejs; };
 
-  angular-language-server = pkgs.callPackage ../../angular-language-server { };
+  angular-language-server = pkgs.callPackage ../../angular-language-server {
+    inherit nodejs;
+  };
 
   language = "angular";
 in

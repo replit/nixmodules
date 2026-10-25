@@ -8,8 +8,8 @@ let
 
   bun = pkgs.bun;
 
-  nodepkgs = pkgs.nodePackages.override {
-    inherit nodejs;
+  nodepkgs = import ./node-packages.nix {
+    inherit pkgs nodejs;
   };
 
   npx-wrapper = pkgs.writeShellApplication {

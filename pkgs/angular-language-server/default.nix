@@ -1,9 +1,11 @@
 # TODO: upstream this file into nixpkgs
 { buildNpmPackage
 , fetchurl
+, nodejs
 }:
 
 buildNpmPackage rec {
+  inherit nodejs;
   name = "@angular/language-server";
   version = "17.0.3";
 

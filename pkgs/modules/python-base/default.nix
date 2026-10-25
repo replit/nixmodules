@@ -34,7 +34,7 @@ in
   replit.packages = [
     binary-wrapped-python
     (pypkgs.callPackage ../../pip { })
-    pkgs.poetry
+    (pkgs.poetry.override { python3 = python; })
     uv
   ];
 
