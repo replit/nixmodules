@@ -122,7 +122,15 @@
         ];
       };
 
-      pkgs = mkPkgs patched-unstable "x86_64-linux";
+      pkgs = (mkPkgs patched-unstable "x86_64-linux").extend (final: _: {
+        nodejs-slim = nodejs-24-slim;
+        nodejs = nodejs-24 // {
+          # The base nixpkgs nodePackages alias requires the older pkgs passthru.
+          pkgs = final.callPackage "${nixpkgs}/pkgs/development/node-packages" {
+            nodejs = final.nodejs;
+          };
+        };
+      });
       pkgs-aarch64-darwin = mkPkgs patched-unstable "aarch64-darwin";
     in
     {

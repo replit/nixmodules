@@ -50,6 +50,7 @@ let
     "rust-1.70" = "rust-1.72";
     "rust-1.72" = "rust-stable";
     "ruby-3.1" = "ruby-3.2";
+    "svelte-kit-node-20" = "svelte-kit-node-24";
     "swift" = "swift-5.8";
     "swift-5.6" = "swift-5.8";
     "vue-node-18" = "vue-node-20";

@@ -56,6 +56,8 @@ and Swift 5.6 to 5.8. The unversioned `swift` alias also resolves to 5.8.
 The old Python and Node.js Prybar IDs now use the standard Python 3.10 and
 Node.js 20 file runners, not Prybar. Projects using retired IDs get the newer
 runtime and tools with this bundle and may need code or dependency changes.
+The old `svelte-kit-node-20` ID resolves to `svelte-kit-node-24`, preserving
+the Node.js 24 major that the SvelteKit module already used.
 
 ## Building
 

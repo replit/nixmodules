@@ -8,11 +8,9 @@ let
 
   bun = pkgs.bun;
 
-  nodepkgs = pkgs.nodePackages.override {
-    inherit nodejs;
+  nodepkgs = import ./node-packages.nix {
+    inherit pkgs nodejs;
   };
-
-  pnpm = pkgs.pnpm.override { inherit nodejs; };
 
   npx-wrapper = pkgs.writeShellApplication {
     name = "npx";
@@ -107,7 +105,7 @@ in
     packages = [
       nodejs-wrapped
       bun
-      pnpm
+      nodepkgs.pnpm
       nodepkgs.yarn
     ];
 

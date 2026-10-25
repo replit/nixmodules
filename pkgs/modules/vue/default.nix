@@ -2,7 +2,7 @@
 { pkgs, lib, ... }:
 
 let
-  nodepkgs = nodejs.pkgs;
+  nodepkgs = import ../nodejs/node-packages.nix { inherit pkgs nodejs; };
   node-version = lib.versions.major nodejs.version;
 
   vue-language-server = pkgs.callPackage ../../vue-language-server {

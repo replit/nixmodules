@@ -160,7 +160,9 @@ let
       })
     )
     (import ./swift)
-    (import ./svelte-kit)
+    (import ./svelte-kit {
+      nodejs = nodejs-24;
+    })
     (import ./vue {
       nodejs = pkgs.nodejs_20;
     })
