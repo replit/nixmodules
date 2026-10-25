@@ -122,7 +122,10 @@
         ];
       };
 
-      pkgs = (mkPkgs patched-unstable "x86_64-linux").extend (final: _: {
+      basePkgs = mkPkgs patched-unstable "x86_64-linux";
+      pkgs = basePkgs.extend (final: _: {
+        # Keep .NET's build-only Node dependency from invalidating cached SDKs.
+        dotnetCorePackages = basePkgs.dotnetCorePackages;
         nodejs-slim = nodejs-24-slim;
         nodejs = nodejs-24 // {
           # The base nixpkgs nodePackages alias requires the older pkgs passthru.
