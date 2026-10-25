@@ -185,6 +185,12 @@
       checks.x86_64-linux.pip-user-site = pkgs.linkFarm "pip-user-site-check"
         (pkgs.lib.mapAttrsToList (name: path: { inherit name path; })
           (import ./pkgs/pip/tests.nix { inherit pkgs; }));
+      checks.x86_64-linux.pnpm-nodejs = pkgs.linkFarm "pnpm-nodejs-check"
+        (pkgs.lib.mapAttrsToList (name: path: { inherit name path; })
+          (import ./pkgs/modules/nodejs/tests.nix {
+            inherit pkgs;
+            runtimes = [ pkgs-master.nodejs_20 nodejs-22 nodejs-24 ];
+          }));
       devShells.x86_64-linux.default = pkgs.mkShell {
         packages = with pkgs; [
           python310

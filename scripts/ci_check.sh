@@ -18,6 +18,7 @@ nix eval "${NIX_FLAGS[@]}" .#modules --json
 nix eval "${NIX_FLAGS[@]}" .#deploymentModules --json
 nix build "${NIX_FLAGS[@]}" .#checks.x86_64-linux.module-registry --no-link
 nix build "${NIX_FLAGS[@]}" .#checks.x86_64-linux.pip-user-site --no-link
+nix build "${NIX_FLAGS[@]}" .#checks.x86_64-linux.pnpm-nodejs --no-link
 
 # The standalone lockfile OCI helper reconstructs old bundles, not current implementations.
 if git grep -n -E 'builtins[.]getFlake|(^|[^[:alnum:]_])getFlake[[:space:]]|github:replit/nixmodules/' -- '*.nix' ':!pkgs/mk-phony-ocis/default.nix'; then

@@ -12,6 +12,8 @@ let
     inherit nodejs;
   };
 
+  pnpm = pkgs.pnpm.override { inherit nodejs; };
+
   npx-wrapper = pkgs.writeShellApplication {
     name = "npx";
     text = ''
@@ -105,7 +107,7 @@ in
     packages = [
       nodejs-wrapped
       bun
-      nodepkgs.pnpm
+      pnpm
       nodepkgs.yarn
     ];
 
