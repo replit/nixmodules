@@ -1,35 +1,15 @@
-{ system
-, bash
-, lib
-, bundle
-, revstring
-, coreutils
-, findutils
-, closureInfo
-, squashfsTools
-, fetchFromGitHub
-, pkgs
-, diskName
-}:
-
+{ pkgs, lib, bundle, revstring, coreutils, findutils, closureInfo, squashfsTools, diskName }:
 let
-  label = "nixmodules-${revstring}";
+  tools = [ coreutils findutils squashfsTools ];
 in
-
-derivation {
-  name = label;
-  builder = "${bash}/bin/bash";
-  args = [ ./builder.sh ];
-  inherit system;
-  __structuredAttrs = true;
-  unsafeDiscardReferences.out = true;
+pkgs.callPackage ../image-script.nix { } {
+  name = "build-nixmodules-image";
+  runtimeInputs = tools;
+  builder = ./builder.sh;
   env = {
-    inherit label bundle diskName;
-    PATH = lib.makeBinPath [
-      coreutils
-      findutils
-      squashfsTools
-    ];
+    label = "nixmodules-${revstring}";
+    inherit bundle diskName;
+    PATH = lib.makeBinPath tools;
     diskClosureInfo = closureInfo { rootPaths = [ bundle ]; };
   };
 }

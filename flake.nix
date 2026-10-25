@@ -181,8 +181,12 @@
       packages.x86_64-linux = import ./pkgs {
         inherit pkgs self;
       };
+      phony-oci-bundles = builtins.mapAttrs
+        (id: _: self.packages.x86_64-linux."phony-oci-bundles.${id}")
+        self.modules;
       checks.x86_64-linux.module-registry =
         assert import ./scripts/module-registry-test.nix;
+        assert builtins.all pkgs.lib.isDerivation (builtins.attrValues self.packages.x86_64-linux);
         assert builtins.attrNames self.modules == builtins.attrNames self.deploymentModules;
         assert builtins.attrNames self.activeModules == builtins.attrNames self.activeDeploymentModules;
         assert builtins.all
