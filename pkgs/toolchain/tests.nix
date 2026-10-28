@@ -2,9 +2,14 @@
 let
   inherit (pkgs) lib;
   runtime = pkgs.runCommand "toolchain-test-runtime" { } ''
-    mkdir -p "$out/bin"
+    mkdir -p "$out/bin" "$out/nix-support"
     printf '#!/bin/sh\nexit 0\n' > "$out/bin/runtime"
     chmod +x "$out/bin/runtime"
+    cat > "$out/nix-support/setup-hook" <<'HOOK'
+    : "$NIX_CC"
+    echo "A runtime-only build hook was sourced" >&2
+    return 1
+    HOOK
   '';
   ide = pkgs.writeText "toolchain-test-ide" "IDE-only dependency";
   definition = {

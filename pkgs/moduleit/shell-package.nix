@@ -1,5 +1,5 @@
 { lib
-, makeSetupHook
+, runCommand
 , writeText
 , name
 , packages
@@ -33,9 +33,14 @@ let
       + lib.optionalString (key == "PATH") "\${PATH:+:}\"$PATH\"")
       ordered.result + "\n";
 in
-makeSetupHook
+runCommand name
 {
-  inherit name passthru;
-  propagatedBuildInputs = packages;
+  inherit passthru;
 }
-  (writeText "${name}-hook" hook)
+  ''
+    mkdir -p "$out/nix-support"
+    cp ${writeText "${name}-hook" hook} "$out/nix-support/setup-hook"
+    # Keep runtime references without running their compiler build hooks.
+    printf '%s\n' ${lib.escapeShellArg (lib.concatMapStringsSep "\n" toString packages)} \
+      > "$out/nix-support/runtime-dependencies"
+  ''
