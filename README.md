@@ -122,6 +122,8 @@ own dynamic-variable expansion and configuration precedence to `modules.json`.
 `lib.mkBundle { moduleIds; deployment ? false; }` retains the existing
 `etc/nixmodules/modules.json` path-index layout and rejects unknown IDs. Omitting
 `moduleIds` includes the complete selected development or deployment map.
+This strict validation applies only to the new API; existing bundle callers
+continue to filter out unknown IDs.
 Keep generated project flakes in a small dedicated directory rather than copying
 the entire project tree into the flake source.
 

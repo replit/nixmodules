@@ -55,7 +55,9 @@ let
     deploymentModules = applyAliases { fixture = deployment; };
   };
   mkToolchain = import ./default.nix { inherit pkgs self; };
-  mkBundle = pkgs.callPackage ../bundle { inherit self; };
+  legacyBundle = pkgs.callPackage ../bundle { inherit self; };
+  mkBundle = import ../bundle/api.nix { inherit pkgs self; };
+  deploymentBundle = mkBundle { moduleIds = [ "alias" ]; deployment = true; };
   toolchain = mkToolchain { moduleIds = [ "fixture" "alias" ]; };
   overridden = mkToolchain { moduleIds = [ "alias" "override" ]; };
   deploymentToolchain = mkToolchain { moduleIds = [ "fixture" ]; deployment = true; };
@@ -95,12 +97,22 @@ assert deployment.moduleConfig.env.MODE == "deployment";
 assert fails (mkToolchain { moduleIds = [ "missing" ]; }).outPath;
 assert fails (mkToolchain { moduleIds = [ "fixture" "fixture" ]; }).outPath;
 assert fails (mkBundle { moduleIds = [ "missing" ]; }).outPath;
+assert fails (mkBundle { moduleIds = [ "fixture" "missing" ]; }).outPath;
+assert fails (mkBundle { moduleIds = [ "missing" ]; deployment = true; }).outPath;
+assert (legacyBundle { moduleIds = [ "fixture" "missing" ]; }).outPath
+  == (legacyBundle { moduleIds = [ "fixture" ]; }).outPath;
+assert (legacyBundle { moduleIds = [ "missing" ]; }).outPath
+  == (legacyBundle { moduleIds = [ ]; }).outPath;
+assert (legacyBundle { moduleIds = [ "alias" "missing" ]; deployment = true; }).outPath
+  == deploymentBundle.outPath;
 assert fails cycle.outPath;
 pkgs.runCommand "flake-toolchain-check"
 {
   nativeBuildInputs = [ pkgs.jq ];
 } ''
   test -f ${shellSmoke}
+  test "$(readlink ${deploymentBundle}/alias)" = "${deployment}"
+  jq -e --arg path "${deployment}" '.alias.path == $path' ${deploymentBundle}/etc/nixmodules/modules.json
   test -d ${toolchain}/shell/nix-support
   jq -e '.schemaVersion == 1 and .system == "x86_64-linux"
     and .moduleIds == ["fixture", "alias"] and .deployment == false

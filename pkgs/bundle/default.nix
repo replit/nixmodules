@@ -17,7 +17,7 @@ let
   filteredModules =
     if moduleIds == null
     then modules else
-      genAttrs moduleIds (id: modules.${id} or (throw "Unknown nixmodule: ${id}"));
+      filterAttrs (moduleId: _: elem moduleId moduleIds) modules;
   modulesMap = mapAttrs
     (name: drv: {
       path = drv.outPath;

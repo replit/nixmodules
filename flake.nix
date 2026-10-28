@@ -183,7 +183,7 @@
       };
       shellPackages.x86_64-linux = pkgs.lib.mapAttrs (_: module: module.shellPackage) self.modules;
       deploymentShellPackages.x86_64-linux = pkgs.lib.mapAttrs (_: module: module.shellPackage) self.deploymentModules;
-      lib.mkBundle = pkgs.callPackage ./pkgs/bundle { inherit self; };
+      lib.mkBundle = import ./pkgs/bundle/api.nix { inherit pkgs self; };
       lib.mkToolchain = import ./pkgs/toolchain { inherit pkgs self; };
       checks.x86_64-linux.flake-toolchain = import ./pkgs/toolchain/tests.nix { inherit pkgs; };
       checks.x86_64-linux.module-registry =
