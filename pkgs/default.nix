@@ -52,6 +52,13 @@ rec {
 
   bundle-oci-check = pkgs.callPackage ./bundle-oci/check.nix { };
 
+  node-python-runtime-oci = pkgs.callPackage ./runtime-oci {
+    inherit self;
+    moduleIds = [ "nodejs-24" "python-base-3.13" ];
+  };
+
+  runtime-oci-check = pkgs.callPackage ./runtime-oci/check.nix { };
+
   custom-bundle = bundle-fn {
     moduleIds = dev-module-ids;
   };

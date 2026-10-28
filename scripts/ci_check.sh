@@ -31,3 +31,4 @@ nix develop "${NIX_FLAGS[@]}" --command echo Hello, world
 nix eval .#bundle
 
 nix build .#bundle-oci-check --no-link
+nix build .#runtime-oci-check --no-link

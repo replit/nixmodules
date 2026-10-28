@@ -13,7 +13,7 @@ def write_layout(layer, output, architecture, metadata):
     blobs = output / "blobs" / "sha256"
     annotations = {
         "org.opencontainers.image.source": "https://github.com/replit/nixmodules",
-        "dev.replit.nixmodules.flake-output": "bundle-oci",
+        "dev.replit.nixmodules.flake-output": metadata.get("flakeOutput", "bundle-oci"),
     }
     revision = metadata["revision"]
     if revision is not None:

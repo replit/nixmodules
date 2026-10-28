@@ -141,3 +141,44 @@ A small fixture exercises the producer without building the full bundle:
 ```
 nix build .#bundle-oci-check
 ```
+
+### Selected Node/Python runtime image
+
+`node-python-runtime-oci` uses the same OCI builder for `nodejs-24` and
+`python-base-3.13`, including both development and deployment module JSON roots
+and their complete store closures. It does not include a project workspace,
+install project packages, or change `bundle-oci`.
+
+The output retains the `bundle` OCI reference and provides `.copyTo` and
+`.runtimeManifest` attributes. The latter is the exact file linked into the
+image at `/etc/nixmodules/runtime-manifest.json`. The development index stays at
+`/etc/nixmodules/modules.json`; the deployment index is
+`/etc/nixmodules/deployment-modules.json`.
+
+The runtime manifest has these fields:
+
+- `schemaVersion: 1`, `kind: "nixmodules-runtime"`, `system: "x86_64-linux"` and
+  `flakeOutput: "node-python-runtime-oci"`.
+- `source`: `url`, clean Git `rev`, source `narHash` in SHA256 SRI format and
+  `lockFileSha256` (lowercase hex). The lock hash is of this repository's
+  `flake.lock`, not a consuming project's lockfile.
+- `moduleIds`: `["nodejs-24", "python-base-3.13"]`; `modules` in the same order,
+  each with `id`, `developmentPath` and `deploymentPath`.
+- `closure`: the transitive closure of those four module JSON roots, sorted by
+  `path`. Each entry contains `path`, SHA256 SRI `narHash`, integer `narSize` and
+  sorted `references`. Paths and references are unique.
+- `closureHash`: `sha256:` followed by the lowercase hex SHA256 of the closure
+  array serialized as UTF-8 JSON with sorted object keys, no whitespace and no
+  trailing newline.
+
+The closure identity excludes auxiliary delivery metadata to avoid hashing the
+manifest itself. The image also carries the wrapper and metadata store paths.
+The manifest is not a Nix database registration file or a producer signature.
+Publication must reject missing source revision/NAR identity, check the source
+and upstream lock against the approved pin, preserve the OCI manifest digest,
+and use a separate destination from the full bundle. Record that digest and the
+runtime manifest hash in an external release record, never inside this manifest.
+Project lock identity belongs to the consumer's configuration, not this image.
+
+`nix build .#runtime-oci-check` tests the four-root contract with tiny fixtures,
+including raw closure contents, NAR metadata and a digest-preserving local copy.
