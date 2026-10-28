@@ -100,4 +100,6 @@ rec {
   deploymentModules = self.deploymentModules;
 
 }
-  // modules
+// modules
+// mapAttrs' (id: module: nameValuePair "shell.${id}" module.shellPackage) self.modules
+  // mapAttrs' (id: module: nameValuePair "deployment-shell.${id}" module.shellPackage) self.deploymentModules

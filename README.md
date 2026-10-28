@@ -61,6 +61,70 @@ the Node.js 24 major that the SvelteKit module already used.
 
 ## Building
 
+### Pinned shell and toolchain outputs
+
+Existing module packages still build the same JSON files. The additive
+`shellPackages.x86_64-linux` and `deploymentShellPackages.x86_64-linux` maps
+expose setup-hook packages under the same IDs, including aliases and compatibility
+modules. The corresponding buildable package names are literal `shell.<id>` and
+`deployment-shell.<id>` keys; for example:
+
+```
+nix build '.#packages.x86_64-linux."shell.python-3.12"'
+```
+
+Use a locked nixmodules input without overriding or following any of its inputs.
+Aliases resolve within that pin; they do not promise the runtime version named by
+a retired ID. Pin changes require checking the resolved module paths, not just
+the requested IDs or display versions.
+
+```nix
+outputs = { nixpkgs, nixmodules, ... }:
+  let
+    toolchain = nixmodules.lib.mkToolchain {
+      moduleIds = [ "replit" "nodejs-24" "python-base-3.13" ];
+      deployment = false;
+    };
+  in {
+    packages.x86_64-linux.toolchain = toolchain;
+    devShells.x86_64-linux.default = nixpkgs.legacyPackages.x86_64-linux.mkShell {
+      packages = [ toolchain.shellPackage ];
+    };
+  };
+```
+
+`lib.mkToolchain { moduleIds; deployment ? false; }` builds a directory containing:
+
+* `modules.json`: an object keyed by each requested ID, containing the complete,
+  unchanged module JSON. Environment references such as `$REPL_HOME` remain literal.
+* `metadata.json`: `{ schemaVersion = 1; system; moduleIds; deployment;
+  resolvedModules; }`. The two arrays retain caller order. Each resolved entry
+  contains `id` (requested ID), `moduleId` (implementation ID), `modulePath`
+  (module JSON store path), and `shellPath` (module shell-package store path).
+* `shell`: a symlink to the aggregate setup-hook package, also exposed as the
+  derivation's `shellPackage` attribute.
+
+The directory's closure retains the selected runtime and IDE dependencies,
+including tools referenced only by command paths in the JSON. It does not merge
+user configuration, select default modules, or activate an environment. Supply
+every desired module explicitly. Unknown or duplicate IDs fail evaluation.
+Consumers must bind these outputs to their exact source and lockfile and verify
+the realized closure separately; `metadata.json` is not a provenance attestation.
+
+For shells, environment keys use last-module-wins order, while module PATH values
+are concatenated in selection order before the inherited PATH. Setup hooks expand
+`$NAME` and `${NAME}` references without evaluating shell commands, resolve
+dependencies between environment keys, and reject cycles. `REPL_HOME` defaults to
+the shell's working directory when unset. These hooks run in `nix develop` and
+`nix-shell`, not `nix shell` or `nix profile`. Runtime consumers still apply their
+own dynamic-variable expansion and configuration precedence to `modules.json`.
+
+`lib.mkBundle { moduleIds; deployment ? false; }` retains the existing
+`etc/nixmodules/modules.json` path-index layout and rejects unknown IDs. Omitting
+`moduleIds` includes the complete selected development or deployment map.
+Keep generated project flakes in a small dedicated directory rather than copying
+the entire project tree into the flake source.
+
 For each of the following examples, the build result will be found in a file or directory named `result`.
 
 To build the full bundle, including compatibility modules (this will take a while, and a lot of disk space):

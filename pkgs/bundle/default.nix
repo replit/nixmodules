@@ -11,13 +11,13 @@
 { pkgs, lib, self, ... }:
 with builtins;
 with pkgs.lib;
-{ moduleIds ? null }:
+{ moduleIds ? null, deployment ? false }:
 let
-  modules = self.modules;
+  modules = if deployment then self.deploymentModules else self.modules;
   filteredModules =
     if moduleIds == null
     then modules else
-      filterAttrs (moduleId: _: elem moduleId moduleIds) modules;
+      genAttrs moduleIds (id: modules.${id} or (throw "Unknown nixmodule: ${id}"));
   modulesMap = mapAttrs
     (name: drv: {
       path = drv.outPath;

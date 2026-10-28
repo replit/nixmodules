@@ -718,7 +718,9 @@ in
         };
 
       in
-      pkgs.writeText "replit-module-${config.id}" (builtins.toJSON moduleJSON);
+      pkgs.writeText "replit-module-${config.id}" (builtins.toJSON moduleJSON) // {
+        moduleConfig = moduleJSON;
+      };
 
     replit.buildDeploymentModule =
       let
@@ -746,6 +748,8 @@ in
         };
 
       in
-      pkgs.writeText "replit-deployment-module-${config.id}" (builtins.toJSON moduleJSON);
+      pkgs.writeText "replit-deployment-module-${config.id}" (builtins.toJSON moduleJSON) // {
+        moduleConfig = moduleJSON;
+      };
   };
 }
