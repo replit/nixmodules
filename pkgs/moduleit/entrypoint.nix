@@ -16,8 +16,23 @@ let
       modulesPath = builtins.toString ./.;
     };
   });
+  result =
+    if deployment then module.config.replit.buildDeploymentModule
+    else module.config.replit.buildModule;
+  packages = module.config.replit.packages
+    ++ pkgs.lib.optionals (!deployment) module.config.replit.dev.packages;
 in
-if deployment then
-  module.config.replit.buildDeploymentModule
-else
-  module.config.replit.buildModule
+pkgs.lib.lazyDerivation {
+  derivation = result;
+  passthru = {
+    moduleId = module.config.id;
+    moduleConfig = result.moduleConfig;
+    runtimePackages = packages;
+    shellPackage = pkgs.callPackage ./shell-package.nix {
+      name = "replit-${if deployment then "deployment-" else ""}shell-${module.config.id}";
+      inherit packages;
+      env = result.moduleConfig.env;
+      passthru.module = result;
+    };
+  };
+}

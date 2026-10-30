@@ -192,19 +192,8 @@ let
   modules = apply-upgrade-map (developmentModuleSet allModulesList);
   deploymentModules = apply-upgrade-map (deploymentModuleSet allModulesList);
 
-  get-module-id =
-    module:
-    let
-      match = builtins.match "^\/nix\/store\/([^-]+)-replit-module-(.+)$" module.outPath;
-    in
-    builtins.elemAt match 1;
-
-  get-deployment-module-id =
-    module:
-    let
-      match = builtins.match "^\/nix\/store\/([^-]+)-replit-deployment-module-(.+)$" module.outPath;
-    in
-    builtins.elemAt match 1;
+  get-module-id = module: module.moduleId;
+  get-deployment-module-id = module: module.moduleId;
 in
 {
   inherit

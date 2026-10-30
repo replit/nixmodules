@@ -11,9 +11,9 @@
 { pkgs, lib, self, ... }:
 with builtins;
 with pkgs.lib;
-{ moduleIds ? null }:
+{ moduleIds ? null, deployment ? false }:
 let
-  modules = self.modules;
+  modules = if deployment then self.deploymentModules else self.modules;
   filteredModules =
     if moduleIds == null
     then modules else

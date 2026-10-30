@@ -181,6 +181,11 @@
       packages.x86_64-linux = import ./pkgs {
         inherit pkgs self;
       };
+      shellPackages.x86_64-linux = pkgs.lib.mapAttrs (_: module: module.shellPackage) self.modules;
+      deploymentShellPackages.x86_64-linux = pkgs.lib.mapAttrs (_: module: module.shellPackage) self.deploymentModules;
+      lib.mkBundle = import ./pkgs/bundle/api.nix { inherit pkgs self; };
+      lib.mkToolchain = import ./pkgs/toolchain { inherit pkgs self; };
+      checks.x86_64-linux.flake-toolchain = import ./pkgs/toolchain/tests.nix { inherit pkgs; };
       checks.x86_64-linux.module-registry =
         assert import ./scripts/module-registry-test.nix;
         assert builtins.attrNames self.modules == builtins.attrNames self.deploymentModules;
