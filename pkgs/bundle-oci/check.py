@@ -89,6 +89,9 @@ with tarfile.open(archive, "r:gz") as source:
     assert all(not m.uname and not m.gname for m in members)
     assert all("atime" not in m.pax_headers and "ctime" not in m.pax_headers for m in members)
     assert [m.name for m in members] == sorted(m.name for m in members)
+    for member in members:
+        if member.islnk():
+            assert os.path.samefile(root / member.name, root / member.linkname)
 
 rebuilt = pathlib.Path("rebuilt.tar.gz")
 subprocess.run(["bash", str(layer_script), str(root), str(rebuilt)], check=True)
@@ -120,11 +123,37 @@ for path in paths:
     compare(pathlib.Path(path), root / path.lstrip("/"))
 for metadata in (bundle / "etc/nixmodules").iterdir():
     compare(metadata, root / "etc/nixmodules" / metadata.name)
-packed_dependency = root / str(dependency).lstrip("/")
-assert (packed_dependency / "data").stat().st_ino == (
-    packed_dependency / "hardlink"
-).stat().st_ino
-print("OCI descriptors, complete closure, metadata, content, modes, symlinks, ownership and hardlinks verified")
+print("OCI descriptors, complete closure, metadata, content, modes, symlinks and ownership verified")
+
+# NAR cache round-trips do not preserve inode sharing; create both topologies here.
+for linked in (True, False):
+    link_root = pathlib.Path("hardlinked" if linked else "unlinked")
+    link_root.mkdir()
+    (link_root / "data").write_bytes(b"link fixture\n")
+    if linked:
+        os.link(link_root / "data", link_root / "hardlink")
+    else:
+        shutil.copyfile(link_root / "data", link_root / "hardlink")
+    staged = link_root.with_name(link_root.name + "-staged")
+    subprocess.run(["cp", "-a", "--reflink=auto", str(link_root), str(staged)], check=True)
+    link_archive = link_root.with_suffix(".tar.gz")
+    subprocess.run(["bash", str(layer_script), str(staged), str(link_archive)], check=True)
+    with tarfile.open(link_archive, "r:gz") as source:
+        member = source.getmember("./hardlink")
+        assert member.islnk() == linked
+        if linked:
+            assert member.linkname == "./data"
+        else:
+            assert member.isfile()
+        assert source.extractfile(member).read() == b"link fixture\n"
+    restored = link_root.with_name(link_root.name + "-restored")
+    restored.mkdir()
+    subprocess.run([
+        "tar", "--extract", "--gzip", "--file", str(link_archive),
+        "--directory", str(restored), "--no-same-owner",
+    ], check=True)
+    assert os.path.samefile(restored / "data", restored / "hardlink") == linked
+print("Hardlinked and independent equal-byte files preserved through staging, layer and extraction")
 
 xattr_root = pathlib.Path("xattrs")
 xattr_root.mkdir()
