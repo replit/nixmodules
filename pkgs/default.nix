@@ -44,13 +44,9 @@ rec {
 
   bundle = bundle-fn { };
 
-  bundle-oci-check = pkgs.callPackage ./bundle-oci/check.nix { };
-
   node-python-runtime-oci = pkgs.callPackage ./runtime-oci {
     inherit self;
   };
-
-  runtime-oci-check = pkgs.callPackage ./runtime-oci/check.nix { inherit self; };
 
   custom-bundle = bundle-fn {
     moduleIds = dev-module-ids;
