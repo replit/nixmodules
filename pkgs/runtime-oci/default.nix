@@ -49,4 +49,4 @@ in
 assert pkgs.lib.assertMsg
   (moduleIds != [ ] && builtins.length moduleIds == builtins.length (pkgs.lib.unique moduleIds))
   "Runtime OCI module IDs must be nonempty and unique";
-image // { inherit runtimeManifest; }
+image // { inherit runtimeManifest moduleIds; }

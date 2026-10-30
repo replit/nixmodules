@@ -40,7 +40,9 @@ let
   rejects = self: ids: !(builtins.tryEval (mkImage self ids).drvPath).success;
 in
 assert !(self.packages.x86_64-linux ? bundle-oci);
+assert self.packages.x86_64-linux.node-python-runtime-oci.moduleIds == moduleIds;
 assert self.packages.x86_64-linux.node-python-runtime-oci.runtimeManifest.metadata.moduleIds == moduleIds;
+assert image.moduleIds == image.runtimeManifest.metadata.moduleIds;
 assert rejects fixture [ "missing" ];
 assert rejects fixture (moduleIds ++ [ "missing" ]);
 assert rejects (fixture // { deploymentModules = builtins.removeAttrs fixture.deploymentModules [ "nodejs-24" ]; }) moduleIds;

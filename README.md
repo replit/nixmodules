@@ -150,8 +150,10 @@ A small fixture exercises the shared builder without building the runtime:
 nix build .#bundle-oci-check
 ```
 
-The output retains the `bundle` OCI reference and provides `.copyTo` and
-`.runtimeManifest` attributes. The latter is the exact file linked into the
+The output retains the `bundle` OCI reference and provides `.moduleIds`, `.copyTo`
+and `.runtimeManifest` attributes. `.moduleIds` is the ordered selection used by
+both bundles and the manifest; it can be evaluated without building the image.
+`.runtimeManifest` is the exact file linked into the
 image at `/etc/nixmodules/runtime-manifest.json`. The development index stays at
 `/etc/nixmodules/modules.json`; the deployment index is
 `/etc/nixmodules/deployment-modules.json`.
