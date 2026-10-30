@@ -95,7 +95,7 @@ with tarfile.open(blob(layer), "r:gz") as archive:
     assert files.keys() == expected_files.keys()
     for name, source in expected_files.items():
         assert archive.extractfile(files[name]).read() == source.read_bytes()
-    for directory in ("nar", "realisations", "debuginfo", "log"):
+    for directory in ("nar", "realisations", "debuginfo", "log", "build-trace-v2"):
         assert archive.getmember("./nix-cache/" + directory).isdir()
     assert not any(member.name.startswith("./nix/") for member in members)
 
@@ -104,6 +104,18 @@ subprocess.run([str(assembler), "--cache", str(cache), "--output", str(repeated)
 for path in image.rglob("*"):
     if path.is_file():
         assert path.read_bytes() == (repeated / path.relative_to(image)).read_bytes()
+
+native_cache = pathlib.Path("native-cache")
+shutil.copytree(cache, native_cache)
+native_cache.chmod(0o755)
+(native_cache / "build-trace-v2").mkdir(exist_ok=True)
+native_image = pathlib.Path("native-image")
+subprocess.run([
+    str(assembler), "--cache", str(native_cache), "--output", str(native_image),
+], check=True)
+for path in image.rglob("*"):
+    if path.is_file():
+        assert path.read_bytes() == (native_image / path.relative_to(image)).read_bytes()
 
 
 def rejected(arguments):
@@ -120,12 +132,14 @@ rejected(["--cache", str(symlink), "--output", "rejected-symlink"])
 for name, kind in (
     ("unexpected", "file"), ("nar/symlink", "symlink"), ("nar/pipe", "fifo"),
     ("nix-cache-info", "missing"), ("nar/directory", "directory"),
+    ("build-trace-v2/unexpected", "file"), ("build-trace-v2/symlink", "symlink"),
 ):
     invalid = pathlib.Path("invalid")
     shutil.copytree(cache, invalid)
     for directory in (invalid, *(path for path in invalid.rglob("*") if path.is_dir())):
         directory.chmod(0o755)
     target = invalid / name
+    target.parent.mkdir(exist_ok=True)
     if kind == "file":
         target.write_bytes(b"unexpected")
     elif kind == "symlink":

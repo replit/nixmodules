@@ -15,7 +15,7 @@ def cache_files(cache):
     if cache.is_symlink() or not cache.is_dir():
         raise ValueError("cache must be a real directory")
     files = {}
-    directories = {"nar", "realisations", "debuginfo", "log"}
+    directories = {"nar", "realisations", "debuginfo", "log", "build-trace-v2"}
     for path in cache.rglob("*"):
         name = path.relative_to(cache).as_posix()
         mode = path.lstat().st_mode
@@ -45,6 +45,7 @@ def write_layer(cache, manifest, layer):
     directories = {
         ".", "etc", "etc/nixmodules", "nix-cache", "nix-cache/nar",
         "nix-cache/realisations", "nix-cache/debuginfo", "nix-cache/log",
+        "nix-cache/build-trace-v2",
     }
     # Stream the supplied NAR bytes into the layer, without another full cache copy.
     with layer.open("wb") as output:

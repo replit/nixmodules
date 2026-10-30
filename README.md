@@ -146,8 +146,8 @@ The resulting OCI layout has reference `bundle`, Linux/amd64 and an empty image
 config. It contains:
 
 - `/nix-cache/nix-cache-info`, signed `*.narinfo` and `nar/*` bytes unchanged.
-- Empty `nar`, `realisations`, `debuginfo` and `log` directories where needed so
-  native Nix can open the mounted cache read-only.
+- Empty `nar`, `realisations`, `debuginfo`, `log` and `build-trace-v2` directories
+  where needed so native Nix can open the mounted cache read-only.
 - A regular `/etc/nixmodules/runtime-manifest.json` audit file, with no store symlink.
 
 There is no raw `/nix/store`, registration database or duplicated module index.
