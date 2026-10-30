@@ -10,11 +10,12 @@
 , skopeo
 , revision ? null
 , sourceTimestamp ? null
+, flakeOutput
 }:
 
 let
   bundleClosure = closureInfo { rootPaths = [ bundle ]; };
-  metadata = builtins.toJSON { inherit revision sourceTimestamp; };
+  metadata = builtins.toJSON { inherit revision sourceTimestamp flakeOutput; };
   image = runCommand "nixmodules-bundle-oci"
     {
       nativeBuildInputs = [ gnutar gzip python3 ];

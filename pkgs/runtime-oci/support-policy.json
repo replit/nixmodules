@@ -1,0 +1,16 @@
+{
+  "reviewedOn": "2026-10-29",
+  "publishBefore": "2027-04-30",
+  "moduleIds": [
+    "nodejs-22",
+    "nodejs-24",
+    "python-base-3.11",
+    "python-base-3.12",
+    "python-base-3.13"
+  ],
+  "missingModuleIds": [
+    "nodejs-26",
+    "python-base-3.14",
+    "python-base-3.15"
+  ]
+}
