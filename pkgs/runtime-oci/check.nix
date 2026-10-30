@@ -1,4 +1,4 @@
-{ pkgs }:
+{ pkgs, self }:
 
 let
   moduleIds = [ "nodejs-24" "python-base-3.13" ];
@@ -39,6 +39,8 @@ let
   closure = pkgs.closureInfo { rootPaths = roots; };
   rejects = self: ids: !(builtins.tryEval (mkImage self ids).drvPath).success;
 in
+assert !(self.packages.x86_64-linux ? bundle-oci);
+assert self.packages.x86_64-linux.node-python-runtime-oci.runtimeManifest.metadata.moduleIds == moduleIds;
 assert rejects fixture [ "missing" ];
 assert rejects fixture (moduleIds ++ [ "missing" ]);
 assert rejects (fixture // { deploymentModules = builtins.removeAttrs fixture.deploymentModules [ "nodejs-24" ]; }) moduleIds;

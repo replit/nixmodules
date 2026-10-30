@@ -21,6 +21,7 @@ let
   }) { };
   image = pkgs.callPackage ./. {
     inherit bundle;
+    flakeOutput = "bundle-oci-check";
     revision = "0123456789abcdef0123456789abcdef01234567";
     sourceTimestamp = 1700000000;
   };

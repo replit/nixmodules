@@ -35,7 +35,7 @@ assert manifest["annotations"] == {
     "org.opencontainers.image.source": "https://github.com/replit/nixmodules",
     "org.opencontainers.image.revision": "0123456789abcdef0123456789abcdef01234567",
     "org.opencontainers.image.created": config["created"],
-    "dev.replit.nixmodules.flake-output": "bundle-oci",
+    "dev.replit.nixmodules.flake-output": "bundle-oci-check",
 }
 assert len(manifest["layers"]) == 1
 layer = manifest["layers"][0]
@@ -55,6 +55,7 @@ shutil.copyfile(archive, "repeated.tar.gz")
 layout.write_layout(pathlib.Path("repeated.tar.gz"), repeated, "x86_64", {
     "revision": "0123456789abcdef0123456789abcdef01234567",
     "sourceTimestamp": 1700000000,
+    "flakeOutput": "bundle-oci-check",
 })
 for path in image.rglob("*"):
     if path.is_file():
@@ -63,7 +64,7 @@ local = pathlib.Path("local")
 (local / "blobs/sha256").mkdir(parents=True)
 shutil.copyfile(archive, "local.tar.gz")
 layout.write_layout(pathlib.Path("local.tar.gz"), local, "x86_64", {
-    "revision": None, "sourceTimestamp": None,
+    "revision": None, "sourceTimestamp": None, "flakeOutput": "bundle-oci-check",
 })
 local_descriptor = json.loads((local / "index.json").read_text())["manifests"][0]
 local_manifest = json.loads(

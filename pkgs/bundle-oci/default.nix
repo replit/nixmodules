@@ -10,7 +10,7 @@
 , skopeo
 , revision ? null
 , sourceTimestamp ? null
-, flakeOutput ? "bundle-oci"
+, flakeOutput
 }:
 
 let

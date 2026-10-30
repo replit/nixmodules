@@ -93,10 +93,18 @@ or
 nix build .#custom-bundle-squashfs
 ```
 
-To build the full bundle as a gzip-compressed tar OCI image:
+### Selected Node/Python runtime image
+
+`node-python-runtime-oci` packages `nodejs-24` and `python-base-3.13`, including
+both development and deployment module JSON roots and their complete store
+closures. It does not include a project workspace or install project packages.
+The former full-image `bundle-oci` output and its `.copyTo` helper are removed.
+The full non-OCI `bundle` and disk outputs remain available.
+
+To build the selected runtime as a gzip-compressed tar OCI image:
 
 ```
-nix build .#bundle-oci
+nix build .#node-python-runtime-oci
 ```
 
 The result is an OCI image layout directory with the reference `bundle`, suitable
@@ -106,14 +114,14 @@ The output also provides a copy helper that keeps the exact image in its Nix
 closure and preserves the manifest digest:
 
 ```
-nix run .#bundle-oci.copyTo -- docker://REGISTRY/REPOSITORY:TAG --authfile ./auth.json --digestfile ./digest
+nix run .#node-python-runtime-oci.copyTo -- docker://REGISTRY/REPOSITORY:TAG --authfile ./auth.json --digestfile ./digest
 ```
 
 The destination can use any Skopeo-supported transport, including `oci:`.
 Additional arguments are passed to `skopeo copy`. The helper trusts the locally
 built source (`--insecure-policy`); registry TLS verification remains enabled.
 For a clean Git source, the manifest records the full flake revision, source URL
-`https://github.com/replit/nixmodules`, and output name `bundle-oci` in OCI
+`https://github.com/replit/nixmodules`, and output name `node-python-runtime-oci` in OCI
 annotations. The manifest creation annotation and config `created` field use
 the flake's last-modified timestamp in UTC, never the build's wall clock.
 Local sources without a clean revision omit the revision annotation; sources
@@ -126,8 +134,8 @@ The manifest describes the compressed blob's digest and size; the config's
 diffID is the digest of the uncompressed tar stream. Tar entry order,
 timestamps, ownership, extended headers and gzip headers are deterministic.
 
-The filesystem is generated directly from the same pinned full bundle used by
-`disk-script`: its complete store closure and `/etc/nixmodules` metadata, with
+The filesystem is generated directly from the selected development and deployment
+bundles: their complete store closures and `/etc/nixmodules` metadata, with
 unchanged store paths, file contents, modes and symlink targets. All guest
 UIDs/GIDs are 11000, matching the legacy disk builders. Existing disk and
 per-module OCI builders are unchanged. There is no disk conversion or dependency
@@ -136,18 +144,11 @@ that converts the tar to EROFS must leave filesystem compression disabled for
 files to remain DAX-eligible. This uses more unpacked disk space than compressed
 EROFS; it does not automatically share all guest memory.
 
-A small fixture exercises the producer without building the full bundle:
+A small fixture exercises the shared builder without building the runtime:
 
 ```
 nix build .#bundle-oci-check
 ```
-
-### Selected Node/Python runtime image
-
-`node-python-runtime-oci` uses the same OCI builder for `nodejs-24` and
-`python-base-3.13`, including both development and deployment module JSON roots
-and their complete store closures. It does not include a project workspace,
-install project packages, or change `bundle-oci`.
 
 The output retains the `bundle` OCI reference and provides `.copyTo` and
 `.runtimeManifest` attributes. The latter is the exact file linked into the
@@ -176,7 +177,8 @@ manifest itself. The image also carries the wrapper and metadata store paths.
 The manifest is not a Nix database registration file or a producer signature.
 Publication must reject missing source revision/NAR identity, check the source
 and upstream lock against the approved pin, preserve the OCI manifest digest,
-and use a separate destination from the full bundle. Record that digest and the
+and use a separate destination from historical full-bundle images. This change
+does not delete existing published images or rollback assets. Record that digest and the
 runtime manifest hash in an external release record, never inside this manifest.
 Project lock identity belongs to the consumer's configuration, not this image.
 
