@@ -22,6 +22,10 @@ let
         Z_BASE = "$REPL_HOME/base";
         BRACED = "\${Z_BASE}/braced";
         LITERAL = "$(touch /tmp/nixmodules-shell-injection) `false` \" ' \\";
+        PYTHONPATH = "$PYTHONPATH/suffix";
+        MISSING = "$NOT_PRESENT";
+        EMPTY = "";
+        MULTILINE = "first=line\nsecond=line";
         MODE = "deployment";
         PATH = "$Z_BASE/bin";
       };
@@ -89,6 +93,24 @@ let
     test "$(command -v runtime)" = "${runtime}/bin/runtime"
     touch "$out"
   '';
+  environmentInput = {
+    REPL_HOME = "/tmp/project with spaces";
+    PATH = "/original/path";
+    PYTHONPATH = "/inherited";
+  };
+  environmentArgs = lib.concatStringsSep " "
+    (lib.mapAttrsToList (key: value: lib.escapeShellArg "${key}=${value}") environmentInput);
+  decodeEnvironment = ''
+    split("\u0000")
+    | if last != "" then error("Missing trailing NUL") else .[:-1] end
+    | map(index("=") as $separator | {key: .[:$separator], value: .[$separator + 1:]})
+    | from_entries
+  '';
+  fixtures = {
+    development = toolchain;
+    deployment = deploymentToolchain;
+    override = overridden;
+  };
 in
 assert lazyModule.moduleId == "lazy";
 assert toolchain.metadata.moduleIds == [ "fixture" "alias" ];
@@ -132,6 +154,10 @@ pkgs.runCommand "flake-toolchain-check"
   cmp expected.json actual.json
   grep -Fx ${runtime} ${closure}/store-paths
   grep -Fx ${ide} ${closure}/store-paths
+  if grep -Fx ${pkgs.jq} ${closure}/store-paths; then
+    echo "Toolchain includes a JSON encoder dependency"
+    exit 1
+  fi
   if grep -Fx ${ide} ${deploymentClosure}/store-paths; then
     echo "Deployment includes a development-only IDE dependency" >&2
     exit 1
@@ -154,5 +180,34 @@ pkgs.runCommand "flake-toolchain-check"
     source ${overridden}/shell/nix-support/setup-hook
     test "$MODE" = last
   )
-  touch "$out"
+  ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: fixture: ''
+    mkdir -p "$out/${name}"
+    cp ${fixture}/metadata.json "$out/${name}/metadata.json"
+    cp ${fixture}/modules.json "$out/${name}/modules.json"
+    cp ${pkgs.writeText "environment-input.json" (builtins.toJSON environmentInput)} "$out/${name}/environment-input.json"
+    env -i ${environmentArgs} UNRELATED=not-exported \
+      ${fixture}/bin/replit-toolchain-env > "$out/${name}/environment.env0"
+    jq -RsS ${lib.escapeShellArg decodeEnvironment} "$out/${name}/environment.env0" \
+      > "$out/${name}/environment.json"
+    jq -e --arg literal ${lib.escapeShellArg definition.replit.env.LITERAL} '
+      .REPL_HOME == "/tmp/project with spaces"
+      and .A_DEPENDENT == "/tmp/project with spaces/base/child"
+      and .BRACED == "/tmp/project with spaces/base/braced"
+      and .PYTHONPATH == "/inherited/suffix"
+      and .MISSING == ""
+      and .EMPTY == ""
+      and .MULTILINE == "first=line\nsecond=line"
+      and .LITERAL == $literal
+      and (has("UNRELATED") | not)
+      and (has("HOME") | not)
+    ' "$out/${name}/environment.json"
+  '') fixtures)}
+  jq -e --arg path "/tmp/project with spaces/base/bin:${runtime}/bin:/tmp/project with spaces/base/bin:${runtime}/bin:/original/path" \
+    '.MODE == "development" and .PATH == $path' "$out/development/environment.json"
+  jq -e --arg path "/tmp/project with spaces/base/bin:${runtime}/bin:/original/path" \
+    '.MODE == "deployment" and .PATH == $path' "$out/deployment/environment.json"
+  jq -e '.MODE == "last"' "$out/override/environment.json"
+  env -i PATH="" ${toolchain}/bin/replit-toolchain-env \
+    | jq -RsS ${lib.escapeShellArg decodeEnvironment} > fallback-environment.json
+  jq -e --arg home "$PWD" '.REPL_HOME == $home and .PYTHONPATH == "/suffix"' fallback-environment.json
 ''

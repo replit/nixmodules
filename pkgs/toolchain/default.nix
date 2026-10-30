@@ -22,6 +22,13 @@ let
     inherit env;
     packages = lib.concatMap (module: module.runtimePackages) selected;
   };
+  environmentProgram = pkgs.writeShellScript "replit-toolchain-env" ''
+    set -euo pipefail
+    source ${shellPackage}/nix-support/setup-hook
+    ${lib.concatMapStringsSep "\n"
+      (key: "printf '%s=%s\\0' ${lib.escapeShellArg key} \"\${${key}}\"")
+      (builtins.attrNames (env // { REPL_HOME = ""; }))}
+  '';
   moduleConfigs = builtins.listToAttrs (lib.zipListsWith
     (id: module: { name = id; value = module.moduleConfig; })
     moduleIds
@@ -51,6 +58,7 @@ assert lib.assertMsg
   { name = "modules.json"; path = pkgs.writeText "modules.json" (builtins.toJSON moduleConfigs); }
   { name = "metadata.json"; path = pkgs.writeText "metadata.json" (builtins.toJSON metadata); }
   { name = "shell"; path = shellPackage; }
+  { name = "bin/replit-toolchain-env"; path = environmentProgram; }
 ]) // {
   inherit shellPackage moduleConfigs metadata;
 }
