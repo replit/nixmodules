@@ -1,98 +1,53 @@
-import base64
+import gzip
 import hashlib
-import importlib.util
 import json
+import os
 import pathlib
-import struct
+import shutil
 import subprocess
 import sys
+import tarfile
 
-image, manifest_file, registration, runtime, ide, deployment, script, lock = map(
+image, manifest_file, cache, closure_file, runtime, ide, deployment, assembler, lock = map(
     pathlib.Path, sys.argv[1:]
 )
-manifest = json.loads(manifest_file.read_text())
-assert manifest["schemaVersion"] == 1
+manifest = json.loads(manifest_file.read_bytes())
+assert set(manifest) == {
+    "schemaVersion", "kind", "source", "system", "flakeOutput",
+    "payload", "moduleIds", "modules", "supportPolicy",
+}
+assert manifest["schemaVersion"] == 2
 assert manifest["kind"] == "nixmodules-runtime"
 assert manifest["system"] == "x86_64-linux"
 assert manifest["flakeOutput"] == "node-python-runtime-oci"
-assert manifest["moduleIds"] == ["nodejs-24", "python-base-3.13"]
+assert manifest["payload"] == {"format": "native-file-cache-v1", "cachePath": "/nix-cache"}
+policy = manifest["supportPolicy"]
+assert manifest["moduleIds"] == policy["moduleIds"] == [
+    "nodejs-22", "nodejs-24", "python-base-3.11", "python-base-3.12", "python-base-3.13",
+]
+assert policy == {
+    "reviewedOn": "2026-10-29",
+    "publishBefore": "2027-04-30",
+    "moduleIds": manifest["moduleIds"],
+    "missingModuleIds": ["nodejs-26", "python-base-3.14", "python-base-3.15"],
+}
 assert manifest["source"] == {
     "url": "https://github.com/replit/nixmodules",
     "rev": "0123456789abcdef0123456789abcdef01234567",
     "narHash": "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
     "lockFileSha256": hashlib.sha256(lock.read_bytes()).hexdigest(),
 }
-assert [m["id"] for m in manifest["modules"]] == manifest["moduleIds"]
-roots = {m[key] for m in manifest["modules"] for key in ("developmentPath", "deploymentPath")}
-assert len(roots) == 4
-closure = manifest["closure"]
-paths = {entry["path"] for entry in closure}
-assert len(paths) == len(closure)
+assert [module["id"] for module in manifest["modules"]] == manifest["moduleIds"]
+roots = {
+    module[key] for module in manifest["modules"]
+    for key in ("developmentPath", "deploymentPath")
+}
+paths = set(closure_file.read_text().splitlines())
 assert roots | {str(runtime), str(ide), str(deployment)} <= paths
-assert [entry["path"] for entry in closure] == sorted(paths)
-canonical = json.dumps(closure, sort_keys=True, separators=(",", ":")).encode("utf-8")
-assert manifest["closureHash"] == "sha256:" + hashlib.sha256(canonical).hexdigest()
-for entry in closure:
-    assert entry["references"] == sorted(entry["references"])
-    assert set(entry["references"]) <= paths
-    assert len(base64.b64decode(entry["narHash"].removeprefix("sha256-"), validate=True)) == 32
-    assert entry["narSize"] > 0
-
-
-def nar_string(value):
-    return struct.pack("<Q", len(value)) + value + b"\x00" * (-len(value) % 8)
-
-
-for entry in closure:
-    path = pathlib.Path(entry["path"])
-    assert path.is_file() and not path.is_symlink()
-    nar = b"".join(nar_string(part) for part in (
-        b"nix-archive-1", b"(", b"type", b"regular", b"contents", path.read_bytes(), b")"
-    ))
-    assert entry["narSize"] == len(nar)
-    assert entry["narHash"] == "sha256-" + base64.b64encode(hashlib.sha256(nar).digest()).decode("ascii")
-
-spec = importlib.util.spec_from_file_location("runtime_manifest", script)
-generator = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(generator)
-assert generator.sri_hash("sha256:" + "0" * 52) == "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
-assert generator.sri_hash("sha256:" + "0" * 51 + "1") == "sha256-AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
-for invalid in ("sha512:" + "0" * 52, "sha256:short", "sha256:" + "z" * 52):
-    try:
-        generator.sri_hash(invalid)
-    except (ValueError, OverflowError):
-        pass
-    else:
-        raise AssertionError("accepted invalid NAR hash")
-
-lines = iter(registration.read_text().splitlines())
-registered = {}
-for path in lines:
-    nar_hash, nar_size, deriver, count = next(lines), next(lines), next(lines), int(next(lines))
-    registered[path] = {
-        "path": path,
-        "narHash": generator.sri_hash(nar_hash),
-        "narSize": int(nar_size),
-        "references": sorted(next(lines) for _ in range(count)),
-    }
-assert closure == sorted(registered.values(), key=lambda entry: entry["path"])
-graph = []
-alphabet = "0123456789abcdfghijklmnpqrsvwxyz"
-for entry in reversed(closure):
-    raw_hash = base64.b64decode(entry["narHash"].removeprefix("sha256-"))
-    number = int.from_bytes(raw_hash, "little")
-    nix_hash = "".join(alphabet[(number >> shift) & 31] for shift in range(255, -1, -5))
-    graph.append({**entry, "narHash": "sha256:" + nix_hash, "references": list(reversed(entry["references"]))})
-repeated = pathlib.Path("repeated-manifest.json")
-generator.write_manifest({
-    "metadata": {k: v for k, v in manifest.items() if k not in ("closure", "closureHash")},
-    "closure": graph,
-}, repeated)
-assert repeated.read_bytes() == manifest_file.read_bytes()
-
-index = json.loads((image / "index.json").read_text())
-descriptor = index["manifests"][0]
-assert descriptor["annotations"]["org.opencontainers.image.ref.name"] == "bundle"
+assert len(roots) == 2 * len(manifest["moduleIds"])
+assert {path.name for path in cache.glob("*.narinfo")} == {
+    pathlib.Path(path).name.split("-")[0] + ".narinfo" for path in paths
+}
 
 
 def blob(descriptor):
@@ -102,36 +57,87 @@ def blob(descriptor):
     return path
 
 
-oci = json.loads(blob(descriptor).read_text())
-assert oci["annotations"]["dev.replit.nixmodules.flake-output"] == manifest["flakeOutput"]
-assert oci["annotations"]["org.opencontainers.image.revision"] == manifest["source"]["rev"]
+assert json.loads((image / "oci-layout").read_bytes()) == {"imageLayoutVersion": "1.0.0"}
+index = json.loads((image / "index.json").read_bytes())
+descriptor = index["manifests"][0]
+assert descriptor["annotations"]["org.opencontainers.image.ref.name"] == "bundle"
+oci = json.loads(blob(descriptor).read_bytes())
+assert oci["annotations"] == {
+    "dev.replit.nixmodules.flake-output": manifest["flakeOutput"],
+    "dev.replit.nixmodules.payload-format": "native-file-cache-v1",
+    "org.opencontainers.image.source": manifest["source"]["url"],
+    "org.opencontainers.image.revision": manifest["source"]["rev"],
+    "org.opencontainers.image.created": "2023-11-14T22:13:20Z",
+}
 assert len(oci["layers"]) == 1
-assert oci["layers"][0]["mediaType"] == "application/vnd.oci.image.layer.v1.tar+gzip"
-assert json.loads(blob(oci["config"]).read_text())["config"] == {}
-root = pathlib.Path("extracted")
-root.mkdir()
-subprocess.run([
-    "tar", "-xzf", str(blob(oci["layers"][0])), "-C", str(root), "--no-same-owner"
-], check=True)
-for path in paths:
-    assert (root / path.lstrip("/")).read_bytes() == pathlib.Path(path).read_bytes()
-for module in manifest["modules"]:
-    assert json.loads((root / module["developmentPath"].lstrip("/")).read_text())["id"] == module["id"]
-    assert json.loads((root / module["deploymentPath"].lstrip("/")).read_text())["id"] == module["id"]
+layer = oci["layers"][0]
+assert layer["mediaType"] == "application/vnd.oci.image.layer.v1.tar+gzip"
+config = json.loads(blob(oci["config"]).read_bytes())
+assert config["config"] == {}
+assert config["architecture"] == "amd64" and config["os"] == "linux"
+assert config["rootfs"] == {
+    "type": "layers",
+    "diff_ids": ["sha256:" + hashlib.sha256(gzip.decompress(blob(layer).read_bytes())).hexdigest()],
+}
+assert blob(layer).read_bytes()[3:8] == b"\x00" * 5
+with tarfile.open(blob(layer), "r:gz") as archive:
+    members = archive.getmembers()
+    assert [member.name for member in members] == sorted(member.name for member in members)
+    assert all(member.uid == member.gid == 11000 and member.mtime == 1 for member in members)
+    assert all(not member.issym() and not member.islnk() for member in members)
+    assert all(member.mode == (0o755 if member.isdir() else 0o444) for member in members)
+    files = {member.name.removeprefix("./"): member for member in members if member.isfile()}
+    expected_files = {
+        "nix-cache/" + path.relative_to(cache).as_posix(): path
+        for path in cache.rglob("*") if path.is_file()
+    }
+    expected_files["etc/nixmodules/runtime-manifest.json"] = manifest_file
+    assert files.keys() == expected_files.keys()
+    for name, source in expected_files.items():
+        assert archive.extractfile(files[name]).read() == source.read_bytes()
+    for directory in ("nar", "realisations", "debuginfo", "log"):
+        assert archive.getmember("./nix-cache/" + directory).isdir()
+    assert not any(member.name.startswith("./nix/") for member in members)
+
+repeated = pathlib.Path("repeated")
+subprocess.run([str(assembler), "--cache", str(cache), "--output", str(repeated)], check=True)
+for path in image.rglob("*"):
+    if path.is_file():
+        assert path.read_bytes() == (repeated / path.relative_to(image)).read_bytes()
 
 
-def metadata(name):
-    path = root / "etc/nixmodules" / name
-    target = path.readlink()
-    # Resolve the absolute store symlink inside the unpacked image, not the builder store.
-    while True:
-        resolved = root / str(target).lstrip("/")
-        if not resolved.is_symlink():
-            return resolved.read_bytes()
-        target = resolved.readlink()
+def rejected(arguments):
+    result = subprocess.run([str(assembler), *arguments], capture_output=True)
+    assert result.returncode != 0
 
 
-assert metadata("runtime-manifest.json") == manifest_file.read_bytes()
-for name, key in (("modules.json", "developmentPath"), ("deployment-modules.json", "deploymentPath")):
-    assert json.loads(metadata(name)) == {m["id"]: {"path": m[key]} for m in manifest["modules"]}
-print("Four roots, complete runtime NAR graph, source identity, OCI metadata and raw payload verified")
+rejected([])
+rejected(["--cache", str(cache), "--output", str(image)])
+rejected(["--cache", str(cache), "--output", str(cache / "nested")])
+symlink = pathlib.Path("cache-link")
+symlink.symlink_to(cache)
+rejected(["--cache", str(symlink), "--output", "rejected-symlink"])
+for name, kind in (
+    ("unexpected", "file"), ("nar/symlink", "symlink"), ("nar/pipe", "fifo"),
+    ("nix-cache-info", "missing"), ("nar/directory", "directory"),
+):
+    invalid = pathlib.Path("invalid")
+    shutil.copytree(cache, invalid)
+    for directory in (invalid, *(path for path in invalid.rglob("*") if path.is_dir())):
+        directory.chmod(0o755)
+    target = invalid / name
+    if kind == "file":
+        target.write_bytes(b"unexpected")
+    elif kind == "symlink":
+        target.symlink_to(manifest_file)
+    elif kind == "fifo":
+        os.mkfifo(target)
+    elif kind == "missing":
+        target.unlink()
+    else:
+        target.mkdir()
+    rejected(["--cache", str(invalid), "--output", "rejected-cache"])
+    assert not pathlib.Path("rejected-cache").exists()
+    shutil.rmtree(invalid)
+print("Native-cache fixture bytes, variable roots, support policy, OCI digests, determinism and rejection cases passed")
+print("The fixture cache is unsigned; signature verification belongs to the publisher/native consumer")

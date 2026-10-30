@@ -15,6 +15,8 @@ def write_layout(layer, output, architecture, metadata):
         "org.opencontainers.image.source": "https://github.com/replit/nixmodules",
         "dev.replit.nixmodules.flake-output": metadata["flakeOutput"],
     }
+    if "payloadFormat" in metadata:
+        annotations["dev.replit.nixmodules.payload-format"] = metadata["payloadFormat"]
     revision = metadata["revision"]
     if revision is not None:
         if len(revision) != 40 or any(c not in "0123456789abcdef" for c in revision):

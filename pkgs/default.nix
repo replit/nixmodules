@@ -48,7 +48,6 @@ rec {
 
   node-python-runtime-oci = pkgs.callPackage ./runtime-oci {
     inherit self;
-    moduleIds = [ "nodejs-24" "python-base-3.13" ];
   };
 
   runtime-oci-check = pkgs.callPackage ./runtime-oci/check.nix { inherit self; };
