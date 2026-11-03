@@ -119,6 +119,9 @@ let
     (import ./dotnet {
       dotnet = pkgs.dotnet-sdk_10;
     })
+    (import ./dotnet {
+      dotnet = pkgs.callPackage ../dotnet-11 { };
+    })
     (import ./haskell)
     (import ./java)
     (import ./lua)
