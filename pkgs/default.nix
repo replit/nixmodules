@@ -25,6 +25,18 @@ let
     ztoc-rs = self.inputs.ztoc-rs.packages.x86_64-linux.default;
   };
 
+  phony-oci-bundles = mapAttrs
+    (
+      moduleId: _:
+        mkPhonyOCI {
+          inherit moduleId;
+          module = self.deploymentModules.${moduleId};
+        }
+    )
+    modules;
+
+  prefixedPackages = prefix: mapAttrs' (name: value: nameValuePair "${prefix}.${name}" value);
+
   bundle-fn = pkgs.callPackage ./bundle { inherit self; };
 
   bundle-squashfs-fn =
@@ -41,6 +53,8 @@ in
 rec {
   default = moduleit;
   moduleit = pkgs.callPackage ./moduleit { };
+
+  nixmodules-mirror-publish = pkgs.callPackage ./nixmodules-mirror-publish.nix { };
 
   bundle = bundle-fn { };
 
@@ -83,19 +97,9 @@ rec {
     diskName = "disk.sqsh";
   };
 
-  phony-oci-bundles = mapAttrs
-    (
-      moduleId: _:
-        mkPhonyOCI {
-          inherit moduleId;
-          module = self.deploymentModules.${moduleId};
-        }
-    )
-    modules;
-
-  deploymentModules = self.deploymentModules;
-
 }
 // modules
 // mapAttrs' (id: module: nameValuePair "shell.${id}" module.shellPackage) self.modules
   // mapAttrs' (id: module: nameValuePair "deployment-shell.${id}" module.shellPackage) self.deploymentModules
+  // prefixedPackages "deploymentModules" self.deploymentModules
+  // prefixedPackages "phony-oci-bundles" phony-oci-bundles

@@ -181,6 +181,9 @@
       packages.x86_64-linux = import ./pkgs {
         inherit pkgs self;
       };
+      phony-oci-bundles = builtins.mapAttrs
+        (id: _: self.packages.x86_64-linux."phony-oci-bundles.${id}")
+        self.modules;
       shellPackages.x86_64-linux = pkgs.lib.mapAttrs (_: module: module.shellPackage) self.modules;
       deploymentShellPackages.x86_64-linux = pkgs.lib.mapAttrs (_: module: module.shellPackage) self.deploymentModules;
       lib.mkBundle = import ./pkgs/bundle/api.nix { inherit pkgs self; };
