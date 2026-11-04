@@ -54,7 +54,32 @@ rec {
   default = moduleit;
   moduleit = pkgs.callPackage ./moduleit { };
 
-  nixmodules-mirror-publish = pkgs.callPackage ./nixmodules-mirror-publish.nix { };
+  nixmodules-mirror-inputs = pkgs.linkFarm "nixmodules-mirror-inputs-${revstring_long}" [
+    {
+      name = "development";
+      path = bundle;
+    }
+    {
+      name = "deployment";
+      path = bundle-fn { deployment = true; };
+    }
+    {
+      name = "module-registry";
+      path = self.checks.x86_64-linux.module-registry;
+    }
+    {
+      name = "flake-toolchain";
+      path = self.checks.x86_64-linux.flake-toolchain;
+    }
+    {
+      name = "pip-user-site";
+      path = self.checks.x86_64-linux.pip-user-site;
+    }
+  ];
+
+  nixmodules-mirror-publish = pkgs.callPackage ./nixmodules-mirror-publish.nix {
+    mirrorInputs = nixmodules-mirror-inputs;
+  };
 
   bundle = bundle-fn { };
 
