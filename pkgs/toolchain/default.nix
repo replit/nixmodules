@@ -1,6 +1,7 @@
 { pkgs, self }:
 { moduleIds
 , deployment ? false
+, packages ? [ ]
 }:
 let
   inherit (pkgs) lib;
@@ -8,7 +9,7 @@ let
   selected = map
     (id: available.${id} or (throw "Unknown nixmodule: ${id}"))
     moduleIds;
-  env = lib.foldl'
+  moduleEnv = lib.foldl'
     (acc: module:
       let
         next = module.moduleConfig.env;
@@ -17,10 +18,18 @@ let
       acc // next // { PATH = lib.concatStringsSep ":" paths; })
     { }
     selected;
+  env = moduleEnv // lib.optionalAttrs (packages != [ ]) {
+    PATH = lib.concatStringsSep ":" (builtins.filter (path: path != "") [
+      (moduleEnv.PATH or "")
+      (lib.makeBinPath packages)
+    ]);
+  };
   shellPackage = pkgs.callPackage ../moduleit/shell-package.nix {
     name = "replit-toolchain-shell";
     inherit env;
-    packages = lib.concatMap (module: module.runtimePackages) selected;
+    # Environment expansion can lose string context for split binary outputs.
+    packages = lib.concatMap (module: module.runtimePackages) selected
+      ++ lib.unique (packages ++ map lib.getBin packages);
   };
   environmentProgram = pkgs.writeShellScript "replit-toolchain-env" ''
     set -euo pipefail
@@ -54,6 +63,9 @@ assert lib.assertMsg
 assert lib.assertMsg
   (builtins.length moduleIds == builtins.length (lib.unique moduleIds))
   "Duplicate nixmodule IDs";
+assert lib.assertMsg
+  (builtins.isList packages && builtins.all lib.isDerivation packages)
+  "packages must be a list of derivations";
 (pkgs.linkFarm "replit-toolchain" [
   { name = "modules.json"; path = pkgs.writeText "modules.json" (builtins.toJSON moduleConfigs); }
   { name = "metadata.json"; path = pkgs.writeText "metadata.json" (builtins.toJSON metadata); }

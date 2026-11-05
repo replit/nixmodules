@@ -12,6 +12,14 @@ let
     HOOK
   '';
   ide = pkgs.writeText "toolchain-test-ide" "IDE-only dependency";
+  extraPackage = pkgs.runCommand "toolchain-test-extra-package"
+    { outputs = [ "out" "bin" ]; } ''
+    mkdir -p "$out/share" "$bin/bin"
+    echo "runtime data" > "$out/share/data"
+    printf '#!${pkgs.runtimeShell}\nprintf "extra-package-ok\\n"\n' > "$bin/bin/extra-command"
+    chmod +x "$bin/bin/extra-command"
+    ln -s extra-command "$bin/bin/runtime"
+  '';
   definition = {
     id = "fixture";
     name = "Fixture";
@@ -111,6 +119,19 @@ let
     deployment = deploymentToolchain;
     override = overridden;
   };
+  packageFixtures = lib.genAttrs
+    [ "development-only" "deployment-only" "development-mixed" "deployment-mixed" ]
+    (name:
+      let
+        deployment = lib.hasPrefix "deployment-" name;
+        moduleIds = lib.optionals (lib.hasSuffix "-mixed" name) [ "fixture" ];
+        baseline = mkToolchain { inherit moduleIds deployment; };
+        composed = mkToolchain { inherit moduleIds deployment; packages = [ extraPackage ]; };
+      in
+      {
+        inherit baseline composed;
+        closure = pkgs.closureInfo { rootPaths = [ composed ]; };
+      });
 in
 assert lazyModule.moduleId == "lazy";
 assert toolchain.metadata.moduleIds == [ "fixture" "alias" ];
@@ -123,6 +144,18 @@ assert development.moduleConfig.env.MODE == "development";
 assert deployment.moduleConfig.env.MODE == "deployment";
 assert fails (mkToolchain { moduleIds = [ "missing" ]; }).outPath;
 assert fails (mkToolchain { moduleIds = [ "fixture" "fixture" ]; }).outPath;
+assert fails (mkToolchain { moduleIds = [ ]; packages = "invalid"; }).outPath;
+assert fails (mkToolchain { moduleIds = [ ]; packages = [ "invalid" ]; }).outPath;
+assert fails (mkToolchain { moduleIds = [ ]; packages = [{ outPath = "/invalid"; }]; }).outPath;
+assert builtins.all
+  (fixture:
+  fixture.baseline.metadata == fixture.composed.metadata
+  && fixture.baseline.moduleConfigs == fixture.composed.moduleConfigs
+    && fixture.baseline.outPath == (mkToolchain {
+    inherit (fixture.baseline.metadata) moduleIds deployment;
+    packages = [ ];
+  }).outPath)
+  (builtins.attrValues packageFixtures);
 assert fails (mkBundle { moduleIds = [ "missing" ]; }).outPath;
 assert fails (mkBundle { moduleIds = [ "fixture" "missing" ]; }).outPath;
 assert fails (mkBundle { moduleIds = [ "missing" ]; deployment = true; }).outPath;
@@ -210,4 +243,39 @@ pkgs.runCommand "flake-toolchain-check"
   env -i PATH="" ${toolchain}/bin/replit-toolchain-env \
     | jq -RsS ${lib.escapeShellArg decodeEnvironment} > fallback-environment.json
   jq -e --arg home "$PWD" '.REPL_HOME == $home and .PYTHONPATH == "/suffix"' fallback-environment.json
+  ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: fixture:
+    let
+      mixed = fixture.composed.metadata.moduleIds != [ ];
+      expectedPath = lib.optionalString mixed "/tmp/project with spaces/base/bin:${runtime}/bin:"
+        + "${lib.getBin extraPackage}/bin:/original/path";
+    in ''
+      cmp ${fixture.baseline}/metadata.json ${fixture.composed}/metadata.json
+      cmp ${fixture.baseline}/modules.json ${fixture.composed}/modules.json
+      grep -Fx ${extraPackage} ${fixture.closure}/store-paths
+      grep -Fx ${lib.getBin extraPackage} ${fixture.closure}/store-paths
+      if grep -Fx ${extraPackage} ${fixture.baseline.shellPackage}/nix-support/runtime-dependencies; then
+        echo "Default toolchain retained an unselected package" >&2
+        exit 1
+      fi
+      env -i ${environmentArgs} ${fixture.composed}/bin/replit-toolchain-env > ${name}.env0
+      jq -RsS ${lib.escapeShellArg decodeEnvironment} ${name}.env0 > ${name}.json
+      jq -e --arg path ${lib.escapeShellArg expectedPath} '.PATH == $path' ${name}.json
+      (
+        mapfile -d "" -t environment < ${name}.env0
+        export "''${environment[@]}"
+        test "$(extra-command)" = "extra-package-ok"
+        test "$(command -v runtime)" = "${if mixed then runtime else lib.getBin extraPackage}/bin/runtime"
+        ${lib.optionalString mixed ''
+          runtime
+          test "$MODE" = "${if fixture.composed.metadata.deployment then "deployment" else "development"}"
+        ''}
+      )
+      (
+        export REPL_HOME="/tmp/project with spaces"
+        export PATH="/original/path"
+        source ${fixture.composed}/shell/nix-support/setup-hook
+        test "$PATH" = ${lib.escapeShellArg expectedPath}
+        test "$(extra-command)" = "extra-package-ok"
+      )
+    '') packageFixtures)}
 ''
