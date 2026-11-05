@@ -125,6 +125,6 @@ rec {
 }
 // modules
 // mapAttrs' (id: module: nameValuePair "shell.${id}" module.shellPackage) self.modules
-  // mapAttrs' (id: module: nameValuePair "deployment-shell.${id}" module.shellPackage) self.deploymentModules
-  // prefixedPackages "deploymentModules" self.deploymentModules
+// mapAttrs' (id: module: nameValuePair "deployment-shell.${id}" module.shellPackage) self.deploymentModules
+// prefixedPackages "deploymentModules" self.deploymentModules
   // prefixedPackages "phony-oci-bundles" phony-oci-bundles

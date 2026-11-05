@@ -8,7 +8,7 @@
   ];
 
   test.nixmodules-mirror = {
-    enable = false;
+    enable = true;
     package = "packages.x86_64-linux.nixmodules-mirror-publish";
     system = "x86_64-linux";
     branches = [ "main" ];
