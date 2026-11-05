@@ -75,7 +75,7 @@ To build only a few modules which you can control by editing the `dev-module-ids
 nix build .#custom-bundle
 ```
 
-To build a specific module's package (its setup hook and module JSON), for example `python-3.10`, you can do:
+To build a specific module's package (a directory with its setup hook and module JSON), for example `python-3.10`, you can do:
 
 ```
 nix build .#'"python-3.10"'
@@ -83,8 +83,10 @@ nix build .#'"python-3.10"'
 
 ### Using modules in a devShell
 
-Each module package is a setup hook. Listed in `mkShell`, it exports the module's
-environment and PATH, and appends its metadata directory to `REPLIT_MODULES`:
+Repl flakes list module packages in `mkShell`. When the shell starts, each one
+applies the module's environment and PATH (the same one a Repl gets, with
+`REPL_HOME` defaulting to the working directory) and adds its metadata directory
+to `REPLIT_MODULES`. If two modules set the same variable, the first one listed wins:
 
 ```nix
 devShells.x86_64-linux.default = pkgs.mkShell {

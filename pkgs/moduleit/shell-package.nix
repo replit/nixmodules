@@ -39,9 +39,15 @@ runCommand name { } ''
   # The IDE finds module metadata through REPLIT_MODULES; its store paths keep LSPs and runners alive.
   cp ${module} "$out/share/replit/modules/${moduleId}.json"
   {
-    cat ${writeText "${name}-hook" hook}
-    echo "addToSearchPath REPLIT_MODULES $out/share/replit/modules"
-  } > "$out/nix-support/setup-hook"
+    cat ${writeText "${name}-env" hook}
+    echo "export REPLIT_MODULES=\"$out/share/replit/modules\''${REPLIT_MODULES:+:\$REPLIT_MODULES}\""
+  } > "$out/nix-support/replit-env"
+  # Apply the env when the shell starts, not when nix captures it in the build sandbox.
+  # Prepending makes the first-listed module win, both for PATH and plain variables.
+  cat > "$out/nix-support/setup-hook" <<EOF
+  shellHook="source $out/nix-support/replit-env
+  \''${shellHook-}"
+  EOF
   # Keep runtime references without running their compiler build hooks.
   printf '%s\n' ${lib.escapeShellArg (lib.concatMapStringsSep "\n" toString packages)} \
     > "$out/nix-support/runtime-dependencies"

@@ -80,13 +80,16 @@ let
     packages = [ ];
     env = { A = "$B"; B = "$A"; };
   };
-  # Two module packages in one shell, as a repl flake's mkShell would list them.
+  decoy = pkgs.writeShellApplication { name = "runtime"; text = "exit 1"; };
+  # What nix develop does: capture the env in a build, then run shellHook in the user's shell.
   shellSmoke = pkgs.runCommand "module-shell-smoke"
     {
-      nativeBuildInputs = [ self.modules.alias.shellPackage self.modules.override.shellPackage ];
-      REPL_HOME = "/tmp/project with spaces";
+      nativeBuildInputs = [ decoy self.modules.alias.shellPackage self.modules.override.shellPackage ];
     } ''
-    test "$MODE" = last
+    test -z "''${MODE-}"
+    export REPL_HOME="/tmp/project with spaces"
+    eval "$shellHook"
+    test "$MODE" = development
     test "$A_DEPENDENT" = "$REPL_HOME/base/child"
     test "$(command -v runtime)" = "${runtime}/bin/runtime"
     test "$REPLIT_MODULES" = "${development.shellPackage}/share/replit/modules:${self.modules.override.shellPackage}/share/replit/modules"
@@ -125,7 +128,7 @@ pkgs.runCommand "module-shell-check"
     export PATH="/original/path"
     export PYTHONPATH="/inherited"
     unset REPLIT_MODULES
-    source ${development.shellPackage}/nix-support/setup-hook
+    source ${development.shellPackage}/nix-support/replit-env
     test "$A_DEPENDENT" = "$REPL_HOME/base/child"
     test "$BRACED" = "$REPL_HOME/base/braced"
     test "$LITERAL" = ${lib.escapeShellArg definition.replit.env.LITERAL}
@@ -139,7 +142,7 @@ pkgs.runCommand "module-shell-check"
   )
   (
     unset REPL_HOME PYTHONPATH
-    source ${development.shellPackage}/nix-support/setup-hook
+    source ${development.shellPackage}/nix-support/replit-env
     test "$REPL_HOME" = "$PWD"
     test "$PYTHONPATH" = "/suffix"
   )
