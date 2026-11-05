@@ -25,6 +25,18 @@ let
     ztoc-rs = self.inputs.ztoc-rs.packages.x86_64-linux.default;
   };
 
+  phony-oci-bundles = mapAttrs
+    (
+      moduleId: _:
+        mkPhonyOCI {
+          inherit moduleId;
+          module = self.deploymentModules.${moduleId};
+        }
+    )
+    modules;
+
+  prefixedPackages = prefix: mapAttrs' (name: value: nameValuePair "${prefix}.${name}" value);
+
   bundle-fn = pkgs.callPackage ./bundle { inherit self; };
 
   bundle-squashfs-fn =
@@ -41,6 +53,33 @@ in
 rec {
   default = moduleit;
   moduleit = pkgs.callPackage ./moduleit { };
+
+  nixmodules-mirror-inputs = pkgs.linkFarm "nixmodules-mirror-inputs-${revstring_long}" [
+    {
+      name = "development";
+      path = bundle;
+    }
+    {
+      name = "deployment";
+      path = bundle-fn { deployment = true; };
+    }
+    {
+      name = "module-registry";
+      path = self.checks.x86_64-linux.module-registry;
+    }
+    {
+      name = "flake-toolchain";
+      path = self.checks.x86_64-linux.flake-toolchain;
+    }
+    {
+      name = "pip-user-site";
+      path = self.checks.x86_64-linux.pip-user-site;
+    }
+  ];
+
+  nixmodules-mirror-publish = pkgs.callPackage ./nixmodules-mirror-publish.nix {
+    mirrorInputs = nixmodules-mirror-inputs;
+  };
 
   bundle = bundle-fn { };
 
@@ -83,19 +122,9 @@ rec {
     diskName = "disk.sqsh";
   };
 
-  phony-oci-bundles = mapAttrs
-    (
-      moduleId: _:
-        mkPhonyOCI {
-          inherit moduleId;
-          module = self.deploymentModules.${moduleId};
-        }
-    )
-    modules;
-
-  deploymentModules = self.deploymentModules;
-
 }
 // modules
 // mapAttrs' (id: module: nameValuePair "shell.${id}" module.shellPackage) self.modules
-  // mapAttrs' (id: module: nameValuePair "deployment-shell.${id}" module.shellPackage) self.deploymentModules
+// mapAttrs' (id: module: nameValuePair "deployment-shell.${id}" module.shellPackage) self.deploymentModules
+// prefixedPackages "deploymentModules" self.deploymentModules
+  // prefixedPackages "phony-oci-bundles" phony-oci-bundles
