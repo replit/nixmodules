@@ -85,11 +85,13 @@ let
   shellSmoke = pkgs.runCommand "module-shell-smoke"
     {
       nativeBuildInputs = [ decoy self.modules.alias.shellPackage self.modules.override.shellPackage ];
+      shellHook = "export USER_HOOK_MODE=$MODE";
     } ''
     test -z "''${MODE-}"
     export REPL_HOME="/tmp/project with spaces"
     eval "$shellHook"
     test "$MODE" = development
+    test "$USER_HOOK_MODE" = development
     test "$A_DEPENDENT" = "$REPL_HOME/base/child"
     test "$(command -v runtime)" = "${runtime}/bin/runtime"
     test "$REPLIT_MODULES" = "${development.shellPackage}/share/replit/modules:${self.modules.override.shellPackage}/share/replit/modules"
