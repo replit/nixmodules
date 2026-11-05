@@ -68,8 +68,8 @@ rec {
       path = self.checks.x86_64-linux.module-registry;
     }
     {
-      name = "flake-toolchain";
-      path = self.checks.x86_64-linux.flake-toolchain;
+      name = "module-shell";
+      path = self.checks.x86_64-linux.module-shell;
     }
     {
       name = "pip-user-site";
@@ -123,8 +123,6 @@ rec {
   };
 
 }
-// modules
-// mapAttrs' (id: module: nameValuePair "shell.${id}" module.shellPackage) self.modules
-// mapAttrs' (id: module: nameValuePair "deployment-shell.${id}" module.shellPackage) self.deploymentModules
+// mapAttrs (_: module: module.shellPackage) modules
 // prefixedPackages "deploymentModules" self.deploymentModules
   // prefixedPackages "phony-oci-bundles" phony-oci-bundles

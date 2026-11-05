@@ -19,20 +19,18 @@ let
   result =
     if deployment then module.config.replit.buildDeploymentModule
     else module.config.replit.buildModule;
-  packages = module.config.replit.packages
-    ++ pkgs.lib.optionals (!deployment) module.config.replit.dev.packages;
 in
 pkgs.lib.lazyDerivation {
   derivation = result;
   passthru = {
     moduleId = module.config.id;
-    moduleConfig = result.moduleConfig;
-    runtimePackages = packages;
+  } // pkgs.lib.optionalAttrs (!deployment) {
     shellPackage = pkgs.callPackage ./shell-package.nix {
-      name = "replit-${if deployment then "deployment-" else ""}shell-${module.config.id}";
-      inherit packages;
+      name = "replit-shell-${module.config.id}";
+      moduleId = module.config.id;
+      module = result;
+      packages = module.config.replit.packages ++ module.config.replit.dev.packages;
       env = result.moduleConfig.env;
-      passthru.module = result;
     };
   };
 }
