@@ -2,9 +2,10 @@
 , runCommand
 , writeText
 , name
+, moduleId
+, module
 , packages
 , env
-, passthru ? { }
 }:
 let
   variablePattern = "[a-zA-Z_][a-zA-Z0-9_]*";
@@ -33,14 +34,15 @@ let
       + lib.optionalString (key == "PATH") "\${PATH:+:}\"$PATH\"")
       ordered.result + "\n";
 in
-runCommand name
-{
-  inherit passthru;
-}
-  ''
-    mkdir -p "$out/nix-support"
-    cp ${writeText "${name}-hook" hook} "$out/nix-support/setup-hook"
-    # Keep runtime references without running their compiler build hooks.
-    printf '%s\n' ${lib.escapeShellArg (lib.concatMapStringsSep "\n" toString packages)} \
-      > "$out/nix-support/runtime-dependencies"
-  ''
+runCommand name { } ''
+  mkdir -p "$out/nix-support" "$out/share/replit/modules"
+  # The IDE finds module metadata through REPLIT_MODULES; its store paths keep LSPs and runners alive.
+  cp ${module} "$out/share/replit/modules/${moduleId}.json"
+  {
+    cat ${writeText "${name}-hook" hook}
+    echo "addToSearchPath REPLIT_MODULES $out/share/replit/modules"
+  } > "$out/nix-support/setup-hook"
+  # Keep runtime references without running their compiler build hooks.
+  printf '%s\n' ${lib.escapeShellArg (lib.concatMapStringsSep "\n" toString packages)} \
+    > "$out/nix-support/runtime-dependencies"
+''
