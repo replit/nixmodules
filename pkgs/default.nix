@@ -77,10 +77,6 @@ rec {
     }
   ];
 
-  nixmodules-mirror-publish = pkgs.callPackage ./nixmodules-mirror-publish.nix {
-    mirrorInputs = nixmodules-mirror-inputs;
-  };
-
   bundle = bundle-fn { };
 
   node-python-runtime-oci = pkgs.callPackage ./runtime-oci {
