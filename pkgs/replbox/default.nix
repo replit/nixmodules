@@ -4,6 +4,7 @@
 mkYarnPackage rec {
   name = "replbox";
   version = "0.0.1";
+  doDist = false;
 
   src = fetchFromGitHub {
     owner = "replit";
