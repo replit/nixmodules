@@ -64,7 +64,16 @@
         system = "x86_64-linux";
         overlays = [ zig-overlay.overlays.default ];
       };
-      nodejs-22 = pkgs-nodejs.nodejs_22;
+      nodejs-22-slim = pkgs-nodejs.nodejs-slim_22.overrideAttrs (_: {
+        version = "22.23.5";
+        src = pkgs-nodejs.fetchurl {
+          url = "https://nodejs.org/dist/v22.23.5/node-v22.23.5.tar.xz";
+          hash = "sha256-bM58WL8FhwDGQ5RJA9YKMl6MnO7eH1wsCItDXyraCRo=";
+        };
+      });
+      nodejs-22 = pkgs-nodejs.nodejs_22.override {
+        nodejs-slim = nodejs-22-slim;
+      };
       # Same brotli CVE patch nixpkgs applies to non-24 Node majors at this pin.
       brotli-patched = pkgs-nodejs.brotli.overrideAttrs (old: {
         patches = old.patches ++ [
@@ -77,10 +86,10 @@
       nodejs-24-slim = (pkgs-nodejs.nodejs-slim_24.override {
         callPackage = fn: args: pkgs-nodejs.callPackage fn (args // { brotli = brotli-patched; });
       }).overrideAttrs (_: {
-        version = "24.22.1";
+        version = "24.22.3";
         src = pkgs-nodejs.fetchurl {
-          url = "https://nodejs.org/dist/v24.22.1/node-v24.22.1.tar.xz";
-          hash = "sha256-T1N5eWKAza6wwvNY/QS2oWzE+336g7WoyRqdljtDUjE=";
+          url = "https://nodejs.org/dist/v24.22.3/node-v24.22.3.tar.xz";
+          hash = "sha256-SMo6qKmwITM1aSLvT8gCAOAFmMgKTvRG98OaRZIiWT0=";
         };
       });
       nodejs-24 = pkgs-nodejs.nodejs_24.override {
