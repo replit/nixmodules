@@ -1,15 +1,19 @@
 { pkgs }:
-{ modules ? [ ], packages ? [ ], shellHook ? "", name ? "replit-devshell" }:
+{ packages ? [ ], shellHook ? "", name ? "replit-devshell" }:
 let
   inherit (pkgs) lib;
-  moduleHook = module:
-    assert lib.assertMsg (lib.isDerivation module)
-      "mkReplitShell: each modules element must be a module shell package derivation";
-    ''
-      source ${lib.escapeShellArg "${module}/nix-support/replit-env"}
-    '';
+  # Explicit module metadata separates module environments from ordinary packages.
+  inputs = lib.partition (pkg: pkg ? replitModuleId) (map
+    (pkg:
+      assert lib.assertMsg (lib.isDerivation pkg)
+        "mkReplitShell: each packages element must be a derivation";
+      pkg)
+    packages);
+  moduleHook = module: ''
+    source ${lib.escapeShellArg "${module}/nix-support/replit-env"}
+  '';
   closure = map (entry: entry.pkg) (builtins.genericClosure {
-    startSet = map (pkg: { key = toString pkg; inherit pkg; }) packages;
+    startSet = map (pkg: { key = toString pkg; inherit pkg; }) inputs.wrong;
     operator = entry: map
       (pkg: { key = toString pkg; inherit pkg; })
       (entry.pkg.propagatedBuildInputs or [ ]);
@@ -40,7 +44,7 @@ builtins.derivation {
   args = [ "-c" ": > $out" ];
   SHELL = "${pkgs.bash}/bin/bash";
   # No PATH: the workspace runtime accepts a shell without one and ignores Nix's /path-not-set.
-  shellHook = lib.concatMapStrings moduleHook (lib.reverseList modules)
+  shellHook = lib.concatMapStrings moduleHook (lib.reverseList inputs.right)
     + exportDirs "PATH" ":" "" (dirs lib.getBin "bin")
     + exportDirs "REPLIT_LD_LIBRARY_PATH" ":" "" libDirs
     + exportDirs "LDFLAGS" " " "-L" libDirs
