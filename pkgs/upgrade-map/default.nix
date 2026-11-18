@@ -21,12 +21,13 @@ let
     "elixir-1_15" = "elixir-1_17";
     "elixir-1_16" = "elixir-1_17";
     "elixir-1_17" = "elixir-1_18";
-    "go" = "go-1.25";
+    "go" = "go-1.26";
     "go-1.19" = "go-1.24";
     "go-1.20" = "go-1.24";
     "go-1.21" = "go-1.24";
     "go-1.23" = "go-1.24";
     "go-1.24" = "go-1.25";
+    "go-1.25" = "go-1.26";
     "haskell-ghc9.0" = "haskell-ghc9.10";
     "haskell-ghc9.2" = "haskell-ghc9.10";
     "haskell-ghc9.4" = "haskell-ghc9.10";

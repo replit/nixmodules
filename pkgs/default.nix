@@ -13,7 +13,7 @@ let
     "nodejs-20"
     "nodejs-22"
     "nodejs-24"
-    "go-1.25"
+    "go-1.26"
     "docker"
     "replit"
     "replit-rtld-loader"

@@ -144,6 +144,16 @@
         };
       });
       pkgs-aarch64-darwin = mkPkgs patched-unstable "aarch64-darwin";
+      go_1_26 = pkgs.go_1_26.overrideAttrs (finalAttrs: _: {
+        version = "1.26.11";
+        src = pkgs.fetchurl {
+          url = "https://go.dev/dl/go${finalAttrs.version}.src.tar.gz";
+          hash = "sha256-1EEBsP8n7SpMda1GwXucdDWSCeLrLKfJ32y0/baOGWk=";
+        };
+      });
+      buildGo126Module = pkgs.buildGo126Module.override {
+        go = go_1_26;
+      };
     in
     {
       overlays.default = final: prev: {
@@ -231,6 +241,7 @@
         inherit pkgs-staging;
         inherit deno uv;
         inherit nodejs-22 nodejs-24;
+        inherit go_1_26 buildGo126Module;
         inherit pkgs-php;
         inherit pkgs-docker pkgs-zig;
       }
