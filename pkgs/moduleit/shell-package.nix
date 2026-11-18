@@ -34,7 +34,10 @@ let
       + lib.optionalString (key == "PATH") "\${PATH:+:}\"$PATH\"")
       ordered.result + "\n";
 in
-runCommand name { } ''
+runCommand name
+{
+  passthru.replitModuleId = moduleId;
+} ''
   mkdir -p "$out/nix-support" "$out/share/replit/modules"
   # The IDE finds module metadata through REPLIT_MODULES; its store paths keep LSPs and runners alive.
   cp ${module} "$out/share/replit/modules/${moduleId}.json"
