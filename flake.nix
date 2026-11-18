@@ -185,6 +185,7 @@
         (id: _: self.packages.x86_64-linux."phony-oci-bundles.${id}")
         self.modules;
       lib.mkBundle = import ./pkgs/bundle/api.nix { inherit pkgs self; };
+      lib.mkReplitShell = import ./pkgs/replit-shell { inherit pkgs; };
       checks.x86_64-linux.module-shell = import ./pkgs/moduleit/tests.nix { inherit pkgs; };
       checks.x86_64-linux.module-registry =
         assert import ./scripts/module-registry-test.nix;
