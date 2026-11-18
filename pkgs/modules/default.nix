@@ -6,6 +6,8 @@
 , pkgs-staging
 , nodejs-22
 , nodejs-24
+, go_1_26
+, buildGo126Module
 , deno
 , uv
 , pkgs-php
@@ -84,9 +86,9 @@ let
       nodejs = nodejs-24;
     })
     (import ./go {
-      go = pkgs.go_1_25;
+      go = go_1_26;
       gopls = pkgs.gopls.override {
-        buildGoLatestModule = pkgs.buildGo125Module;
+        buildGoLatestModule = buildGo126Module;
       };
     })
 
