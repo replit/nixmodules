@@ -35,7 +35,10 @@ let
 
   # Keep these out of activeModules, as before, without hiding their implementations.
   compatibilityModulesList = [
-    (import ./docker { pkgs = pkgs-docker; })
+    (import ./docker {
+      pkgs = pkgs-docker;
+      go = go_1_26;
+    })
     (import ./zig {
       zig = pkgs-zig.zigpkgs.default;
       zls = pkgs-zig.zls;

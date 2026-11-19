@@ -1,10 +1,22 @@
-{ pkgs, ... }:
+{ pkgs, go, ... }:
 
 let
 
   configFiles = pkgs.copyPathToStore ./etc;
 
-  replit-runc = pkgs.buildGo121Module {
+  buildGoModule = pkgs.buildGoModule.override { inherit go; };
+
+  buildGoPackage = pkgs.buildGoPackage.override { inherit go; };
+
+  docker-buildx = pkgs.docker-buildx.override { inherit buildGoModule; };
+
+  docker-compose = pkgs.docker-compose.override { inherit buildGoModule; };
+
+  docker-client = pkgs.docker-client.override {
+    inherit go buildGoModule docker-buildx docker-compose;
+  };
+
+  replit-runc = buildGoModule {
     pname = "replit-runc";
     version = "1.1.9+replit";
 
@@ -30,7 +42,7 @@ let
     '';
   };
 
-  replit-containerd = pkgs.buildGo121Module {
+  replit-containerd = buildGoModule {
     pname = "replit-containerd";
     version = "1.7.5+replit";
 
@@ -65,7 +77,7 @@ let
     replitShimRunc = replit-containerd;
   };
 
-  replit-buildkit = pkgs.buildGo121Module {
+  replit-buildkit = buildGoModule {
     pname = "replit-buildkit";
     version = "v0.13.0-beta1+replit";
 
@@ -102,7 +114,7 @@ let
   mobyGoPackagePath = "github.com/docker/docker";
   mobyVersion = "24.0.7+replit";
 
-  replit-moby = pkgs.buildGoPackage {
+  replit-moby = buildGoPackage {
     pname = "replit-moby";
     version = mobyVersion;
 
@@ -115,7 +127,7 @@ let
 
     goPackagePath = mobyGoPackagePath;
 
-    nativeBuildInputs = [ pkgs.makeWrapper pkgs.pkg-config pkgs.go pkgs.libtool ];
+    nativeBuildInputs = [ pkgs.makeWrapper pkgs.pkg-config go pkgs.libtool ];
 
     buildInputs = [ pkgs.sqlite ];
 
@@ -174,8 +186,8 @@ in
   replit.packages = [ ];
 
   replit.dev.packages = [
-    pkgs.docker-client
-    pkgs.docker-compose
+    docker-client
+    docker-compose
     replit-moby
     replit-containerd
     replit-runc
