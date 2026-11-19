@@ -35,7 +35,10 @@ let
 
   # Keep these out of activeModules, as before, without hiding their implementations.
   compatibilityModulesList = [
-    (import ./docker { pkgs = pkgs-docker; })
+    (import ./docker {
+      pkgs = pkgs-docker;
+      go = go_1_26;
+    })
     (import ./zig {
       zig = pkgs-zig.zigpkgs.default;
       zls = pkgs-zig.zls;
@@ -47,31 +50,37 @@ let
       python = pkgs.python310;
       pypkgs = pkgs.python310Packages;
       inherit uv;
+      buildGoModule = buildGo126Module;
     })
     (import ./python {
       python = pkgs.python311;
       pypkgs = pkgs.python311Packages;
       inherit uv;
+      buildGoModule = buildGo126Module;
     })
     (import ./python {
       python = pkgs.python312;
       pypkgs = pkgs.python312Packages;
       inherit uv;
+      buildGoModule = buildGo126Module;
     })
     (import ./python-base {
       python = pkgs.python311;
       pypkgs = pkgs.python311Packages;
       inherit uv;
+      buildGoModule = buildGo126Module;
     })
     (import ./python-base {
       python = pkgs.python312;
       pypkgs = pkgs.python312Packages;
       inherit uv;
+      buildGoModule = buildGo126Module;
     })
     (import ./python-base {
       python = pkgs.python313;
       pypkgs = pkgs.python313Packages;
       inherit uv;
+      buildGoModule = buildGo126Module;
     })
     (import ./ty)
     (import ./ruff)
@@ -172,13 +181,17 @@ let
       nodejs = pkgs.nodejs_20;
     })
     (import ./web)
-    (import ./hermit)
+    (import ./hermit {
+      buildGoModule = buildGo126Module;
+    })
     (import ./typescript-language-server {
       nodepkgs = pkgs.nodePackages;
     })
     (import ./replit-rtld-loader)
     (import ./graphite-cli)
-    (import ./databricks-cli)
+    (import ./databricks-cli {
+      buildGoModule = buildGo126Module;
+    })
   ];
 
   mkModuleSet = buildModule: getId: inputs:

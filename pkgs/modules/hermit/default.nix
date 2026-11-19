@@ -1,8 +1,9 @@
+{ buildGoModule }:
 { pkgs, lib, ... }:
 let
   version = "0.38.2";
 
-  hermit = pkgs.buildGoModule rec {
+  hermit = buildGoModule rec {
     pname = "hermit";
     version = "0.38.2";
 

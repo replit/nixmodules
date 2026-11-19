@@ -1,3 +1,4 @@
+{ buildGoModule }:
 { pkgs, lib, ... }:
 
 let
@@ -9,7 +10,7 @@ let
   # rebase replit/databricks-cli `main` onto a newer upstream tag, retag
   # vX.Y.Z-replit.<n>, push, then update version + hash + vendorHash here.
   version = "0.299.0-replit.1";
-  databricks-cli = pkgs.buildGoModule {
+  databricks-cli = buildGoModule {
     pname = "databricks-cli";
     inherit version;
 

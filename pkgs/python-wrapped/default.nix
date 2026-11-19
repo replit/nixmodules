@@ -1,5 +1,5 @@
-{ pkgs, python, python-ld-library-path }:
-pkgs.buildGoModule rec {
+{ pkgs, buildGoModule, python, python-ld-library-path }:
+buildGoModule rec {
   pname = "python-wrapped";
   version = "0.1.0";
 

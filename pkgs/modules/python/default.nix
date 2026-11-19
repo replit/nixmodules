@@ -1,4 +1,4 @@
-{ python, pypkgs, uv }:
+{ python, pypkgs, uv, buildGoModule }:
 { pkgs-unstable
 , lib
 , ...
@@ -55,7 +55,7 @@ let
   };
 
   binary-wrapped-python = pkgs.callPackage ../../python-wrapped {
-    inherit pkgs python python-ld-library-path;
+    inherit pkgs buildGoModule python python-ld-library-path;
   };
 
   sitecustomize = pkgs.callPackage ./sitecustomize.nix { };
