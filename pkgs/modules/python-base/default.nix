@@ -1,4 +1,4 @@
-{ python, pypkgs, uv }:
+{ python, pypkgs, uv, buildGoModule }:
 { pkgs-unstable, pkgs-23_05, lib, ... }:
 let
   pythonVersion = lib.versions.majorMinor python.version;
@@ -17,7 +17,7 @@ let
   sitecustomize = pkgs.callPackage ../python/sitecustomize.nix { };
 
   binary-wrapped-python = pkgs.callPackage ../../python-wrapped {
-    inherit pkgs python python-ld-library-path;
+    inherit pkgs buildGoModule python python-ld-library-path;
   };
 
 in
