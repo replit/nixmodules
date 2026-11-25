@@ -16,6 +16,8 @@ let
 
   sitecustomize = pkgs.callPackage ../python/sitecustomize.nix { };
 
+  pip = pypkgs.callPackage ../../pip { };
+
   binary-wrapped-python = pkgs.callPackage ../../python-wrapped {
     inherit pkgs buildGoModule python python-ld-library-path;
   };
@@ -33,7 +35,7 @@ in
 
   replit.packages = [
     binary-wrapped-python
-    (pypkgs.callPackage ../../pip { })
+    pip
     (pkgs.poetry.override { python3 = python; })
     uv
   ];
@@ -62,7 +64,7 @@ in
   replit.env = {
     PYTHONUSERBASE = userbase;
     PYTHONPATH = "${sitecustomize}";
-    REPLIT_PYTHONPATH = "${userbase}/${python.sitePackages}:${pypkgs.setuptools}/${python.sitePackages}";
+    REPLIT_PYTHONPATH = "${userbase}/${python.sitePackages}:${pypkgs.setuptools}/${python.sitePackages}:${pip}/${python.sitePackages}";
     UV_PROJECT_ENVIRONMENT = "$REPL_HOME/.pythonlibs";
     # Even though it is set-default in the wrapper, add it to the
     # environment too, so that when someone wants to override it,
